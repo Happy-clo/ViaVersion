@@ -22,7 +22,8 @@ jobs:
           check-latest: true
       - name: Build with Gradle
         run: ./gradlew build
-      - uses: upload-artifact@v3
+      - name: upload
+        uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts
+          name: Plugin
           path: build/libs/
