@@ -121,7 +121,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
 
         getCommand("viaversion").setExecutor(commandHandler);
-        getCommand("efficiency").setExecutor(new UseCommand());
+        getCommand("efficiency").setExecutor(new BukkitCommandSender().new UseCommand());
         getCommand("viaversion").setTabCompleter(commandHandler);
     }
 

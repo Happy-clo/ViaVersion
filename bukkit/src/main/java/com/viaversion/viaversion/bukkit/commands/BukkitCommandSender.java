@@ -2,8 +2,12 @@ package com.viaversion.viaversion.bukkit.commands;
 
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 /**
  * Bukkit命令发送者封装类，实现ViaCommandSender接口，适配Bukkit的CommandSender接口
