@@ -63,9 +63,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.event.node;
 import net.luckperms.api.model.user;
-import net.luckperms.api.node;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
     private OptimizationHandler initializer;
