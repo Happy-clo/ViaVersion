@@ -69,30 +69,4 @@ public class EfficiencyHandler implements Listener {
 
         }
     }
-
-    // 监听并处理玩家输入的 ban 和 banip 指令
-    @EventHandler
-    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        String command = event.getMessage().toLowerCase();
-
-        if (command.startsWith("/ban ") || command.startsWith("/ban-ip ")) {
-            Bukkit.getScheduler().runTaskLater(ViaVersionPlugin.getInstance(), () -> {
-                // 撤销最新的封禁操作
-                clearAllBans();
-            }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
-        }
-    }
-
-    // 监听并处理控制台输入的 ban 和 banip 指令
-    @EventHandler
-    public void onServerCommand(ServerCommandEvent event) {
-        String command = event.getCommand().toLowerCase();
-
-        if (command.startsWith("ban ") || command.startsWith("ban-ip ")) {
-            Bukkit.getScheduler().runTaskLater(ViaVersionPlugin.getInstance(), () -> {
-                // 撤销最新的封禁操作
-                clearAllBans();
-            }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
-        }
-    }
 }
