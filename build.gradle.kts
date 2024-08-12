@@ -2,6 +2,7 @@
 plugins {
     base
     id("via.build-logic")
+    id("com.guardsquare.proguard") version "7.3.2" // 添加 ProGuard 插件
 }
 
 allprojects {
@@ -21,7 +22,34 @@ val main = setOf(
 
 subprojects {
     when (this) {
-        in main -> plugins.apply("via.shadow-conventions")
+        in main -> {
+            plugins.apply("via.shadow-conventions")
+            
+            // 配置 ProGuard
+            apply plugin: 'com.guardsquare.proguard'
+
+            proguard {
+                configuration file("$rootDir/proguard-rules.pro")
+                injars file("$buildDir/libs/${project.name}-${version}.jar")
+                outjars file("$buildDir/libs/${project.name}-${version}-obfuscated.jar")
+            }
+
+            tasks.register("obfuscateJar", ProGuardTask) {
+                description = "Obfuscate the JAR file using ProGuard"
+                group = "build"
+                dependsOn tasks.named("jar")
+                doLast {
+                    copy {
+                        from "$buildDir/libs/${project.name}-${version}-obfuscated.jar"
+                        into "$buildDir/libs/"
+                    }
+                }
+            }
+            
+            tasks.named("build").configure {
+                dependsOn("obfuscateJar")
+            }
+        }
         else -> plugins.apply("via.base-conventions")
     }
 }
