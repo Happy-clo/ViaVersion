@@ -22,8 +22,12 @@ jobs:
           check-latest: true
       - name: Build with Gradle
         run: ./gradlew build
-      - name: upload
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "::set-output name=timestamp::$(date +%s)"
+
+      - name: Upload Plugin Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Plugin
+          name: Plugin-${{ steps.timestamp.outputs.timestamp }}
           path: build/libs/
