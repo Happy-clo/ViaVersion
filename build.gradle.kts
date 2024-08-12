@@ -2,7 +2,7 @@
 plugins {
     base
     id("via.build-logic")
-    id("com.guardsquare.proguard") version "7.3.2" // 添加 ProGuard 插件
+    id("com.guardsquare:proguard-gradle") version "7.5.0" // 添加 ProGuard 插件
 }
 
 allprojects {
