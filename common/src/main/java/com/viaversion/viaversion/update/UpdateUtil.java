@@ -39,21 +39,11 @@ public final class UpdateUtil {
     private static final String PLUGIN = "ViaVersion/";
 
     public static void sendUpdateMessage(final UUID uuid) {
-        Via.getPlatform().runAsync(() -> {
-            final Pair<Level, String> message = getUpdateMessage(false);
-            if (message != null) {
-                Via.getPlatform().runSync(() -> Via.getPlatform().sendMessage(uuid, PREFIX + message.value()));
-            }
-        });
+        return null;
     }
 
     public static void sendUpdateMessage() {
-        Via.getPlatform().runAsync(() -> {
-            final Pair<Level, String> message = getUpdateMessage(true);
-            if (message != null) {
-                Via.getPlatform().runSync(() -> Via.getPlatform().getLogger().log(message.key(), message.value()));
-            }
-        });
+        return null;
     }
 
     private static @Nullable Pair<Level, String> getUpdateMessage(boolean console) {
