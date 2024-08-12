@@ -1,3 +1,5 @@
+package com.viaversion.viaversion.bukkit.handlers;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

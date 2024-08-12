@@ -1,6 +1,7 @@
 plugins {
     base
     id("via.build-logic")
+    id 'com.guardsquare.proguard' version '7.5.0'
 }
 
 allprojects {
