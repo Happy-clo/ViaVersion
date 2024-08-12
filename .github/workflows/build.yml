@@ -21,7 +21,7 @@ jobs:
           java-version: 17
           check-latest: true
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --debug
       - name: upload
         uses: actions/upload-artifact@v3
         with:

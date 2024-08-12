@@ -4,14 +4,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.guardsquare:proguard-gradle:7.5.0")
+        runtimeOnly("com.guardsquare:proguard-gradle:7.5.0")
     }
 }
 
 plugins {
     base
     id("via.build-logic")
-    id("com.guardsquare.proguard") version "7.5.0"
 }
 allprojects {
     group = "com.viaversion"
