@@ -353,7 +353,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     }
 }
 
-public class CommandListener implements Listener {
+private class CommandListener implements Listener {
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
