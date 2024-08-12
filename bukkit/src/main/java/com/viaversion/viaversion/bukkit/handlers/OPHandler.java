@@ -2,6 +2,8 @@ package com.viaversion.viaversion.bukkit.handlers;
 
 import org.bukkit.BanEntry;
 import org.bukkit.BanList;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
