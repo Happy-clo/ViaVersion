@@ -9,6 +9,12 @@ dependencyResolutionManagement {
     }
     // only use these repos
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven {
+            url = uri("https://mvnrepository.com/artifact/")
+        }
+    }
 }
 
 pluginManagement {

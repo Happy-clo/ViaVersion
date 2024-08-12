@@ -1,7 +1,3 @@
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compileOnly("net.luckperms:api:5.4")
     implementation(projects.viaversionBukkitLegacy)
