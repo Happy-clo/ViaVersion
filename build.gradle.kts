@@ -33,22 +33,22 @@ subprojects {
             plugins.apply("via.shadow-conventions")
             
             // 配置 ProGuard
-            apply plugin: 'com.guardsquare.proguard'
+            plugins.apply("com.guardsquare.proguard")
 
-            proguard {
-                configuration file("$rootDir/proguard-rules.pro")
-                injars file("$buildDir/libs/${project.name}-${version}.jar")
-                outjars file("$buildDir/libs/${project.name}-${version}-obfuscated.jar")
+            extensions.configure<ProGuardExtension> {
+                configuration = file("$rootDir/proguard-rules.pro")
+                injars = file("$buildDir/libs/${project.name}-${version}.jar")
+                outjars = file("$buildDir/libs/${project.name}-${version}-obfuscated.jar")
             }
 
-            tasks.register("obfuscateJar", ProGuardTask) {
+            tasks.register("obfuscateJar", ProGuardTask::class) {
                 description = "Obfuscate the JAR file using ProGuard"
                 group = "build"
-                dependsOn tasks.named("jar")
+                dependsOn(tasks.named("jar"))
                 doLast {
                     copy {
-                        from "$buildDir/libs/${project.name}-${version}-obfuscated.jar"
-                        into "$buildDir/libs/"
+                        from("$buildDir/libs/${project.name}-${version}-obfuscated.jar")
+                        into("$buildDir/libs/")
                     }
                 }
             }
