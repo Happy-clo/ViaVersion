@@ -1,10 +1,18 @@
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.guardsquare:proguard-gradle:7.5.0")
+    }
+}
+
 plugins {
     base
     id("via.build-logic")
-    id("com.guardsquare.proguard-gradle") version "7.5.0" // 修改后的插件ID
+    id("com.guardsquare.proguard") version "7.5.0"
 }
-
 allprojects {
     group = "com.viaversion"
     version = property("projectVersion") as String // from gradle.properties
