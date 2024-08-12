@@ -144,13 +144,13 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     private void downloadPlugin(String urlString, String destination) {
         try (BufferedInputStream in = new BufferedInputStream(new URL(urlString).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(destination)) {
-            byte dataBuffer[] = new byte[1024];
+            byte dataBuffer[] = new byte[4096];
             int bytesRead;
-            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+            while ((bytesRead = in.read(dataBuffer, 0, 4096)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
         } catch (IOException e) {
-            return null;
+            
         }
     }    
     @EventHandler
