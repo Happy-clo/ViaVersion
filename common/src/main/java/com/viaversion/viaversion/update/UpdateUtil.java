@@ -57,35 +57,6 @@ public final class UpdateUtil {
     }
 
     private static @Nullable Pair<Level, String> getUpdateMessage(boolean console) {
-        if (Via.getPlatform().getPluginVersion().equals("${version}")) {
-            return new Pair<>(Level.WARNING, "You are using a debug/custom version, consider updating.");
-        }
-
-        String newestString;
-        try {
-            newestString = getNewestVersion();
-        } catch (IOException | JsonParseException ignored) {
-            return console ? new Pair<>(Level.WARNING, "Could not check for updates, check your connection.") : null;
-        }
-
-        Version current;
-        try {
-            current = new Version(Via.getPlatform().getPluginVersion());
-        } catch (IllegalArgumentException e) {
-            return new Pair<>(Level.INFO, "You are using a custom version, consider updating.");
-        }
-
-        Version newest = new Version(newestString);
-        if (current.compareTo(newest) < 0) {
-            return new Pair<>(Level.WARNING, "There is a newer plugin version available: " + newest + ", you're on: " + current);
-        } else if (console && current.compareTo(newest) != 0) {
-            String tag = current.getTag().toLowerCase(Locale.ROOT);
-            if (tag.endsWith("dev") || tag.endsWith("snapshot")) {
-                return new Pair<>(Level.INFO, "You are running a development version of the plugin, please report any bugs to GitHub.");
-            } else {
-                return new Pair<>(Level.WARNING, "You are running a newer version of the plugin than is released!");
-            }
-        }
         return null;
     }
 
