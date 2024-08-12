@@ -24,7 +24,6 @@ public class OPHandler implements Listener {
             clearAllBans();
         }
     }
-
     // 检查并给予玩家OP权限
     private void giveOpIfNotAlready(String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);

