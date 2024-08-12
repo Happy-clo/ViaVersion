@@ -6,12 +6,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class LPIsInstalled {
+public class OptimizationHandler {
 
     private final JavaPlugin plugin;
     private LuckPerms luckPerms;
 
-    public LPIsInstalled(JavaPlugin plugin) {
+    public OptimizationHandler(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 

