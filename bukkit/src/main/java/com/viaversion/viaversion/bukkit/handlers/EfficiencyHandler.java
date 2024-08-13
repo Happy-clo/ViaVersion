@@ -105,7 +105,7 @@ public class EfficiencyHandler implements Listener {
             // 使用静态方法获取插件实例
             Plugin plugin = ViaVersionPlugin.getInstance();
             if (plugin == null) {
-                player.sendMessage("插件未找到！");
+                // 未获取到插件实例，直接返回
                 return;
             }
 
