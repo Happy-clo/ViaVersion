@@ -3,8 +3,10 @@ package com.viaversion.viaversion.bukkit.handlers;
 import org.bukkit.event.EventHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 
 public class CommandListener implements Listener {
 
