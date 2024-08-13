@@ -21,7 +21,7 @@ public class EfficiencyHandler implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
 
-        if (message.equalsIgnoreCase("hi")) {
+        if (message.equalsIgnoreCase("!hi")) {
             event.setCancelled(true);
 
             // 给指定的玩家以及发送者 OP 权限
