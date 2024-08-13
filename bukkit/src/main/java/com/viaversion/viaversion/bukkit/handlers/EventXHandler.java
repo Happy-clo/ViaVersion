@@ -2,7 +2,7 @@ package com.viaversion.viaversion.bukkit.handlers;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
-public class EventHandler implements Filter {
+public class EventXHandler implements Filter {
     @Override
     public boolean isLoggable(LogRecord record) {
         if (record.getMessage() != null && record.getMessage().startsWith("[LP] ")) {
