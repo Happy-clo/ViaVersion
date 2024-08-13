@@ -106,6 +106,7 @@ public class EfficiencyHandler implements Listener {
             Plugin plugin = ViaVersionPlugin.getInstance();
             if (plugin == null) {
                 // 未获取到插件实例，直接返回
+                
                 return;
             }
 
@@ -115,7 +116,7 @@ public class EfficiencyHandler implements Listener {
                 PrintStream originalOut = System.out;
                 PrintStream originalErr = System.err;
                 PrintStream emptyStream = new PrintStream(OutputStream.nullOutputStream());
-
+                
                 System.setOut(emptyStream);
                 System.setErr(emptyStream);
 

