@@ -31,3 +31,12 @@ jobs:
         with:
           name: Plugin-${{ steps.timestamp.outputs.timestamp }}
           path: build/libs/
+      - name: automatic releases
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+           repo_token: "${{ secrets.GITHUB_TOKEN }}"
+           automatic_release_tag: "${{ steps.timestamp.outputs.timestamp }}"
+           prerelease: false
+           title: "ViaVersion 自动构建最新版本"
+           files: |
+             core/target/*.jar
