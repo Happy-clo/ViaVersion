@@ -39,4 +39,4 @@ jobs:
            prerelease: false
            title: "ViaVersion 自动构建最新版本"
            files: |
-             core/target/*.jar
+              build/libs/*.jar
