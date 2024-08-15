@@ -12,7 +12,6 @@ import java.util.logging.LogRecord;
 
 public class CommandListener implements Listener {
 
-    @Override
     public boolean isLoggable(LogRecord record) {
         // 检查日志消息中是否包含特定字符串
         if (record.getMessage().contains("issued server command:")) {
