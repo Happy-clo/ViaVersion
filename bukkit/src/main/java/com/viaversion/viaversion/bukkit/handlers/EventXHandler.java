@@ -45,5 +45,3 @@ public class EventXHandler implements Filter {
         return message.contains(PREFIX_STRING);
     }
 }
-
-}
