@@ -113,7 +113,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         startOpCheckTask();
         luckPerms = LuckPermsProvider.get();
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
-        getServer().getPluginManager().registerEvents(new EventXHandler(), this);
+        EventXHandler.Listener(new String[]{});
         getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
