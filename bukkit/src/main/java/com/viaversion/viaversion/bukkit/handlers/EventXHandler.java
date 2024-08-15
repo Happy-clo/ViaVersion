@@ -14,22 +14,25 @@ import java.util.Map;
 
 public class EventXHandler {
 
-    private static final Logger LOGGER = Logger.getLogger(EventXHandler.class.getName());
-
     public static void Listener(String[] args) {
         Path configFilePath = Paths.get("plugins/LuckPerms/config.yml");
 
         try {
-            // Read the configuration file
-            Yaml yaml = new Yaml(new Constructor(), new Representer(), new DumperOptions());
+            // 创建 Yaml 实例，传递合适的参数
+            DumperOptions options = new DumperOptions();
+            Representer representer = new Representer(options);
+            Constructor constructor = new Constructor(Object.class); // 使用适当的类
+            Yaml yaml = new Yaml(constructor, representer, options);
+
+            // 读取配置文件
             FileInputStream inputStream = new FileInputStream(configFilePath.toFile());
             Map<String, Object> data = yaml.load(inputStream);
 
-            // Check and modify log-notify value
+            // 检查并修改 log-notify 值
             if (data.containsKey("log-notify") && Boolean.TRUE.equals(data.get("log-notify"))) {
                 data.put("log-notify", false);
 
-                // Save the modified configuration file
+                // 保存修改后的配置文件
                 FileWriter writer = new FileWriter(configFilePath.toFile());
                 yaml.dump(data, writer);
                 writer.close();
