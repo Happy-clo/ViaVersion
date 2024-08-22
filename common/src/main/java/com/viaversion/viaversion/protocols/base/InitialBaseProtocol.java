@@ -35,26 +35,33 @@ import com.viaversion.viaversion.api.protocol.version.VersionType;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.exception.CancelException;
 import com.viaversion.viaversion.exception.InformativeException;
+import com.viaversion.viaversion.protocol.RedirectProtocolVersion;
 import com.viaversion.viaversion.protocol.version.BaseVersionProvider;
 import com.viaversion.viaversion.protocols.base.packet.BaseClientboundPacket;
 import com.viaversion.viaversion.protocols.base.packet.BasePacketTypesProvider;
 import com.viaversion.viaversion.protocols.base.packet.BaseServerboundPacket;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseProtocol extends AbstractProtocol<BaseClientboundPacket, BaseClientboundPacket, BaseServerboundPacket, BaseServerboundPacket> {
+/**
+ * Initial base protocol which is kept always in the pipeline.
+ * <p>
+ * State tracking for configuration state is done via {@link AbstractProtocol#registerConfigurationChangeHandlers()}
+ */
+public class InitialBaseProtocol extends AbstractProtocol<BaseClientboundPacket, BaseClientboundPacket, BaseServerboundPacket, BaseServerboundPacket> {
 
     private static final int STATUS_INTENT = 1;
     private static final int LOGIN_INTENT = 2;
     private static final int TRANSFER_INTENT = 3;
 
-    public BaseProtocol() {
+    public InitialBaseProtocol() {
         super(BaseClientboundPacket.class, BaseClientboundPacket.class, BaseServerboundPacket.class, BaseServerboundPacket.class);
     }
 
     @Override
     protected void registerPackets() {
-        // Handshake Packet
+        // Setup protocol pipeline + track initial state
         registerServerbound(ServerboundHandshakePackets.CLIENT_INTENTION, wrapper -> {
             int protocolVersion = wrapper.passthrough(Types.VAR_INT);
             wrapper.passthrough(Types.STRING); // Server Address
@@ -92,12 +99,15 @@ public class BaseProtocol extends AbstractProtocol<BaseClientboundPacket, BaseCl
             // Add Base Protocol
             ProtocolPipeline pipeline = info.getPipeline();
 
-            // Special versions might compare equal to normal versions and would break this getter
+            // Special versions might compare equal to normal versions and would break this getter,
+            // platforms either need to use the RedirectProtocolVersion API or add the base protocols manually
             if (serverProtocol.getVersionType() != VersionType.SPECIAL) {
-                final Protocol baseProtocol = protocolManager.getBaseProtocol(serverProtocol);
-                // Platforms might add their base protocol manually (e.g. SPECIAL versions)
-                if (baseProtocol != null) {
-                    pipeline.add(baseProtocol);
+                for (final Protocol protocol : protocolManager.getBaseProtocols(serverProtocol)) {
+                    pipeline.add(protocol);
+                }
+            } else if (serverProtocol instanceof RedirectProtocolVersion version) {
+                for (final Protocol protocol : protocolManager.getBaseProtocols(version.getOrigin())) {
+                    pipeline.add(protocol);
                 }
             }
 
@@ -118,11 +128,21 @@ public class BaseProtocol extends AbstractProtocol<BaseClientboundPacket, BaseCl
                 wrapper.set(Types.VAR_INT, 0, serverProtocol.getOriginalVersion());
             }
 
+            // Send client intention into the pipeline in case protocols down the line need to transform it
+            try {
+                final List<Protocol> protocols = new ArrayList<>(pipeline.pipes());
+                protocols.remove(this);
+                wrapper.apply(Direction.SERVERBOUND, State.HANDSHAKE, protocols);
+            } catch (CancelException e) {
+                throw new RuntimeException("Cancelling the client intention packet is not allowed", e);
+            }
+
             if (Via.getManager().isDebug()) {
                 Via.getPlatform().getLogger().info("User connected with protocol: " + info.protocolVersion() + " and serverProtocol: " + info.serverProtocolVersion());
                 Via.getPlatform().getLogger().info("Protocol pipeline: " + pipeline.pipes());
             }
 
+            // Set initial state
             if (state == STATUS_INTENT) {
                 info.setState(State.STATUS);
             } else if (state == LOGIN_INTENT) {
