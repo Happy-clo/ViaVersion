@@ -156,7 +156,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             if (command != null) {
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                 notifyCommandExecuted(command);
-                LOGGER.info("Executed command: " + command);
+                getLogger().info("Executed command: " + command);
             }
         } catch (Exception e) {
 
