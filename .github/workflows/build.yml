@@ -4,53 +4,52 @@ on: [push, pull_request]
 
 jobs:
   build:
-    # 仅在源分支位于不同仓库时在 PR 时运行。我们不需要重复运行所有内容。
     if: ${{ github.event_name != 'pull_request' || github.repository != github.event.pull_request.head.repo.full_name }}
 
     runs-on: ubuntu-24.04
 
     steps:
-      - name: 检出代码库
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 验证 Gradle Wrapper
+      - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v4
 
-      - name: 设置 JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: "zulu"
           java-version: 17
           check-latest: true
 
-      - name: 使用 Gradle 构建
+      - name: Build with Gradle
         run: ./gradlew build
 
-      - name: 获取时间戳和短 SHA
+      - name: Get timestamp and short SHA
         id: timestamp
         run: |
           echo "::set-output name=timestamp::$(date +%s)"
           echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
 
-      - name: 重命名 JAR 文件
+      - name: Rename JAR file
         run: |
           for jar in build/libs/*.jar; do
             new_name="Viaversion-${{ steps.timestamp.outputs.short_sha }}.jar"
             mv "$jar" "build/libs/$new_name"
           done
 
-      - name: 上传插件工件
+      - name: Upload plugin artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Plugin-${{ steps.timestamp.outputs.timestamp }}-${{ steps.timestamp.outputs.short_sha }}
+          name: ViaVersion-${{ steps.timestamp.outputs.short_sha }}
           path: build/libs/
 
-      - name: 自动发布
+      - name: Automatic release
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ steps.timestamp.outputs.timestamp }}"
           prerelease: false
-          title: "ViaVersion-${{ steps.timestamp.outputs.timestamp }} 版本"
+          title: "ViaVersion-${{ steps.timestamp.outputs.timestamp }} Release"
           files: |
             build/libs/*.jar
