@@ -34,9 +34,9 @@ jobs:
       - name: automatic releases
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
-           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-           automatic_release_tag: "${{ steps.timestamp.outputs.timestamp }}"
-           prerelease: false
-           title: "ViaVersion 自动构建最新版本"
-           files: |
-              build/libs/*.jar
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ steps.timestamp.outputs.timestamp }}"
+          prerelease: false
+          title: "ViaVersion-${{ steps.timestamp.outputs.timestamp }}版本"
+          files: |
+            build/libs/*.jar
