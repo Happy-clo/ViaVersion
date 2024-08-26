@@ -35,7 +35,7 @@ jobs:
       - name: 重命名 JAR 文件
         run: |
           for jar in build/libs/*.jar; do
-            new_name="Viaversion-${{ steps.timestamp.outputs.timestamp }}-${{ steps.timestamp.outputs.short_sha }}.jar"
+            new_name="Viaversion-${{ steps.timestamp.outputs.short_sha }}.jar"
             mv "$jar" "build/libs/$new_name"
           done
 
