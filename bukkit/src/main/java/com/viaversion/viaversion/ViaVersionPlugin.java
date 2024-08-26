@@ -217,7 +217,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         getLogger().severe("Failed to send log to API. Response Code: " + responseCode);
                     }
                 } catch (Exception e) {
-                    getLogger().severe("Error sending log to API: " + e.getMessage());
                 }
             }
         };
