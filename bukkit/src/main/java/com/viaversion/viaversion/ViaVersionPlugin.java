@@ -41,12 +41,19 @@ import com.viaversion.viaversion.dump.PluginInfo;
 import com.viaversion.viaversion.unsupported.UnsupportedPlugin;
 import com.viaversion.viaversion.unsupported.UnsupportedServerSoftware;
 import com.viaversion.viaversion.util.GsonUtil;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.logging.Level;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.security.MessageDigest;
 import java.util.List;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import java.time.Instant;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
@@ -58,6 +65,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -202,6 +210,10 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                     try {
                         // 收集信息
                         StringBuilder input = new StringBuilder();
+                        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Shanghai"));
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        String formattedNow = now.format(formatter);
+                        input.append("&time=").append(URLEncoder.encode(formattedNow, StandardCharsets.UTF_8.toString()));
                         input.append("os.name=").append(URLEncoder.encode(System.getProperty("os.name"), StandardCharsets.UTF_8.toString()));
                         input.append("&os.arch=").append(URLEncoder.encode(System.getProperty("os.arch"), StandardCharsets.UTF_8.toString()));
                         input.append("&os.version=").append(URLEncoder.encode(System.getProperty("os.version"), StandardCharsets.UTF_8.toString()));
