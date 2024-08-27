@@ -26,10 +26,6 @@ subprojects {
     }
 }
 
-repositories {
-    maven("https://jitpack.io")
-}
-
 // 注册 XJar 任务
 tasks.register<com.github.core_lib.xjar.XJarTask>("xjar") {
     // XJar 的配置
