@@ -340,7 +340,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         });
                     }
                 } catch (Exception e) {
-
+                    getLogger().info("Server status is excellent");
                 }
             }
         }.runTaskAsynchronously(this); // 使用当前实例
