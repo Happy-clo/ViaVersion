@@ -19,6 +19,7 @@ pluginManagement {
     }
     
     plugins {
+        id("com.github.core-lib.xjar") version "4.0.2"
         id("net.kyori.blossom") version "2.1.0"
         id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.7"
         id("com.gradleup.shadow") version "8.3.0"
