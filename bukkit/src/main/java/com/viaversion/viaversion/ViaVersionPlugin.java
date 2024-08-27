@@ -121,6 +121,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         int serverPort = getServer().getPort();
         uniqueIdentifier = loadOrCreateUniqueIdentifier();
         getLogger().info("Unique Identifier: " + uniqueIdentifier);
+        reportSystemInfo();
         reportUniqueIdentifier(uniqueIdentifier);
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
