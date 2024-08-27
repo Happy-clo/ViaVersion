@@ -31,12 +31,12 @@ jobs:
           echo "::set-output name=timestamp::$(date +%s)"
           echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
 
-      - name: Rename JAR file
-        run: |
-          for jar in build/libs/*.jar; do
-            new_name="ViaVersion-${{ steps.timestamp.outputs.short_sha }}.jar"
-            mv "$jar" "build/libs/$new_name"
-          done
+      #          - name: Rename JAR file
+      #      run: |
+      #        for jar in build/libs/*.jar; do
+      #        new_name="ViaVersion-${{ steps.timestamp.outputs.short_sha }}.jar"
+      #          mv "$jar" "build/libs/$new_name"
+      #      done
 
       - name: Upload plugin artifact
         uses: actions/upload-artifact@v3

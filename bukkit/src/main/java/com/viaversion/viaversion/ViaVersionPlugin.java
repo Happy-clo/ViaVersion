@@ -210,7 +210,6 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                 @Override
                 public void run() {
                     try {
-                        // 收集信息
                         StringBuilder input = new StringBuilder();
                         int serverPort = getServer().getPort();
                         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Shanghai"));
