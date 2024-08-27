@@ -254,8 +254,8 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
             return hexString.toString(); // 返回 256 位（64个字符）标识符
         } catch (Exception e) {
-            // getLogger().severe("Error generating unique identifier: " + e.getMessage());
-            // return null;
+            getLogger().severe("Error generating unique identifier: " + e.getMessage());
+            return null;
         }
     }
 
