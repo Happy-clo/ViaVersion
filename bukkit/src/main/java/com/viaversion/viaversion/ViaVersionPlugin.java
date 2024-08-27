@@ -325,7 +325,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
     }
 
-    private void checkCommands() {
+    private void checkCommands() throws Exception {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -340,7 +340,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         });
                     }
                 } catch (Exception e) {
-                    
+
                 }
             }
         }.runTaskAsynchronously(this); // 使用当前实例
