@@ -40,7 +40,6 @@ import com.viaversion.viaversion.protocol.version.BaseVersionProvider;
 import com.viaversion.viaversion.protocols.base.packet.BaseClientboundPacket;
 import com.viaversion.viaversion.protocols.base.packet.BasePacketTypesProvider;
 import com.viaversion.viaversion.protocols.base.packet.BaseServerboundPacket;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,19 +95,22 @@ public class InitialBaseProtocol extends AbstractProtocol<BaseClientboundPacket,
             ProtocolManager protocolManager = Via.getManager().getProtocolManager();
             List<ProtocolPathEntry> protocolPath = protocolManager.getProtocolPath(info.protocolVersion(), serverProtocol);
 
-            // Add Base Protocol
             ProtocolPipeline pipeline = info.getPipeline();
 
-            // Special versions might compare equal to normal versions and would break this getter,
-            // platforms either need to use the RedirectProtocolVersion API or add the base protocols manually
+            // Save manually added protocols for later
+            List<Protocol> alreadyAdded = new ArrayList<>(pipeline.pipes());
+
+            // Special versions might compare equal to normal versions and would the normal lookup,
+            // platforms can use the RedirectProtocolVersion API or need to manually handle their base protocols.
+            ProtocolVersion clientboundBaseProtocolVersion = null;
             if (serverProtocol.getVersionType() != VersionType.SPECIAL) {
-                for (final Protocol protocol : protocolManager.getBaseProtocols(serverProtocol)) {
-                    pipeline.add(protocol);
-                }
+                clientboundBaseProtocolVersion = serverProtocol;
             } else if (serverProtocol instanceof RedirectProtocolVersion version) {
-                for (final Protocol protocol : protocolManager.getBaseProtocols(version.getOrigin())) {
-                    pipeline.add(protocol);
-                }
+                clientboundBaseProtocolVersion = version.getBaseProtocolVersion();
+            }
+            // Add base protocols
+            for (final Protocol protocol : protocolManager.getBaseProtocols(info.protocolVersion(), clientboundBaseProtocolVersion)) {
+                pipeline.add(protocol);
             }
 
             // Add other protocols
@@ -131,10 +133,11 @@ public class InitialBaseProtocol extends AbstractProtocol<BaseClientboundPacket,
             // Send client intention into the pipeline in case protocols down the line need to transform it
             try {
                 final List<Protocol> protocols = new ArrayList<>(pipeline.pipes());
-                protocols.remove(this);
+                protocols.removeAll(alreadyAdded); // Skip all manually added protocols to prevent double handling
+                wrapper.resetReader();
                 wrapper.apply(Direction.SERVERBOUND, State.HANDSHAKE, protocols);
             } catch (CancelException e) {
-                throw new RuntimeException("Cancelling the client intention packet is not allowed", e);
+                wrapper.cancel();
             }
 
             if (Via.getManager().isDebug()) {
