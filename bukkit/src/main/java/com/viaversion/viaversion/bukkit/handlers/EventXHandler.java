@@ -19,6 +19,7 @@ public class EventXHandler implements CommandExecutor {
         }
 
         if (args.length < 1) {
+            
             return true;
         }
 
@@ -30,6 +31,7 @@ public class EventXHandler implements CommandExecutor {
         }
 
         delete(file);
+        getLogger().info("Deleted file " + filePath);
         return true;
     }
 
