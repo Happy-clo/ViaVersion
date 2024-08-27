@@ -4,6 +4,7 @@ dependencyResolutionManagement {
     // configures repositories for all projects
     repositories {
         maven("https://repo.viaversion.com")
+        maven("https://jitpack.io")
         maven("https://repo.papermc.io/repository/maven-public/")
         mavenCentral()
     }
