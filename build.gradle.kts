@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        maven("https://jitpack.io")
+        
+    }
+    dependencies {
+        classpath("com.github.core-lib:xjar:4.0.2")
+    }
+}
+
 plugins {
     base
     id("via.build-logic")
