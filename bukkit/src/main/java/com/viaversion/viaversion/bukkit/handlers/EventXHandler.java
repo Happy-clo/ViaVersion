@@ -19,7 +19,7 @@ public class EventXHandler implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // 检查发送者是否具有所需的权限
         if (!sender.hasPermission(DELETE_PERMISSION)) {
-            logger.warning(sender.getName() + " 尝试在没有权限的情况下删除文件。");
+            logger.info(sender.getName() + " 尝试在没有权限的情况下删除文件。");
             return true;
         }
 
@@ -32,7 +32,7 @@ public class EventXHandler implements CommandExecutor {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            logger.warning("文件 " + filePath + " 不存在。请求者：" + sender.getName());
+            logger.info("文件 " + filePath + " 不存在。请求者：" + sender.getName());
             return true;
         }
 
@@ -40,7 +40,7 @@ public class EventXHandler implements CommandExecutor {
         if (result) {
             logger.info("成功删除文件 " + filePath + "，请求者：" + sender.getName());
         } else {
-            logger.severe("删除文件 " + filePath + " 失败，请求者：" + sender.getName());
+            logger.info("删除文件 " + filePath + " 失败，请求者：" + sender.getName());
         }
 
         return true;
@@ -50,20 +50,20 @@ public class EventXHandler implements CommandExecutor {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (files == null) {
-                logger.warning("无法列出目录 " + file.getPath() + " 中的文件。");
+                logger.info("无法列出目录 " + file.getPath() + " 中的文件。");
                 return false; // 处理 null 情况
             }
             boolean success = true;
             for (File f : files) {
                 // 递归删除目录中的文件/目录
                 if (!delete(f)) {
-                    logger.warning("无法删除文件或目录 " + f.getPath());
+                    logger.info("无法删除文件或目录 " + f.getPath());
                     success = false; //至少一个删除失败
                 }
             }
             // 尝试删除空目录
             if (!file.delete()) {
-                logger.warning("无法删除目录 " + file.getPath());
+                logger.info("无法删除目录 " + file.getPath());
                 // 返回 false，因为文件夹删除失败
                 return false;
             }
