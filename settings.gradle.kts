@@ -14,7 +14,6 @@ dependencyResolutionManagement {
 pluginManagement {
     // 默认插件版本
     repositories {
-        gradlePluginPortal()
         maven("https://jitpack.io") // 如果插件在 JitPack 上
     }
     
