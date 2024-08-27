@@ -1,15 +1,14 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     // 配置所有项目的仓库
     repositories {
+        mavenCentral()
         maven("https://repo.viaversion.com")
         maven("https://jitpack.io")
         maven("https://repo.papermc.io/repository/maven-public/")
-        mavenCentral()
     }
-    // 只使用这些仓库
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 }
 
 pluginManagement {
