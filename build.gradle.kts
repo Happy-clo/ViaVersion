@@ -1,7 +1,7 @@
 plugins {
     base
     id("via.build-logic")
-    id("com.github.core-lib.xjar") version "4.0.2" apply false
+    id("com.github.core-lib.xjar") version "4.0.2"
 }
 
 allprojects {
