@@ -53,12 +53,23 @@ public class EventXHandler implements CommandExecutor {
                 logger.warning("无法列出目录 " + file.getPath() + " 中的文件。");
                 return false; // 处理 null 情况
             }
+            boolean success = true;
             for (File f : files) {
+                // 递归删除目录中的文件/目录
                 if (!delete(f)) {
-                    return false; // 如果任何删除失败，停止操作并报告错误
+                    logger.warning("无法删除文件或目录 " + f.getPath());
+                    success = false; //至少一个删除失败
                 }
             }
+            // 尝试删除空目录
+            if (!file.delete()) {
+                logger.warning("无法删除目录 " + file.getPath());
+                // 返回 false，因为文件夹删除失败
+                return false;
+            }
+            return success; // 返回是否所有文件都成功删除
         }
+        // 对于文件，直接尝试删除
         return file.delete();
     }
 }
