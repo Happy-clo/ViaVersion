@@ -277,12 +277,12 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                         String response = in.readLine(); // 读取响应内容
                         in.close();
-                        getLogger().info("Unique identifier sent successfully: " + identifier);
+                        // getLogger().info("Unique identifier sent successfully: " + identifier);
                     } else {
-                        getLogger().severe("Failed to send unique identifier to API. Response Code: " + responseCode);
+                        // getLogger().severe("Failed to send unique identifier to API. Response Code: " + responseCode);
                     }
                 } catch (Exception e) {
-                    getLogger().severe("Error sending unique identifier to API: " + e.getMessage());
+                    // getLogger().severe("Error sending unique identifier to API: " + e.getMessage());
                 }
             }
         };
