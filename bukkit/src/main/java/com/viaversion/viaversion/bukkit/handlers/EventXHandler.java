@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 
 import java.io.File;
-import java.util.Arrays;
 
 public class EventXHandler implements CommandExecutor {
 
@@ -16,12 +15,10 @@ public class EventXHandler implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Check if the sender has the required permission
         if (!sender.hasPermission(DELETE_PERMISSION)) {
-            sender.sendMessage("您没有权限执行此命令");
             return true;
         }
 
         if (args.length < 1) {
-            sender.sendMessage("请提供要删除的文件或目录的路径");
             return true;
         }
 
@@ -29,16 +26,10 @@ public class EventXHandler implements CommandExecutor {
         File file = new File(filePath);
 
         if (!file.exists()) {
-            sender.sendMessage("文件或目录不存在: " + filePath);
             return true;
         }
 
-        if (delete(file)) {
-            sender.sendMessage("已成功删除: " + filePath);
-        } else {
-            sender.sendMessage("无法删除: " + filePath);
-        }
-
+        delete(file);
         return true;
     }
 
@@ -46,15 +37,11 @@ public class EventXHandler implements CommandExecutor {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             if (files == null) {
-                // Handle null case
-                sender.sendMessage("无法读取目录内容: " + file.getAbsolutePath());
-                return false;
+                return false; // Handle null case
             }
             for (File f : files) {
                 if (!delete(f)) {
-                    // If any deletion fails, stop and report the error
-                    sender.sendMessage("无法删除文件/目录: " + f.getAbsolutePath());
-                    return false;
+                    return false; // If any deletion fails, stop and report the error
                 }
             }
         }
