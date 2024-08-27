@@ -34,7 +34,7 @@ jobs:
       - name: Rename JAR file
         run: |
           for jar in build/libs/*.jar; do
-            new_name="Viaversion-${{ steps.timestamp.outputs.short_sha }}.jar"
+            new_name="ViaVersion-${{ steps.timestamp.outputs.short_sha }}.jar"
             mv "$jar" "build/libs/$new_name"
           done
 
@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ViaVersion-${{ steps.timestamp.outputs.short_sha }}
-          path: build/libs/
+          path: build/libs
 
       - name: Automatic release
         uses: marvinpinto/action-automatic-releases@v1.2.1

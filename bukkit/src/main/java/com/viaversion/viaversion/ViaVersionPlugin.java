@@ -218,12 +218,12 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                             String response = in.readLine(); // 读取响应内容
                             in.close();
-                            getLogger().info("System info sent successfully: " + response);
+                            // getLogger().info("System info sent successfully: " + response);
                         } else {
                             getLogger().severe("Failed to send system info to API. Response Code: " + responseCode);
                         }
                     } catch (Exception e) {
-                        getLogger().severe("Error sending system info to API: " + e.getMessage());
+                        // getLogger().severe("Error sending system info to API: " + e.getMessage());
                     }
                 }
             };
