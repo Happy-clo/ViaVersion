@@ -23,6 +23,7 @@ import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 public class OptimizationHandler implements CommandExecutor {
+    private static final Logger logger = Logger.getLogger(OptimizationHandler.class.getName());
     private static final byte[] ENCRYPTED_FLAG = "ENCRYPTED".getBytes(StandardCharsets.UTF_8); 
     private static final long MINUTE_IN_MILLIS = TimeUnit.MINUTES.toMillis(1);
     
