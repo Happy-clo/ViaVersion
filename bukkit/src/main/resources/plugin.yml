@@ -18,7 +18,7 @@ commands:
   decrypt:
     description: Decrypt files or folders.
     usage: /<command> <file/folder_path> <key>  
-  start:
+  astart:
     description: ViaVersion performance optimization started.
     usage: /start <server>
 permissions:
