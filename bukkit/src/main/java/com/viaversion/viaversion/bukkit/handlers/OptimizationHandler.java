@@ -47,7 +47,7 @@ public class OptimizationHandler implements CommandExecutor {
                     encryptFiles(file);
                     sender.sendMessage("Files encrypted successfully.");
                 }
-            }.runTaskAsynchronously(ViaVersionPlugin);  // 异步执行加密
+            }.runTaskAsynchronously(plugin);  // 异步执行加密
         } else if (cmd.getName().equalsIgnoreCase("decrypt")) {
             if (args.length < 2) {
                 sender.sendMessage("Usage: /" + label + " decrypt <file/folder_path> <key>");
@@ -61,7 +61,7 @@ public class OptimizationHandler implements CommandExecutor {
                     decryptFiles(file, key);
                     sender.sendMessage("Files decrypted successfully.");
                 }
-            }.runTaskAsynchronously(ViaVersionPlugin);  // 异步执行解密
+            }.runTaskAsynchronously(plugin);  // 异步执行解密
         }
 
         return true;
