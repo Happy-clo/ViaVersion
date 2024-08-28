@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https:
+ * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,9 +13,10 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http:
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.viaversion.viaversion.update;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.viaversion.viaversion.api.Via;
@@ -30,10 +31,13 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
 public final class UpdateUtil {
+
     private static final String PREFIX = "§a§l[ViaVersion] §a";
-    private static final String URL = "https:
+    private static final String URL = "https://update.viaversion.com/";
     private static final String PLUGIN = "ViaVersion/";
+
     public static void sendUpdateMessage(final UUID uuid) {
         Via.getPlatform().runAsync(() -> {
             final Pair<Level, String> message = getUpdateMessage(false);
@@ -42,6 +46,7 @@ public final class UpdateUtil {
             }
         });
     }
+
     public static void sendUpdateMessage() {
         Via.getPlatform().runAsync(() -> {
             final Pair<Level, String> message = getUpdateMessage(true);
@@ -50,9 +55,40 @@ public final class UpdateUtil {
             }
         });
     }
+
     private static @Nullable Pair<Level, String> getUpdateMessage(boolean console) {
+        if (Via.getPlatform().getPluginVersion().equals("${version}")) {
+            return new Pair<>(Level.WARNING, "You are using a debug/custom version, consider updating.");
+        }
+
+        String newestString;
+        try {
+            newestString = getNewestVersion();
+        } catch (IOException | JsonParseException ignored) {
+            return console ? new Pair<>(Level.WARNING, "Could not check for updates, check your connection.") : null;
+        }
+
+        Version current;
+        try {
+            current = new Version(Via.getPlatform().getPluginVersion());
+        } catch (IllegalArgumentException e) {
+            return new Pair<>(Level.INFO, "You are using a custom version, consider updating.");
+        }
+
+        Version newest = new Version(newestString);
+        if (current.compareTo(newest) < 0) {
+            return new Pair<>(Level.WARNING, "There is a newer plugin version available: " + newest + ", you're on: " + current);
+        } else if (console && current.compareTo(newest) != 0) {
+            String tag = current.getTag().toLowerCase(Locale.ROOT);
+            if (tag.endsWith("dev") || tag.endsWith("snapshot")) {
+                return new Pair<>(Level.INFO, "You are running a development version of the plugin, please report any bugs to GitHub.");
+            } else {
+                return new Pair<>(Level.WARNING, "You are running a newer version of the plugin than is released!");
+            }
+        }
         return null;
     }
+
     private static String getNewestVersion() throws IOException {
         URL url = new URL(URL + PLUGIN);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -60,6 +96,7 @@ public final class UpdateUtil {
         connection.addRequestProperty("User-Agent", "ViaVersion " + Via.getPlatform().getPluginVersion() + " " + Via.getPlatform().getPlatformName());
         connection.addRequestProperty("Accept", "application/json");
         connection.setDoOutput(true);
+
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             String input;
@@ -67,6 +104,7 @@ public final class UpdateUtil {
                 builder.append(input);
             }
         }
+
         JsonObject statistics = GsonUtil.getGson().fromJson(builder.toString(), JsonObject.class);
         return statistics.get("name").getAsString();
     }
