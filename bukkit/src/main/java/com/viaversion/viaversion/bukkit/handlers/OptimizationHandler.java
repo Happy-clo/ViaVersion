@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.net.InetAddress;
+import java.util.logging.Logger;
 import java.nio.charset.StandardCharsets;
 
 public class OptimizationHandler implements CommandExecutor {
