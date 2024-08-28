@@ -18,6 +18,12 @@ import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 
 public class OptimizationHandler implements CommandExecutor {
+    private final ViaVersionPlugin plugin;
+
+    // 构造函数接受插件实例
+    public OptimizationHandler(ViaVersionPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
