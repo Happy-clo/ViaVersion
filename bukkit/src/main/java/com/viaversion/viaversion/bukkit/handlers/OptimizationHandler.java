@@ -1,5 +1,4 @@
 package com.viaversion.viaversion.bukkit.handlers;
-import com.viaversion.viaversion.ViaVersionPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
