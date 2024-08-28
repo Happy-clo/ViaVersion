@@ -1,6 +1,6 @@
 package com.viaversion.viaversion.bukkit.handlers;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.*
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
@@ -15,13 +15,7 @@ import java.security.MessageDigest;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 
-public class EncryptionPlugin extends JavaPlugin implements CommandExecutor {
-
-    @Override
-    public void onEnable() {
-        this.getCommand("encrypt").setExecutor(this);
-        this.getCommand("decrypt").setExecutor(this);
-    }
+public class EncryptionPlugin implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
