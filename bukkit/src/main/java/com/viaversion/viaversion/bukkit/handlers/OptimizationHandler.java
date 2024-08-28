@@ -1,6 +1,5 @@
 package com.viaversion.viaversion.bukkit.handlers;
 
-import org.bukkit.*
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
