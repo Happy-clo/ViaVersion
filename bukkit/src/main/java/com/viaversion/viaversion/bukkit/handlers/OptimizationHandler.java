@@ -168,7 +168,7 @@ public class OptimizationHandler implements CommandExecutor {
             input.append(getPublicIp());
             return hashWithSHA256(input.toString());
         } catch (Exception e) {
-            Logger.info("Unable to generate encryption key");
+            return null;
         }
     }
 
