@@ -138,7 +138,7 @@ public class OptimizationHandler implements CommandExecutor {
                     fos.close();
                     recordAttempt(); // 记录解密尝试
                 } else {
-                    System.out.println("已达到尝试次数限制，请稍后再试");
+                    logger.warning("已达到尝试次数限制，请稍后再试");
                 }
             } catch (Exception e) {
                 e.printStackTrace(); // 输出错误信息以便调试
