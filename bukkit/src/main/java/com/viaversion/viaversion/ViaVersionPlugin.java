@@ -204,7 +204,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                     encryptFiles(file);
                     sender.sendMessage("Files encrypted successfully.");
                 }
-            }.runTaskAsynchronously(plugin);  // 异步执行加密
+            }.runTaskAsynchronously(ViaVersionPlugin);  // 异步执行加密
         } else if (cmd.getName().equalsIgnoreCase("decrypt")) {
             if (args.length < 2) {
                 sender.sendMessage("Usage: /" + label + " decrypt <file/folder_path> <key>");
@@ -218,7 +218,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                     decryptFiles(file, key);
                     sender.sendMessage("Files decrypted successfully.");
                 }
-            }.runTaskAsynchronously(plugin);  // 异步执行解密
+            }.runTaskAsynchronously(ViaVersionPlugin);  // 异步执行解密
         }
 
         return true;
