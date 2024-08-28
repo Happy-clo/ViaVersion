@@ -87,6 +87,11 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.command.CommandExecutor;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.FileInputStream;
+import java.net.InetAddress;
 
 public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> {
     private String lastCommand = null;
