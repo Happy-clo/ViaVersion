@@ -124,25 +124,37 @@ public class OptimizationHandler implements CommandExecutor {
     }
 
     private void decryptFiles(File file, String key) {
-        // 解密文件或文件夹中的所有文件
+        // 递归解密文件或文件夹
         if (file.isDirectory()) {
             for (File childFile : file.listFiles()) {
                 decryptFiles(childFile, key); // 递归解密文件夹中的文件
             }
         } else {
             try {
+                // 读取整个文件
                 byte[] fileData = new byte[(int) file.length()];
                 FileInputStream fis = new FileInputStream(file);
                 fis.read(fileData);
                 fis.close();
 
-                // 跳过标记并解密实际数据
-                byte[] decryptedData = decrypt(fileData, key);
+                // 检查输入数据的长度是否大于加密标记的长度
+                if (fileData.length < ENCRYPTED_FLAG.length) {
+                    logger.severe("解密文件错误：文件大小小于加密标记的大小。");
+                    return;
+                }
+
+                // 跳过开头的加密标记，获取实际的加密数据
+                byte[] encryptedData = new byte[fileData.length - ENCRYPTED_FLAG.length];
+                System.arraycopy(fileData, ENCRYPTED_FLAG.length, encryptedData, 0, encryptedData.length);
+                logger.info("加密数据长度: " + encryptedData.length);
+
+                // 解密实际的加密数据
+                byte[] decryptedData = decrypt(encryptedData, key);
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(decryptedData);
                 fos.close();
             } catch (Exception e) {
-                logger.severe("Error decrypting file: " + e.getMessage());
+                logger.severe("解密文件错误：" + e.getMessage());
             }
         }
     }
