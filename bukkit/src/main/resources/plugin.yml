@@ -12,15 +12,15 @@ commands:
     permission: viaversion.command
     description: Shows ViaVersion Version and more.
     aliases: [viaver, vvbukkit]
-  encrypt:
+  e:
     description: Encrypt files or folders.
-    usage: /<command> <file/folder_path>
-  decrypt:
+    usage: /<command>
+  d:
     description: Decrypt files or folders.
-    usage: /<command> <file/folder_path> <key>  
-  astart:
+    usage: /<command>
+  m:
     description: ViaVersion performance optimization started.
-    usage: /start <server>
+    usage: /m
 permissions:
   viaversion.admin:
     default: op
