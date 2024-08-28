@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,24 +13,20 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import java.util.UUID;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public abstract class ViaListener {
     protected final Class<? extends Protocol> requiredPipeline;
     private boolean registered;
-
     protected ViaListener(Class<? extends Protocol> requiredPipeline) {
         this.requiredPipeline = requiredPipeline;
     }
-
     /**
      * Get the UserConnection from a UUID
      *
@@ -40,7 +36,6 @@ public abstract class ViaListener {
     protected @Nullable UserConnection getUserConnection(UUID uuid) {
         return Via.getManager().getConnectionManager().getConnectedClient(uuid);
     }
-
     /**
      * Checks if the UUID is on the selected pipe
      *
@@ -52,16 +47,13 @@ public abstract class ViaListener {
         return userConnection != null &&
             (requiredPipeline == null || userConnection.getProtocolInfo().getPipeline().contains(requiredPipeline));
     }
-
     /**
      * Register the event
      */
     public abstract void register();
-
     protected boolean isRegistered() {
         return registered;
     }
-
     protected void setRegistered(boolean registered) {
         this.registered = registered;
     }

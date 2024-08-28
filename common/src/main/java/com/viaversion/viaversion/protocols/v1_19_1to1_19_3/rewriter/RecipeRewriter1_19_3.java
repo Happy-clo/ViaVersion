@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19_1to1_19_3.rewriter;
-
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
@@ -24,12 +23,9 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.rewriter.RecipeRewriter;
-
 public class RecipeRewriter1_19_3<C extends ClientboundPacketType> extends RecipeRewriter<C> {
-
     public RecipeRewriter1_19_3(final Protocol<C, ?, ?, ?> protocol) {
         super(protocol);
-        // Existed before, but now have serialization data
         recipeHandlers.put("crafting_special_armordye", this::handleSimpleRecipe);
         recipeHandlers.put("crafting_special_bookcloning", this::handleSimpleRecipe);
         recipeHandlers.put("crafting_special_mapcloning", this::handleSimpleRecipe);
@@ -44,36 +40,33 @@ public class RecipeRewriter1_19_3<C extends ClientboundPacketType> extends Recip
         recipeHandlers.put("crafting_special_suspiciousstew", this::handleSimpleRecipe);
         recipeHandlers.put("crafting_special_repairitem", this::handleSimpleRecipe);
     }
-
     @Override
     public void handleCraftingShapeless(final PacketWrapper wrapper) {
-        wrapper.passthrough(Types.STRING); // Group
-        wrapper.passthrough(Types.VAR_INT); // Crafting book category
+        wrapper.passthrough(Types.STRING); 
+        wrapper.passthrough(Types.VAR_INT); 
         handleIngredients(wrapper);
         final Item result = rewrite(wrapper.user(), wrapper.read(itemType()));
         wrapper.write(mappedItemType(), result);
     }
-
     @Override
     public void handleCraftingShaped(final PacketWrapper wrapper) {
         final int ingredients = wrapper.passthrough(Types.VAR_INT) * wrapper.passthrough(Types.VAR_INT);
-        wrapper.passthrough(Types.STRING); // Group
-        wrapper.passthrough(Types.VAR_INT); // Crafting book category
+        wrapper.passthrough(Types.STRING); 
+        wrapper.passthrough(Types.VAR_INT); 
         for (int i = 0; i < ingredients; i++) {
             handleIngredient(wrapper);
         }
         final Item result = rewrite(wrapper.user(), wrapper.read(itemType()));
         wrapper.write(mappedItemType(), result);
     }
-
     @Override
     public void handleSmelting(final PacketWrapper wrapper) {
-        wrapper.passthrough(Types.STRING); // Group
-        wrapper.passthrough(Types.VAR_INT); // Crafting book category
+        wrapper.passthrough(Types.STRING); 
+        wrapper.passthrough(Types.VAR_INT); 
         handleIngredient(wrapper);
         final Item result = rewrite(wrapper.user(), wrapper.read(itemType()));
         wrapper.write(mappedItemType(), result);
-        wrapper.passthrough(Types.FLOAT); // EXP
-        wrapper.passthrough(Types.VAR_INT); // Cooking time
+        wrapper.passthrough(Types.FLOAT); 
+        wrapper.passthrough(Types.VAR_INT); 
     }
 }

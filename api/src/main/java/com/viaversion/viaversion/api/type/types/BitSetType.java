@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,31 +21,25 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
 import java.util.Arrays;
 import java.util.BitSet;
-
 public class BitSetType extends Type<BitSet> {
-
     private final int length;
     private final int bytesLength;
-
     public BitSetType(final int length) {
         super(BitSet.class);
         this.length = length;
-        this.bytesLength = -Math.floorDiv(-length, 8); // Ceiled quotient
+        this.bytesLength = -Math.floorDiv(-length, 8); 
     }
-
     @Override
     public BitSet read(ByteBuf buffer) {
         final byte[] bytes = new byte[bytesLength];
         buffer.readBytes(bytes);
         return BitSet.valueOf(bytes);
     }
-
     @Override
     public void write(ByteBuf buffer, BitSet object) {
         Preconditions.checkArgument(object.length() <= length, "BitSet of length " + object.length() + " larger than max length " + length);

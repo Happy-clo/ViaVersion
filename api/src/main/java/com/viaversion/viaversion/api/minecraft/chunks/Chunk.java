@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,48 +21,38 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.chunks;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.minecraft.blockentity.BlockEntity;
 import java.util.BitSet;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
-// TODO specialized sub interfaces
 public interface Chunk {
-
     /**
      * Returns the chunk x coordinate.
      *
      * @return chunk x coordinate
      */
     int getX();
-
     /**
      * Returns the chunk z coordinate.
      *
      * @return chunk z coordinate
      */
     int getZ();
-
     /**
      * Returns whether this chunk holds biome data, always true for 1.17+ chunks.
      *
      * @return true if this chunk holds biome data
      */
     boolean isBiomeData();
-
     /**
      * Returns whether this is a full chunk, always true for 1.17+ chunks.
      *
      * @return true if this is a full chunk
      */
     boolean isFullChunk();
-
     boolean isIgnoreOldLightData();
-
     void setIgnoreOldLightData(boolean ignoreOldLightData);
-
     /**
      * Returns the chunk section bit mask for chunks &lt; 1.17.
      *
@@ -70,9 +60,7 @@ public interface Chunk {
      * @see #getChunkMask()
      */
     int getBitmask();
-
     void setBitmask(int bitmask);
-
     /**
      * Returns the chunk section bit mask, only non-null for 1.17+ chunks.
      *
@@ -80,43 +68,34 @@ public interface Chunk {
      * @see #getBitmask()
      */
     @Nullable BitSet getChunkMask();
-
     void setChunkMask(BitSet chunkSectionMask);
-
     /**
      * Returns an array of nullable chunk section entries.
      *
      * @return array of nullable chunk sections
      */
     @Nullable ChunkSection[] getSections();
-
     void setSections(ChunkSection[] sections);
-
     /**
      * Returns the chunk's raw biome data. The format the biomes are stored may vary.
      *
      * @return raw biome data
      */
     int @Nullable [] getBiomeData();
-
     void setBiomeData(int @Nullable [] biomeData);
-
     /**
      * Returns a compoundtag containing the chunk's heightmaps if present.
      *
      * @return compoundtag containing heightmaps if present
      */
     @Nullable CompoundTag getHeightMap();
-
     void setHeightMap(@Nullable CompoundTag heightMap);
-
     /**
      * Returns a list of block entities.
      *
      * @return list of block entities
      */
     List<CompoundTag> getBlockEntities();
-
     /**
      * Returns a list of block entities.
      *

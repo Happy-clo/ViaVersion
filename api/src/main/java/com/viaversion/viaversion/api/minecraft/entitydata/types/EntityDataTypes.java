@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.entitydata.types;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityDataType;
-
 public interface EntityDataTypes {
-
     /**
      * Returns the data type by the given id.
      *
@@ -34,7 +31,6 @@ public interface EntityDataTypes {
      * @throws IndexOutOfBoundsException if id is out of bounds
      */
     EntityDataType byId(int id);
-
     /**
      * Returns an array of data types.
      *

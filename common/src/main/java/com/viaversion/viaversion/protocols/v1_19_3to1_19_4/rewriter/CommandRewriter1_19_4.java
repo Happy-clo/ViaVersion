@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,19 +13,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19_3to1_19_4.rewriter;
-
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.rewriter.CommandRewriter;
-
 public class CommandRewriter1_19_4<C extends ClientboundPacketType> extends CommandRewriter<C> {
-
     public CommandRewriter1_19_4(Protocol<C, ?, ?, ?> protocol) {
         super(protocol);
-        this.parserHandlers.put("minecraft:time", wrapper -> wrapper.passthrough(Types.INT)); // Minimum
+        this.parserHandlers.put("minecraft:time", wrapper -> wrapper.passthrough(Types.INT)); 
     }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,12 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.packet.provider;
-
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import java.util.Map;
-
 public record SimplePacketTypesProvider<CU extends ClientboundPacketType, CM extends ClientboundPacketType, SM extends ServerboundPacketType, SU extends ServerboundPacketType>(
     Map<State, PacketTypeMap<CU>> unmappedClientboundPacketTypes,
     Map<State, PacketTypeMap<CM>> mappedClientboundPacketTypes,

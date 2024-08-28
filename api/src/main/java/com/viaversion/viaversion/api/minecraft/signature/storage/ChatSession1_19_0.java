@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.signature.storage;
-
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.model.DecoratableMessage;
 import com.viaversion.viaversion.api.minecraft.signature.model.MessageMetadata;
@@ -32,13 +31,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.SignatureException;
 import java.util.UUID;
-
 public class ChatSession1_19_0 extends ChatSession {
-
     public ChatSession1_19_0(UUID uuid, PrivateKey privateKey, ProfileKey profileKey) {
         super(uuid, privateKey, profileKey);
     }
-
     public byte[] signChatMessage(final MessageMetadata metadata, final DecoratableMessage content) throws SignatureException {
         return this.sign(signer -> {
             final byte[] data = new byte[32];
@@ -50,5 +46,4 @@ public class ChatSession1_19_0 extends ChatSession {
             signer.accept(GsonUtil.sort(content.decorated()).toString().getBytes(StandardCharsets.UTF_8));
         });
     }
-
 }

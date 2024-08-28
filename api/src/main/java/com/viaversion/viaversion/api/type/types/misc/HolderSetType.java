@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,19 +21,15 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.misc;
-
 import com.viaversion.viaversion.api.minecraft.HolderSet;
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class HolderSetType extends Type<HolderSet> {
-
     public HolderSetType() {
         super(HolderSet.class);
     }
-
     @Override
     public HolderSet read(final ByteBuf buffer) {
         final int size = Types.VAR_INT.readPrimitive(buffer) - 1;
@@ -41,14 +37,12 @@ public class HolderSetType extends Type<HolderSet> {
             final String tag = Types.STRING.read(buffer);
             return HolderSet.of(tag);
         }
-
         final int[] values = new int[size];
         for (int i = 0; i < size; i++) {
             values[i] = Types.VAR_INT.readPrimitive(buffer);
         }
         return HolderSet.of(values);
     }
-
     @Override
     public void write(final ByteBuf buffer, final HolderSet object) {
         if (object.hasTagKey()) {
@@ -62,9 +56,7 @@ public class HolderSetType extends Type<HolderSet> {
             }
         }
     }
-
     public static final class OptionalHolderSetType extends OptionalType<HolderSet> {
-
         public OptionalHolderSetType() {
             super(Types.HOLDER_SET);
         }

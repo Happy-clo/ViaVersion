@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,18 +21,14 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.scheduler;
-
 import java.util.concurrent.TimeUnit;
-
 public interface Scheduler {
-
     /**
      * Executes the given runnable asynchronously.
      *
      * @param runnable runnable to execute
      */
     Task execute(Runnable runnable);
-
     /**
      * Schedules the given runnable to be executed asynchronously after the given delay.
      *
@@ -41,7 +37,6 @@ public interface Scheduler {
      * @param timeUnit time unit of the delay
      */
     Task schedule(Runnable runnable, long delay, TimeUnit timeUnit);
-
     /**
      * Schedules the given runnable to be executed asynchronously after a delay and then repeatedly with a period.
      *
@@ -51,7 +46,6 @@ public interface Scheduler {
      * @param timeUnit time unit of the delay and period
      */
     Task scheduleRepeating(Runnable runnable, long delay, long period, TimeUnit timeUnit);
-
     /**
      * Shuts down the scheduler and awaits task termination.
      */

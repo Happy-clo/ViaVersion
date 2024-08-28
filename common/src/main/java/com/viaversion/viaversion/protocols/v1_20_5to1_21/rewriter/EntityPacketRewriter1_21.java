@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_5to1_21.rewriter;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.minecraft.Holder;
 import com.viaversion.viaversion.api.minecraft.PaintingVariant;
@@ -39,24 +38,19 @@ import com.viaversion.viaversion.protocols.v1_20_5to1_21.storage.EfficiencyAttri
 import com.viaversion.viaversion.rewriter.EntityRewriter;
 import com.viaversion.viaversion.util.ArrayUtil;
 import com.viaversion.viaversion.util.Key;
-
 public final class EntityPacketRewriter1_21 extends EntityRewriter<ClientboundPacket1_20_5, Protocol1_20_5To1_21> {
-
     public EntityPacketRewriter1_21(final Protocol1_20_5To1_21 protocol) {
         super(protocol);
     }
-
     @Override
     public void registerPackets() {
         registerTrackerWithData1_19(ClientboundPackets1_20_5.ADD_ENTITY, EntityTypes1_20_5.FALLING_BLOCK);
         registerSetEntityData(ClientboundPackets1_20_5.SET_ENTITY_DATA, Types1_20_5.ENTITY_DATA_LIST, Types1_21.ENTITY_DATA_LIST);
         registerRemoveEntities(ClientboundPackets1_20_5.REMOVE_ENTITIES);
-
         protocol.registerClientbound(ClientboundConfigurationPackets1_20_5.REGISTRY_DATA, wrapper -> {
             final String type = Key.stripMinecraftNamespace(wrapper.passthrough(Types.STRING));
             final RegistryEntry[] entries = wrapper.passthrough(Types.REGISTRY_ENTRY_ARRAY);
             if (type.equals("damage_type")) {
-                // Add required damage type
                 final CompoundTag campfireDamageType = new CompoundTag();
                 campfireDamageType.putString("scaling", "when_caused_by_living_non_player");
                 campfireDamageType.putString("message_id", "inFire");
@@ -66,9 +60,7 @@ public final class EntityPacketRewriter1_21 extends EntityRewriter<ClientboundPa
                 handleRegistryData1_20_5(wrapper.user(), type, entries);
             }
         });
-
         protocol.registerClientbound(ClientboundConfigurationPackets1_20_5.FINISH_CONFIGURATION, wrapper -> {
-            // Add new registries
             final PacketWrapper paintingRegistryPacket = wrapper.create(ClientboundConfigurationPackets1_20_5.REGISTRY_DATA);
             paintingRegistryPacket.write(Types.STRING, "minecraft:painting_variant");
             final RegistryEntry[] paintingsRegistry = new RegistryEntry[Paintings1_20_5.PAINTINGS.length];
@@ -82,7 +74,6 @@ public final class EntityPacketRewriter1_21 extends EntityRewriter<ClientboundPa
             }
             paintingRegistryPacket.write(Types.REGISTRY_ENTRY_ARRAY, paintingsRegistry);
             paintingRegistryPacket.send(Protocol1_20_5To1_21.class);
-
             final PacketWrapper enchantmentRegistryPacket = wrapper.create(ClientboundConfigurationPackets1_20_5.REGISTRY_DATA);
             enchantmentRegistryPacket.write(Types.STRING, "minecraft:enchantment");
             final RegistryEntry[] enchantmentRegistry = new RegistryEntry[Enchantments1_20_5.ENCHANTMENTS.size()];
@@ -93,43 +84,37 @@ public final class EntityPacketRewriter1_21 extends EntityRewriter<ClientboundPa
             }
             enchantmentRegistryPacket.write(Types.REGISTRY_ENTRY_ARRAY, enchantmentRegistry);
             enchantmentRegistryPacket.send(Protocol1_20_5To1_21.class);
-
             final PacketWrapper jukeboxSongsPacket = wrapper.create(ClientboundConfigurationPackets1_20_5.REGISTRY_DATA);
             jukeboxSongsPacket.write(Types.STRING, "minecraft:jukebox_song");
             jukeboxSongsPacket.write(Types.REGISTRY_ENTRY_ARRAY, protocol.getMappingData().jukeboxSongs());
             jukeboxSongsPacket.send(Protocol1_20_5To1_21.class);
         });
-
         protocol.registerClientbound(ClientboundPackets1_20_5.LOGIN, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.INT); // Entity id
-                map(Types.BOOLEAN); // Hardcore
-                map(Types.STRING_ARRAY); // World List
-                map(Types.VAR_INT); // Max players
-                map(Types.VAR_INT); // View distance
-                map(Types.VAR_INT); // Simulation distance
-                map(Types.BOOLEAN); // Reduced debug info
-                map(Types.BOOLEAN); // Show death screen
-                map(Types.BOOLEAN); // Limited crafting
-                map(Types.VAR_INT); // Dimension id
-                map(Types.STRING); // World
+                map(Types.INT); 
+                map(Types.BOOLEAN); 
+                map(Types.STRING_ARRAY); 
+                map(Types.VAR_INT); 
+                map(Types.VAR_INT); 
+                map(Types.VAR_INT); 
+                map(Types.BOOLEAN); 
+                map(Types.BOOLEAN); 
+                map(Types.BOOLEAN); 
+                map(Types.VAR_INT); 
+                map(Types.STRING); 
                 handler(worldDataTrackerHandlerByKey1_20_5(3));
                 handler(playerTrackerHandler());
                 handler(wrapper -> wrapper.user().get(EfficiencyAttributeStorage.class).onLoginSent(wrapper.user()));
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_20_5.RESPAWN, wrapper -> {
             final int dimensionId = wrapper.passthrough(Types.VAR_INT);
             final String world = wrapper.passthrough(Types.STRING);
-            trackWorldDataByKey1_20_5(wrapper.user(), dimensionId, world); // Tracks world height and name for chunk data and entity (un)tracking
-
-            // Resend attribute modifiers from items
+            trackWorldDataByKey1_20_5(wrapper.user(), dimensionId, world); 
             wrapper.user().get(EfficiencyAttributeStorage.class).onRespawn(wrapper.user());
         });
     }
-
     @Override
     protected void registerRewrites() {
         filter().handler((event, data) -> {
@@ -155,7 +140,6 @@ public final class EntityPacketRewriter1_21 extends EntityRewriter<ClientboundPa
         );
         registerBlockStateHandler(EntityTypes1_20_5.ABSTRACT_MINECART, 11);
     }
-
     @Override
     public EntityType typeFromId(final int type) {
         return EntityTypes1_20_5.getTypeFromId(type);

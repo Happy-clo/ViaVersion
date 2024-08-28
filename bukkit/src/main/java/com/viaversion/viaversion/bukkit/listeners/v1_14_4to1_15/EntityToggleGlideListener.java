@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.listeners.v1_14_4to1_15;
-
 import com.viaversion.viaversion.ViaVersionPlugin;
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -31,11 +30,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.potion.PotionEffectType;
-
 public class EntityToggleGlideListener extends ViaBukkitListener {
-
     private boolean swimmingMethodExists;
-
     public EntityToggleGlideListener(ViaVersionPlugin plugin) {
         super(plugin, Protocol1_14_4To1_15.class);
         try {
@@ -44,27 +40,20 @@ public class EntityToggleGlideListener extends ViaBukkitListener {
         } catch (NoSuchMethodException ignored) {
         }
     }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void entityToggleGlide(EntityToggleGlideEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-
         if (!isOnPipe(player)) return;
-
-        // Cancelling can only be done by updating the player's entity data
         if (event.isGliding() && event.isCancelled()) {
             PacketWrapper packet = PacketWrapper.create(ClientboundPackets1_15.SET_ENTITY_DATA, null, getUserConnection(player));
             packet.write(Types.VAR_INT, player.getEntityId());
-
             byte bitmask = 0;
-            // Collect other entity data for the mitmask
             if (player.getFireTicks() > 0) {
                 bitmask |= 0x01;
             }
             if (player.isSneaking()) {
                 bitmask |= 0x02;
             }
-            // 0x04 is unused
             if (player.isSprinting()) {
                 bitmask |= 0x08;
             }
@@ -77,8 +66,6 @@ public class EntityToggleGlideListener extends ViaBukkitListener {
             if (player.isGlowing()) {
                 bitmask |= 0x40;
             }
-
-            // leave 0x80 as 0 to stop gliding
             packet.write(Types1_14.ENTITY_DATA_LIST, Arrays.asList(new EntityData(0, Types1_14.ENTITY_DATA_TYPES.byteType, bitmask)));
             packet.scheduleSend(Protocol1_14_4To1_15.class);
         }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_3to1_20_5;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.RegistryType;
@@ -59,43 +58,30 @@ import com.viaversion.viaversion.rewriter.TagRewriter;
 import com.viaversion.viaversion.util.ProtocolLogger;
 import java.util.BitSet;
 import java.util.UUID;
-
 import static com.viaversion.viaversion.util.ProtocolUtil.packetTypeMap;
-
 public final class Protocol1_20_3To1_20_5 extends AbstractProtocol<ClientboundPacket1_20_3, ClientboundPacket1_20_5, ServerboundPacket1_20_3, ServerboundPacket1_20_5> {
-
     public static final MappingData1_20_5 MAPPINGS = new MappingData1_20_5();
     public static final ProtocolLogger LOGGER = new ProtocolLogger(Protocol1_20_3To1_20_5.class);
-    // Mojang will remove this in the next release, so if we were to set this to false,
-    // people would miss the changes and not fix their plugins before forcefully running into the errors then
     public static boolean strictErrorHandling = System.getProperty("viaversion.strict-error-handling1_20_5", "true").equalsIgnoreCase("true");
     private final EntityPacketRewriter1_20_5 entityRewriter = new EntityPacketRewriter1_20_5(this);
     private final BlockItemPacketRewriter1_20_5 itemRewriter = new BlockItemPacketRewriter1_20_5(this);
     private final TagRewriter<ClientboundPacket1_20_3> tagRewriter = new TagRewriter<>(this);
     private final ComponentRewriter1_20_5<ClientboundPacket1_20_3> componentRewriter = new ComponentRewriter1_20_5<>(this, Types1_20_5.STRUCTURED_DATA);
-
     public Protocol1_20_3To1_20_5() {
         super(ClientboundPacket1_20_3.class, ClientboundPacket1_20_5.class, ServerboundPacket1_20_3.class, ServerboundPacket1_20_5.class);
     }
-
     @Override
     protected void registerPackets() {
         super.registerPackets();
-
         tagRewriter.registerGeneric(ClientboundPackets1_20_3.UPDATE_TAGS);
         tagRewriter.registerGeneric(ClientboundConfigurationPackets1_20_3.UPDATE_TAGS);
-
         final SoundRewriter<ClientboundPacket1_20_3> soundRewriter = new SoundRewriter<>(this);
         soundRewriter.registerSound1_19_3(ClientboundPackets1_20_3.SOUND);
         soundRewriter.registerSound1_19_3(ClientboundPackets1_20_3.SOUND_ENTITY);
-
         new StatisticsRewriter<>(this).register(ClientboundPackets1_20_3.AWARD_STATS);
-
         componentRewriter.registerComponentPacket(ClientboundPackets1_20_3.SYSTEM_CHAT);
         componentRewriter.registerComponentPacket(ClientboundPackets1_20_3.DISGUISED_CHAT);
         componentRewriter.registerPlayerCombatKill1_20(ClientboundPackets1_20_3.PLAYER_COMBAT_KILL);
-
-        // People add item hovers to all sorts of weird places...
         componentRewriter.registerOpenScreen(ClientboundPackets1_20_3.OPEN_SCREEN);
         componentRewriter.registerComponentPacket(ClientboundPackets1_20_3.SET_ACTION_BAR_TEXT);
         componentRewriter.registerComponentPacket(ClientboundPackets1_20_3.SET_TITLE_TEXT);
@@ -104,52 +90,40 @@ public final class Protocol1_20_3To1_20_5 extends AbstractProtocol<ClientboundPa
         componentRewriter.registerComponentPacket(ClientboundPackets1_20_3.DISCONNECT);
         componentRewriter.registerTabList(ClientboundPackets1_20_3.TAB_LIST);
         componentRewriter.registerPing();
-
         registerClientbound(State.LOGIN, ClientboundLoginPackets.HELLO, wrapper -> {
-            wrapper.passthrough(Types.STRING); // Server ID
-            wrapper.passthrough(Types.BYTE_ARRAY_PRIMITIVE); // Public key
-            wrapper.passthrough(Types.BYTE_ARRAY_PRIMITIVE); // Challenge
-            wrapper.write(Types.BOOLEAN, true); // Authenticate
+            wrapper.passthrough(Types.STRING); 
+            wrapper.passthrough(Types.BYTE_ARRAY_PRIMITIVE); 
+            wrapper.passthrough(Types.BYTE_ARRAY_PRIMITIVE); 
+            wrapper.write(Types.BOOLEAN, true); 
         });
-
         registerClientbound(ClientboundPackets1_20_3.SERVER_DATA, wrapper -> {
-            wrapper.passthrough(Types.TAG); // MOTD
-            wrapper.passthrough(Types.OPTIONAL_BYTE_ARRAY_PRIMITIVE); // Icon
-
-            // Moved to join game
+            wrapper.passthrough(Types.TAG); 
+            wrapper.passthrough(Types.OPTIONAL_BYTE_ARRAY_PRIMITIVE); 
             final boolean enforcesSecureChat = wrapper.read(Types.BOOLEAN);
             final AcknowledgedMessagesStorage storage = wrapper.user().get(AcknowledgedMessagesStorage.class);
             storage.setSecureChatEnforced(enforcesSecureChat);
             if (enforcesSecureChat) {
-                // Only send the chat session to the server if we know that it is required
                 storage.sendQueuedChatSession(wrapper);
             }
         });
-
         registerServerbound(ServerboundPackets1_20_5.CHAT, wrapper -> {
-            wrapper.passthrough(Types.STRING); // Message
-            wrapper.passthrough(Types.LONG); // Timestamp
-
+            wrapper.passthrough(Types.STRING); 
+            wrapper.passthrough(Types.LONG); 
             final AcknowledgedMessagesStorage storage = wrapper.user().get(AcknowledgedMessagesStorage.class);
             final long salt = wrapper.read(Types.LONG);
             final byte[] signature = wrapper.read(Types.OPTIONAL_SIGNATURE_BYTES);
             if (storage.isSecureChatEnforced()) {
-                // Fake it till you make it
                 wrapper.write(Types.LONG, salt);
                 wrapper.write(Types.OPTIONAL_SIGNATURE_BYTES, signature);
             } else {
-                // Go the safer route and strip the signature. No signature means no verification
                 wrapper.write(Types.LONG, 0L);
                 wrapper.write(Types.OPTIONAL_SIGNATURE_BYTES, null);
             }
-
             fixChatAck(wrapper, storage);
         });
         registerServerbound(ServerboundPackets1_20_5.CHAT_COMMAND_SIGNED, ServerboundPackets1_20_3.CHAT_COMMAND, wrapper -> {
-            wrapper.passthrough(Types.STRING); // Command
-            wrapper.passthrough(Types.LONG); // Timestamp
-
-            // See above, strip signatures if we can to prevent verification of possibly bad signatures
+            wrapper.passthrough(Types.STRING); 
+            wrapper.passthrough(Types.LONG); 
             final AcknowledgedMessagesStorage storage = wrapper.user().get(AcknowledgedMessagesStorage.class);
             final long salt = wrapper.read(Types.LONG);
             final int signatures = wrapper.read(Types.VAR_INT);
@@ -157,19 +131,17 @@ public final class Protocol1_20_3To1_20_5 extends AbstractProtocol<ClientboundPa
                 wrapper.write(Types.LONG, salt);
                 wrapper.write(Types.VAR_INT, signatures);
                 for (int i = 0; i < signatures; i++) {
-                    wrapper.passthrough(Types.STRING); // Argument name
-                    wrapper.passthrough(Types.SIGNATURE_BYTES); // Signature
+                    wrapper.passthrough(Types.STRING); 
+                    wrapper.passthrough(Types.SIGNATURE_BYTES); 
                 }
             } else {
-                // Remove signatures
                 wrapper.write(Types.LONG, 0L);
-                wrapper.write(Types.VAR_INT, 0); // No signatures
+                wrapper.write(Types.VAR_INT, 0); 
                 for (int i = 0; i < signatures; i++) {
-                    wrapper.read(Types.STRING); // Argument name
-                    wrapper.read(Types.SIGNATURE_BYTES); // Signature
+                    wrapper.read(Types.STRING); 
+                    wrapper.read(Types.SIGNATURE_BYTES); 
                 }
             }
-
             fixChatAck(wrapper, storage);
         });
         registerServerbound(ServerboundPackets1_20_5.CHAT_ACK, wrapper -> {
@@ -182,70 +154,52 @@ public final class Protocol1_20_3To1_20_5 extends AbstractProtocol<ClientboundPa
             }
         });
         registerServerbound(ServerboundPackets1_20_5.CHAT_COMMAND, wrapper -> {
-            wrapper.passthrough(Types.STRING); // Command
-
-            wrapper.write(Types.LONG, System.currentTimeMillis()); // Timestamp
-            wrapper.write(Types.LONG, 0L); // Salt
-            wrapper.write(Types.VAR_INT, 0); // No signatures
-
+            wrapper.passthrough(Types.STRING); 
+            wrapper.write(Types.LONG, System.currentTimeMillis()); 
+            wrapper.write(Types.LONG, 0L); 
+            wrapper.write(Types.VAR_INT, 0); 
             writeSpoofedChatAck(wrapper, wrapper.user().get(AcknowledgedMessagesStorage.class));
         });
         registerServerbound(ServerboundPackets1_20_5.CHAT_SESSION_UPDATE, wrapper -> {
-            // Delay this until we know whether the server enforces secure chat
-            // The server sends this info in SERVER_DATA, but the client already sends this after receiving the game login
             final AcknowledgedMessagesStorage storage = wrapper.user().get(AcknowledgedMessagesStorage.class);
             if (storage.secureChatEnforced() != null && storage.secureChatEnforced()) {
-                // We already know that secure chat is enforced, let it through
                 return;
             }
-
             final UUID sessionId = wrapper.read(Types.UUID);
             final ProfileKey profileKey = wrapper.read(Types.PROFILE_KEY);
             storage.queueChatSession(sessionId, profileKey);
-
             wrapper.cancel();
         });
-
         registerClientbound(ClientboundPackets1_20_3.START_CONFIGURATION, wrapper -> wrapper.user().put(new AcknowledgedMessagesStorage()));
-
         new CommandRewriter1_19_4<>(this).registerDeclareCommands1_19(ClientboundPackets1_20_3.COMMANDS);
-
         registerClientbound(State.LOGIN, ClientboundLoginPackets.GAME_PROFILE, wrapper -> {
-            wrapper.passthrough(Types.UUID); // UUID
-            wrapper.passthrough(Types.STRING); // Name
-
+            wrapper.passthrough(Types.UUID); 
+            wrapper.passthrough(Types.STRING); 
             final int properties = wrapper.passthrough(Types.VAR_INT);
             for (int i = 0; i < properties; i++) {
-                wrapper.passthrough(Types.STRING); // Name
-                wrapper.passthrough(Types.STRING); // Value
-                wrapper.passthrough(Types.OPTIONAL_STRING); // Signature
+                wrapper.passthrough(Types.STRING); 
+                wrapper.passthrough(Types.STRING); 
+                wrapper.passthrough(Types.OPTIONAL_STRING); 
             }
-
             wrapper.write(Types.BOOLEAN, strictErrorHandling);
         });
-
         cancelServerbound(State.LOGIN, ServerboundLoginPackets.COOKIE_RESPONSE.getId());
         cancelServerbound(ServerboundConfigurationPackets1_20_5.COOKIE_RESPONSE);
         cancelServerbound(ServerboundConfigurationPackets1_20_5.SELECT_KNOWN_PACKS);
         cancelServerbound(ServerboundPackets1_20_5.COOKIE_RESPONSE);
         cancelServerbound(ServerboundPackets1_20_5.DEBUG_SAMPLE_SUBSCRIPTION);
     }
-
     private void fixChatAck(final PacketWrapper wrapper, final AcknowledgedMessagesStorage storage) {
         final int offset = wrapper.read(Types.VAR_INT);
         final BitSet acknowledged = wrapper.read(Types.ACKNOWLEDGED_BIT_SET);
         final int fixedOffset = storage.updateFromMessage(offset, acknowledged);
         wrapper.write(Types.VAR_INT, fixedOffset);
-        // Never change this, as this message (and future ones) are signed with it
         wrapper.write(Types.ACKNOWLEDGED_BIT_SET, acknowledged);
     }
-
     private void writeSpoofedChatAck(final PacketWrapper wrapper, final AcknowledgedMessagesStorage storage) {
-        // As we don't have the new state from the client, replay what we last received
-        wrapper.write(Types.VAR_INT, 0); // Offset
-        wrapper.write(Types.ACKNOWLEDGED_BIT_SET, storage.createSpoofedAck()); // Acknowledged
+        wrapper.write(Types.VAR_INT, 0); 
+        wrapper.write(Types.ACKNOWLEDGED_BIT_SET, storage.createSpoofedAck()); 
     }
-
     @Override
     protected void onMappingDataLoaded() {
         EntityTypes1_20_5.initialize(this);
@@ -281,50 +235,40 @@ public final class Protocol1_20_3To1_20_5 extends AbstractProtocol<ClientboundPa
             .add(StructuredDataKey.CONTAINER1_20_5).add(StructuredDataKey.BLOCK_STATE).add(StructuredDataKey.BEES)
             .add(StructuredDataKey.LOCK).add(StructuredDataKey.CONTAINER_LOOT).add(StructuredDataKey.TOOL)
             .add(StructuredDataKey.ITEM_NAME).add(StructuredDataKey.OMINOUS_BOTTLE_AMPLIFIER);
-
         tagRewriter.renameTag(RegistryType.ITEM, "minecraft:axolotl_tempt_items", "minecraft:axolotl_food");
         tagRewriter.removeTag(RegistryType.ITEM, "minecraft:tools");
         tagRewriter.addEmptyTags(RegistryType.BLOCK, "minecraft:badlands_terracotta");
-
         super.onMappingDataLoaded();
     }
-
     @Override
     public void init(final UserConnection connection) {
         addEntityTracker(connection, new EntityTrackerBase(connection, EntityTypes1_20_5.PLAYER));
         connection.put(new AcknowledgedMessagesStorage());
         connection.put(new ArmorTrimStorage());
     }
-
     @Override
     public MappingData1_20_5 getMappingData() {
         return MAPPINGS;
     }
-
     @Override
     public ProtocolLogger getLogger() {
         return LOGGER;
     }
-
     @Override
     public EntityPacketRewriter1_20_5 getEntityRewriter() {
         return entityRewriter;
     }
-
     @Override
     public BlockItemPacketRewriter1_20_5 getItemRewriter() {
         return itemRewriter;
     }
-
     @Override
     public TagRewriter<ClientboundPacket1_20_3> getTagRewriter() {
         return tagRewriter;
     }
-
     public ComponentRewriter<ClientboundPacket1_20_3> getComponentRewriter() {
         return componentRewriter;
     }
-
     @Override
     protected PacketTypesProvider<ClientboundPacket1_20_3, ClientboundPacket1_20_5, ServerboundPacket1_20_3, ServerboundPacket1_20_5> createPacketTypesProvider() {
         return new SimplePacketTypesProvider<>(

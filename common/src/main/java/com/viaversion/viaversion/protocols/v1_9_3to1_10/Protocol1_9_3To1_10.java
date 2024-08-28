@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_9_3to1_10;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ClientWorld;
@@ -37,9 +36,7 @@ import com.viaversion.viaversion.protocols.v1_9_3to1_10.rewriter.ItemPacketRewri
 import com.viaversion.viaversion.protocols.v1_9_3to1_10.storage.ResourcePackTracker;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 public class Protocol1_9_3To1_10 extends AbstractProtocol<ClientboundPackets1_9_3, ClientboundPackets1_9_3, ServerboundPackets1_9_3, ServerboundPackets1_9_3> {
-
     public static final ValueTransformer<Short, Float> TO_NEW_PITCH = new ValueTransformer<>(Types.FLOAT) {
         @Override
         public Float transform(PacketWrapper wrapper, Short inputValue) {
@@ -58,129 +55,105 @@ public class Protocol1_9_3To1_10 extends AbstractProtocol<ClientboundPackets1_9_
         }
     };
     private final ItemPacketRewriter1_10 itemRewriter = new ItemPacketRewriter1_10(this);
-
     public Protocol1_9_3To1_10() {
         super(ClientboundPackets1_9_3.class, ClientboundPackets1_9_3.class, ServerboundPackets1_9_3.class, ServerboundPackets1_9_3.class);
     }
-
     @Override
     protected void registerPackets() {
         itemRewriter.register();
-
-        // Named sound effect
         registerClientbound(ClientboundPackets1_9_3.CUSTOM_SOUND, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // 0 - Sound name
-                map(Types.VAR_INT); // 1 - Sound Category
-                map(Types.INT); // 2 - x
-                map(Types.INT); // 3 - y
-                map(Types.INT); // 4 - z
-                map(Types.FLOAT); // 5 - Volume
-                map(Types.UNSIGNED_BYTE, TO_NEW_PITCH); // 6 - Pitch
+                map(Types.STRING); 
+                map(Types.VAR_INT); 
+                map(Types.INT); 
+                map(Types.INT); 
+                map(Types.INT); 
+                map(Types.FLOAT); 
+                map(Types.UNSIGNED_BYTE, TO_NEW_PITCH); 
             }
         });
-
-        // Sound effect
         registerClientbound(ClientboundPackets1_9_3.SOUND, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Sound name
-                map(Types.VAR_INT); // 1 - Sound Category
-                map(Types.INT); // 2 - x
-                map(Types.INT); // 3 - y
-                map(Types.INT); // 4 - z
-                map(Types.FLOAT); // 5 - Volume
-                map(Types.UNSIGNED_BYTE, TO_NEW_PITCH); // 6 - Pitch
-
+                map(Types.VAR_INT); 
+                map(Types.VAR_INT); 
+                map(Types.INT); 
+                map(Types.INT); 
+                map(Types.INT); 
+                map(Types.FLOAT); 
+                map(Types.UNSIGNED_BYTE, TO_NEW_PITCH); 
                 handler(wrapper -> {
                     int id = wrapper.get(Types.VAR_INT, 0);
                     wrapper.set(Types.VAR_INT, 0, getNewSoundId(id));
                 });
             }
         });
-
-        // Entity data packet
         registerClientbound(ClientboundPackets1_9_3.SET_ENTITY_DATA, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-                map(Types1_9.ENTITY_DATA_LIST, TRANSFORM_ENTITY_DATA); // 1 - Entity data list
+                map(Types.VAR_INT); 
+                map(Types1_9.ENTITY_DATA_LIST, TRANSFORM_ENTITY_DATA); 
             }
         });
-
-        // Spawn Mob
         registerClientbound(ClientboundPackets1_9_3.ADD_MOB, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity id
-                map(Types.UUID); // 1 - UUID
-                map(Types.UNSIGNED_BYTE); // 2 - Entity Type
-                map(Types.DOUBLE); // 3 - X
-                map(Types.DOUBLE); // 4 - Y
-                map(Types.DOUBLE); // 5 - Z
-                map(Types.BYTE); // 6 - Yaw
-                map(Types.BYTE); // 7 - Pitch
-                map(Types.BYTE); // 8 - Head Pitch
-                map(Types.SHORT); // 9 - Velocity X
-                map(Types.SHORT); // 10 - Velocity Y
-                map(Types.SHORT); // 11 - Velocity Z
-                map(Types1_9.ENTITY_DATA_LIST, TRANSFORM_ENTITY_DATA); // 12 - Entity data
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.SHORT); 
+                map(Types.SHORT); 
+                map(Types.SHORT); 
+                map(Types1_9.ENTITY_DATA_LIST, TRANSFORM_ENTITY_DATA); 
             }
         });
-
-        // Spawn Player
         registerClientbound(ClientboundPackets1_9_3.ADD_PLAYER, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-                map(Types.UUID); // 1 - Player UUID
-                map(Types.DOUBLE); // 2 - X
-                map(Types.DOUBLE); // 3 - Y
-                map(Types.DOUBLE); // 4 - Z
-                map(Types.BYTE); // 5 - Yaw
-                map(Types.BYTE); // 6 - Pitch
-                map(Types1_9.ENTITY_DATA_LIST, TRANSFORM_ENTITY_DATA); // 7 - Entity data list
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types1_9.ENTITY_DATA_LIST, TRANSFORM_ENTITY_DATA); 
             }
         });
-
-        // Join Game
         registerClientbound(ClientboundPackets1_9_3.LOGIN, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.INT); // 0 - Entity ID
-                map(Types.UNSIGNED_BYTE); // 1 - Gamemode
-                map(Types.INT); // 2 - Dimension
-
+                map(Types.INT); 
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.INT); 
                 handler(wrapper -> {
                     ClientWorld clientWorld = wrapper.user().get(ClientWorld.class);
-
                     int dimensionId = wrapper.get(Types.INT, 1);
                     clientWorld.setEnvironment(dimensionId);
                 });
             }
         });
-
-        // Respawn
         registerClientbound(ClientboundPackets1_9_3.RESPAWN, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.INT); // 0 - Dimension ID
-
+                map(Types.INT); 
                 handler(wrapper -> {
                     ClientWorld clientWorld = wrapper.user().get(ClientWorld.class);
-
                     int dimensionId = wrapper.get(Types.INT, 0);
                     clientWorld.setEnvironment(dimensionId);
                 });
             }
         });
-
-        // Chunk Data
         registerClientbound(ClientboundPackets1_9_3.LEVEL_CHUNK, wrapper -> {
             ClientWorld clientWorld = wrapper.user().get(ClientWorld.class);
             Chunk chunk = wrapper.passthrough(ChunkType1_9_3.forEnvironment(clientWorld.getEnvironment()));
-
             if (Via.getConfig().isReplacePistons()) {
                 int replacementId = Via.getConfig().getPistonReplacementId();
                 for (ChunkSection section : chunk.getSections()) {
@@ -189,22 +162,17 @@ public class Protocol1_9_3To1_10 extends AbstractProtocol<ClientboundPackets1_9_
                 }
             }
         });
-
-        // Packet Send ResourcePack
         registerClientbound(ClientboundPackets1_9_3.RESOURCE_PACK, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // 0 - URL
-                map(Types.STRING); // 1 - Hash
-
+                map(Types.STRING); 
+                map(Types.STRING); 
                 handler(wrapper -> {
                     ResourcePackTracker tracker = wrapper.user().get(ResourcePackTracker.class);
-                    tracker.setLastHash(wrapper.get(Types.STRING, 1)); // Store the hash for resourcepack status
+                    tracker.setLastHash(wrapper.get(Types.STRING, 1)); 
                 });
             }
         });
-
-        // Packet ResourcePack status
         registerServerbound(ServerboundPackets1_9_3.RESOURCE_PACK, new PacketHandlers() {
             @Override
             public void register() {
@@ -216,31 +184,27 @@ public class Protocol1_9_3To1_10 extends AbstractProtocol<ClientboundPackets1_9_
             }
         });
     }
-
     public int getNewSoundId(int id) {
         int newId = id;
-        if (id >= 24) //Blame the enchantment table sound
+        if (id >= 24) 
             newId += 1;
-        if (id >= 248) //Blame the husk
+        if (id >= 248) 
             newId += 4;
-        if (id >= 296) //Blame the polar bear
+        if (id >= 296) 
             newId += 6;
-        if (id >= 354) //Blame the stray
+        if (id >= 354) 
             newId += 4;
-        if (id >= 372) //Blame the wither skeleton
+        if (id >= 372) 
             newId += 4;
         return newId;
     }
-
     @Override
     public void init(UserConnection userConnection) {
         userConnection.put(new ResourcePackTracker());
-
         if (!userConnection.has(ClientWorld.class)) {
             userConnection.put(new ClientWorld());
         }
     }
-
     @Override
     public ItemPacketRewriter1_10 getItemRewriter() {
         return itemRewriter;

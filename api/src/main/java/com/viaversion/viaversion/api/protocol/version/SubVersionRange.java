@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.version;
-
 import com.google.common.base.Preconditions;
-
 public record SubVersionRange(String baseVersion, int rangeFrom, int rangeTo) {
-
     /**
      * Creates a new version range. Giving "1.7", 0, and 5 for example would represent the range from 1.7-1.7.5.
      *
@@ -38,7 +35,6 @@ public record SubVersionRange(String baseVersion, int rangeFrom, int rangeTo) {
         Preconditions.checkArgument(rangeFrom >= 0);
         Preconditions.checkArgument(rangeTo > rangeFrom);
     }
-
     /**
      * Returns the major version name.
      *
@@ -47,7 +43,6 @@ public record SubVersionRange(String baseVersion, int rangeFrom, int rangeTo) {
     public String baseVersion() {
         return baseVersion;
     }
-
     /**
      * Returns the lowest included minor version.
      *
@@ -56,7 +51,6 @@ public record SubVersionRange(String baseVersion, int rangeFrom, int rangeTo) {
     public int rangeFrom() {
         return rangeFrom;
     }
-
     /**
      * Returns the highest included minor version.
      *
@@ -65,5 +59,4 @@ public record SubVersionRange(String baseVersion, int rangeFrom, int rangeTo) {
     public int rangeTo() {
         return rangeTo;
     }
-
 }

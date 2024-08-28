@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.listeners.v1_8to1_9;
-
 import com.viaversion.viaversion.api.minecraft.item.DataItem;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import java.util.ArrayList;
@@ -28,29 +27,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-
 public class HandItemCache extends BukkitRunnable {
-
     private final Map<UUID, Item> handCache = new ConcurrentHashMap<>();
-
     @Override
     public void run() {
         List<UUID> players = new ArrayList<>(handCache.keySet());
-
         for (Player p : Bukkit.getOnlinePlayers()) {
             handCache.put(p.getUniqueId(), convert(p.getItemInHand()));
             players.remove(p.getUniqueId());
         }
-        // Remove offline players
         for (UUID uuid : players) {
             handCache.remove(uuid);
         }
     }
-
     public Item getHandItem(UUID player) {
         return handCache.get(player);
     }
-
     public static Item convert(ItemStack itemInHand) {
         if (itemInHand == null) return new DataItem(0, (byte) 0, (short) 0, null);
         return new DataItem(itemInHand.getTypeId(), (byte) itemInHand.getAmount(), itemInHand.getDurability(), null);

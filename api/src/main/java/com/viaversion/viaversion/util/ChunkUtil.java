@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import com.viaversion.viaversion.api.minecraft.chunks.BaseChunk;
 import com.viaversion.viaversion.api.minecraft.chunks.Chunk;
 import com.viaversion.viaversion.api.minecraft.chunks.ChunkSection;
@@ -29,19 +28,15 @@ import com.viaversion.viaversion.api.minecraft.chunks.ChunkSectionImpl;
 import com.viaversion.viaversion.api.minecraft.chunks.PaletteType;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 public class ChunkUtil {
-
     public static Chunk createEmptyChunk(final int chunkX, final int chunkZ) {
         return createEmptyChunk(chunkX, chunkZ, 16, 0xFFFF);
     }
-
     public static Chunk createEmptyChunk(final int chunkX, final int chunkZ, final int sectionCount) {
         int sectionBitmask = 0;
         for (int i = 0; i < sectionCount; i++) sectionBitmask = (sectionBitmask << 1) | 1;
         return createEmptyChunk(chunkX, chunkZ, sectionCount, sectionBitmask);
     }
-
     public static Chunk createEmptyChunk(final int chunkX, final int chunkZ, final int sectionCount, final int bitmask) {
         final ChunkSection[] airSections = new ChunkSection[sectionCount];
         for (int i = 0; i < airSections.length; i++) {
@@ -50,11 +45,9 @@ public class ChunkUtil {
         }
         return new BaseChunk(chunkX, chunkZ, true, false, bitmask, airSections, new int[256], new ArrayList<>());
     }
-
     public static void setDummySkylight(final Chunk chunk) {
         setDummySkylight(chunk, false);
     }
-
     public static void setDummySkylight(final Chunk chunk, final boolean fullbright) {
         for (final ChunkSection section : chunk.getSections()) {
             if (section == null) continue;
@@ -67,5 +60,4 @@ public class ChunkUtil {
             }
         }
     }
-
 }

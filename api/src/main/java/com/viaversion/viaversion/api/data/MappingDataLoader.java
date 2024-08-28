@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 import com.google.common.annotations.Beta;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -54,9 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class MappingDataLoader {
-
     public static final MappingDataLoader INSTANCE = new MappingDataLoader(MappingDataLoader.class, "assets/viaversion/data/");
     public static final TagReader<CompoundTag> MAPPINGS_READER = NBTIO.reader(CompoundTag.class).named();
     private static final Map<String, String[]> GLOBAL_IDENTIFIER_INDEXES = new HashMap<>();
@@ -64,23 +61,17 @@ public class MappingDataLoader {
     private static final byte SHIFTS_ID = 1;
     private static final byte CHANGES_ID = 2;
     private static final byte IDENTITY_ID = 3;
-
     private final Map<String, CompoundTag> mappingsCache = new HashMap<>();
     private final Class<?> dataLoaderClass;
     private final String dataPath;
     private boolean cacheValid = true;
-
     public MappingDataLoader(final Class<?> dataLoaderClass, final String dataPath) {
         this.dataLoaderClass = dataLoaderClass;
         this.dataPath = dataPath;
     }
-
     public static void loadGlobalIdentifiers() {
-        // Load in a file with all the identifiers we need, so that we don't need to duplicate them
-        // for every single new version with only a couple of changes in them.
         final CompoundTag globalIdentifiers = INSTANCE.loadNBT("identifier-table.nbt");
         for (final Map.Entry<String, Tag> entry : globalIdentifiers.entrySet()) {
-            //noinspection unchecked
             final ListTag<StringTag> value = (ListTag<StringTag>) entry.getValue();
             final String[] array = new String[value.size()];
             for (int i = 0, size = value.size(); i < size; i++) {
@@ -89,7 +80,6 @@ public class MappingDataLoader {
             GLOBAL_IDENTIFIER_INDEXES.put(entry.getKey(), array);
         }
     }
-
     /**
      * Returns the global id of the identifier in the registry.
      *
@@ -108,12 +98,10 @@ public class MappingDataLoader {
         }
         return array[globalId];
     }
-
     public void clearCache() {
         mappingsCache.clear();
         cacheValid = false;
     }
-
     /**
      * Loads the file from the plugin folder if present, else from the bundled resources.
      *
@@ -124,19 +112,15 @@ public class MappingDataLoader {
         if (!file.exists()) {
             return loadData(name);
         }
-
-        // Load the file from the platform's directory if present
         try (final FileReader reader = new FileReader(file)) {
             return GsonUtil.getGson().fromJson(reader, JsonObject.class);
         } catch (final JsonSyntaxException e) {
-            // Users might mess up the format, so let's catch the syntax error
             getLogger().warning(name + " is badly formatted!");
             throw new RuntimeException(e);
         } catch (final IOException | JsonIOException e) {
             throw new RuntimeException(e);
         }
     }
-
     /**
      * Loads the file from the bundled resources.
      *
@@ -147,49 +131,40 @@ public class MappingDataLoader {
         if (stream == null) {
             return null;
         }
-
         try (final InputStreamReader reader = new InputStreamReader(stream)) {
             return GsonUtil.getGson().fromJson(reader, JsonObject.class);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
-
     public @Nullable CompoundTag loadNBT(final String name, final boolean cache) {
         if (!cacheValid) {
             return loadNBTFromFile(name);
         }
-
         CompoundTag data = mappingsCache.get(name);
         if (data != null) {
             return data;
         }
-
         data = loadNBTFromFile(name);
-
         if (cache && data != null) {
             mappingsCache.put(name, data);
         }
         return data;
     }
-
     public @Nullable CompoundTag loadNBT(final String name) {
         return loadNBT(name, false);
     }
-
     public @Nullable CompoundTag loadNBTFromFile(final String name) {
         final InputStream resource = getResource(name);
         if (resource == null) {
             return null;
         }
-
         try (final InputStream stream = new BufferedInputStream(resource)) {
             return MAPPINGS_READER.read(stream);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
     }
-
     public @Nullable Mappings loadMappings(final CompoundTag mappingsTag, final String key) {
         return loadMappings(mappingsTag, key, size -> {
             final int[] array = new int[size];
@@ -197,7 +172,6 @@ public class MappingDataLoader {
             return array;
         }, (array, id, mappedId) -> array[id] = mappedId, IntArrayMappings::of);
     }
-
     @Beta
     public <M extends Mappings, V> @Nullable Mappings loadMappings(
         final CompoundTag mappingsTag,
@@ -210,7 +184,6 @@ public class MappingDataLoader {
         if (tag == null) {
             return null;
         }
-
         final ByteTag serializationStragetyTag = tag.getUnchecked("id");
         final IntTag mappedSizeTag = tag.getUnchecked("mappedSize");
         final byte strategy = serializationStragetyTag.asByte();
@@ -226,16 +199,12 @@ public class MappingDataLoader {
             final int[] shiftsTo = shiftsTag.getValue();
             final int size = sizeTag.asInt();
             mappings = holderSupplier.get(size);
-
-            // Handle values until first shift
             if (shiftsAt[0] != 0) {
                 final int to = shiftsAt[0];
                 for (int id = 0; id < to; id++) {
                     addConsumer.addTo(mappings, id, id);
                 }
             }
-
-            // Handle shifts
             for (int i = 0; i < shiftsAt.length; i++) {
                 final int from = shiftsAt[i];
                 final int to = i == shiftsAt.length - 1 ? size : shiftsAt[i + 1];
@@ -252,18 +221,14 @@ public class MappingDataLoader {
             final int[] changesAt = changesAtTag.getValue();
             final int[] values = valuesTag.getValue();
             mappings = holderSupplier.get(sizeTag.asInt());
-
             for (int i = 0; i < changesAt.length; i++) {
                 final int id = changesAt[i];
                 if (fillBetween) {
-                    // Fill from after the last change to before this change with unchanged ids
                     final int previousId = i != 0 ? changesAt[i - 1] + 1 : 0;
                     for (int identity = previousId; identity < id; identity++) {
                         addConsumer.addTo(mappings, identity, identity);
                     }
                 }
-
-                // Assign the changed value
                 addConsumer.addTo(mappings, id, values[i]);
             }
         } else if (strategy == IDENTITY_ID) {
@@ -274,20 +239,17 @@ public class MappingDataLoader {
         }
         return mappingsSupplier.create(mappings, mappedSizeTag.asInt());
     }
-
     public @Nullable List<String> identifiersFromGlobalIds(final CompoundTag mappingsTag, final String key) {
         final Mappings mappings = loadMappings(mappingsTag, key);
         if (mappings == null) {
             return null;
         }
-
         final List<String> identifiers = new ArrayList<>(mappings.size());
         for (int i = 0; i < mappings.size(); i++) {
             identifiers.add(identifierFromGlobalId(key, mappings.getNewId(i)));
         }
         return identifiers;
     }
-
     /**
      * Returns a map of the object entries hashed by their id value.
      *
@@ -302,7 +264,6 @@ public class MappingDataLoader {
         }
         return map;
     }
-
     /**
      * Returns a map of the array entries hashed by their id value.
      *
@@ -317,34 +278,25 @@ public class MappingDataLoader {
         }
         return map;
     }
-
     public Logger getLogger() {
         return Via.getPlatform().getLogger();
     }
-
     public File getDataFolder() {
         return Via.getPlatform().getDataFolder();
     }
-
     public @Nullable InputStream getResource(final String name) {
         return dataLoaderClass.getClassLoader().getResourceAsStream(dataPath + name);
     }
-
     @FunctionalInterface
     public interface AddConsumer<T> {
-
         void addTo(T holder, int id, int mappedId);
     }
-
     @FunctionalInterface
     public interface MappingHolderSupplier<T> {
-
         T get(int expectedSize);
     }
-
     @FunctionalInterface
     public interface MappingsSupplier<T extends Mappings, V> {
-
         T create(V mappings, int mappedSize);
     }
 }

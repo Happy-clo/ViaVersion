@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public record Fireworks(int flightDuration, FireworkExplosion[] explosions) {
-
     public static final Type<Fireworks> TYPE = new Type<>(Fireworks.class) {
         @Override
         public Fireworks read(final ByteBuf buffer) {
@@ -35,12 +32,10 @@ public record Fireworks(int flightDuration, FireworkExplosion[] explosions) {
             final FireworkExplosion[] explosions = FireworkExplosion.ARRAY_TYPE.read(buffer);
             return new Fireworks(flightDuration, explosions);
         }
-
         @Override
         public void write(final ByteBuf buffer, final Fireworks value) {
             Types.VAR_INT.writePrimitive(buffer, value.flightDuration);
             FireworkExplosion.ARRAY_TYPE.write(buffer, value.explosions);
         }
     };
-
 }

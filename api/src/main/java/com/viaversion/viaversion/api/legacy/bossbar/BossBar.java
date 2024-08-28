@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,20 +21,16 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.legacy.bossbar;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import java.util.Set;
 import java.util.UUID;
-
 public interface BossBar {
-
     /**
      * Get the current title
      *
      * @return the title
      */
     String getTitle();
-
     /**
      * Change the title
      *
@@ -42,14 +38,12 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar setTitle(String title);
-
     /**
      * Get the health
      *
      * @return float between 0F - 1F
      */
     float getHealth();
-
     /**
      * Change the health
      *
@@ -57,14 +51,12 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar setHealth(float health);
-
     /**
      * Get the bossbar color
      *
      * @return The colour
      */
     BossColor getColor();
-
     /**
      * Yay, colors!
      *
@@ -72,14 +64,12 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar setColor(BossColor color);
-
     /**
      * Get the bosbar style
      *
      * @return BossStyle
      */
     BossStyle getStyle();
-
     /**
      * Change the bosbar style
      *
@@ -87,7 +77,6 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar setStyle(BossStyle style);
-
     /**
      * Show the bossbar to a player (uuid). This only works for frontend connections. Use #addConnection(UserConnection) for other types.
      *
@@ -95,7 +84,6 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar addPlayer(UUID player);
-
     /**
      * Show the bossbar to a player connection.
      *
@@ -103,7 +91,6 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar addConnection(UserConnection conn);
-
     /**
      * Removes the bossbar from a player. This only works for frontend connections. For others types, use #removeConnection(UserConnection)
      *
@@ -111,7 +98,6 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar removePlayer(UUID uuid);
-
     /**
      * Removes the bossbar from a player connection.
      *
@@ -119,7 +105,6 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar removeConnection(UserConnection conn);
-
     /**
      * Add flags
      *
@@ -127,7 +112,6 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar addFlag(BossFlag flag);
-
     /**
      * Remove flags.
      *
@@ -135,48 +119,41 @@ public interface BossBar {
      * @return The BossBar object
      */
     BossBar removeFlag(BossFlag flag);
-
     /**
      * @param flag The flag to check against
      * @return True if it has the flag
      */
     boolean hasFlag(BossFlag flag);
-
     /**
      * Get players. Only returns UUIDs which are front-end. For all connections, use #getConnections()
      *
      * @return UUIDS from players (sorry I lied)
      */
     Set<UUID> getPlayers();
-
     /**
      * Get UserConnections.
      *
      * @return UserConnection from players
      */
     Set<UserConnection> getConnections();
-
     /**
      * Show the bossbar to everyone (In the getPlayer set)
      *
      * @return The BossBar object
      */
     BossBar show();
-
     /**
      * Hide the bossbar from everyone (In the getPlayer set)
      *
      * @return The BossBar object
      */
     BossBar hide();
-
     /**
      * Is it visible?
      *
      * @return visibility changable with show() and hide()
      */
     boolean isVisible();
-
     /**
      * Get the UUID of this bossbar
      *

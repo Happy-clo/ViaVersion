@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.misc;
-
 import com.viaversion.nbt.io.TagRegistry;
 import com.viaversion.nbt.limiter.TagLimiter;
 import com.viaversion.nbt.tag.Tag;
@@ -31,20 +30,16 @@ import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import java.io.IOException;
-
 public class TagType extends Type<Tag> {
-
     public TagType() {
         super(Tag.class);
     }
-
     @Override
     public Tag read(final ByteBuf buffer) {
         final byte id = buffer.readByte();
         if (id == 0) {
             return null;
         }
-
         final TagLimiter tagLimiter = TagLimiter.create(NamedCompoundTagType.MAX_NBT_BYTES, NamedCompoundTagType.MAX_NESTING_LEVEL);
         try {
             return TagRegistry.read(id, new ByteBufInputStream(buffer), tagLimiter, 0);
@@ -52,7 +47,6 @@ public class TagType extends Type<Tag> {
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public void write(final ByteBuf buffer, final Tag tag) {
         try {
@@ -61,9 +55,7 @@ public class TagType extends Type<Tag> {
             throw new RuntimeException(e);
         }
     }
-
     public static final class OptionalTagType extends OptionalType<Tag> {
-
         public OptionalTagType() {
             super(Types.TAG);
         }

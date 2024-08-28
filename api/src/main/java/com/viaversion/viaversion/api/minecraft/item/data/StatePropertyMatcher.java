@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.ArrayType;
 import com.viaversion.viaversion.util.Either;
 import io.netty.buffer.ByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public record StatePropertyMatcher(String name, Either<String, RangedMatcher> matcher) {
-
     public static final Type<StatePropertyMatcher> TYPE = new Type<>(StatePropertyMatcher.class) {
         @Override
         public StatePropertyMatcher read(final ByteBuf buffer) {
@@ -44,7 +41,6 @@ public record StatePropertyMatcher(String name, Either<String, RangedMatcher> ma
                 return new StatePropertyMatcher(name, Either.right(new RangedMatcher(minValue, maxValue)));
             }
         }
-
         @Override
         public void write(final ByteBuf buffer, final StatePropertyMatcher value) {
             Types.STRING.write(buffer, value.name);
@@ -59,7 +55,6 @@ public record StatePropertyMatcher(String name, Either<String, RangedMatcher> ma
         }
     };
     public static final Type<StatePropertyMatcher[]> ARRAY_TYPE = new ArrayType<>(TYPE);
-
     public record RangedMatcher(@Nullable String minValue, @Nullable String maxValue) {
     }
 }

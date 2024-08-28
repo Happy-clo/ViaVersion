@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,27 +21,21 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.TypeConverter;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class FloatType extends Type<Float> implements TypeConverter<Float> {
-
     public FloatType() {
         super(Float.class);
     }
-
     public float readPrimitive(ByteBuf buffer) {
         return buffer.readFloat();
     }
-
     public void writePrimitive(ByteBuf buffer, float object) {
         buffer.writeFloat(object);
     }
-
     /**
      * @deprecated use {@link #readPrimitive(ByteBuf)} for manual reading to avoid wrapping
      */
@@ -50,7 +44,6 @@ public class FloatType extends Type<Float> implements TypeConverter<Float> {
     public Float read(ByteBuf buffer) {
         return buffer.readFloat();
     }
-
     /**
      * @deprecated use {@link #writePrimitive(ByteBuf, float)} for manual reading to avoid wrapping
      */
@@ -59,7 +52,6 @@ public class FloatType extends Type<Float> implements TypeConverter<Float> {
     public void write(ByteBuf buffer, Float object) {
         buffer.writeFloat(object);
     }
-
     @Override
     public Float from(Object o) {
         if (o instanceof Number number) {
@@ -69,9 +61,7 @@ public class FloatType extends Type<Float> implements TypeConverter<Float> {
         }
         throw new UnsupportedOperationException();
     }
-
     public static final class OptionalFloatType extends OptionalType<Float> {
-
         public OptionalFloatType() {
             super(Types.FLOAT);
         }

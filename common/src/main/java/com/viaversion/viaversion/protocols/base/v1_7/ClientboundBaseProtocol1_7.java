@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.base.v1_7;
-
 import com.google.common.base.Joiner;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -43,16 +42,12 @@ import com.viaversion.viaversion.util.GsonUtil;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
-
 public class ClientboundBaseProtocol1_7 extends AbstractProtocol<BaseClientboundPacket, BaseClientboundPacket, BaseServerboundPacket, BaseServerboundPacket> {
-
     public ClientboundBaseProtocol1_7() {
         super(BaseClientboundPacket.class, BaseClientboundPacket.class, BaseServerboundPacket.class, BaseServerboundPacket.class);
     }
-
     @Override
     protected void registerPackets() {
-        // Handle server pinging sent by the client
         registerClientbound(ClientboundStatusPackets.STATUS_RESPONSE, new PacketHandlers() {
             @Override
             public void register() {
@@ -63,8 +58,7 @@ public class ClientboundBaseProtocol1_7 extends AbstractProtocol<BaseClientbound
                     try {
                         JsonElement json = GsonUtil.getGson().fromJson(originalStatus, JsonElement.class);
                         JsonObject version;
-                        int protocol = 0; // Unknown!
-
+                        int protocol = 0; 
                         if (json.isJsonObject()) {
                             if (json.getAsJsonObject().has("version")) {
                                 version = json.getAsJsonObject().get("version").getAsJsonObject();
@@ -75,66 +69,51 @@ public class ClientboundBaseProtocol1_7 extends AbstractProtocol<BaseClientbound
                                 json.getAsJsonObject().add("version", version = new JsonObject());
                             }
                         } else {
-                            // Format properly
                             json = new JsonObject();
                             json.getAsJsonObject().add("version", version = new JsonObject());
                         }
-
                         final ProtocolVersion protocolVersion = ProtocolVersion.getProtocol(protocol);
-
-                        if (Via.getConfig().isSendSupportedVersions()) { // Send supported versions
+                        if (Via.getConfig().isSendSupportedVersions()) { 
                             version.add("supportedVersions", GsonUtil.getGson().toJsonTree(Via.getAPI().getSupportedVersions()));
                         }
-
-                        if (!Via.getAPI().getServerVersion().isKnown()) { // Set the Server protocol if the detection on startup failed
+                        if (!Via.getAPI().getServerVersion().isKnown()) { 
                             ProtocolManagerImpl protocolManager = (ProtocolManagerImpl) Via.getManager().getProtocolManager();
                             protocolManager.setServerProtocol(new ServerProtocolVersionSingleton(protocolVersion));
                         }
-
-                        // Ensure the server has a version provider
                         VersionProvider versionProvider = Via.getManager().getProviders().get(VersionProvider.class);
                         if (versionProvider == null) {
                             wrapper.user().setActive(false);
                             return;
                         }
-
                         ProtocolVersion closestServerProtocol;
                         try {
                             closestServerProtocol = versionProvider.getClosestServerProtocol(wrapper.user());
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
-
                         List<ProtocolPathEntry> protocols = Via.getManager().getProtocolManager().getProtocolPath(info.protocolVersion(), closestServerProtocol);
                         if (protocols != null) {
-                            if (protocolVersion.equalTo(closestServerProtocol) || protocolVersion.getVersion() == 0) { // Fix ServerListPlus
+                            if (protocolVersion.equalTo(closestServerProtocol) || protocolVersion.getVersion() == 0) { 
                                 version.addProperty("protocol", info.protocolVersion().getOriginalVersion());
                             }
                         } else {
-                            // not compatible :(, *plays very sad violin*
                             wrapper.user().setActive(false);
                         }
-
                         if (Via.getConfig().blockedProtocolVersions().contains(info.protocolVersion())) {
-                            version.addProperty("protocol", -1); // Show blocked versions as outdated
+                            version.addProperty("protocol", -1); 
                         }
-
-                        wrapper.set(Types.STRING, 0, GsonUtil.getGson().toJson(json)); // Update value
+                        wrapper.set(Types.STRING, 0, GsonUtil.getGson().toJson(json)); 
                     } catch (JsonParseException e) {
                         Via.getPlatform().getLogger().log(Level.SEVERE, "Error handling StatusResponse", e);
                     }
                 });
             }
         });
-
-        // Track player name/uuid and setup connection + track state
         registerClientbound(ClientboundLoginPackets.GAME_PROFILE, wrapper -> {
             final ProtocolInfo info = wrapper.user().getProtocolInfo();
-
             if (info.serverProtocolVersion().olderThan(ProtocolVersion.v1_16)) {
                 String uuidString = wrapper.passthrough(Types.STRING);
-                if (uuidString.length() == 32) { // Trimmed UUIDs are 32 characters
-                    // Trimmed
+                if (uuidString.length() == 32) { 
                     uuidString = addDashes(uuidString);
                 }
                 info.setUuid(UUID.fromString(uuidString));
@@ -142,20 +121,15 @@ public class ClientboundBaseProtocol1_7 extends AbstractProtocol<BaseClientbound
                 final UUID uuid = wrapper.passthrough(Types.UUID);
                 info.setUuid(uuid);
             }
-
             final String username = wrapper.passthrough(Types.STRING);
             info.setUsername(username);
-
-            // Setup connection
             onLoginSuccess(wrapper.user());
         });
     }
-
     @Override
     public boolean isBaseProtocol() {
         return true;
     }
-
     public static String addDashes(String trimmedUUID) {
         StringBuilder idBuff = new StringBuilder(trimmedUUID);
         idBuff.insert(20, '-');
@@ -164,22 +138,16 @@ public class ClientboundBaseProtocol1_7 extends AbstractProtocol<BaseClientbound
         idBuff.insert(8, '-');
         return idBuff.toString();
     }
-
     public static void onLoginSuccess(final UserConnection connection) {
         final ProtocolInfo info = connection.getProtocolInfo();
-        if (info.protocolVersion().olderThan(ProtocolVersion.v1_20_2)) { // On 1.20.2+, wait for the login ack
+        if (info.protocolVersion().olderThan(ProtocolVersion.v1_20_2)) { 
             info.setState(State.PLAY);
         }
-
-        // Add to ported clients
         Via.getManager().getConnectionManager().onLoginSuccess(connection);
-
-        if (!info.getPipeline().hasNonBaseProtocols()) { // Only base protocol
+        if (!info.getPipeline().hasNonBaseProtocols()) { 
             connection.setActive(false);
         }
-
         if (Via.getManager().isDebug()) {
-            // Print out the route to console
             Via.getPlatform().getLogger().log(Level.INFO, "{0} logged in with protocol {1}, Route: {2}",
                 new Object[]{
                     info.getUsername(),
@@ -188,7 +156,6 @@ public class ClientboundBaseProtocol1_7 extends AbstractProtocol<BaseClientbound
                 });
         }
     }
-
     @Override
     protected PacketTypesProvider<BaseClientboundPacket, BaseClientboundPacket, BaseServerboundPacket, BaseServerboundPacket> createPacketTypesProvider() {
         return BasePacketTypesProvider.INSTANCE;

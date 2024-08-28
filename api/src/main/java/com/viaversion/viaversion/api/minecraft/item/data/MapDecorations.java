@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
-
 public record MapDecorations(Map<String, MapDecoration> decorations) {
-
     public static final Type<MapDecorations> TYPE = new Type<>(MapDecorations.class) {
         @Override
         public MapDecorations read(final ByteBuf buffer) {
@@ -43,7 +40,6 @@ public record MapDecorations(Map<String, MapDecoration> decorations) {
             }
             return new MapDecorations(decorations);
         }
-
         @Override
         public void write(final ByteBuf buffer, final MapDecorations value) {
             Types.VAR_INT.writePrimitive(buffer, value.decorations.size());

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,22 +21,17 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
-
 public record Unbreakable(boolean showInTooltip) {
-
     public static final Type<Unbreakable> TYPE = new Type<>(Unbreakable.class) {
         @Override
         public Unbreakable read(final ByteBuf buffer) {
             return new Unbreakable(buffer.readBoolean());
         }
-
         @Override
         public void write(final ByteBuf buffer, final Unbreakable value) {
             buffer.writeBoolean(value.showInTooltip());
         }
     };
-
 }

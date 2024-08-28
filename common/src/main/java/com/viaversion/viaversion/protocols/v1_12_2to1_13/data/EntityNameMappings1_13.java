@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,18 +13,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.data;
-
 import com.viaversion.viaversion.util.Key;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 public class EntityNameMappings1_13 {
     private static final Map<String, String> entityNames = new HashMap<>();
-
     static {
         reg("commandblock_minecart", "command_block_minecart");
         reg("ender_crystal", "end_crystal");
@@ -39,11 +36,9 @@ public class EntityNameMappings1_13 {
         reg("xp_bottle", "experience_bottle");
         reg("xp_orb", "experience_orb");
     }
-
     private static void reg(String past, String future) {
         entityNames.put(Key.namespaced(past), Key.namespaced(future));
     }
-
     public static String rewrite(String entName) {
         String entityName = entityNames.get(entName);
         if (entityName != null) {

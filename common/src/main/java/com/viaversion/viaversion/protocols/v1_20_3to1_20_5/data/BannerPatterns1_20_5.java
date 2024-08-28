@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,17 +13,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_3to1_20_5.data;
-
 import com.viaversion.viaversion.util.KeyMappings;
 import java.util.HashMap;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class BannerPatterns1_20_5 {
-
     public static final KeyMappings PATTERNS = new KeyMappings(
         "base",
         "square_bottom_left",
@@ -70,7 +67,6 @@ public final class BannerPatterns1_20_5 {
         "guster"
     );
     private static final Map<String, String> PATTERN_IDS = new HashMap<>();
-
     static {
         PATTERN_IDS.put("b", "base");
         PATTERN_IDS.put("bl", "square_bottom_left");
@@ -114,19 +110,15 @@ public final class BannerPatterns1_20_5 {
         PATTERN_IDS.put("moj", "mojang");
         PATTERN_IDS.put("pig", "piglin");
     }
-
     public static @Nullable String idToKey(final int id) {
         return PATTERNS.idToKey(id);
     }
-
     public static int keyToId(final String pattern) {
         return PATTERNS.keyToId(pattern);
     }
-
     public static @Nullable String compactToFullId(final String compactId) {
         return PATTERN_IDS.get(compactId);
     }
-
     public static @Nullable String fullIdToCompact(final String fullId) {
         for (Map.Entry<String, String> entry : PATTERN_IDS.entrySet()) {
             if (entry.getValue().equals(fullId)) {
@@ -135,7 +127,6 @@ public final class BannerPatterns1_20_5 {
         }
         return null;
     }
-
     public static String[] keys() {
         return PATTERNS.keys();
     }

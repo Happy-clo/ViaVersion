@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.HolderType;
@@ -29,17 +28,14 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-
 public record ArmorTrimMaterial(String assetName, int itemId, float itemModelIndex,
                                 Int2ObjectMap<String> overrideArmorMaterials, Tag description) {
-
     public static final HolderType<ArmorTrimMaterial> TYPE = new HolderType<>() {
         @Override
         public ArmorTrimMaterial readDirect(final ByteBuf buffer) {
             final String assetName = Types.STRING.read(buffer);
             final int item = Types.VAR_INT.readPrimitive(buffer);
             final float itemModelIndex = buffer.readFloat();
-
             final int overrideArmorMaterialsSize = Types.VAR_INT.readPrimitive(buffer);
             final Int2ObjectMap<String> overrideArmorMaterials = new Int2ObjectOpenHashMap<>(overrideArmorMaterialsSize);
             for (int i = 0; i < overrideArmorMaterialsSize; i++) {
@@ -47,27 +43,22 @@ public record ArmorTrimMaterial(String assetName, int itemId, float itemModelInd
                 final String value = Types.STRING.read(buffer);
                 overrideArmorMaterials.put(key, value);
             }
-
             final Tag description = Types.TAG.read(buffer);
             return new ArmorTrimMaterial(assetName, item, itemModelIndex, overrideArmorMaterials, description);
         }
-
         @Override
         public void writeDirect(final ByteBuf buffer, final ArmorTrimMaterial value) {
             Types.STRING.write(buffer, value.assetName());
             Types.VAR_INT.writePrimitive(buffer, value.itemId());
             buffer.writeFloat(value.itemModelIndex());
-
             Types.VAR_INT.writePrimitive(buffer, value.overrideArmorMaterials().size());
             for (final Int2ObjectMap.Entry<String> entry : value.overrideArmorMaterials().int2ObjectEntrySet()) {
                 Types.VAR_INT.writePrimitive(buffer, entry.getIntKey());
                 Types.STRING.write(buffer, entry.getValue());
             }
-
             Types.TAG.write(buffer, value.description());
         }
     };
-
     public ArmorTrimMaterial rewrite(final Int2IntFunction idRewriteFunction) {
         return new ArmorTrimMaterial(assetName, idRewriteFunction.applyAsInt(itemId), itemModelIndex, overrideArmorMaterials, description);
     }

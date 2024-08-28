@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.platform;
-
 import com.viaversion.viaversion.ViaVersionPlugin;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -56,48 +55,36 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
-
 public class BukkitViaLoader implements ViaPlatformLoader {
-
     private final Set<BukkitTask> tasks = new HashSet<>();
     private final ViaVersionPlugin plugin;
     private HandItemCache handItemCache;
-
     public BukkitViaLoader(ViaVersionPlugin plugin) {
         this.plugin = plugin;
     }
-
     public void registerListener(Listener listener) {
         plugin.getServer().getPluginManager().registerEvents(listener, plugin);
     }
-
     @Override
     public void load() {
         registerListener(new UpdateListener());
-
-        /* Base Protocol */
         final ViaVersionPlugin plugin = (ViaVersionPlugin) Bukkit.getPluginManager().getPlugin("ViaVersion");
         if (!Via.getAPI().getServerVersion().isKnown()) {
             Via.getPlatform().getLogger().severe("Server version has not been loaded yet, cannot register additional listeners");
             return;
         }
-
         ProtocolVersion serverProtocolVersion = Via.getAPI().getServerVersion().lowestSupportedProtocolVersion();
-
-        /* 1.9 client to 1.8 server */
         if (serverProtocolVersion.olderThan(ProtocolVersion.v1_9)) {
             new ArmorListener(plugin).register();
             new DeathListener(plugin).register();
             if (plugin.getConf().cancelBlockSounds()) {
                 new BlockListener(plugin).register();
             }
-
             if (plugin.getConf().isItemCache()) {
                 handItemCache = new HandItemCache();
-                tasks.add(handItemCache.runTaskTimerAsynchronously(plugin, 1L, 1L)); // Updates player's items :)
+                tasks.add(handItemCache.runTaskTimerAsynchronously(plugin, 1L, 1L)); 
             }
         }
-
         if (serverProtocolVersion.olderThan(ProtocolVersion.v1_14)) {
             boolean use1_9Fix = plugin.getConf().is1_9HitboxFix() && serverProtocolVersion.olderThan(ProtocolVersion.v1_9);
             if (use1_9Fix || plugin.getConf().is1_14HitboxFix()) {
@@ -108,7 +95,6 @@ public class BukkitViaLoader implements ViaPlatformLoader {
                 }
             }
         }
-
         if (serverProtocolVersion.olderThan(ProtocolVersion.v1_15)) {
             try {
                 Class.forName("org.bukkit.event.entity.EntityToggleGlideEvent");
@@ -116,31 +102,26 @@ public class BukkitViaLoader implements ViaPlatformLoader {
             } catch (ClassNotFoundException ignored) {
             }
         }
-
         if (serverProtocolVersion.olderThan(ProtocolVersion.v1_12) && !Boolean.getBoolean("com.viaversion.ignorePaperBlockPlacePatch")) {
             boolean paper = true;
             try {
-                Class.forName("org.github.paperspigot.PaperSpigotConfig"); // Paper 1.8 ?
+                Class.forName("org.github.paperspigot.PaperSpigotConfig"); 
             } catch (ClassNotFoundException ignored) {
                 try {
-                    Class.forName("com.destroystokyo.paper.PaperConfig"); // Paper 1.9+ ?
+                    Class.forName("com.destroystokyo.paper.PaperConfig"); 
                 } catch (ClassNotFoundException alsoIgnored) {
-                    paper = false; // Definitely not Paper
+                    paper = false; 
                 }
             }
             if (paper) {
                 new PaperPatch(plugin).register();
             }
         }
-
         if (serverProtocolVersion.olderThan(ProtocolVersion.v1_19_4) && plugin.getConf().isArmorToggleFix() && hasGetHandMethod()) {
             new ArmorToggleListener(plugin).register();
         }
-
-        /* Providers */
         if (serverProtocolVersion.olderThan(ProtocolVersion.v1_9)) {
             Via.getManager().getProviders().use(MovementTransmitterProvider.class, new BukkitViaMovementTransmitter());
-
             Via.getManager().getProviders().use(HandItemProvider.class, new HandItemProvider() {
                 @Override
                 public Item getHandItem(final UserConnection info) {
@@ -163,7 +144,6 @@ public class BukkitViaLoader implements ViaPlatformLoader {
                 }
             });
         }
-
         if (serverProtocolVersion.olderThan(ProtocolVersion.v1_12)) {
             if (plugin.getConf().is1_12QuickMoveActionFix()) {
                 Via.getManager().getProviders().use(InventoryQuickMoveProvider.class, new BukkitInventoryQuickMoveProvider());
@@ -188,7 +168,6 @@ public class BukkitViaLoader implements ViaPlatformLoader {
             }
         }
     }
-
     private boolean hasGetHandMethod() {
         try {
             PlayerInteractEvent.class.getDeclaredMethod("getHand");
@@ -198,7 +177,6 @@ public class BukkitViaLoader implements ViaPlatformLoader {
             return false;
         }
     }
-
     @Override
     public void unload() {
         for (BukkitTask task : tasks) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,22 +13,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.util;
-
 import com.viaversion.nbt.tag.ListTag;
 import com.viaversion.nbt.tag.StringTag;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import java.util.Collection;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class KeyMappings {
-
     private final Object2IntMap<String> keyToId;
     private final String[] keys;
-
     public KeyMappings(final String... keys) {
         this.keys = keys;
         keyToId = new Object2IntOpenHashMap<>(keys.length);
@@ -37,30 +33,24 @@ public final class KeyMappings {
             keyToId.put(keys[i], i);
         }
     }
-
     public KeyMappings(final Collection<String> keys) {
         this(keys.toArray(new String[0]));
     }
-
     public KeyMappings(final ListTag<StringTag> keys) {
         this(keys.getValue().stream().map(StringTag::getValue).toArray(String[]::new));
     }
-
     public @Nullable String idToKey(final int id) {
         if (id < 0 || id >= keys.length) {
             return null;
         }
         return keys[id];
     }
-
     public int keyToId(final String identifier) {
         return keyToId.getInt(Key.stripMinecraftNamespace(identifier));
     }
-
     public String[] keys() {
         return keys;
     }
-
     public int size() {
         return keys.length;
     }

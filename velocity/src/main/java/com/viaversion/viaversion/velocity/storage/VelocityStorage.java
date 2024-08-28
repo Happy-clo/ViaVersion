@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.storage;
-
 import com.velocitypowered.api.proxy.Player;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.StorableObject;
@@ -27,7 +26,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
-
 public class VelocityStorage implements StorableObject {
     private final Player player;
     private String currentServer;
@@ -35,7 +33,6 @@ public class VelocityStorage implements StorableObject {
     private static Method getServerBossBars;
     private static Class<?> clientPlaySessionHandler;
     private static Method getMinecraftConnection;
-
     static {
         try {
             clientPlaySessionHandler = Class.forName("com.velocitypowered.proxy.connection.client.ClientPlaySessionHandler");
@@ -47,18 +44,15 @@ public class VelocityStorage implements StorableObject {
             Via.getPlatform().getLogger().log(Level.SEVERE, "Failed to initialize Velocity bossbar support, bossbars will not work.", e);
         }
     }
-
     public VelocityStorage(Player player) {
         this.player = player;
         this.currentServer = "";
     }
-
     public List<UUID> getBossbar() {
         if (cachedBossbar == null) {
             if (clientPlaySessionHandler == null) return null;
             if (getServerBossBars == null) return null;
             if (getMinecraftConnection == null) return null;
-            // Get bossbar list if it's supported
             try {
                 Object connection = getMinecraftConnection.invoke(player);
                 Object sessionHandler = ReflectionUtil.invoke(connection, "getSessionHandler");
@@ -71,23 +65,18 @@ public class VelocityStorage implements StorableObject {
         }
         return cachedBossbar;
     }
-
     public Player getPlayer() {
         return player;
     }
-
     public String getCurrentServer() {
         return currentServer;
     }
-
     public void setCurrentServer(final String currentServer) {
         this.currentServer = currentServer;
     }
-
     public List<UUID> getCachedBossbar() {
         return cachedBossbar;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,7 +86,6 @@ public class VelocityStorage implements StorableObject {
         if (!Objects.equals(currentServer, that.currentServer)) return false;
         return Objects.equals(cachedBossbar, that.cachedBossbar);
     }
-
     @Override
     public int hashCode() {
         int result = player != null ? player.hashCode() : 0;

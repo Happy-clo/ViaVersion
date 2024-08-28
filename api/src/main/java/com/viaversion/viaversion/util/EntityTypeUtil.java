@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.data.FullMappings;
@@ -30,11 +29,8 @@ import com.viaversion.viaversion.api.protocol.Protocol;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 public final class EntityTypeUtil {
-
     private static final EntityType[] EMPTY_ARRAY = new EntityType[0];
-
     /**
      * Returns an ordered array with each index representing the actual entity id.
      *
@@ -48,11 +44,9 @@ public final class EntityTypeUtil {
                 types.add(type);
             }
         }
-
         types.sort(Comparator.comparingInt(EntityType::getId));
         return types.toArray(EMPTY_ARRAY);
     }
-
     /**
      * Sets entity type ids based on the protocol's mapping data and fills the given typesToFill array with the index corresponding to the id.
      *
@@ -68,18 +62,15 @@ public final class EntityTypeUtil {
             if (type.isAbstractType()) {
                 continue;
             }
-
             final int id = mappings.mappedId(type.identifier());
             Preconditions.checkArgument(id != -1, "Entity type %s has no id", type.identifier());
             idSetter.setId(type, id);
             typesToFill[id] = type;
         }
-
         if (typesToFill.length != mappings.mappedSize()) {
             throw new IllegalArgumentException("typesToFill length doesn't match the amount of entity types: " + typesToFill.length + " != " + mappings.size());
         }
     }
-
     public static EntityType[] createSizedArray(final EntityType[] values) {
         int count = 0;
         for (final EntityType type : values) {
@@ -89,7 +80,6 @@ public final class EntityTypeUtil {
         }
         return new EntityType[count];
     }
-
     /**
      * Returns the entity type from id, or the given fallback if out of bounds.
      *
@@ -106,10 +96,8 @@ public final class EntityTypeUtil {
         }
         return type;
     }
-
     @FunctionalInterface
     public interface EntityIdSetter<T extends EntityType> {
-
         void setId(T entityType, int id);
     }
 }

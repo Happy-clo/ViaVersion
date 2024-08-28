@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,24 +13,20 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.rewriter;
-
 import com.viaversion.viaversion.api.minecraft.RegistryType;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.type.Types;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class StatisticsRewriter<C extends ClientboundPacketType> {
-    private static final int CUSTOM_STATS_CATEGORY = 8; // Make this changeable if it differs in a future version
+    private static final int CUSTOM_STATS_CATEGORY = 8; 
     private final Protocol<C, ?, ?, ?> protocol;
-
     public StatisticsRewriter(Protocol<C, ?, ?, ?> protocol) {
         this.protocol = protocol;
     }
-
     public void register(C packetType) {
         protocol.registerClientbound(packetType, wrapper -> {
             int size = wrapper.passthrough(Types.VAR_INT);
@@ -40,33 +36,27 @@ public class StatisticsRewriter<C extends ClientboundPacketType> {
                 int statisticId = wrapper.read(Types.VAR_INT);
                 int value = wrapper.read(Types.VAR_INT);
                 if (categoryId == CUSTOM_STATS_CATEGORY && protocol.getMappingData().getStatisticsMappings() != null) {
-                    // Rewrite custom statistics id
                     statisticId = protocol.getMappingData().getStatisticsMappings().getNewId(statisticId);
                     if (statisticId == -1) {
-                        // Remove entry
                         newSize--;
                         continue;
                     }
                 } else {
-                    // Rewrite the block/item/entity id
                     RegistryType type = getRegistryTypeForStatistic(categoryId);
                     IdRewriteFunction statisticsRewriter;
                     if (type != null && (statisticsRewriter = getRewriter(type)) != null) {
                         statisticId = statisticsRewriter.rewrite(statisticId);
                     }
                 }
-
                 wrapper.write(Types.VAR_INT, categoryId);
                 wrapper.write(Types.VAR_INT, statisticId);
                 wrapper.write(Types.VAR_INT, value);
             }
-
             if (newSize != size) {
                 wrapper.set(Types.VAR_INT, 0, newSize);
             }
         });
     }
-
     protected @Nullable IdRewriteFunction getRewriter(RegistryType type) {
         return switch (type) {
             case BLOCK ->
@@ -78,7 +68,6 @@ public class StatisticsRewriter<C extends ClientboundPacketType> {
             default -> throw new IllegalArgumentException("Unknown registry type in statistics packet: " + type);
         };
     }
-
     public @Nullable RegistryType getRegistryTypeForStatistic(int statisticsId) {
         return switch (statisticsId) {
             case 0 -> RegistryType.BLOCK;

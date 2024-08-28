@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.connection;
-
 /**
  * Dummy interface used to explicitly identify objects storable in user connections.
  *
@@ -29,7 +28,6 @@ package com.viaversion.viaversion.api.connection;
  * @see UserConnection#put(StorableObject)
  */
 public interface StorableObject {
-
     /**
      * Returns whether the object should be uncached on a server switch.
      *
@@ -38,7 +36,6 @@ public interface StorableObject {
     default boolean clearOnServerSwitch() {
         return true;
     }
-
     default void onRemove() {
     }
 }

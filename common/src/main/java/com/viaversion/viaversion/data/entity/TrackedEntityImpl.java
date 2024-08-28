@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,28 +13,23 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.data.entity;
-
 import com.viaversion.viaversion.api.data.entity.StoredEntityData;
 import com.viaversion.viaversion.api.data.entity.TrackedEntity;
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
-
 public final class TrackedEntityImpl implements TrackedEntity {
     private final EntityType entityType;
     private StoredEntityData data;
     private boolean sentEntityData;
-
     public TrackedEntityImpl(final EntityType entityType) {
         this.entityType = entityType;
     }
-
     @Override
     public EntityType entityType() {
         return entityType;
     }
-
     @Override
     public StoredEntityData data() {
         if (data == null) {
@@ -42,22 +37,18 @@ public final class TrackedEntityImpl implements TrackedEntity {
         }
         return data;
     }
-
     @Override
     public boolean hasData() {
         return data != null;
     }
-
     @Override
     public boolean hasSentEntityData() {
         return sentEntityData;
     }
-
     @Override
     public void sentEntityData(final boolean sentEntityData) {
         this.sentEntityData = sentEntityData;
     }
-
     @Override
     public String toString() {
         return "TrackedEntityImpl{" +

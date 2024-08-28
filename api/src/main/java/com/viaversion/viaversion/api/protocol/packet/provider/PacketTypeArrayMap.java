@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,32 +21,26 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.packet.provider;
-
 import com.viaversion.viaversion.api.protocol.packet.PacketType;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 final class PacketTypeArrayMap<P extends PacketType> implements PacketTypeMap<P> {
     private final Map<String, P> packetsByName;
     private final P[] packets;
-
     PacketTypeArrayMap(Map<String, P> packetsByName, P[] packets) {
         this.packetsByName = packetsByName;
         this.packets = packets;
     }
-
     @Override
     public @Nullable P typeByName(String packetTypeName) {
         return packetsByName.get(packetTypeName);
     }
-
     @Override
     public @Nullable P typeById(int packetTypeId) {
         return packetTypeId >= 0 && packetTypeId < packets.length ? packets[packetTypeId] : null;
     }
-
     @Override
     public Collection<P> types() {
         return Arrays.asList(packets);

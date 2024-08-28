@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,19 +13,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.List;
-
 public class GlassConnectionHandler extends AbstractFenceConnectionHandler {
-
     static List<ConnectionData.ConnectorInitAction> init() {
         List<ConnectionData.ConnectorInitAction> actions = new ArrayList<>(18);
         actions.add(new GlassConnectionHandler("pane").getInitAction("minecraft:white_stained_glass_pane"));
@@ -48,16 +45,13 @@ public class GlassConnectionHandler extends AbstractFenceConnectionHandler {
         actions.add(new GlassConnectionHandler("pane").getInitAction("minecraft:iron_bars"));
         return actions;
     }
-
     public GlassConnectionHandler(String blockConnections) {
         super(blockConnections);
     }
-
     @Override
     protected byte getStates(UserConnection user, BlockPosition position) {
         byte states = super.getStates(user, position);
         if (states != 0) return states;
-
         ProtocolInfo protocolInfo = user.getProtocolInfo();
         return protocolInfo.serverProtocolVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)
             && protocolInfo.serverProtocolVersion().isKnown() ? 0xF : states;

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.minecraft.Holder;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.ArrayType;
 import io.netty.buffer.ByteBuf;
-
 public record BannerPatternLayer(Holder<BannerPattern> pattern, int dyeColor) {
-
     public static final Type<BannerPatternLayer> TYPE = new Type<>(BannerPatternLayer.class) {
         @Override
         public BannerPatternLayer read(final ByteBuf buffer) {
@@ -37,7 +34,6 @@ public record BannerPatternLayer(Holder<BannerPattern> pattern, int dyeColor) {
             final int color = Types.VAR_INT.readPrimitive(buffer);
             return new BannerPatternLayer(pattern, color);
         }
-
         @Override
         public void write(final ByteBuf buffer, final BannerPatternLayer value) {
             BannerPattern.TYPE.write(buffer, value.pattern);
@@ -45,5 +41,4 @@ public record BannerPatternLayer(Holder<BannerPattern> pattern, int dyeColor) {
         }
     };
     public static final Type<BannerPatternLayer[]> ARRAY_TYPE = new ArrayType<>(TYPE);
-
 }

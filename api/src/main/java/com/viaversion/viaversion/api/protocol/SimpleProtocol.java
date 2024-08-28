@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol;
-
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
-
 /**
  * Dummy protocol class when there is no need of the
  * existing packet type enums or automated channel mappings.
@@ -33,20 +31,16 @@ import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
  * @see Protocol
  */
 public interface SimpleProtocol extends Protocol<SimpleProtocol.DummyPacketTypes, SimpleProtocol.DummyPacketTypes, SimpleProtocol.DummyPacketTypes, SimpleProtocol.DummyPacketTypes> {
-
     enum DummyPacketTypes implements ClientboundPacketType, ServerboundPacketType {
         ;
-
         @Override
         public int getId() {
             return 0;
         }
-
         @Override
         public String getName() {
             return name();
         }
-
         @Override
         public Direction direction() {
             throw new UnsupportedOperationException();

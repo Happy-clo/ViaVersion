@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,16 +13,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_15_2to1_16.data;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-
 public final class AttributeMappings1_16 {
     private static final BiMap<String, String> ATTRIBUTE_MAPPINGS = HashBiMap.create();
-
     static {
         ATTRIBUTE_MAPPINGS.put("generic.maxHealth", "minecraft:generic.max_health");
         ATTRIBUTE_MAPPINGS.put("zombie.spawnReinforcements", "minecraft:zombie.spawn_reinforcements");
@@ -36,7 +33,6 @@ public final class AttributeMappings1_16 {
         ATTRIBUTE_MAPPINGS.put("generic.attackSpeed", "minecraft:generic.attack_speed");
         ATTRIBUTE_MAPPINGS.put("generic.armorToughness", "minecraft:generic.armor_toughness");
     }
-
     public static BiMap<String, String> attributeIdentifierMappings() {
         return ATTRIBUTE_MAPPINGS;
     }

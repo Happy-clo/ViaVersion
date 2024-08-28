@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,45 +21,35 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
  * Wrapper class for logging messages with the protocol name. Should be created inside the {@link Protocol} implementation.
  */
 public class ProtocolLogger {
-
     private final Logger logger;
     private final String name;
-
     public ProtocolLogger(final Class<? extends Protocol> protocol) {
         this(Via.getPlatform().getLogger(), protocol);
     }
-
     public ProtocolLogger(final Logger logger, final Class<? extends Protocol> protocol) {
         this.logger = logger;
         this.name = ProtocolUtil.toNiceName(protocol);
     }
-
     public void log(final Level level, final String msg) {
         logger.log(level, formatMessage(msg));
     }
-
     public void log(final Level level, final String msg, final Throwable thrown) {
         logger.log(level, formatMessage(msg), thrown);
     }
-
     public void warning(final String msg) {
         logger.warning(formatMessage(msg));
     }
-
     public void severe(final String msg) {
         logger.severe(formatMessage(msg));
     }
-
     private String formatMessage(final String msg) {
         return "(" + name + ") " + msg;
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -25,12 +24,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.util.Arrays;
 import java.util.Locale;
-
 public class TripwireConnectionHandler implements ConnectionHandler {
     private static final Int2ObjectMap<TripwireData> TRIPWIRE_DATA_MAP = new Int2ObjectOpenHashMap<>();
     private static final Int2ObjectMap<BlockFace> TRIPWIRE_HOOKS = new Int2ObjectArrayMap<>();
     private static final int[] CONNECTED_BLOCKS = new int[128];
-
     static ConnectionData.ConnectorInitAction init() {
         Arrays.fill(CONNECTED_BLOCKS, -1);
         final TripwireConnectionHandler connectionHandler = new TripwireConnectionHandler();
@@ -43,15 +40,12 @@ public class TripwireConnectionHandler implements ConnectionHandler {
                     blockData.getValue("disarmed").equals("true"),
                     blockData.getValue("powered").equals("true")
                 );
-
                 TRIPWIRE_DATA_MAP.put(blockData.getSavedBlockStateId(), tripwireData);
                 CONNECTED_BLOCKS[getStates(blockData)] = blockData.getSavedBlockStateId();
-
                 ConnectionData.connectionHandlerMap.put(blockData.getSavedBlockStateId(), connectionHandler);
             }
         };
     }
-
     private static byte getStates(WrappedBlockData blockData) {
         byte b = 0;
         if (blockData.getValue("attached").equals("true")) b |= 1;
@@ -63,7 +57,6 @@ public class TripwireConnectionHandler implements ConnectionHandler {
         if (blockData.getValue("west").equals("true")) b |= 64;
         return b;
     }
-
     @Override
     public int connect(UserConnection user, BlockPosition position, int blockState) {
         TripwireData tripwireData = TRIPWIRE_DATA_MAP.get(blockState);
@@ -72,12 +65,10 @@ public class TripwireConnectionHandler implements ConnectionHandler {
         if (tripwireData.attached()) b |= 1;
         if (tripwireData.disarmed()) b |= 2;
         if (tripwireData.powered()) b |= 4;
-
         int east = getBlockData(user, position.getRelative(BlockFace.EAST));
         int north = getBlockData(user, position.getRelative(BlockFace.NORTH));
         int south = getBlockData(user, position.getRelative(BlockFace.SOUTH));
         int west = getBlockData(user, position.getRelative(BlockFace.WEST));
-
         if (TRIPWIRE_DATA_MAP.containsKey(east) || TRIPWIRE_HOOKS.get(east) == BlockFace.WEST) {
             b |= 8;
         }
@@ -90,11 +81,9 @@ public class TripwireConnectionHandler implements ConnectionHandler {
         if (TRIPWIRE_DATA_MAP.containsKey(west) || TRIPWIRE_HOOKS.get(west) == BlockFace.EAST) {
             b |= 64;
         }
-
         int newBlockState = CONNECTED_BLOCKS[b];
         return newBlockState == -1 ? blockState : newBlockState;
     }
-
     private record TripwireData(boolean attached, boolean disarmed, boolean powered) {
     }
 }

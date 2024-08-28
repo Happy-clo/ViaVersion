@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,20 +21,16 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.misc;
-
 import com.viaversion.viaversion.api.minecraft.SoundEvent;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public final class SoundEventType extends HolderType<SoundEvent> {
-
     @Override
     public SoundEvent readDirect(final ByteBuf buffer) {
         final String resourceLocation = Types.STRING.read(buffer);
         final Float fixedRange = Types.OPTIONAL_FLOAT.read(buffer);
         return new SoundEvent(resourceLocation, fixedRange);
     }
-
     @Override
     public void writeDirect(final ByteBuf buffer, final SoundEvent value) {
         Types.STRING.write(buffer, value.identifier());

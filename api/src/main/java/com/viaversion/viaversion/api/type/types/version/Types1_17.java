@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.version;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
 import com.viaversion.viaversion.api.minecraft.entitydata.types.EntityDataTypes1_14;
 import com.viaversion.viaversion.api.type.Type;
@@ -29,10 +28,8 @@ import com.viaversion.viaversion.api.type.types.entitydata.EntityDataListType;
 import com.viaversion.viaversion.api.type.types.entitydata.EntityDataType;
 import com.viaversion.viaversion.api.type.types.misc.ParticleType;
 import java.util.List;
-
 public final class Types1_17 {
-
-    public static final ParticleType PARTICLE = new ParticleType(); // Only safe to use after protocol loading
+    public static final ParticleType PARTICLE = new ParticleType(); 
     public static final EntityDataTypes1_14 ENTITY_DATA_TYPES = new EntityDataTypes1_14(PARTICLE);
     public static final Type<EntityData> ENTITY_DATA = new EntityDataType(ENTITY_DATA_TYPES);
     public static final Type<List<EntityData>> ENTITY_DATA_LIST = new EntityDataListType(ENTITY_DATA);

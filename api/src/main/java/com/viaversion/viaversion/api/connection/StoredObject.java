@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,18 +21,14 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.connection;
-
 public abstract class StoredObject implements StorableObject {
     private final UserConnection user;
-
     protected StoredObject(UserConnection user) {
         this.user = user;
     }
-
     public UserConnection user() {
         return this.user;
     }
-
     @Deprecated
     public UserConnection getUser() {
         return user;

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_13_2to1_14;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ClientWorld;
 import com.viaversion.viaversion.api.minecraft.RegistryType;
@@ -43,31 +42,23 @@ import com.viaversion.viaversion.rewriter.SoundRewriter;
 import com.viaversion.viaversion.rewriter.StatisticsRewriter;
 import com.viaversion.viaversion.rewriter.TagRewriter;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class Protocol1_13_2To1_14 extends AbstractProtocol<ClientboundPackets1_13, ClientboundPackets1_14, ServerboundPackets1_13, ServerboundPackets1_14> {
-
     public static final MappingData1_14 MAPPINGS = new MappingData1_14();
     private final EntityPacketRewriter1_14 entityRewriter = new EntityPacketRewriter1_14(this);
     private final ItemPacketRewriter1_14 itemRewriter = new ItemPacketRewriter1_14(this);
     private final TagRewriter<ClientboundPackets1_13> tagRewriter = new TagRewriter<>(this);
-
     public Protocol1_13_2To1_14() {
         super(ClientboundPackets1_13.class, ClientboundPackets1_14.class, ServerboundPackets1_13.class, ServerboundPackets1_14.class);
     }
-
     @Override
     protected void registerPackets() {
         super.registerPackets();
-
         WorldPacketRewriter1_14.register(this);
         PlayerPacketRewriter1_14.register(this);
-
         new SoundRewriter<>(this).registerSound(ClientboundPackets1_13.SOUND);
         new StatisticsRewriter<>(this).register(ClientboundPackets1_13.AWARD_STATS);
-
         ComponentRewriter<ClientboundPackets1_13> componentRewriter = new ComponentRewriter1_14<>(this);
         componentRewriter.registerComponentPacket(ClientboundPackets1_13.CHAT);
-
         CommandRewriter<ClientboundPackets1_13> commandRewriter = new CommandRewriter<>(this) {
             @Override
             public @Nullable String handleArgumentType(String argumentType) {
@@ -78,7 +69,6 @@ public class Protocol1_13_2To1_14 extends AbstractProtocol<ClientboundPackets1_1
             }
         };
         commandRewriter.registerDeclareCommands(ClientboundPackets1_13.COMMANDS);
-
         registerClientbound(ClientboundPackets1_13.UPDATE_TAGS, new PacketHandlers() {
             @Override
             protected void register() {
@@ -86,21 +76,15 @@ public class Protocol1_13_2To1_14 extends AbstractProtocol<ClientboundPackets1_1
                 handler(wrapper -> tagRewriter.appendNewTags(wrapper, RegistryType.ENTITY));
             }
         });
-
-        // Set Difficulty packet added in 19w11a
         cancelServerbound(ServerboundPackets1_14.CHANGE_DIFFICULTY);
-        // Lock Difficulty packet added in 19w11a
         cancelServerbound(ServerboundPackets1_14.LOCK_DIFFICULTY);
-        // Unknown packet added in 19w13a
         cancelServerbound(ServerboundPackets1_14.SET_JIGSAW_BLOCK);
     }
-
     @Override
     protected void onMappingDataLoaded() {
         WorldPacketRewriter1_14.air = MAPPINGS.getBlockStateMappings().getNewId(0);
         WorldPacketRewriter1_14.voidAir = MAPPINGS.getBlockStateMappings().getNewId(8591);
         WorldPacketRewriter1_14.caveAir = MAPPINGS.getBlockStateMappings().getNewId(8592);
-
         EntityTypes1_14.initialize(this);
         Types1_13_2.PARTICLE.filler(this, false)
             .reader("block", ParticleType.Readers.BLOCK)
@@ -112,12 +96,9 @@ public class Protocol1_13_2To1_14 extends AbstractProtocol<ClientboundPackets1_1
             .reader("dust", ParticleType.Readers.DUST)
             .reader("falling_dust", ParticleType.Readers.BLOCK)
             .reader("item", ParticleType.Readers.ITEM1_13_2);
-
         tagRewriter.addEmptyTag(RegistryType.BLOCK, "bamboo_plantable_on");
-
         super.onMappingDataLoaded();
     }
-
     @Override
     public void init(UserConnection userConnection) {
         userConnection.addEntityTracker(this.getClass(), new EntityTracker1_14(userConnection));
@@ -125,22 +106,18 @@ public class Protocol1_13_2To1_14 extends AbstractProtocol<ClientboundPackets1_1
             userConnection.put(new ClientWorld());
         }
     }
-
     @Override
     public MappingData1_14 getMappingData() {
         return MAPPINGS;
     }
-
     @Override
     public EntityPacketRewriter1_14 getEntityRewriter() {
         return entityRewriter;
     }
-
     @Override
     public ItemPacketRewriter1_14 getItemRewriter() {
         return itemRewriter;
     }
-
     @Override
     public TagRewriter<ClientboundPackets1_13> getTagRewriter() {
         return tagRewriter;

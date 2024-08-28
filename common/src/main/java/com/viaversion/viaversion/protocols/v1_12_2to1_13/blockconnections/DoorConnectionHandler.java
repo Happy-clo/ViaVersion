@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -27,11 +26,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 public class DoorConnectionHandler implements ConnectionHandler {
     private static final Int2ObjectMap<DoorData> DOOR_DATA_MAP = new Int2ObjectOpenHashMap<>();
     private static final Map<Short, Integer> CONNECTED_STATES = new HashMap<>();
-
     static ConnectionData.ConnectorInitAction init() {
         final List<String> baseDoors = new LinkedList<>();
         baseDoors.add("minecraft:oak_door");
@@ -41,14 +38,11 @@ public class DoorConnectionHandler implements ConnectionHandler {
         baseDoors.add("minecraft:acacia_door");
         baseDoors.add("minecraft:spruce_door");
         baseDoors.add("minecraft:iron_door");
-
         final DoorConnectionHandler connectionHandler = new DoorConnectionHandler();
         return blockData -> {
             int type = baseDoors.indexOf(blockData.getMinecraftKey());
             if (type == -1) return;
-
             int id = blockData.getSavedBlockStateId();
-
             DoorData doorData = new DoorData(
                 blockData.getValue("half").equals("lower"),
                 blockData.getValue("hinge").equals("right"),
@@ -57,15 +51,11 @@ public class DoorConnectionHandler implements ConnectionHandler {
                 BlockFace.valueOf(blockData.getValue("facing").toUpperCase(Locale.ROOT)),
                 type
             );
-
             DOOR_DATA_MAP.put(id, doorData);
-
             CONNECTED_STATES.put(getStates(doorData), id);
-
             ConnectionData.connectionHandlerMap.put(id, connectionHandler);
         };
     }
-
     private static short getStates(DoorData doorData) {
         short s = 0;
         if (doorData.lower()) s |= 1;
@@ -76,7 +66,6 @@ public class DoorConnectionHandler implements ConnectionHandler {
         s |= (doorData.type() & 0x7) << 6;
         return s;
     }
-
     @Override
     public int connect(UserConnection user, BlockPosition position, int blockState) {
         DoorData doorData = DOOR_DATA_MAP.get(blockState);
@@ -99,11 +88,9 @@ public class DoorConnectionHandler implements ConnectionHandler {
             if (doorData.rightHinge()) s |= 8;
             s |= lowerHalf.facing().ordinal() << 4;
         }
-
         Integer newBlockState = CONNECTED_STATES.get(s);
         return newBlockState == null ? blockState : newBlockState;
     }
-
     private record DoorData(boolean lower, boolean rightHinge, boolean powered,
                             boolean open, BlockFace facing, int type) {
     }

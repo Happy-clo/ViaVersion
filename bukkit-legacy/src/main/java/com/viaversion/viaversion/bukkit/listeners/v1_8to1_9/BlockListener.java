@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.listeners.v1_8to1_9;
-
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import com.viaversion.viaversion.bukkit.listeners.ViaBukkitListener;
 import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
@@ -26,13 +25,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.Plugin;
-
 public class BlockListener extends ViaBukkitListener {
-
     public BlockListener(Plugin plugin) {
         super(plugin, Protocol1_8To1_9.class);
     }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void placeBlock(BlockPlaceEvent e) {
         if (isOnPipe(e.getPlayer())) {

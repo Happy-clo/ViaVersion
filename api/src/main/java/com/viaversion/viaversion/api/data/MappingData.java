@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,19 +21,15 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 import com.viaversion.viaversion.api.minecraft.RegistryType;
 import com.viaversion.viaversion.api.minecraft.TagData;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface MappingData {
-
     /**
      * Loads the mapping data.
      */
     void load();
-
     /**
      * Returns the mapped block state id, or -1 if unmapped.
      *
@@ -42,7 +38,6 @@ public interface MappingData {
      * @throws NullPointerException if this mappingdata does not hold block state mappings
      */
     int getNewBlockStateId(int id);
-
     /**
      * Returns the mapped block id, or -1 if unmapped.
      *
@@ -51,9 +46,7 @@ public interface MappingData {
      * @throws NullPointerException if this mappingdata does not hold block mappings
      */
     int getNewBlockId(int id);
-
     int getOldBlockId(int id);
-
     /**
      * Returns the mapped item id, or -1 if unmapped.
      *
@@ -62,7 +55,6 @@ public interface MappingData {
      * @throws NullPointerException if this mappingdata does not hold item mappings
      */
     int getNewItemId(int id);
-
     /**
      * Returns the backwards mapped item id, or -1 if unmapped.
      *
@@ -71,7 +63,6 @@ public interface MappingData {
      * @throws NullPointerException if this mappingdata does not hold item mappings
      */
     int getOldItemId(int id);
-
     /**
      * Returns the mapped particle id, or -1 if unmapped.
      *
@@ -80,9 +71,7 @@ public interface MappingData {
      * @throws NullPointerException if this mappingdata does not hold particle mappings
      */
     int getNewParticleId(int id);
-
     int getNewAttributeId(int id);
-
     /**
      * Returns a list of tags to send if present.
      *
@@ -90,14 +79,12 @@ public interface MappingData {
      * @return list of tags to send if present, else null
      */
     @Nullable List<TagData> getTags(RegistryType type);
-
     /**
      * Returns item mappings.
      *
      * @return item mappings
      */
     @Nullable BiMappings getItemMappings();
-
     /**
      * Returns item mappings if they also have identifier data present.
      *
@@ -105,32 +92,18 @@ public interface MappingData {
      * @see #getItemMappings()
      */
     @Nullable FullMappings getFullItemMappings();
-
     @Nullable ParticleMappings getParticleMappings();
-
     @Nullable Mappings getBlockMappings();
-
     @Nullable Mappings getBlockEntityMappings();
-
     @Nullable Mappings getBlockStateMappings();
-
     @Nullable Mappings getSoundMappings();
-
     @Nullable Mappings getStatisticsMappings();
-
     @Nullable Mappings getMenuMappings();
-
     @Nullable Mappings getEnchantmentMappings();
-
     @Nullable Mappings getAttributeMappings();
-
     @Nullable Mappings getPaintingMappings();
-
     @Nullable FullMappings getEntityMappings();
-
     @Nullable FullMappings getArgumentTypeMappings();
-
     @Nullable FullMappings getRecipeSerializerMappings();
-
     @Nullable FullMappings getDataComponentSerializerMappings();
 }

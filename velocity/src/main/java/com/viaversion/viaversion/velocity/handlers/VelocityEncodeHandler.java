@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.handlers;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.exception.CancelCodecException;
 import com.viaversion.viaversion.exception.CancelEncoderException;
@@ -25,15 +24,12 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import java.util.List;
-
 @ChannelHandler.Sharable
 public class VelocityEncodeHandler extends MessageToMessageEncoder<ByteBuf> {
     private final UserConnection info;
-
     public VelocityEncodeHandler(UserConnection info) {
         this.info = info;
     }
-
     @Override
     protected void encode(final ChannelHandlerContext ctx, ByteBuf bytebuf, List<Object> out) throws Exception {
         if (!info.checkOutgoingPacket()) throw CancelEncoderException.generate(null);
@@ -41,7 +37,6 @@ public class VelocityEncodeHandler extends MessageToMessageEncoder<ByteBuf> {
             out.add(bytebuf.retain());
             return;
         }
-
         ByteBuf transformedBuf = ctx.alloc().buffer().writeBytes(bytebuf);
         try {
             info.transformOutgoing(transformedBuf, CancelEncoderException::generate);
@@ -50,7 +45,6 @@ public class VelocityEncodeHandler extends MessageToMessageEncoder<ByteBuf> {
             transformedBuf.release();
         }
     }
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         if (cause instanceof CancelCodecException) return;

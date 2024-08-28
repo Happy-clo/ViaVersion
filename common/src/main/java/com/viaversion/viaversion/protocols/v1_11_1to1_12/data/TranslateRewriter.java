@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_11_1to1_12.data;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -26,9 +25,7 @@ import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ClientboundPacke
 import com.viaversion.viaversion.rewriter.ComponentRewriter;
 import com.viaversion.viaversion.util.SerializerVersion;
 import java.util.logging.Level;
-
 public class TranslateRewriter {
-
     private static final ComponentRewriter<ClientboundPackets1_9_3> ACHIEVEMENT_TEXT_REWRITER = new ComponentRewriter<>(null, ComponentRewriter.ReadType.JSON) {
         @Override
         protected void handleTranslate(JsonObject object, String translate) {
@@ -37,7 +34,6 @@ public class TranslateRewriter {
                 object.addProperty("translate", text);
             }
         }
-
         @Override
         protected void handleHoverEvent(UserConnection connection, JsonObject hoverEvent) {
             String action = hoverEvent.getAsJsonPrimitive("action").getAsString();
@@ -45,9 +41,7 @@ public class TranslateRewriter {
                 super.handleHoverEvent(connection, hoverEvent);
                 return;
             }
-
             String textValue = SerializerVersion.V1_9.toComponent(hoverEvent.get("value")).asUnformattedString();
-
             if (AchievementTranslations1_12.get(textValue) == null) {
                 JsonObject invalidText = new JsonObject();
                 invalidText.addProperty("text", "Invalid statistic/achievement!");
@@ -57,7 +51,6 @@ public class TranslateRewriter {
                 super.handleHoverEvent(connection, hoverEvent);
                 return;
             }
-
             try {
                 JsonObject newLine = new JsonObject();
                 newLine.addProperty("text", "\n");
@@ -98,7 +91,6 @@ public class TranslateRewriter {
             super.handleHoverEvent(connection, hoverEvent);
         }
     };
-
     public static void toClient(UserConnection connection, JsonElement element) {
         if (element instanceof JsonObject obj) {
             JsonElement translate = obj.get("translate");

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,27 +21,22 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.version;
-
 import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
 /**
  * Wrapper class file for {@link com.google.common.collect.Range} to support multiple ranges. This class is used to
  * compare {@link ProtocolVersion} objects.
  */
 public class ProtocolVersionRange {
-
     private List<Range<ProtocolVersion>> ranges;
-
     private ProtocolVersionRange(final List<Range<ProtocolVersion>> ranges) {
         if (ranges != null) {
             this.ranges = new ArrayList<>(ranges);
         }
     }
-
     /**
      * Returns a range that contains all versions.
      *
@@ -50,7 +45,6 @@ public class ProtocolVersionRange {
     public static ProtocolVersionRange all() {
         return new ProtocolVersionRange(null);
     }
-
     /**
      * Returns a range that contains only the given version.
      *
@@ -61,7 +55,6 @@ public class ProtocolVersionRange {
     public static ProtocolVersionRange of(final ProtocolVersion min, final ProtocolVersion max) {
         return new ProtocolVersionRange(Collections.singletonList(Range.open(min, max)));
     }
-
     /**
      * Returns a range that contains only the given version.
      *
@@ -71,7 +64,6 @@ public class ProtocolVersionRange {
     public static ProtocolVersionRange of(final Range<ProtocolVersion> range) {
         return new ProtocolVersionRange(Collections.singletonList(range));
     }
-
     /**
      * Returns a range that contains only the given version. The list can be immutable.
      *
@@ -81,7 +73,6 @@ public class ProtocolVersionRange {
     public static ProtocolVersionRange of(final List<Range<ProtocolVersion>> ranges) {
         return new ProtocolVersionRange(ranges);
     }
-
     /**
      * Adds a new range to this range. This method is only available if the range is not already containing all versions.
      *
@@ -95,7 +86,6 @@ public class ProtocolVersionRange {
         ranges.add(range);
         return this;
     }
-
     /**
      * Checks if the given version is included in this range.
      *
@@ -109,7 +99,6 @@ public class ProtocolVersionRange {
         }
         return false;
     }
-
     @Override
     public String toString() {
         if (this.ranges != null) {
@@ -119,12 +108,10 @@ public class ProtocolVersionRange {
                 i++;
                 final ProtocolVersion min = range.hasLowerBound() ? range.lowerEndpoint() : null;
                 final ProtocolVersion max = range.hasUpperBound() ? range.upperEndpoint() : null;
-
                 if (min == null) rangeString.append("<= ").append(max.getName());
                 else if (max == null) rangeString.append(">= ").append(min.getName());
                 else if (Objects.equals(min, max)) rangeString.append(min.getName());
                 else rangeString.append(min.getName()).append(" - ").append(max.getName());
-
                 if (i != this.ranges.size()) {
                     rangeString.append(", ");
                 }
@@ -133,7 +120,6 @@ public class ProtocolVersionRange {
         }
         return "*";
     }
-
     @Override
     public boolean equals(final Object object) {
         if (this == object) return true;
@@ -141,12 +127,10 @@ public class ProtocolVersionRange {
         ProtocolVersionRange that = (ProtocolVersionRange) object;
         return Objects.equals(ranges, that.ranges);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(ranges);
     }
-
     /**
      * Parses a range from a string.
      *
@@ -158,7 +142,6 @@ public class ProtocolVersionRange {
         else if (str.contains(",")) {
             String[] rangeParts = str.split(", ");
             ProtocolVersionRange versionRange = null;
-
             for (String part : rangeParts) {
                 if (versionRange == null) versionRange = of(parseSinglePart(part));
                 else versionRange.add(parseSinglePart(part));
@@ -168,7 +151,6 @@ public class ProtocolVersionRange {
             return of(parseSinglePart(str));
         }
     }
-
     private static Range<ProtocolVersion> parseSinglePart(final String part) {
         if (part.startsWith("<= ")) return Range.atMost(ProtocolVersion.getClosest(part.substring(3)));
         else if (part.startsWith(">= ")) return Range.atLeast(ProtocolVersion.getClosest(part.substring(3)));
@@ -179,5 +161,4 @@ public class ProtocolVersionRange {
             return Range.open(min, max);
         } else return Range.singleton(ProtocolVersion.getClosest(part));
     }
-
 }

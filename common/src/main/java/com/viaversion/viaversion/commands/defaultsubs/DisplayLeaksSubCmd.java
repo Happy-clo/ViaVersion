@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,33 +13,28 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.commands.defaultsubs;
-
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
 import io.netty.util.ResourceLeakDetector;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 public class DisplayLeaksSubCmd implements ViaSubCommand {
     @Override
     public String name() {
         return "displayleaks";
     }
-
     @Override
     public String description() {
         return "Try to hunt memory leaks!";
     }
-
     @Override
     public String usage() {
         return "displayleaks <level>";
     }
-
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
         if (args.length == 1) {
@@ -55,7 +50,6 @@ public class DisplayLeaksSubCmd implements ViaSubCommand {
         }
         return true;
     }
-
     @Override
     public List<String> onTabComplete(ViaCommandSender sender, String[] args) {
         if (args.length == 1) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,38 +21,30 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.math;
-
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class BlockPositionType1_14 extends Type<BlockPosition> {
     public BlockPositionType1_14() {
         super(BlockPosition.class);
     }
-
     @Override
     public BlockPosition read(ByteBuf buffer) {
         long val = buffer.readLong();
-
         long x = (val >> 38);
         long y = val << 52 >> 52;
         long z = val << 26 >> 38;
-
         return new BlockPosition((int) x, (int) y, (int) z);
     }
-
     @Override
     public void write(ByteBuf buffer, BlockPosition object) {
         buffer.writeLong((((long) object.x() & 0x3ffffff) << 38)
             | (object.y() & 0xfff)
             | ((((long) object.z()) & 0x3ffffff) << 12));
     }
-
     public static final class OptionalBlockPositionType extends OptionalType<BlockPosition> {
-
         public OptionalBlockPositionType() {
             super(Types.BLOCK_POSITION1_14);
         }

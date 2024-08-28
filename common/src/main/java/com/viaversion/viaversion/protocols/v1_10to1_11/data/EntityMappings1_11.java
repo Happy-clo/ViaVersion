@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,20 +13,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_10to1_11.data;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.StringTag;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.util.Key;
-
 public class EntityMappings1_11 {
     private static final BiMap<String, String> oldToNewNames = HashBiMap.create();
-
     static {
         rewrite("AreaEffectCloud", "area_effect_cloud");
         rewrite("ArmorStand", "armor_stand");
@@ -104,15 +101,12 @@ public class EntityMappings1_11 {
         rewrite("ZombieHorse", "zombie_horse");
         rewrite("ZombieVillager", "zombie_villager");
     }
-
     private static void rewrite(String oldName, String newName) {
         oldToNewNames.put(oldName, Key.namespaced(newName));
     }
-
     public static void toClient(CompoundTag tag) {
         toClient(tag, false);
     }
-
     public static void toClient(CompoundTag tag, boolean backwards) {
         StringTag idTag = tag.getStringTag("id");
         if (idTag != null) {
@@ -122,37 +116,29 @@ public class EntityMappings1_11 {
             }
         }
     }
-
     public static void toClientSpawner(CompoundTag tag) {
         toClientSpawner(tag, false);
     }
-
     public static void toClientSpawner(CompoundTag tag, boolean backwards) {
         if (tag == null) return;
-
         CompoundTag spawnDataTag = tag.getCompoundTag("SpawnData");
         if (spawnDataTag != null) {
             toClient(spawnDataTag, backwards);
         }
     }
-
     public static void toClientItem(Item item) {
         toClientItem(item, false);
     }
-
     public static void toClientItem(Item item, boolean backwards) {
         if (hasEntityTag(item)) {
             toClient(item.tag().getCompoundTag("EntityTag"), backwards);
         }
     }
-
     public static void toServerItem(Item item) {
         toServerItem(item, false);
     }
-
     public static void toServerItem(Item item, boolean backwards) {
         if (!hasEntityTag(item)) return;
-
         CompoundTag entityTag = item.tag().getCompoundTag("EntityTag");
         StringTag idTag = entityTag.getStringTag("id");
         if (idTag != null) {
@@ -162,13 +148,10 @@ public class EntityMappings1_11 {
             }
         }
     }
-
     private static boolean hasEntityTag(Item item) {
-        if (item == null || item.identifier() != 383) return false; // Monster Egg
-
+        if (item == null || item.identifier() != 383) return false; 
         CompoundTag tag = item.tag();
         if (tag == null) return false;
-
         CompoundTag entityTag = tag.getCompoundTag("EntityTag");
         return entityTag != null && entityTag.getStringTag("id") != null;
     }

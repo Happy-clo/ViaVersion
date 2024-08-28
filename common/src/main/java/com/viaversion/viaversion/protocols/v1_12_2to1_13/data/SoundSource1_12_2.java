@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,12 +13,10 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.data;
-
 import java.util.Optional;
-
 public enum SoundSource1_12_2 {
     MASTER("master", 0),
     MUSIC("music", 1),
@@ -30,26 +28,21 @@ public enum SoundSource1_12_2 {
     PLAYER("player", 7),
     AMBIENT("ambient", 8),
     VOICE("voice", 9);
-
     private final String name;
     private final int id;
-
     SoundSource1_12_2(String name, int id) {
         this.name = name;
         this.id = id;
     }
-
     public static Optional<SoundSource1_12_2> findBySource(String source) {
         for (SoundSource1_12_2 item : SoundSource1_12_2.values())
             if (item.name.equalsIgnoreCase(source))
                 return Optional.of(item);
         return Optional.empty();
     }
-
     public String getName() {
         return name;
     }
-
     public int getId() {
         return id;
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.tasks.v1_18_2to1_19;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -25,17 +24,13 @@ import com.viaversion.viaversion.protocols.v1_18_2to1_19.Protocol1_18_2To1_19;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.packet.ClientboundPackets1_19;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.storage.SequenceStorage;
 import java.util.logging.Level;
-
 public final class AckSequenceTask implements Runnable {
-
     private final UserConnection connection;
     private final SequenceStorage sequenceStorage;
-
     public AckSequenceTask(final UserConnection connection, final SequenceStorage sequenceStorage) {
         this.connection = connection;
         this.sequenceStorage = sequenceStorage;
     }
-
     @Override
     public void run() {
         final int sequence = sequenceStorage.setSequenceId(-1);

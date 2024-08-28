@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api;
-
 import com.viaversion.viaversion.api.command.ViaVersionCommand;
 import com.viaversion.viaversion.api.configuration.ConfigurationProvider;
 import com.viaversion.viaversion.api.connection.ConnectionManager;
@@ -33,72 +32,61 @@ import com.viaversion.viaversion.api.platform.providers.ViaProviders;
 import com.viaversion.viaversion.api.protocol.ProtocolManager;
 import com.viaversion.viaversion.api.scheduler.Scheduler;
 import java.util.Set;
-
 public interface ViaManager {
-
     /**
      * Returns the protocol manager for registering/getting protocols and their mapping data loading.
      *
      * @return protocol manager
      */
     ProtocolManager getProtocolManager();
-
     /**
      * Returns platform for handling platform specific configuration, tasks, and plugin data.
      *
      * @return platform
      */
     ViaPlatform<?> getPlatform();
-
     /**
      * Returns the userconnection manager for handling clients connected to the server.
      *
      * @return userconnection manager
      */
     ConnectionManager getConnectionManager();
-
     /**
      * Returns the manager for Via providers.
      *
      * @return provider manager
      */
     ViaProviders getProviders();
-
     /**
      * Returns the injector for injecting netty handlers and initially getting the server protocol version.
      *
      * @return injector
      */
     ViaInjector getInjector();
-
     /**
      * Returns the command handler for managing ViaVersion subcommands.
      *
      * @return command handler
      */
     ViaVersionCommand getCommandHandler();
-
     /**
      * Returns the platform loader responsible for registering listeners, providers and such.
      *
      * @return platform loader
      */
     ViaPlatformLoader getLoader();
-
     /**
      * Returns the async task scheduler.
      *
      * @return async task scheduler
      */
     Scheduler getScheduler();
-
     /**
      * Returns the configuration provider.
      *
      * @return the configuration provider
      */
     ConfigurationProvider getConfigurationProvider();
-
     /**
      * If debug is enabled, packets and other otherwise suppressed warnings will be logged.
      *
@@ -107,7 +95,6 @@ public interface ViaManager {
     default boolean isDebug() {
         return debugHandler().enabled();
     }
-
     /**
      * Sets the debug mode. If enabled, packets and other otherwise suppressed warnings will be logged.
      *
@@ -117,14 +104,12 @@ public interface ViaManager {
     default void setDebug(boolean debug) {
         debugHandler().setEnabled(debug);
     }
-
     /**
      * Returns the debug handler.
      *
      * @return debug handler
      */
     DebugHandler debugHandler();
-
     /**
      * Returns a mutable set of self-added subplatform version strings.
      * This set is expanded by the subplatform itself (e.g. ViaBackwards), and may not contain all running ones.
@@ -132,26 +117,22 @@ public interface ViaManager {
      * @return mutable set of subplatform versions
      */
     Set<String> getSubPlatforms();
-
     /**
      * Adds a runnable to be executed when ViaVersion has finished its init before the full server load.
      *
      * @param runnable runnable to be executed
      */
     void addEnableListener(Runnable runnable);
-
     /**
      * Adds a runnable to be executed when ViaVersion has finished its init after the full server load.
      *
      * @param runnable runnable to be executed
      */
     void addPostEnableListener(Runnable runnable);
-
     /**
      * Returns whether the manager has been initialized (and protocols have been loaded).
      *
      * @return whether the manager has been initialized
      */
     boolean isInitialized();
-
 }

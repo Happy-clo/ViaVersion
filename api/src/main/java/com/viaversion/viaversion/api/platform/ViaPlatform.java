@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.platform;
-
 import com.google.gson.JsonObject;
 import com.viaversion.viaversion.api.ViaAPI;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
@@ -32,35 +31,30 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 import java.util.logging.Logger;
-
 /**
  * ViaPlatform represents a platform ViaVersion runs on
  *
  * @param <T> - The player type for the platform, used for API related methods
  */
 public interface ViaPlatform<T> {
-
     /**
      * Get the logger for this platform
      *
      * @return Java Logger (may be a wrapper)
      */
     Logger getLogger();
-
     /**
      * Get the platform name
      *
      * @return Platform Name (simply its name)
      */
     String getPlatformName();
-
     /**
      * Get the platform version
      *
      * @return Platform version
      */
     String getPlatformVersion();
-
     /**
      * Returns true if the server Via is running on is a proxy server.
      *
@@ -69,14 +63,12 @@ public interface ViaPlatform<T> {
     default boolean isProxy() {
         return false;
     }
-
     /**
      * Get the plugin version
      *
      * @return Plugin version as a semver string
      */
     String getPluginVersion();
-
     /**
      * Run a task Async
      *
@@ -84,7 +76,6 @@ public interface ViaPlatform<T> {
      * @return The Task ID
      */
     PlatformTask runAsync(Runnable runnable);
-
     /**
      * Run a task async at a repeating interval.
      *
@@ -93,7 +84,6 @@ public interface ViaPlatform<T> {
      * @return The Task ID
      */
     PlatformTask runRepeatingAsync(Runnable runnable, long ticks);
-
     /**
      * Run a task Sync
      *
@@ -101,7 +91,6 @@ public interface ViaPlatform<T> {
      * @return The Task ID
      */
     PlatformTask runSync(Runnable runnable);
-
     /**
      * Runs a synchronous task after a delay in ticks.
      *
@@ -110,7 +99,6 @@ public interface ViaPlatform<T> {
      * @return created task
      */
     PlatformTask runSync(Runnable runnable, long delay);
-
     /**
      * Runs a synchronous task at a repeating interval.
      *
@@ -119,14 +107,12 @@ public interface ViaPlatform<T> {
      * @return created task
      */
     PlatformTask runRepeatingSync(Runnable runnable, long period);
-
     /**
      * Get the online players
      *
      * @return Array of ViaCommandSender
      */
     ViaCommandSender[] getOnlinePlayers();
-
     /**
      * Send a message to a player
      *
@@ -134,7 +120,6 @@ public interface ViaPlatform<T> {
      * @param message The message to send
      */
     void sendMessage(UUID uuid, String message);
-
     /**
      * Kick a player for a reason
      *
@@ -143,7 +128,6 @@ public interface ViaPlatform<T> {
      * @return True if it was successful
      */
     boolean kickPlayer(UUID uuid, String message);
-
     /**
      * Disconnects an UserConnection for a reason
      *
@@ -157,47 +141,40 @@ public interface ViaPlatform<T> {
         if (uuid == null) return false;
         return kickPlayer(uuid, message);
     }
-
     /**
      * Check if the plugin is enabled.
      *
      * @return True if it is enabled
      */
     boolean isPluginEnabled();
-
     /**
      * Get the API for this platform
      *
      * @return The API for the platform
      */
     ViaAPI<T> getApi();
-
     /**
      * Get the config API for this platform
      *
      * @return The config API
      */
     ViaVersionConfig getConf();
-
     /**
      * Get ViaVersions's data folder.
      *
      * @return data folder
      */
     File getDataFolder();
-
     /**
      * Called when a reload happens
      */
     void onReload();
-
     /**
      * Get the JSON data required for /viaversion dump
      *
      * @return The json data
      */
     JsonObject getDump();
-
     /**
      * Returns an immutable collection of classes to be checked as unsupported software with their software name.
      * If any of the classes exist at runtime, a warning about their potential instability will be given to the console.
@@ -207,7 +184,6 @@ public interface ViaPlatform<T> {
     default Collection<UnsupportedSoftware> getUnsupportedSoftwareClasses() {
         return Collections.emptyList();
     }
-
     /**
      * Returns whether the platform has a plugin/mod with the given name (even if disabled).
      *
@@ -215,7 +191,6 @@ public interface ViaPlatform<T> {
      * @return whether the platform has a plugin/mod with the given name
      */
     boolean hasPlugin(String name);
-
     /**
      * Returns whether the platform might be reloading.
      *

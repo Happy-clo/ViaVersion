@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,40 +13,34 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.rewriter.entitydata;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.data.entity.TrackedEntity;
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface EntityDataHandlerEvent {
-
     /**
      * Returns the user connection the entity data is sent to.
      *
      * @return user connection
      */
     UserConnection user();
-
     /**
      * Returns the entity id of the entity.
      *
      * @return entity id
      */
     int entityId();
-
     /**
      * Returns the tracked entity if present.
      *
      * @return tracked entity if present, else null
      */
     @Nullable TrackedEntity trackedEntity();
-
     /**
      * Returns the entity type of the entity data belongs to if tracked.
      *
@@ -55,7 +49,6 @@ public interface EntityDataHandlerEvent {
     default @Nullable EntityType entityType() {
         return trackedEntity() != null ? trackedEntity().entityType() : null;
     }
-
     /**
      * Returns the entity data index.
      *
@@ -64,7 +57,6 @@ public interface EntityDataHandlerEvent {
     default int index() {
         return data().id();
     }
-
     /**
      * Sets the entity data index.
      *
@@ -73,26 +65,22 @@ public interface EntityDataHandlerEvent {
     default void setIndex(int index) {
         data().setId(index);
     }
-
     /**
      * Returns the entity data.
      *
      * @return return entity data
      */
     EntityData data();
-
     /**
      * Prevents other handlers from being called with this entity data entry and removes it from the list.
      */
     void cancel();
-
     /**
      * Returns whether this entity data entry should be removed.
      *
      * @return true if cancelled/removed
      */
     boolean cancelled();
-
     /**
      * Returns entity data by the given index if present.
      *
@@ -100,7 +88,6 @@ public interface EntityDataHandlerEvent {
      * @return entity data if present, else null
      */
     @Nullable EntityData dataAtIndex(int index);
-
     /**
      * Returns an immutable entity data view.
      * This list is not sorted or indexed by the actual entity data indexes.
@@ -111,7 +98,6 @@ public interface EntityDataHandlerEvent {
      * @see #createExtraData(EntityData)
      */
     List<EntityData> dataList();
-
     /**
      * Returns additionally created entity data.
      * May be null; use {@link #createExtraData(EntityData)} for adding entity data.
@@ -119,7 +105,6 @@ public interface EntityDataHandlerEvent {
      * @return additionally created entity data if present
      */
     @Nullable List<EntityData> extraData();
-
     /**
      * Returns whether additionally created entity data will be added.
      *
@@ -128,7 +113,6 @@ public interface EntityDataHandlerEvent {
     default boolean hasExtraData() {
         return extraData() != null;
     }
-
     /**
      * Adds the given entity data to the entity data list.
      * This entity data will not be passed through handlers of the current loop.

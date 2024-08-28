@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.chunk;
-
 import com.viaversion.viaversion.api.minecraft.chunks.ChunkSection;
 import com.viaversion.viaversion.api.minecraft.chunks.ChunkSectionImpl;
 import com.viaversion.viaversion.api.minecraft.chunks.DataPalette;
@@ -29,33 +28,24 @@ import com.viaversion.viaversion.api.minecraft.chunks.PaletteType;
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
 import java.nio.ByteOrder;
-
 public class ChunkSectionType1_8 extends Type<ChunkSection> {
-
     public ChunkSectionType1_8() {
         super(ChunkSection.class);
     }
-
     @Override
     public ChunkSection read(ByteBuf buffer) {
         ChunkSection chunkSection = new ChunkSectionImpl(true);
         DataPalette blocks = chunkSection.palette(PaletteType.BLOCKS);
-
-        // 0 index needs to be air in 1.9
         blocks.addId(0);
-
         ByteBuf littleEndianView = buffer.order(ByteOrder.LITTLE_ENDIAN);
         for (int idx = 0; idx < ChunkSection.SIZE; idx++) {
             blocks.setIdAt(idx, littleEndianView.readUnsignedShort());
         }
-
         return chunkSection;
     }
-
     @Override
     public void write(ByteBuf buffer, ChunkSection chunkSection) {
         DataPalette blocks = chunkSection.palette(PaletteType.BLOCKS);
-
         ByteBuf littleEndianView = buffer.order(ByteOrder.LITTLE_ENDIAN);
         for (int idx = 0; idx < ChunkSection.SIZE; idx++) {
             littleEndianView.writeShort(blocks.idAt(idx));

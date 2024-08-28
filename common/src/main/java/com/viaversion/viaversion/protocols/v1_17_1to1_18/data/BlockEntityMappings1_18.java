@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,35 +13,29 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_17_1to1_18.data;
-
 import com.viaversion.viaversion.protocols.v1_17_1to1_18.Protocol1_17_1To1_18;
 import java.util.Arrays;
-
 public final class BlockEntityMappings1_18 {
-
     private static final int[] IDS = new int[14];
-
     static {
-        // Only fills the ids that actually have block entity update packets sent
         Arrays.fill(IDS, -1);
-        IDS[1] = 8; // Spawner
-        IDS[2] = 21; // Command block
-        IDS[3] = 13; // Beacon
-        IDS[4] = 14; // Skull
-        IDS[5] = 24; // Conduit
-        IDS[6] = 18; // Banner
-        IDS[7] = 19; // Structure block
-        IDS[8] = 20; // End gateway
-        IDS[9] = 7; // Sign
-        IDS[10] = 22; // Shulker box
-        IDS[11] = 23; // Bed
-        IDS[12] = 30; // Jigsaw
-        IDS[13] = 31; // Campfire
+        IDS[1] = 8; 
+        IDS[2] = 21; 
+        IDS[3] = 13; 
+        IDS[4] = 14; 
+        IDS[5] = 24; 
+        IDS[6] = 18; 
+        IDS[7] = 19; 
+        IDS[8] = 20; 
+        IDS[9] = 7; 
+        IDS[10] = 22; 
+        IDS[11] = 23; 
+        IDS[12] = 30; 
+        IDS[13] = 31; 
     }
-
     public static int newId(final int id) {
         final int newId;
         if (id < 0 || id > IDS.length || (newId = IDS[id]) == -1) {
@@ -50,7 +44,6 @@ public final class BlockEntityMappings1_18 {
         }
         return newId;
     }
-
     public static int[] getIds() {
         return IDS;
     }

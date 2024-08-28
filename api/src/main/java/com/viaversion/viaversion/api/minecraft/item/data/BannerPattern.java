@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.HolderType;
 import io.netty.buffer.ByteBuf;
-
 public record BannerPattern(String assetId, String translationKey) {
-
     public static final HolderType<BannerPattern> TYPE = new HolderType<>() {
         @Override
         public BannerPattern readDirect(final ByteBuf buffer) {
@@ -35,12 +32,10 @@ public record BannerPattern(String assetId, String translationKey) {
             final String translationKey = Types.STRING.read(buffer);
             return new BannerPattern(assetId, translationKey);
         }
-
         @Override
         public void writeDirect(final ByteBuf buffer, final BannerPattern value) {
             Types.STRING.write(buffer, value.assetId);
             Types.STRING.write(buffer, value.translationKey);
         }
     };
-
 }

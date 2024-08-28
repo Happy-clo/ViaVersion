@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.entitydata.types;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityDataType;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.ParticleType;
-
 public final class EntityDataTypes1_19_4 extends AbstractEntityDataTypes {
-
     public final EntityDataType byteType = add(0, Types.BYTE);
     public final EntityDataType varIntType = add(1, Types.VAR_INT);
     public final EntityDataType longType = add(2, Types.VAR_LONG);
@@ -56,7 +53,6 @@ public final class EntityDataTypes1_19_4 extends AbstractEntityDataTypes {
     public final EntityDataType snifferState = add(25, Types.VAR_INT);
     public final EntityDataType vector3FType = add(26, Types.VECTOR3F);
     public final EntityDataType quaternionType = add(27, Types.QUATERNION);
-
     public EntityDataTypes1_19_4(final ParticleType particleType) {
         super(28);
         this.particleType = add(17, particleType);

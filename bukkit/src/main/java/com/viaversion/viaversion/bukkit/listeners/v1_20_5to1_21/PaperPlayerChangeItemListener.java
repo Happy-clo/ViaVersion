@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.listeners.v1_20_5to1_21;
-
 import com.viaversion.viaversion.ViaVersionPlugin;
 import io.papermc.paper.event.player.PlayerInventorySlotChangeEvent;
 import org.bukkit.entity.Player;
@@ -24,13 +23,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-
 public final class PaperPlayerChangeItemListener extends PlayerChangeItemListener {
-
     public PaperPlayerChangeItemListener(final ViaVersionPlugin plugin) {
         super(plugin);
     }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInventorySlotChangedEvent(final PlayerInventorySlotChangeEvent event) {
         final Player player = event.getPlayer();
@@ -47,5 +43,4 @@ public final class PaperPlayerChangeItemListener extends PlayerChangeItemListene
             sendAttributeUpdate(player, item, Slot.HELMET);
         }
     }
-
 }

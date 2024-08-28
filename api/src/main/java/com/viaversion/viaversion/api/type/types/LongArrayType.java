@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,17 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class LongArrayType extends Type<long[]> {
-
     public LongArrayType() {
         super(long[].class);
     }
-
     @Override
     public long[] read(ByteBuf buffer) {
         int length = Types.VAR_INT.readPrimitive(buffer);
@@ -41,7 +37,6 @@ public class LongArrayType extends Type<long[]> {
         }
         return array;
     }
-
     @Override
     public void write(ByteBuf buffer, long[] object) {
         Types.VAR_INT.writePrimitive(buffer, object.length);

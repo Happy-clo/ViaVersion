@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -25,19 +24,14 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
-
 public abstract class AbstractStempConnectionHandler implements ConnectionHandler {
     private static final BlockFace[] BLOCK_FACES = {BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST};
-
     private final IntSet blockId = new IntOpenHashSet();
     private final int baseStateId;
-
     private final Map<BlockFace, Integer> stemps = new EnumMap<>(BlockFace.class);
-
     protected AbstractStempConnectionHandler(String baseStateId) {
         this.baseStateId = ConnectionData.getId(baseStateId);
     }
-
     ConnectionData.ConnectorInitAction getInitAction(final String blockId, final String toKey) {
         final AbstractStempConnectionHandler handler = this;
         return blockData -> {
@@ -53,7 +47,6 @@ public abstract class AbstractStempConnectionHandler implements ConnectionHandle
             }
         };
     }
-
     @Override
     public int connect(UserConnection user, BlockPosition position, int blockState) {
         if (blockState != baseStateId) {

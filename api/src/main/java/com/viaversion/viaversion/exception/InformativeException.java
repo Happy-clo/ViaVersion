@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,40 +21,31 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.exception;
-
 import java.util.HashMap;
 import java.util.Map;
-
 public class InformativeException extends RuntimeException {
     private final Map<String, Object> info = new HashMap<>();
     private boolean shouldBePrinted = true;
     private int sources;
-
     public InformativeException(Throwable cause) {
         super(cause);
     }
-
     public InformativeException set(String key, Object value) {
         info.put(key, value);
         return this;
     }
-
     public InformativeException addSource(Class<?> sourceClazz) {
         return set("Source " + sources++, getSource(sourceClazz));
     }
-
     private String getSource(Class<?> sourceClazz) {
         return sourceClazz.isAnonymousClass() ? sourceClazz.getName() + " (Anonymous)" : sourceClazz.getName();
     }
-
     public boolean shouldBePrinted() {
         return shouldBePrinted;
     }
-
     public void setShouldBePrinted(final boolean shouldBePrinted) {
         this.shouldBePrinted = shouldBePrinted;
     }
-
     @Override
     public String getMessage() {
         StringBuilder builder = new StringBuilder("Please report this on the Via support Discord or open an issue on the relevant GitHub repository\n");
@@ -68,10 +59,8 @@ public class InformativeException extends RuntimeException {
         }
         return builder.toString();
     }
-
     @Override
     public Throwable fillInStackTrace() {
-        // Don't record this stack
         return this;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.data;
-
 import com.viaversion.viaversion.util.IdHolder;
 import io.netty.buffer.ByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface StructuredData<T> extends IdHolder {
-
     /**
      * Returns filled structured data, equivalent to an Optional with a value in vanilla.
      *
@@ -40,7 +37,6 @@ public interface StructuredData<T> extends IdHolder {
     static <T> StructuredData<T> of(final StructuredDataKey<T> key, final T value, final int id) {
         return new FilledStructuredData<>(key, value, id);
     }
-
     /**
      * Returns empty structured data, equivalent to an empty Optional in vanilla.
      *
@@ -51,17 +47,11 @@ public interface StructuredData<T> extends IdHolder {
     static <T> StructuredData<T> empty(final StructuredDataKey<T> key, final int id) {
         return new EmptyStructuredData<>(key, id);
     }
-
     void setValue(final T value);
-
     void write(final ByteBuf buffer);
-
     void setId(final int id);
-
     StructuredDataKey<T> key();
-
     @Nullable T value();
-
     /**
      * Returns whether the structured data is present. Even if true, the value may be null.
      *
@@ -70,7 +60,6 @@ public interface StructuredData<T> extends IdHolder {
     default boolean isPresent() {
         return !isEmpty();
     }
-
     /**
      * Returns whether the structured data is empty. Not to be confused with a null value.
      *

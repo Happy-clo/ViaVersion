@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.platform;
-
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import java.io.File;
@@ -25,16 +24,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 public class VelocityViaConfig extends AbstractViaConfig {
     private int velocityPingInterval;
     private boolean velocityPingSave;
     private Map<String, Integer> velocityServerProtocols;
-
     public VelocityViaConfig(File folder, Logger logger) {
         super(new File(folder, "config.yml"), logger);
     }
-
     @Override
     protected void loadFields() {
         super.loadFields();
@@ -42,17 +38,14 @@ public class VelocityViaConfig extends AbstractViaConfig {
         velocityPingSave = getBoolean("velocity-ping-save", true);
         velocityServerProtocols = get("velocity-servers", new HashMap<>());
     }
-
     @Override
     protected void handleConfig(Map<String, Object> config) {
-        // Parse servers
         Map<String, Object> servers;
         if (config.get("velocity-servers") instanceof Map velocityServers) {
             servers = velocityServers;
         } else {
             servers = new HashMap<>();
         }
-        // Convert any bad Protocol Ids
         for (Map.Entry<String, Object> entry : new HashSet<>(servers.entrySet())) {
             if (!(entry.getValue() instanceof Integer)) {
                 if (entry.getValue() instanceof String protocol) {
@@ -60,32 +53,26 @@ public class VelocityViaConfig extends AbstractViaConfig {
                     if (found != null) {
                         servers.put(entry.getKey(), found.getVersion());
                     } else {
-                        servers.remove(entry.getKey()); // Remove!
+                        servers.remove(entry.getKey()); 
                     }
                 } else {
-                    servers.remove(entry.getKey()); // Remove!
+                    servers.remove(entry.getKey()); 
                 }
             }
         }
-        // Ensure default exists
         if (!servers.containsKey("default")) {
-            // Side note: This doesn't use ProtocolRegistry as it doesn't know the protocol version at boot.
             try {
                 servers.put("default", VelocityViaInjector.getLowestSupportedProtocolVersion());
             } catch (Exception e) {
-                // Something went very wrong
                 e.printStackTrace();
             }
         }
-        // Put back
         config.put("velocity-servers", servers);
     }
-
     @Override
     public List<String> getUnsupportedOptions() {
         return BUKKIT_ONLY_OPTIONS;
     }
-
     /**
      * What is the interval for checking servers via ping
      * -1 for disabled
@@ -95,7 +82,6 @@ public class VelocityViaConfig extends AbstractViaConfig {
     public int getVelocityPingInterval() {
         return velocityPingInterval;
     }
-
     /**
      * Should the velocity ping be saved to the config on change.
      *
@@ -104,7 +90,6 @@ public class VelocityViaConfig extends AbstractViaConfig {
     public boolean isVelocityPingSave() {
         return velocityPingSave;
     }
-
     /**
      * Get the listed server protocols in the config.
      * default will be listed as default.

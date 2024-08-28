@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,49 +21,40 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item;
-
 import com.google.gson.annotations.SerializedName;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.minecraft.data.StructuredDataContainer;
 import java.util.Objects;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class DataItem implements Item {
     @SerializedName(value = "identifier", alternate = "id")
     private int identifier;
     private byte amount;
     private short data;
     private CompoundTag tag;
-
     public DataItem() {
     }
-
     public DataItem(int identifier, byte amount, @Nullable CompoundTag tag) {
         this(identifier, amount, (short) 0, tag);
     }
-
     public DataItem(int identifier, byte amount, short data, @Nullable CompoundTag tag) {
         this.identifier = identifier;
         this.amount = amount;
         this.data = data;
         this.tag = tag;
     }
-
     @Override
     public int identifier() {
         return identifier;
     }
-
     @Override
     public void setIdentifier(int identifier) {
         this.identifier = identifier;
     }
-
     @Override
     public int amount() {
         return amount;
     }
-
     @Override
     public void setAmount(int amount) {
         if (amount != (byte) amount) {
@@ -71,37 +62,30 @@ public class DataItem implements Item {
         }
         this.amount = (byte) amount;
     }
-
     @Override
     public short data() {
         return data;
     }
-
     @Override
     public void setData(short data) {
         this.data = data;
     }
-
     @Override
     public @Nullable CompoundTag tag() {
         return tag;
     }
-
     @Override
     public void setTag(@Nullable CompoundTag tag) {
         this.tag = tag;
     }
-
     @Override
     public StructuredDataContainer dataContainer() {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public DataItem copy() {
         return new DataItem(identifier, amount, data, tag != null ? tag.copy() : null);
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -112,7 +96,6 @@ public class DataItem implements Item {
         if (data != item.data) return false;
         return Objects.equals(tag, item.tag);
     }
-
     @Override
     public int hashCode() {
         int result = identifier;
@@ -121,7 +104,6 @@ public class DataItem implements Item {
         result = 31 * result + (tag != null ? tag.hashCode() : 0);
         return result;
     }
-
     @Override
     public String toString() {
         return "DataItem{" +

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,30 +13,25 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.base;
-
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.protocols.base.packet.BaseServerboundPacket;
-
 public enum ServerboundLoginPackets implements BaseServerboundPacket {
-    HELLO, // 0x00
-    ENCRYPTION_KEY, // 0x01
-    CUSTOM_QUERY_ANSWER, // 0x02
-    LOGIN_ACKNOWLEDGED, // 0x03
-    COOKIE_RESPONSE; // 0x04
-
+    HELLO, 
+    ENCRYPTION_KEY, 
+    CUSTOM_QUERY_ANSWER, 
+    LOGIN_ACKNOWLEDGED, 
+    COOKIE_RESPONSE; 
     @Override
     public final int getId() {
         return ordinal();
     }
-
     @Override
     public final String getName() {
         return name();
     }
-
     @Override
     public final State state() {
         return State.LOGIN;

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,9 +21,7 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.legacy.bossbar;
-
 public enum BossColor {
-
     PINK(0),
     BLUE(1),
     RED(2),
@@ -31,13 +29,10 @@ public enum BossColor {
     YELLOW(4),
     PURPLE(5),
     WHITE(6);
-
     private final int id;
-
     BossColor(int id) {
         this.id = id;
     }
-
     public int getId() {
         return id;
     }

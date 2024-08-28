@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,17 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.math;
-
 import com.viaversion.viaversion.api.minecraft.Vector3f;
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
-
 public class Vector3fType extends Type<Vector3f> {
-
     public Vector3fType() {
         super(Vector3f.class);
     }
-
     @Override
     public Vector3f read(final ByteBuf buffer) {
         final float x = buffer.readFloat();
@@ -39,7 +35,6 @@ public class Vector3fType extends Type<Vector3f> {
         final float z = buffer.readFloat();
         return new Vector3f(x, y, z);
     }
-
     @Override
     public void write(final ByteBuf buffer, final Vector3f object) {
         buffer.writeFloat(object.x());

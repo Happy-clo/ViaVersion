@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,10 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type;
-
 import com.viaversion.viaversion.util.Either;
 import io.netty.buffer.ByteBuf;
-
 /**
  * Type for buffer reading and writing.
  *
@@ -32,20 +30,15 @@ import io.netty.buffer.ByteBuf;
  * @see Types
  */
 public abstract class Type<T> implements ByteBufReader<T>, ByteBufWriter<T> {
-
-    /* Actual Class */
     private final Class<? super T> outputClass;
     private final String typeName;
-
     protected Type(Class<? super T> outputClass) {
         this(null, outputClass);
     }
-
     protected Type(String typeName, Class<? super T> outputClass) {
         this.outputClass = outputClass;
         this.typeName = typeName;
     }
-
     /**
      * Returns the output class type.
      *
@@ -54,7 +47,6 @@ public abstract class Type<T> implements ByteBufReader<T>, ByteBufWriter<T> {
     public Class<? super T> getOutputClass() {
         return outputClass;
     }
-
     /**
      * Returns the type name.
      *
@@ -63,7 +55,6 @@ public abstract class Type<T> implements ByteBufReader<T>, ByteBufWriter<T> {
     public String getTypeName() {
         return typeName != null ? typeName : this.getClass().getSimpleName();
     }
-
     /**
      * Returns the base class, useful when the output class is insufficient for type comparison.
      * One such case are types with {{@link java.util.List}} as their output type.
@@ -73,12 +64,10 @@ public abstract class Type<T> implements ByteBufReader<T>, ByteBufWriter<T> {
     public Class<? extends Type> getBaseClass() {
         return this.getClass();
     }
-
     @Override
     public String toString() {
         return getTypeName();
     }
-
     public static <X, Y> Either<X, Y> readEither(final ByteBuf buf, final Type<X> leftType, final Type<Y> rightType) {
         if (buf.readBoolean()) {
             return Either.left(leftType.read(buf));
@@ -86,7 +75,6 @@ public abstract class Type<T> implements ByteBufReader<T>, ByteBufWriter<T> {
             return Either.right(rightType.read(buf));
         }
     }
-
     public static <X, Y> void writeEither(final ByteBuf buf, final Either<X, Y> value, final Type<X> leftType, final Type<Y> rightType) {
         if (value.isLeft()) {
             buf.writeBoolean(true);

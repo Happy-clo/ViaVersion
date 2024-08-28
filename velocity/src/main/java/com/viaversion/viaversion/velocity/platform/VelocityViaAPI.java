@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,22 +13,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.platform;
-
 import com.velocitypowered.api.proxy.Player;
 import com.viaversion.viaversion.ViaAPIBase;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.buffer.ByteBuf;
-
 public class VelocityViaAPI extends ViaAPIBase<Player> {
-
     @Override
     public ProtocolVersion getPlayerProtocolVersion(Player player) {
         return getPlayerProtocolVersion(player.getUniqueId());
     }
-
     @Override
     public void sendRawPacket(Player player, ByteBuf packet) throws IllegalArgumentException {
         sendRawPacket(player.getUniqueId(), packet);

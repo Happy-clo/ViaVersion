@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,28 +13,22 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.unsupported;
-
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Set;
-
 public final class UnsupportedMethods {
-
     private final String className;
     private final Set<String> methodNames;
-
     public UnsupportedMethods(String className, Set<String> methodNames) {
         this.className = className;
         this.methodNames = Collections.unmodifiableSet(methodNames);
     }
-
     public String getClassName() {
         return className;
     }
-
     public final boolean findMatch() {
         try {
             for (Method method : Class.forName(className).getDeclaredMethods()) {

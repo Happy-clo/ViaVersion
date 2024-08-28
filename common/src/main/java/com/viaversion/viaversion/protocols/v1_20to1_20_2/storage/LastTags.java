@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20to1_20_2.storage;
-
 import com.viaversion.viaversion.api.connection.StorableObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.TagData;
@@ -27,11 +26,8 @@ import com.viaversion.viaversion.protocols.v1_20to1_20_2.packet.ClientboundConfi
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 public class LastTags implements StorableObject {
-
     private final List<RegistryTags> registryTags = new ArrayList<>();
-
     public LastTags(final PacketWrapper wrapper) {
         final int length = wrapper.passthrough(Types.VAR_INT);
         for (int i = 0; i < length; i++) {
@@ -46,12 +42,10 @@ public class LastTags implements StorableObject {
             this.registryTags.add(new RegistryTags(registryKey, tags));
         }
     }
-
     public void sendLastTags(final UserConnection connection) {
         if (registryTags.isEmpty()) {
             return;
         }
-
         final PacketWrapper packet = PacketWrapper.create(ClientboundConfigurationPackets1_20_2.UPDATE_TAGS, connection);
         packet.write(Types.VAR_INT, registryTags.size());
         for (final RegistryTags registryTag : registryTags) {
@@ -64,7 +58,6 @@ public class LastTags implements StorableObject {
         }
         packet.send(Protocol1_20To1_20_2.class);
     }
-
     private record RegistryTags(String registryKey, List<TagData> tags) {
     }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.storage;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.StorableObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -26,13 +25,11 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.Protocol1_12_2To1_13;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.PlayerLookTargetProvider;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ServerboundPackets1_12_1;
-
 public class TabCompleteTracker implements StorableObject {
     private int transactionId;
     private String input;
     private String lastTabComplete;
     private long timeToSend;
-
     public void sendPacketToServer(UserConnection connection) {
         if (lastTabComplete == null || timeToSend > System.currentTimeMillis()) return;
         PacketWrapper wrapper = PacketWrapper.create(ServerboundPackets1_12_1.COMMAND_SUGGESTION, null, connection);
@@ -43,35 +40,27 @@ public class TabCompleteTracker implements StorableObject {
         wrapper.scheduleSendToServer(Protocol1_12_2To1_13.class);
         lastTabComplete = null;
     }
-
     public int getTransactionId() {
         return transactionId;
     }
-
     public void setTransactionId(int transactionId) {
         this.transactionId = transactionId;
     }
-
     public String getInput() {
         return input;
     }
-
     public void setInput(final String input) {
         this.input = input;
     }
-
     public String getLastTabComplete() {
         return lastTabComplete;
     }
-
     public void setLastTabComplete(String lastTabComplete) {
         this.lastTabComplete = lastTabComplete;
     }
-
     public long getTimeToSend() {
         return timeToSend;
     }
-
     public void setTimeToSend(long timeToSend) {
         this.timeToSend = timeToSend;
     }

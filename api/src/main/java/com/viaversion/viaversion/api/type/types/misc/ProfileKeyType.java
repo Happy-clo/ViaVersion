@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,33 +21,26 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.misc;
-
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class ProfileKeyType extends Type<ProfileKey> {
-
     public ProfileKeyType() {
         super(ProfileKey.class);
     }
-
     @Override
     public ProfileKey read(final ByteBuf buffer) {
         return new ProfileKey(buffer.readLong(), Types.BYTE_ARRAY_PRIMITIVE.read(buffer), Types.BYTE_ARRAY_PRIMITIVE.read(buffer));
     }
-
     @Override
     public void write(final ByteBuf buffer, final ProfileKey object) {
         buffer.writeLong(object.expiresAt());
         Types.BYTE_ARRAY_PRIMITIVE.write(buffer, object.publicKey());
         Types.BYTE_ARRAY_PRIMITIVE.write(buffer, object.keySignature());
     }
-
     public static final class OptionalProfileKeyType extends OptionalType<ProfileKey> {
-
         public OptionalProfileKeyType() {
             super(Types.PROFILE_KEY);
         }

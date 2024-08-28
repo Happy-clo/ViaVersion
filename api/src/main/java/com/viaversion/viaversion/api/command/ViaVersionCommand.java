@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,10 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.command;
-
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface ViaVersionCommand {
     /**
      * Register your own subcommand inside ViaVersion
@@ -33,14 +31,12 @@ public interface ViaVersionCommand {
      * @throws IllegalArgumentException throws an exception when the subcommand already exists or if it's not valid, example: spacee
      */
     void registerSubCommand(ViaSubCommand command);
-
     /**
      * Removes a subcommand by name, can be used to unload default subcommands which are not supported
      * on the platform.
      * @param name Subcommand name
      */
     void removeSubCommand(String name);
-
     /**
      * Check if a subcommand is registered.
      *
@@ -48,7 +44,6 @@ public interface ViaVersionCommand {
      * @return true if it exists
      */
     boolean hasSubCommand(String name);
-
     /**
      * Get subcommand instance by name
      *
@@ -56,7 +51,6 @@ public interface ViaVersionCommand {
      * @return ViaSubCommand instance
      */
     @Nullable ViaSubCommand getSubCommand(String name);
-
     /**
      * Executed when the Command sender executes the commands
      *
@@ -65,7 +59,6 @@ public interface ViaVersionCommand {
      * @return was successful
      */
     boolean onCommand(ViaCommandSender sender, String[] args);
-
     /**
      * Executed when the Command sender tab-completes
      *
@@ -74,6 +67,5 @@ public interface ViaVersionCommand {
      * @return was successful
      */
     List<String> onTabComplete(ViaCommandSender sender, String[] args);
-
     void showHelp(ViaCommandSender sender);
 }

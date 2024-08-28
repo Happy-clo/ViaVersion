@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,17 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.entitydata;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
 import com.viaversion.viaversion.api.type.Type;
 import java.util.List;
-
 public abstract class EntityDataListTypeTemplate extends Type<List<EntityData>> {
-
     protected EntityDataListTypeTemplate() {
         super("Entity data list", List.class);
     }
-
     @Override
     public Class<? extends Type> getBaseClass() {
         return EntityDataListTypeTemplate.class;

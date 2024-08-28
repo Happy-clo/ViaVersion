@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,30 +13,24 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.util;
-
 import java.util.UUID;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class UUIDUtil {
-
     public static UUID fromIntArray(final int[] parts) {
         if (parts.length != 4) {
             return new UUID(0, 0);
         }
         return new UUID((long) parts[0] << 32 | (parts[1] & 0xFFFFFFFFL), (long) parts[2] << 32 | (parts[3] & 0xFFFFFFFFL));
     }
-
     public static int[] toIntArray(final UUID uuid) {
         return toIntArray(uuid.getMostSignificantBits(), uuid.getLeastSignificantBits());
     }
-
     public static int[] toIntArray(final long msb, final long lsb) {
         return new int[]{(int) (msb >> 32), (int) msb, (int) (lsb >> 32), (int) lsb};
     }
-
     public static @Nullable UUID parseUUID(final String uuidString) {
         try {
             return UUID.fromString(uuidString);

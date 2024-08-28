@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,18 +21,14 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.misc;
-
 import com.viaversion.viaversion.api.minecraft.GameProfile;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public final class GameProfileType extends Type<GameProfile> {
-
     public GameProfileType() {
         super(GameProfile.class);
     }
-
     @Override
     public GameProfile read(final ByteBuf buffer) {
         final String name = Types.OPTIONAL_STRING.read(buffer);
@@ -47,7 +43,6 @@ public final class GameProfileType extends Type<GameProfile> {
         }
         return new GameProfile(name, id, properties);
     }
-
     @Override
     public void write(final ByteBuf buffer, final GameProfile value) {
         Types.OPTIONAL_STRING.write(buffer, value.name());

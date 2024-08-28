@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,23 +21,18 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type;
-
 import io.netty.buffer.ByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public abstract class OptionalType<T> extends Type<T> {
     private final Type<T> type;
-
     protected OptionalType(final Type<T> type) {
         super(type.getOutputClass());
         this.type = type;
     }
-
     @Override
     public @Nullable T read(ByteBuf buffer) {
         return buffer.readBoolean() ? type.read(buffer) : null;
     }
-
     @Override
     public void write(final ByteBuf buffer, @Nullable final T value) {
         if (value == null) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,15 +13,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_8to1_9.data;
-
 import java.util.HashMap;
 import java.util.Map;
-
 public enum ArmorTypes1_8 {
-
     LEATHER_HELMET(1, 298, "minecraft:leather_helmet"),
     LEATHER_CHESTPLATE(3, 299, "minecraft:leather_chestplate"),
     LEATHER_LEGGINGS(2, 300, "minecraft:leather_leggings"),
@@ -43,34 +40,27 @@ public enum ArmorTypes1_8 {
     GOLD_LEGGINGS(3, 316, "minecraft:gold_leggings"),
     GOLD_BOOTS(1, 317, "minecraft:gold_boots"),
     NONE(0, 0, "none");
-
     private static final Map<Integer, ArmorTypes1_8> armor;
-
     static {
         armor = new HashMap<>();
         for (ArmorTypes1_8 a : ArmorTypes1_8.values()) {
             armor.put(a.getId(), a);
         }
     }
-
     private final int armorPoints;
     private final int id;
     private final String type;
-
     ArmorTypes1_8(int armorPoints, int id, String type) {
         this.armorPoints = armorPoints;
         this.id = id;
         this.type = type;
     }
-
     public int getArmorPoints() {
         return armorPoints;
     }
-
     public String getType() {
         return type;
     }
-
     /**
      * Find an armour type by the item id
      *
@@ -81,7 +71,6 @@ public enum ArmorTypes1_8 {
         ArmorTypes1_8 type = armor.get(id);
         return type == null ? ArmorTypes1_8.NONE : type;
     }
-
     /**
      * Find an armour type by the item string
      *
@@ -94,7 +83,6 @@ public enum ArmorTypes1_8 {
                 return a;
         return NONE;
     }
-
     /**
      * Check if an item id is armour
      *
@@ -104,7 +92,6 @@ public enum ArmorTypes1_8 {
     public static boolean isArmor(int id) {
         return armor.containsKey(id);
     }
-
     /**
      * Check if an item id is armour
      *
@@ -117,7 +104,6 @@ public enum ArmorTypes1_8 {
                 return true;
         return false;
     }
-
     /**
      * Get the Minecraft ID for the Armour Type
      *

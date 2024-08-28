@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Map;
-
 public record BlockStateProperties(Map<String, String> properties) {
-
     public static final Type<BlockStateProperties> TYPE = new Type<>(BlockStateProperties.class) {
         @Override
         public BlockStateProperties read(final ByteBuf buffer) {
@@ -40,7 +37,6 @@ public record BlockStateProperties(Map<String, String> properties) {
             }
             return new BlockStateProperties(properties);
         }
-
         @Override
         public void write(final ByteBuf buffer, final BlockStateProperties value) {
             Types.VAR_INT.writePrimitive(buffer, value.properties.size());
@@ -50,5 +46,4 @@ public record BlockStateProperties(Map<String, String> properties) {
             }
         }
     };
-
 }

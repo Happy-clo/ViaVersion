@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.HolderType;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-
 public record ArmorTrimPattern(String assetName, int itemId, Tag description, boolean decal) {
-
     public static final HolderType<ArmorTrimPattern> TYPE = new HolderType<>() {
         @Override
         public ArmorTrimPattern readDirect(final ByteBuf buffer) {
@@ -39,7 +36,6 @@ public record ArmorTrimPattern(String assetName, int itemId, Tag description, bo
             final boolean decal = buffer.readBoolean();
             return new ArmorTrimPattern(assetName, itemId, description, decal);
         }
-
         @Override
         public void writeDirect(final ByteBuf buffer, final ArmorTrimPattern value) {
             Types.STRING.write(buffer, value.assetName());
@@ -48,7 +44,6 @@ public record ArmorTrimPattern(String assetName, int itemId, Tag description, bo
             buffer.writeBoolean(value.decal());
         }
     };
-
     public ArmorTrimPattern rewrite(final Int2IntFunction idRewriteFunction) {
         return new ArmorTrimPattern(assetName, idRewriteFunction.applyAsInt(itemId), description, decal);
     }

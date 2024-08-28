@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.ArrayType;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class FilterableString extends Filterable<String> {
-
     public static final Type<FilterableString> TYPE = new FilterableType<>(Types.STRING, Types.OPTIONAL_STRING, FilterableString.class) {
         @Override
         protected FilterableString create(final String raw, final String filtered) {
@@ -36,7 +33,6 @@ public final class FilterableString extends Filterable<String> {
         }
     };
     public static final Type<FilterableString[]> ARRAY_TYPE = new ArrayType<>(TYPE);
-
     public FilterableString(final String raw, @Nullable final String filtered) {
         super(raw, filtered);
     }

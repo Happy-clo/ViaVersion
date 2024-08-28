@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,19 +13,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_15_2to1_16.storage;
-
 import com.viaversion.viaversion.api.connection.StorableObject;
-
 public class InventoryTracker1_16 implements StorableObject {
     private boolean inventoryOpen;
-
     public boolean isInventoryOpen() {
         return inventoryOpen;
     }
-
     public void setInventoryOpen(boolean inventoryOpen) {
         this.inventoryOpen = inventoryOpen;
     }

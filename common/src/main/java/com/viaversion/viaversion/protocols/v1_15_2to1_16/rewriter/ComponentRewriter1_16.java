@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_15_2to1_16.rewriter;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -26,10 +25,8 @@ import com.viaversion.viaversion.protocols.v1_15_2to1_16.Protocol1_15_2To1_16;
 import com.viaversion.viaversion.rewriter.ComponentRewriter;
 import java.util.HashMap;
 import java.util.Map;
-
 public class ComponentRewriter1_16 extends ComponentRewriter<ClientboundPackets1_15> {
     private final Map<String, String> mappings = new HashMap<>();
-
     public ComponentRewriter1_16(Protocol1_15_2To1_16 protocol) {
         super(protocol, ReadType.JSON);
         mappings.put("attribute.name.generic.armorToughness", "attribute.name.generic.armor_toughness");
@@ -66,27 +63,21 @@ public class ComponentRewriter1_16 extends ComponentRewriter<ClientboundPackets1
         mappings.put("biome.minecraft.nether", "Nether");
         mappings.put("key.swapHands", "key.swapOffhand");
     }
-
     @Override
     public void processText(UserConnection connection, JsonElement element) {
         super.processText(connection, element);
         if (element == null || !element.isJsonObject()) return;
-
-        // Score components no longer contain value fields
         JsonObject object = element.getAsJsonObject();
         JsonObject score = object.getAsJsonObject("score");
         if (score == null || object.has("text")) return;
-
         JsonPrimitive value = score.getAsJsonPrimitive("value");
         if (value != null) {
             object.remove("score");
             object.add("text", value);
         }
     }
-
     @Override
     protected void handleTranslate(JsonObject object, String translate) {
-        // A few keys were removed - manually set the text of relevant ones
         String mappedTranslation = mappings.get(translate);
         if (mappedTranslation != null) {
             object.addProperty("translate", mappedTranslation);

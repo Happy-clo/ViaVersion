@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +21,20 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.packet.mapping;
-
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 final class PacketIdMapping implements PacketMapping {
     private final int mappedPacketId;
     private PacketHandler handler;
-
     PacketIdMapping(int mappedPacketId, @Nullable PacketHandler handler) {
         this.mappedPacketId = mappedPacketId;
         this.handler = handler;
     }
-
     @Override
     public void applyType(final PacketWrapper wrapper) {
-        //noinspection deprecation
         wrapper.setId(mappedPacketId);
     }
-
     @Override
     public void appendHandler(final PacketHandler handler) {
         if (this.handler == null) {
@@ -49,7 +43,6 @@ final class PacketIdMapping implements PacketMapping {
             this.handler = this.handler.then(handler);
         }
     }
-
     @Override
     public @Nullable PacketHandler handler() {
         return handler;

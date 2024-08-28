@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.data;
-
 import com.google.common.collect.ObjectArrays;
 import com.google.gson.reflect.TypeToken;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.Protocol1_12_2To1_13;
@@ -29,15 +28,12 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-
 public class BlockIdData {
     public static final String[] PREVIOUS = new String[0];
     public static final Map<String, String[]> blockIdMapping = new HashMap<>();
     public static final Map<String, String[]> fallbackReverseMapping = new HashMap<>();
     public static final Int2ObjectMap<String> numberIdToString = new Int2ObjectOpenHashMap<>();
-
     public static void init() {
-        // Data from https://minecraft.gamepedia.com/1.13/Flattening
         InputStream stream = MappingData1_13.class.getClassLoader()
             .getResourceAsStream("assets/viaversion/data/blockIds1.12to1.13.json");
         try (InputStreamReader reader = new InputStreamReader(stream)) {
@@ -56,7 +52,6 @@ public class BlockIdData {
         } catch (IOException e) {
             Protocol1_12_2To1_13.LOGGER.log(Level.SEVERE, "Failed to load block id mappings", e);
         }
-
         InputStream blockS = MappingData1_13.class.getClassLoader()
             .getResourceAsStream("assets/viaversion/data/blockNumberToString1.12.json");
         try (InputStreamReader blockR = new InputStreamReader(blockS)) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,37 +13,34 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_9_1to1_9_3.data;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.IntTag;
 import com.viaversion.nbt.tag.StringTag;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-
 /**
  * Mojang changed the way how tile entities inside chunk packets work in 1.9.3/4
  * It requires now to have all tile entity data included in the chunk packet, otherwise it'll crash.
  */
 public class FakeTileEntities1_9_1 {
     private static final Int2ObjectMap<CompoundTag> tileEntities = new Int2ObjectOpenHashMap<>();
-
     static {
         register("Furnace", 61, 62);
         register("Chest", 54, 146);
         register("EnderChest", 130);
         register("RecordPlayer", 84);
-        register("Trap", 23); // Dispenser
+        register("Trap", 23); 
         register("Dropper", 158);
         register("Sign", 63, 68);
         register("MobSpawner", 52);
-        register("Music", 25); // Note Block
+        register("Music", 25); 
         register("Piston", 33, 34, 29, 36);
-        register("Cauldron", 117); // Brewing stand
+        register("Cauldron", 117); 
         register("EnchantTable", 116);
-        register("Airportal", 119, 120); // End portal
+        register("Airportal", 119, 120); 
         register("Beacon", 138);
         register("Skull", 144);
         register("DLDetector", 178, 151);
@@ -54,7 +51,6 @@ public class FakeTileEntities1_9_1 {
         register("EndGateway", 209);
         register("Control", 137);
     }
-
     private static void register(String name, int... ids) {
         for (int id : ids) {
             CompoundTag comp = new CompoundTag();
@@ -62,11 +58,9 @@ public class FakeTileEntities1_9_1 {
             tileEntities.put(id, comp);
         }
     }
-
     public static boolean isTileEntity(int block) {
         return tileEntities.containsKey(block);
     }
-
     public static CompoundTag createTileEntity(int x, int y, int z, int block) {
         CompoundTag originalTag = tileEntities.get(block);
         if (originalTag != null) {

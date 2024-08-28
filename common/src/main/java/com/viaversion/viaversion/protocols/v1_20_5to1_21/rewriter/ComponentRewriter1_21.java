@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_5to1_21.rewriter;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.ListTag;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -27,13 +26,10 @@ import com.viaversion.viaversion.util.SerializerVersion;
 import com.viaversion.viaversion.util.TagUtil;
 import com.viaversion.viaversion.util.UUIDUtil;
 import java.util.UUID;
-
 public final class ComponentRewriter1_21 extends ComponentRewriter<ClientboundPacket1_20_5> {
-
     public ComponentRewriter1_21(final Protocol1_20_5To1_21 protocol) {
         super(protocol, ReadType.NBT);
     }
-
     private void convertAttributeModifiersComponent(final CompoundTag tag) {
         final CompoundTag attributeModifiers = TagUtil.getNamespacedCompoundTag(tag, "minecraft:attribute_modifiers");
         if (attributeModifiers == null) {
@@ -47,7 +43,6 @@ public final class ComponentRewriter1_21 extends ComponentRewriter<ClientboundPa
             modifier.putString("id", id);
         }
     }
-
     @Override
     protected void handleShowItem(final UserConnection connection, final CompoundTag itemTag, final CompoundTag componentsTag) {
         super.handleShowItem(connection, itemTag, componentsTag);
@@ -55,12 +50,10 @@ public final class ComponentRewriter1_21 extends ComponentRewriter<ClientboundPa
             convertAttributeModifiersComponent(componentsTag);
         }
     }
-
     @Override
     protected SerializerVersion inputSerializerVersion() {
         return SerializerVersion.V1_20_5;
     }
-
     @Override
     protected SerializerVersion outputSerializerVersion() {
         return SerializerVersion.V1_20_5;

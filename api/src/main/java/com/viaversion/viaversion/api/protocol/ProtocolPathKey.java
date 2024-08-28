@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,23 +21,18 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol;
-
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-
 public interface ProtocolPathKey {
-
     /**
      * Returns the client protocol version.
      *
      * @return client protocol version
      */
     ProtocolVersion clientProtocolVersion();
-
     /**
      * Returns the server protocol version.
      *
      * @return server protocol version
      */
     ProtocolVersion serverProtocolVersion();
-
 }

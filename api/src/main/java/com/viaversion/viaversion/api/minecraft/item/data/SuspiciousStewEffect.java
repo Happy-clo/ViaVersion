@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.ArrayType;
 import io.netty.buffer.ByteBuf;
-
 public record SuspiciousStewEffect(int mobEffect, int duration) {
-
     public static final Type<SuspiciousStewEffect> TYPE = new Type<>(SuspiciousStewEffect.class) {
         @Override
         public SuspiciousStewEffect read(final ByteBuf buffer) {
@@ -36,7 +33,6 @@ public record SuspiciousStewEffect(int mobEffect, int duration) {
             final int duration = Types.VAR_INT.readPrimitive(buffer);
             return new SuspiciousStewEffect(effect, duration);
         }
-
         @Override
         public void write(final ByteBuf buffer, final SuspiciousStewEffect value) {
             Types.VAR_INT.writePrimitive(buffer, value.mobEffect);
@@ -44,5 +40,4 @@ public record SuspiciousStewEffect(int mobEffect, int duration) {
         }
     };
     public static final Type<SuspiciousStewEffect[]> ARRAY_TYPE = new ArrayType<>(TYPE);
-
 }

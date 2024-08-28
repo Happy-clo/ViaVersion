@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.entitydata.types;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityDataType;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.ParticleType;
-
 public final class EntityDataTypes1_19 extends AbstractEntityDataTypes {
-
     public final EntityDataType byteType = add(0, Types.BYTE);
     public final EntityDataType varIntType = add(1, Types.VAR_INT);
     public final EntityDataType floatType = add(2, Types.FLOAT);
@@ -51,7 +48,6 @@ public final class EntityDataTypes1_19 extends AbstractEntityDataTypes {
     public final EntityDataType frogVariantType = add(20, Types.VAR_INT);
     public final EntityDataType optionalGlobalPosition = add(21, Types.OPTIONAL_GLOBAL_POSITION);
     public final EntityDataType paintingVariantType = add(22, Types.VAR_INT);
-
     public EntityDataTypes1_19(final ParticleType particleType) {
         super(23);
         this.particleType = add(15, particleType);

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,20 +13,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.platform;
-
 import com.viaversion.viaversion.api.platform.PlatformTask;
 import com.viaversion.viaversion.api.scheduler.Task;
-
 public class BukkitViaTaskTask implements PlatformTask<Task> {
     private final Task task;
-
     public BukkitViaTaskTask(final Task task) {
         this.task = task;
     }
-
     @Override
     public void cancel() {
         task.cancel();

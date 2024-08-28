@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,25 +13,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.common.dummy;
-
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
-
 public final class DummyInitializer {
-
     private static boolean initialized;
-
     public static void init() {
         if (initialized) {
             return;
         }
-
         initialized = true;
         Via.init(new ViaManagerImpl(new TestPlatform(), new TestInjector(), new TestCommandHandler(), new TestLoader()));
-
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         manager.init();
         manager.onServerLoaded();

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_18to1_18_2;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.ListTag;
 import com.viaversion.nbt.tag.StringTag;
@@ -29,60 +28,51 @@ import com.viaversion.viaversion.protocols.v1_16_4to1_17.packet.ServerboundPacke
 import com.viaversion.viaversion.protocols.v1_17_1to1_18.packet.ClientboundPackets1_18;
 import com.viaversion.viaversion.rewriter.TagRewriter;
 import com.viaversion.viaversion.util.TagUtil;
-
 public final class Protocol1_18To1_18_2 extends AbstractProtocol<ClientboundPackets1_18, ClientboundPackets1_18, ServerboundPackets1_17, ServerboundPackets1_17> {
-
     public Protocol1_18To1_18_2() {
         super(ClientboundPackets1_18.class, ClientboundPackets1_18.class, ServerboundPackets1_17.class, ServerboundPackets1_17.class);
     }
-
     @Override
     protected void registerPackets() {
         final TagRewriter<ClientboundPackets1_18> tagRewriter = new TagRewriter<>(this);
         tagRewriter.addTagRaw(RegistryType.BLOCK, "minecraft:fall_damage_resetting", 169, 257, 680, 713, 714, 715, 716, 859, 860, 696, 100);
         tagRewriter.registerGeneric(ClientboundPackets1_18.UPDATE_TAGS);
-
         registerClientbound(ClientboundPackets1_18.UPDATE_MOB_EFFECT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // Entity id
-                map(Types.BYTE, Types.VAR_INT); // Effect id
+                map(Types.VAR_INT); 
+                map(Types.BYTE, Types.VAR_INT); 
             }
         });
-
         registerClientbound(ClientboundPackets1_18.REMOVE_MOB_EFFECT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // Entity id
-                map(Types.BYTE, Types.VAR_INT); // Effect id
+                map(Types.VAR_INT); 
+                map(Types.BYTE, Types.VAR_INT); 
             }
         });
-
         registerClientbound(ClientboundPackets1_18.LOGIN, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.INT); // Entity ID
-                map(Types.BOOLEAN); // Hardcore
-                map(Types.BYTE); // Gamemode
-                map(Types.BYTE); // Previous Gamemode
-                map(Types.STRING_ARRAY); // World List
-                map(Types.NAMED_COMPOUND_TAG); // Registry
-                map(Types.NAMED_COMPOUND_TAG); // Current dimension data
+                map(Types.INT); 
+                map(Types.BOOLEAN); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.STRING_ARRAY); 
+                map(Types.NAMED_COMPOUND_TAG); 
+                map(Types.NAMED_COMPOUND_TAG); 
                 handler(wrapper -> {
                     final CompoundTag registry = wrapper.get(Types.NAMED_COMPOUND_TAG, 0);
                     final ListTag<CompoundTag> dimensions = TagUtil.getRegistryEntries(registry, "dimension_type");
                     for (final CompoundTag dimension : dimensions) {
                         addTagPrefix(dimension.getCompoundTag("element"));
                     }
-
                     addTagPrefix(wrapper.get(Types.NAMED_COMPOUND_TAG, 1));
                 });
             }
         });
-
         registerClientbound(ClientboundPackets1_18.RESPAWN, wrapper -> addTagPrefix(wrapper.passthrough(Types.NAMED_COMPOUND_TAG)));
     }
-
     private void addTagPrefix(CompoundTag tag) {
         final Tag infiniburnTag = tag.get("infiniburn");
         if (infiniburnTag instanceof final StringTag infiniburn) {

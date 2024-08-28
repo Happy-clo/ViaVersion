@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.platform;
-
 public interface ViaServerProxyPlatform<T> extends ViaPlatform<T> {
-
     /**
      * Returns a service to get protocol versions for proxied servers.
      *
      * @return protocol detector service
      */
     ProtocolDetectorService protocolDetectorService();
-
     @Override
     default boolean couldBeReloading() {
         return false;

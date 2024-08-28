@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.packet.mapping;
-
 import com.viaversion.viaversion.api.protocol.packet.PacketType;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Mappings to transform packets between two protocol versions.
  */
 public interface PacketMappings {
-
     /**
      * Returns a packet mapping for the given packet.
      *
@@ -39,7 +36,6 @@ public interface PacketMappings {
      * @return packet mapping if present
      */
     @Nullable PacketMapping mappedPacket(State state, int unmappedId);
-
     /**
      * Returns whether the given packet type has a mapping.
      *
@@ -49,7 +45,6 @@ public interface PacketMappings {
     default boolean hasMapping(PacketType packetType) {
         return mappedPacket(packetType.state(), packetType.getId()) != null;
     }
-
     /**
      * Returns whether the given packet type has a mapping.
      *
@@ -60,7 +55,6 @@ public interface PacketMappings {
     default boolean hasMapping(State state, int unmappedId) {
         return mappedPacket(state, unmappedId) != null;
     }
-
     /**
      * Adds a packet mapping.
      *
@@ -70,7 +64,6 @@ public interface PacketMappings {
     default void addMapping(PacketType packetType, PacketMapping mapping) {
         addMapping(packetType.state(), packetType.getId(), mapping);
     }
-
     /**
      * Adds a packet mapping.
      *
@@ -79,7 +72,6 @@ public interface PacketMappings {
      * @param mapping    packet mapping
      */
     void addMapping(State state, int unmappedId, PacketMapping mapping);
-
     static PacketMappings arrayMappings() {
         return new PacketArrayMappings();
     }

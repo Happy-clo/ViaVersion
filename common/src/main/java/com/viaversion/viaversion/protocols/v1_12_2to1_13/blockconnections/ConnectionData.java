@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.nbt.tag.ByteArrayTag;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.IntArrayTag;
@@ -51,7 +50,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-
 public final class ConnectionData {
     public static BlockConnectionProvider blockConnectionProvider;
     static final Object2IntMap<String> KEY_TO_ID = new Object2IntOpenHashMap<>(8582, .99F);
@@ -59,14 +57,11 @@ public final class ConnectionData {
     static Int2ObjectMap<ConnectionHandler> connectionHandlerMap = new Int2ObjectOpenHashMap<>();
     static Int2ObjectMap<BlockData> blockConnectionData = new Int2ObjectOpenHashMap<>();
     private static final BlockChangeRecord1_8[] EMPTY_RECORDS = new BlockChangeRecord1_8[0];
-
     static {
         KEY_TO_ID.defaultReturnValue(-1);
     }
-
     public static void update(UserConnection user, BlockPosition position) {
         Boolean inSync = null;
-
         for (BlockFace face : BlockFace.values()) {
             BlockPosition pos = position.getRelative(face);
             int blockState = blockConnectionProvider.getBlockData(user, pos.x(), pos.y(), pos.z());
@@ -74,27 +69,22 @@ public final class ConnectionData {
             if (handler == null) {
                 continue;
             }
-
             int newBlockState = handler.connect(user, pos, blockState);
             if (newBlockState == blockState) {
                 if (inSync == null) {
                     inSync = blockConnectionProvider.storesBlocks(user, position);
                 }
-                // Blocks-states are the same, and known to be stored and not de-synced, skip update
                 if (inSync) {
                     continue;
                 }
             }
-
             updateBlockStorage(user, pos.x(), pos.y(), pos.z(), newBlockState);
-
             PacketWrapper blockUpdatePacket = PacketWrapper.create(ClientboundPackets1_13.BLOCK_UPDATE, null, user);
             blockUpdatePacket.write(Types.BLOCK_POSITION1_8, pos);
             blockUpdatePacket.write(Types.VAR_INT, newBlockState);
             blockUpdatePacket.send(Protocol1_12_2To1_13.class);
         }
     }
-
     public static void updateBlockStorage(UserConnection userConnection, int x, int y, int z, int blockState) {
         if (!needStoreBlocks()) return;
         if (ConnectionData.isWelcome(blockState)) {
@@ -103,33 +93,26 @@ public final class ConnectionData {
             blockConnectionProvider.removeBlock(userConnection, x, y, z);
         }
     }
-
     public static void clearBlockStorage(UserConnection connection) {
         if (!needStoreBlocks()) return;
         blockConnectionProvider.clearStorage(connection);
     }
-
     public static void markModified(UserConnection connection, BlockPosition pos) {
         if (!needStoreBlocks()) return;
         blockConnectionProvider.modifiedBlock(connection, pos);
     }
-
     public static boolean needStoreBlocks() {
         return blockConnectionProvider.storesBlocks(null, null);
     }
-
     public static void connectBlocks(UserConnection user, Chunk chunk) {
         int xOff = chunk.getX() << 4;
         int zOff = chunk.getZ() << 4;
-
         for (int s = 0; s < chunk.getSections().length; s++) {
             ChunkSection section = chunk.getSections()[s];
             if (section == null) {
                 continue;
             }
-
             DataPalette blocks = section.palette(PaletteType.BLOCKS);
-
             boolean willConnect = false;
             for (int p = 0; p < blocks.size(); p++) {
                 int id = blocks.idByIndex(p);
@@ -141,16 +124,13 @@ public final class ConnectionData {
             if (!willConnect) {
                 continue;
             }
-
             int yOff = s << 4;
-
             for (int idx = 0; idx < ChunkSection.SIZE; idx++) {
                 int id = blocks.idAt(idx);
                 ConnectionHandler handler = ConnectionData.getConnectionHandler(id);
                 if (handler == null) {
                     continue;
                 }
-
                 BlockPosition position = new BlockPosition(xOff + ChunkSection.xFromIndex(idx), yOff + ChunkSection.yFromIndex(idx), zOff + ChunkSection.zFromIndex(idx));
                 int connectedId = handler.connect(user, position, id);
                 if (connectedId != id) {
@@ -160,24 +140,19 @@ public final class ConnectionData {
             }
         }
     }
-
     public static void init() {
         if (!Via.getConfig().isServersideBlockConnections()) {
             return;
         }
-
         Via.getPlatform().getLogger().info("Loading block connection mappings ...");
         ListTag<StringTag> blockStates = MappingDataLoader.INSTANCE.loadNBT("blockstates-1.13.nbt").getListTag("blockstates", StringTag.class);
         for (int id = 0; id < blockStates.size(); id++) {
             String key = blockStates.get(id).getValue();
             KEY_TO_ID.put(key, id);
         }
-
         connectionHandlerMap = new Int2ObjectOpenHashMap<>(3650, .99F);
-
         if (!Via.getConfig().isReduceBlockStorageMemory()) {
             blockConnectionData = new Int2ObjectOpenHashMap<>(2048);
-
             CompoundTag data = MappingDataLoader.INSTANCE.loadNBT("blockConnections.nbt");
             ListTag<CompoundTag> blockConnectionMappings = data.getListTag("data", CompoundTag.class);
             for (CompoundTag blockTag : blockConnectionMappings) {
@@ -187,18 +162,14 @@ public final class ConnectionData {
                     if (key.equals("id") || key.equals("ids")) {
                         continue;
                     }
-
-
                     boolean[] attachingFaces = new boolean[4];
                     ByteArrayTag connections = (ByteArrayTag) entry.getValue();
                     for (byte blockFaceId : connections.getValue()) {
                         attachingFaces[blockFaceId] = true;
                     }
-
                     int connectionTypeId = Integer.parseInt(key);
                     blockData.put(connectionTypeId, attachingFaces);
                 }
-
                 NumberTag idTag = blockTag.getNumberTag("id");
                 if (idTag != null) {
                     blockConnectionData.put(idTag.asInt(), blockData);
@@ -209,13 +180,11 @@ public final class ConnectionData {
                     }
                 }
             }
-
             IntArrayTag occludingStatesArray = data.getIntArrayTag("occluding-states");
             for (final int blockStateId : occludingStatesArray.getValue()) {
                 OCCLUDING_STATES.add(blockStateId);
             }
         }
-
         List<ConnectorInitAction> initActions = new ArrayList<>();
         initActions.add(PumpkinConnectionHandler.init());
         initActions.addAll(BasicFenceConnectionHandler.init());
@@ -235,60 +204,47 @@ public final class ConnectionData {
         if (Via.getConfig().isVineClimbFix()) {
             initActions.add(VineConnectionHandler.init());
         }
-
         for (String key : KEY_TO_ID.keySet()) {
             WrappedBlockData wrappedBlockData = WrappedBlockData.fromString(key);
             for (ConnectorInitAction action : initActions) {
                 action.check(wrappedBlockData);
             }
         }
-
         if (Via.getConfig().getBlockConnectionMethod().equalsIgnoreCase("packet")) {
             blockConnectionProvider = new PacketBlockConnectionProvider();
             Via.getManager().getProviders().register(BlockConnectionProvider.class, blockConnectionProvider);
         }
     }
-
     public static boolean isWelcome(int blockState) {
         return blockConnectionData.containsKey(blockState) || connectionHandlerMap.containsKey(blockState);
     }
-
     public static boolean connects(int blockState) {
         return connectionHandlerMap.containsKey(blockState);
     }
-
     public static int connect(UserConnection user, BlockPosition position, int blockState) {
         ConnectionHandler handler = connectionHandlerMap.get(blockState);
         return handler != null ? handler.connect(user, position, blockState) : blockState;
     }
-
     public static ConnectionHandler getConnectionHandler(int blockstate) {
         return connectionHandlerMap.get(blockstate);
     }
-
     public static int getId(String key) {
         return KEY_TO_ID.getOrDefault(Key.stripMinecraftNamespace(key), -1);
     }
-
     @FunctionalInterface
     interface ConnectorInitAction {
-
         void check(WrappedBlockData blockData);
     }
-
     public static Object2IntMap<String> getKeyToId() {
         return KEY_TO_ID;
     }
-
     public static final class NeighbourUpdater {
         private final UserConnection user;
         private final UserBlockData userBlockData;
-
         public NeighbourUpdater(UserConnection user) {
             this.user = user;
             this.userBlockData = blockConnectionProvider.forUser(user);
         }
-
         public void updateChunkSectionNeighbours(int chunkX, int chunkZ, int chunkSectionY) {
             int chunkMinY = chunkSectionY << 4;
             List<BlockChangeRecord1_8> updates = new ArrayList<>();
@@ -296,10 +252,9 @@ public final class ConnectionData {
                 for (int chunkDeltaZ = -1; chunkDeltaZ <= 1; chunkDeltaZ++) {
                     int distance = Math.abs(chunkDeltaX) + Math.abs(chunkDeltaZ);
                     if (distance == 0) continue;
-
                     int chunkMinX = (chunkX + chunkDeltaX) << 4;
                     int chunkMinZ = (chunkZ + chunkDeltaZ) << 4;
-                    if (distance == 2) { // Corner
+                    if (distance == 2) { 
                         for (int blockY = chunkMinY; blockY < chunkMinY + 16; blockY++) {
                             int blockPosX = chunkDeltaX == 1 ? 0 : 15;
                             int blockPosZ = chunkDeltaZ == 1 ? 0 : 15;
@@ -337,7 +292,6 @@ public final class ConnectionData {
                             }
                         }
                     }
-
                     if (!updates.isEmpty()) {
                         PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_13.CHUNK_BLOCKS_UPDATE, null, user);
                         wrapper.write(Types.INT, chunkX + chunkDeltaX);
@@ -349,14 +303,12 @@ public final class ConnectionData {
                 }
             }
         }
-
         private void updateBlock(int x, int y, int z, List<BlockChangeRecord1_8> records) {
             int blockState = userBlockData.getBlockData(x, y, z);
             ConnectionHandler handler = getConnectionHandler(blockState);
             if (handler == null) {
                 return;
             }
-
             BlockPosition pos = new BlockPosition(x, y, z);
             int newBlockState = handler.connect(user, pos, blockState);
             if (blockState != newBlockState || !blockConnectionProvider.storesBlocks(user, null)) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_10to1_11;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.StringTag;
 import com.viaversion.viaversion.api.Via;
@@ -39,54 +38,41 @@ import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ClientboundPacke
 import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
 import com.viaversion.viaversion.rewriter.SoundRewriter;
 import com.viaversion.viaversion.util.Pair;
-
 public class Protocol1_10To1_11 extends AbstractProtocol<ClientboundPackets1_9_3, ClientboundPackets1_9_3, ServerboundPackets1_9_3, ServerboundPackets1_9_3> {
-
     private static final ValueTransformer<Float, Short> toOldByte = new ValueTransformer<>(Types.UNSIGNED_BYTE) {
         @Override
         public Short transform(PacketWrapper wrapper, Float inputValue) {
             return (short) (inputValue * 16);
         }
     };
-
     private final EntityPacketRewriter1_11 entityRewriter = new EntityPacketRewriter1_11(this);
     private final ItemPacketRewriter1_11 itemRewriter = new ItemPacketRewriter1_11(this);
-
     public Protocol1_10To1_11() {
         super(ClientboundPackets1_9_3.class, ClientboundPackets1_9_3.class, ServerboundPackets1_9_3.class, ServerboundPackets1_9_3.class);
     }
-
     @Override
     protected void registerPackets() {
         super.registerPackets();
-
         new SoundRewriter<>(this, this::getNewSoundId).registerSound(ClientboundPackets1_9_3.SOUND);
-
         registerClientbound(ClientboundPackets1_9_3.SET_TITLES, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Action
-
+                map(Types.VAR_INT); 
                 handler(wrapper -> {
                     int action = wrapper.get(Types.VAR_INT, 0);
-
-                    // Handle the new ActionBar
                     if (action >= 2) {
                         wrapper.set(Types.VAR_INT, 0, action + 1);
                     }
                 });
             }
         });
-
         registerClientbound(ClientboundPackets1_9_3.BLOCK_EVENT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.BLOCK_POSITION1_8); // 0 - Position
-                map(Types.UNSIGNED_BYTE); // 1 - Action ID
-                map(Types.UNSIGNED_BYTE); // 2 - Action Param
-                map(Types.VAR_INT); // 3 - Block Type
-
-                // Cheap hack to ensure it's always right block
+                map(Types.BLOCK_POSITION1_8); 
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.VAR_INT); 
                 handler(actionWrapper -> {
                     if (Via.getConfig().isPistonAnimationPatch()) {
                         int id = actionWrapper.get(Types.VAR_INT, 0);
@@ -97,35 +83,28 @@ public class Protocol1_10To1_11 extends AbstractProtocol<ClientboundPackets1_9_3
                 });
             }
         });
-
         registerClientbound(ClientboundPackets1_9_3.LEVEL_CHUNK, wrapper -> {
             ClientWorld clientWorld = wrapper.user().get(ClientWorld.class);
-
             Chunk chunk = wrapper.passthrough(ChunkType1_9_3.forEnvironment(clientWorld.getEnvironment()));
-
             if (chunk.getBlockEntities() == null) return;
             for (CompoundTag tag : chunk.getBlockEntities()) {
                 StringTag idTag = tag.getStringTag("id");
                 if (idTag == null) {
                     continue;
                 }
-
                 String identifier = idTag.getValue();
                 if (identifier.equals("MobSpawner")) {
                     EntityMappings1_11.toClientSpawner(tag);
                 }
-
-                // Handle new identifier
                 idTag.setValue(BlockEntityMappings1_11.toNewIdentifier(identifier));
             }
         });
-
         registerClientbound(ClientboundPackets1_9_3.LOGIN, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.INT); // 0 - Entity ID
-                map(Types.UNSIGNED_BYTE); // 1 - Gamemode
-                map(Types.INT); // 2 - Dimension
+                map(Types.INT); 
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.INT); 
                 handler(wrapper -> {
                     ClientWorld clientChunks = wrapper.user().get(ClientWorld.class);
                     int dimensionId = wrapper.get(Types.INT, 1);
@@ -144,14 +123,13 @@ public class Protocol1_10To1_11 extends AbstractProtocol<ClientboundPackets1_9_3
                 });
             }
         });
-
         this.registerClientbound(ClientboundPackets1_9_3.LEVEL_EVENT, new PacketHandlers() {
             @Override
             public void register() {
-                this.map(Types.INT); //effectID
-                this.map(Types.BLOCK_POSITION1_8); //pos
-                this.map(Types.INT); //effectData
-                this.map(Types.BOOLEAN); //serverwide / global
+                this.map(Types.INT); 
+                this.map(Types.BLOCK_POSITION1_8); 
+                this.map(Types.INT); 
+                this.map(Types.BOOLEAN); 
                 handler(packetWrapper -> {
                     int effectID = packetWrapper.get(Types.INT, 0);
                     if (effectID == 2002) {
@@ -173,30 +151,25 @@ public class Protocol1_10To1_11 extends AbstractProtocol<ClientboundPackets1_9_3
                 });
             }
         });
-
         /*
             INCOMING PACKETS
         */
-
         registerServerbound(ServerboundPackets1_9_3.USE_ITEM_ON, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.BLOCK_POSITION1_8); // 0 - Location
-                map(Types.VAR_INT); // 1 - Face
-                map(Types.VAR_INT); // 2 - Hand
-
+                map(Types.BLOCK_POSITION1_8); 
+                map(Types.VAR_INT); 
+                map(Types.VAR_INT); 
                 map(Types.FLOAT, toOldByte);
                 map(Types.FLOAT, toOldByte);
                 map(Types.FLOAT, toOldByte);
             }
         });
-
         registerServerbound(ServerboundPackets1_9_3.CHAT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // 0 - Message
+                map(Types.STRING); 
                 handler(wrapper -> {
-                    // 100-character limit on older servers
                     String msg = wrapper.get(Types.STRING, 0);
                     if (msg.length() > 100) {
                         wrapper.set(Types.STRING, 0, msg.substring(0, 100));
@@ -205,51 +178,43 @@ public class Protocol1_10To1_11 extends AbstractProtocol<ClientboundPackets1_9_3
             }
         });
     }
-
     private int getNewSoundId(int id) {
-        if (id == 196) // Experience orb sound got removed
+        if (id == 196) 
             return -1;
-
-        if (id >= 85) // Shulker boxes
+        if (id >= 85) 
             id += 2;
-        if (id >= 176) // Guardian flop
+        if (id >= 176) 
             id += 1;
-        if (id >= 197) // evocation things
+        if (id >= 197) 
             id += 8;
-        if (id >= 207) // Rip the Experience orb touch sound :'(
+        if (id >= 207) 
             id -= 1;
-        if (id >= 279) // Liama's
+        if (id >= 279) 
             id += 9;
-        if (id >= 296) // Mule chest
+        if (id >= 296) 
             id += 1;
-        if (id >= 390) // Vex
+        if (id >= 390) 
             id += 4;
-        if (id >= 400) // vindication
+        if (id >= 400) 
             id += 3;
-        if (id >= 450) // Elytra
+        if (id >= 450) 
             id += 1;
-        if (id >= 455) // Empty bottle
+        if (id >= 455) 
             id += 1;
-        if (id >= 470) // Totem use
+        if (id >= 470) 
             id += 1;
         return id;
     }
-
-
     @Override
     public void init(UserConnection userConnection) {
-        // Entity tracker
         userConnection.addEntityTracker(this.getClass(), new EntityTracker1_11(userConnection));
-
         if (!userConnection.has(ClientWorld.class))
             userConnection.put(new ClientWorld());
     }
-
     @Override
     public EntityPacketRewriter1_11 getEntityRewriter() {
         return entityRewriter;
     }
-
     @Override
     public ItemPacketRewriter1_11 getItemRewriter() {
         return itemRewriter;

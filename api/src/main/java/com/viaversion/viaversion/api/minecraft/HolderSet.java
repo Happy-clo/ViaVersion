@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-
 /**
  * Set of ids that either holds a string tag key or an array of ids.
  */
 public interface HolderSet {
-
     /**
      * Creates a new holder set for the given tag.
      *
@@ -38,7 +35,6 @@ public interface HolderSet {
     static HolderSet of(final String tagKey) {
         return new HolderSetImpl(tagKey);
     }
-
     /**
      * Creates a new holder set for the given ids.
      *
@@ -48,7 +44,6 @@ public interface HolderSet {
     static HolderSet of(final int[] ids) {
         return new HolderSetImpl(ids);
     }
-
     /**
      * Gets the tag key.
      *
@@ -56,14 +51,12 @@ public interface HolderSet {
      * @see #hasTagKey()
      */
     String tagKey();
-
     /**
      * Returns whether this holder set has a tag key.
      *
      * @return true if this holder set has a tag key, false if it has direct ids
      */
     boolean hasTagKey();
-
     /**
      * Gets the direct ids.
      *
@@ -71,14 +64,12 @@ public interface HolderSet {
      * @see #hasIds()
      */
     int[] ids();
-
     /**
      * Returns whether this holder set has direct ids.
      *
      * @return true if this holder set has direct ids, false if it has a tag key
      */
     boolean hasIds();
-
     /**
      * Returns a new holder set with the ids rewritten.
      *

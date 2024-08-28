@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.handlers;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.exception.CancelCodecException;
 import com.viaversion.viaversion.exception.CancelDecoderException;
@@ -26,15 +25,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import java.util.List;
-
 @ChannelHandler.Sharable
 public class VelocityDecodeHandler extends MessageToMessageDecoder<ByteBuf> {
     private final UserConnection info;
-
     public VelocityDecodeHandler(UserConnection info) {
         this.info = info;
     }
-
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf bytebuf, List<Object> out) throws Exception {
         if (!info.checkIncomingPacket()) throw CancelDecoderException.generate(null);
@@ -42,7 +38,6 @@ public class VelocityDecodeHandler extends MessageToMessageDecoder<ByteBuf> {
             out.add(bytebuf.retain());
             return;
         }
-
         ByteBuf transformedBuf = ctx.alloc().buffer().writeBytes(bytebuf);
         try {
             info.transformIncoming(transformedBuf, CancelDecoderException::generate);
@@ -51,31 +46,22 @@ public class VelocityDecodeHandler extends MessageToMessageDecoder<ByteBuf> {
             transformedBuf.release();
         }
     }
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         if (cause instanceof CancelCodecException) return;
         super.exceptionCaught(ctx, cause);
     }
-
-    // Abuse decoder handler to catch events
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object event) throws Exception {
         if (event != VelocityChannelInitializer.COMPRESSION_ENABLED_EVENT) {
             super.userEventTriggered(ctx, event);
             return;
         }
-
-        // When Velocity adds the compression handlers, the order becomes Minecraft Encoder -> Compressor -> Via Encoder
-        // Move Via codec handlers back to right position
         ChannelPipeline pipeline = ctx.pipeline();
-
         ChannelHandler encoder = pipeline.remove(VelocityChannelInitializer.VIA_ENCODER);
         pipeline.addBefore(VelocityChannelInitializer.MINECRAFT_ENCODER, VelocityChannelInitializer.VIA_ENCODER, encoder);
-
         ChannelHandler decoder = pipeline.remove(VelocityChannelInitializer.VIA_DECODER);
         pipeline.addBefore(VelocityChannelInitializer.MINECRAFT_DECODER, VelocityChannelInitializer.VIA_DECODER, decoder);
-
         super.userEventTriggered(ctx, event);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocol.packet;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -35,13 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class VersionedPacketTransformerImpl<C extends ClientboundPacketType, S extends ServerboundPacketType> implements VersionedPacketTransformer<C, S> {
-
     private final ProtocolVersion inputProtocolVersion;
     private final Class<C> clientboundPacketsClass;
     private final Class<S> serverboundPacketsClass;
-
     public VersionedPacketTransformerImpl(ProtocolVersion inputVersion, @Nullable Class<C> clientboundPacketsClass, @Nullable Class<S> serverboundPacketsClass) {
         Preconditions.checkNotNull(inputVersion);
         Preconditions.checkArgument(clientboundPacketsClass != null || serverboundPacketsClass != null,
@@ -50,56 +46,46 @@ public class VersionedPacketTransformerImpl<C extends ClientboundPacketType, S e
         this.clientboundPacketsClass = clientboundPacketsClass;
         this.serverboundPacketsClass = serverboundPacketsClass;
     }
-
     @Override
     public boolean send(PacketWrapper packet) throws InformativeException {
         validatePacket(packet);
         return transformAndSendPacket(packet, true);
     }
-
     @Override
     public boolean send(UserConnection connection, C packetType, Consumer<PacketWrapper> packetWriter) throws InformativeException {
         return createAndSend(connection, packetType, packetWriter);
     }
-
     @Override
     public boolean send(UserConnection connection, S packetType, Consumer<PacketWrapper> packetWriter) throws InformativeException {
         return createAndSend(connection, packetType, packetWriter);
     }
-
     @Override
     public boolean scheduleSend(PacketWrapper packet) throws InformativeException {
         validatePacket(packet);
         return transformAndSendPacket(packet, false);
     }
-
     @Override
     public boolean scheduleSend(UserConnection connection, C packetType, Consumer<PacketWrapper> packetWriter) throws InformativeException {
         return scheduleCreateAndSend(connection, packetType, packetWriter);
     }
-
     @Override
     public boolean scheduleSend(UserConnection connection, S packetType, Consumer<PacketWrapper> packetWriter) throws InformativeException {
         return scheduleCreateAndSend(connection, packetType, packetWriter);
     }
-
     @Override
     public @Nullable PacketWrapper transform(PacketWrapper packet) {
         validatePacket(packet);
         transformPacket(packet);
         return packet.isCancelled() ? null : packet;
     }
-
     @Override
     public @Nullable PacketWrapper transform(UserConnection connection, C packetType, Consumer<PacketWrapper> packetWriter) {
         return createAndTransform(connection, packetType, packetWriter);
     }
-
     @Override
     public @Nullable PacketWrapper transform(UserConnection connection, S packetType, Consumer<PacketWrapper> packetWriter) {
         return createAndTransform(connection, packetType, packetWriter);
     }
-
     private void validatePacket(PacketWrapper packet) {
         if (packet.user() == null) {
             throw new IllegalArgumentException("PacketWrapper does not have a targetted UserConnection");
@@ -107,20 +93,17 @@ public class VersionedPacketTransformerImpl<C extends ClientboundPacketType, S e
         if (packet.getPacketType() == null) {
             throw new IllegalArgumentException("PacketWrapper does not have a valid packet type");
         }
-
         Class<? extends PacketType> expectedPacketClass =
             packet.getPacketType().direction() == Direction.CLIENTBOUND ? clientboundPacketsClass : serverboundPacketsClass;
         if (packet.getPacketType().getClass() != expectedPacketClass) {
             throw new IllegalArgumentException("PacketWrapper packet type is of the wrong packet class");
         }
     }
-
     private boolean transformAndSendPacket(PacketWrapper packet, boolean currentThread) throws InformativeException {
         transformPacket(packet);
         if (packet.isCancelled()) {
             return false;
         }
-
         if (currentThread) {
             if (packet.getPacketType().direction() == Direction.CLIENTBOUND) {
                 packet.sendRaw();
@@ -136,17 +119,12 @@ public class VersionedPacketTransformerImpl<C extends ClientboundPacketType, S e
         }
         return true;
     }
-
     private void transformPacket(PacketWrapper packet) {
-        // If clientbound: Constructor given inputProtocolVersion → Client version
-        // If serverbound: Constructor given inputProtocolVersion → Server version
         UserConnection connection = packet.user();
         PacketType packetType = packet.getPacketType();
         boolean clientbound = packetType.direction() == Direction.CLIENTBOUND;
         ProtocolVersion serverProtocolVersion = clientbound ? this.inputProtocolVersion : connection.getProtocolInfo().serverProtocolVersion();
         ProtocolVersion clientProtocolVersion = clientbound ? connection.getProtocolInfo().protocolVersion() : this.inputProtocolVersion;
-
-        // Construct protocol pipeline
         List<ProtocolPathEntry> path = Via.getManager().getProtocolManager().getProtocolPath(clientProtocolVersion, serverProtocolVersion);
         if (path == null) {
             if (serverProtocolVersion != clientProtocolVersion) {
@@ -154,7 +132,6 @@ public class VersionedPacketTransformerImpl<C extends ClientboundPacketType, S e
             }
             return;
         }
-
         final List<Protocol> protocolList = new ArrayList<>(path.size());
         if (clientbound) {
             for (int i = path.size() - 1; i >= 0; i--) {
@@ -165,10 +142,7 @@ public class VersionedPacketTransformerImpl<C extends ClientboundPacketType, S e
                 protocolList.add(entry.protocol());
             }
         }
-
-        // Reset reader and apply pipeline
         packet.resetReader();
-
         try {
             packet.apply(packetType.direction(), packetType.state(), protocolList);
         } catch (CancelException ignored) {
@@ -177,19 +151,16 @@ public class VersionedPacketTransformerImpl<C extends ClientboundPacketType, S e
                 + " and server version " + serverProtocolVersion + ". Are you sure you used the correct input version and packet write types?", e);
         }
     }
-
     private boolean createAndSend(UserConnection connection, PacketType packetType, Consumer<PacketWrapper> packetWriter) throws InformativeException {
         PacketWrapper packet = PacketWrapper.create(packetType, connection);
         packetWriter.accept(packet);
         return send(packet);
     }
-
     private boolean scheduleCreateAndSend(UserConnection connection, PacketType packetType, Consumer<PacketWrapper> packetWriter) throws InformativeException {
         PacketWrapper packet = PacketWrapper.create(packetType, connection);
         packetWriter.accept(packet);
         return scheduleSend(packet);
     }
-
     private @Nullable PacketWrapper createAndTransform(UserConnection connection, PacketType packetType, Consumer<PacketWrapper> packetWriter) {
         PacketWrapper packet = PacketWrapper.create(packetType, connection);
         packetWriter.accept(packet);

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,12 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.ArrayType;
 import io.netty.buffer.ByteBuf;
-
 public record FireworkExplosion(int shape, int[] colors, int[] fadeColors, boolean hasTrail, boolean hasTwinkle) {
     public static final Type<FireworkExplosion> TYPE = new Type<>(FireworkExplosion.class) {
         @Override
@@ -38,7 +36,6 @@ public record FireworkExplosion(int shape, int[] colors, int[] fadeColors, boole
             final boolean hasTwinkle = buffer.readBoolean();
             return new FireworkExplosion(shape, colors, fadeColors, hasTrail, hasTwinkle);
         }
-
         @Override
         public void write(final ByteBuf buffer, final FireworkExplosion value) {
             Types.VAR_INT.writePrimitive(buffer, value.shape);
@@ -49,5 +46,4 @@ public record FireworkExplosion(int shape, int[] colors, int[] fadeColors, boole
         }
     };
     public static final Type<FireworkExplosion[]> ARRAY_TYPE = new ArrayType<>(TYPE);
-
 }

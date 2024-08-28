@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,34 +21,27 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.rewriter;
-
 import com.viaversion.viaversion.api.protocol.Protocol;
-
 public abstract class RewriterBase<T extends Protocol<?, ?, ?, ?>> implements Rewriter<T> {
     protected final T protocol;
-
     protected RewriterBase(final T protocol) {
         this.protocol = protocol;
     }
-
     @Override
     public final void register() {
         registerPackets();
         registerRewrites();
     }
-
     /**
      * To be overriden. Called when registering the rewriter.
      */
     protected void registerPackets() {
     }
-
     /**
      * To be overriden. Called when registering the rewriter.
      */
     protected void registerRewrites() {
     }
-
     @Override
     public T protocol() {
         return protocol;

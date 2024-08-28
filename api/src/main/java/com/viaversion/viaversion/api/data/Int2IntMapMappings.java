@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,48 +21,38 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-
 public class Int2IntMapMappings implements Mappings {
     private final Int2IntMap mappings;
     private final int mappedIds;
-
     protected Int2IntMapMappings(final Int2IntMap mappings, final int mappedIds) {
         this.mappings = mappings;
         this.mappedIds = mappedIds;
         mappings.defaultReturnValue(-1);
     }
-
     public static Int2IntMapMappings of(final Int2IntMap mappings, final int mappedIds) {
         return new Int2IntMapMappings(mappings, mappedIds);
     }
-
     public static Int2IntMapMappings of() {
         return new Int2IntMapMappings(new Int2IntOpenHashMap(), -1);
     }
-
     @Override
     public int getNewId(final int id) {
         return mappings.get(id);
     }
-
     @Override
     public void setNewId(final int id, final int mappedId) {
         mappings.put(id, mappedId);
     }
-
     @Override
     public int size() {
         return mappings.size();
     }
-
     @Override
     public int mappedSize() {
         return mappedIds;
     }
-
     @Override
     public Mappings inverse() {
         final Int2IntMap inverse = new Int2IntOpenHashMap();

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,19 +13,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_10to1_11.data;
-
 import com.viaversion.viaversion.util.Pair;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-
 public class PotionColorMappings1_11 {
-
-    //<oldData> to <newData, isInstant> mapping
     private static final Int2ObjectMap<Pair<Integer, Boolean>> POTIONS = new Int2ObjectOpenHashMap<>(37, 0.99F);
-
     static {
         addRewrite(0, 3694022, false);
         addRewrite(1, 3694022, false);
@@ -65,13 +60,10 @@ public class PotionColorMappings1_11 {
         addRewrite(35, 4738376, false);
         addRewrite(36, 3381504, false);
     }
-
     public static Pair<Integer, Boolean> getNewData(int oldData) {
         return POTIONS.get(oldData);
     }
-
     private static void addRewrite(int oldData, int newData, boolean isInstant) {
         POTIONS.put(oldData, new Pair<>(newData, isInstant));
     }
-
 }

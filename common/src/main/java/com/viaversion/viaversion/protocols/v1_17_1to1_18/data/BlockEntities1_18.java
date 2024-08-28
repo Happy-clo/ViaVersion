@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,16 +13,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_17_1to1_18.data;
-
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-
 public final class BlockEntities1_18 {
     private static final Object2IntMap<String> BLOCK_ENTITY_IDS = new Object2IntOpenHashMap<>();
-
     static {
         BLOCK_ENTITY_IDS.defaultReturnValue(-1);
         final String[] blockEntities = blockEntities();
@@ -30,11 +27,9 @@ public final class BlockEntities1_18 {
             BLOCK_ENTITY_IDS.put(blockEntities[id], id);
         }
     }
-
     public static Object2IntMap<String> blockEntityIds() {
         return BLOCK_ENTITY_IDS;
     }
-
     private static String[] blockEntities() {
         return new String[]{
             "furnace",

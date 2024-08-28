@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,46 +21,35 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.chunks;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface ChunkSection {
-
     /**
      * Size (dimensions) of blocks in a chunks section.
      */
-    int SIZE = 16 * 16 * 16; // width * depth * height
-
+    int SIZE = 16 * 16 * 16; 
     /**
      * Size (dimensions) of biomes in a chunks section.
      */
     int BIOME_SIZE = 4 * 4 * 4;
-
     static int index(int x, int y, int z) {
         return y << 8 | z << 4 | x;
     }
-
     static int xFromIndex(int idx) {
         return idx & 0xF;
     }
-
     static int yFromIndex(int idx) {
         return idx >> 8 & 0xF;
     }
-
     static int zFromIndex(int idx) {
         return idx >> 4 & 0xF;
     }
-
     /**
      * Returns the number of non-air blocks in this section.
      *
      * @return non-air blocks in this section
      */
     int getNonAirBlocksCount();
-
     void setNonAirBlocksCount(int nonAirBlocksCount);
-
     /**
      * Returns whether this section holds light data.
      * Only true for &lt; 1.14 chunks.
@@ -70,7 +59,6 @@ public interface ChunkSection {
     default boolean hasLight() {
         return getLight() != null;
     }
-
     /**
      * Returns the light of the chunk section.
      * Only present for &lt; 1.14 chunks, otherwise sent separately.
@@ -78,9 +66,7 @@ public interface ChunkSection {
      * @return chunk section light if present
      */
     @Nullable ChunkSectionLight getLight();
-
     void setLight(@Nullable ChunkSectionLight light);
-
     /**
      * Returns the palette of the given type if present.
      *
@@ -88,8 +74,6 @@ public interface ChunkSection {
      * @return palette
      */
     @Nullable DataPalette palette(PaletteType type);
-
     void addPalette(PaletteType type, DataPalette blockPalette);
-
     void removePalette(PaletteType type);
 }

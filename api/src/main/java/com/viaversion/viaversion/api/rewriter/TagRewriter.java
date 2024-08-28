@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,21 +21,15 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.rewriter;
-
 import com.viaversion.viaversion.api.minecraft.RegistryType;
 import com.viaversion.viaversion.api.minecraft.TagData;
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface TagRewriter extends MappingDataListener {
-
     void removeTags(String registryKey);
-
     void removeTag(RegistryType type, String tagId);
-
     void renameTag(RegistryType type, String tagId, String renameTo);
-
     /**
      * Adds an empty tag (since the client crashes if a checked tag is not registered).
      *
@@ -43,9 +37,7 @@ public interface TagRewriter extends MappingDataListener {
      * @param tagId   tag id
      */
     void addEmptyTag(RegistryType tagType, String tagId);
-
     void addEmptyTags(RegistryType tagType, String... tagIds);
-
     /**
      * Adds an entity tag type to be filled with the given entity type ids.
      *
@@ -53,7 +45,6 @@ public interface TagRewriter extends MappingDataListener {
      * @param entities mapped entity types
      */
     void addEntityTag(String tagId, EntityType... entities);
-
     /**
      * Adds a tag type to be filled with the given type ids after being mapped to new ids.
      *
@@ -62,7 +53,6 @@ public interface TagRewriter extends MappingDataListener {
      * @param unmappedIds unmapped type ids
      */
     void addTag(RegistryType tagType, String tagId, int... unmappedIds);
-
     /**
      * Adds a tag type to be filled with the given raw type ids.
      *
@@ -71,9 +61,7 @@ public interface TagRewriter extends MappingDataListener {
      * @param ids     raw type ids
      */
     void addTagRaw(RegistryType tagType, String tagId, int... ids);
-
     @Nullable
     List<TagData> getNewTags(RegistryType tagType);
-
     List<TagData> getOrComputeNewTags(RegistryType tagType);
 }

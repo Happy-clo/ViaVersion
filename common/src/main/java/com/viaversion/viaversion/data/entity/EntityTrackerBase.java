@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,11 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
-
 package com.viaversion.viaversion.data.entity;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.data.entity.ClientEntityIdChangeListener;
@@ -32,7 +30,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.util.Collections;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class EntityTrackerBase implements EntityTracker, ClientEntityIdChangeListener {
     protected final Int2ObjectMap<TrackedEntity> entities = new Int2ObjectOpenHashMap<>();
     private final UserConnection connection;
@@ -43,66 +40,53 @@ public class EntityTrackerBase implements EntityTracker, ClientEntityIdChangeLis
     private String currentWorld;
     private int biomesSent = -1;
     private Map<String, DimensionData> dimensions = Collections.emptyMap();
-
     public EntityTrackerBase(UserConnection connection, @Nullable EntityType playerType) {
         this.connection = connection;
         this.playerType = playerType;
     }
-
     @Override
     public UserConnection user() {
         return connection;
     }
-
     @Override
     public void addEntity(int id, EntityType type) {
         entities.put(id, new TrackedEntityImpl(type));
     }
-
     @Override
     public boolean hasEntity(int id) {
         return entities.containsKey(id);
     }
-
     @Override
     public @Nullable TrackedEntity entity(final int entityId) {
         return entities.get(entityId);
     }
-
     @Override
     public @Nullable EntityType entityType(int id) {
         final TrackedEntity entity = entities.get(id);
         return entity != null ? entity.entityType() : null;
     }
-
     @Override
     public @Nullable StoredEntityData entityData(int id) {
         final TrackedEntity entity = entities.get(id);
         return entity != null ? entity.data() : null;
     }
-
     @Override
     public @Nullable StoredEntityData entityDataIfPresent(int id) {
         final TrackedEntity entity = entities.get(id);
         return entity != null && entity.hasData() ? entity.data() : null;
     }
-
-    //TODO Soft memory leak: Remove entities on respawn in protocols prior to 1.18 (1.16+ only when the worldname is different)
     @Override
     public void removeEntity(int id) {
         entities.remove(id);
     }
-
     @Override
     public void clearEntities() {
         entities.clear();
     }
-
     @Override
     public int clientEntityId() {
         return clientEntityId;
     }
-
     @Override
     public void setClientEntityId(int clientEntityId) {
         Preconditions.checkNotNull(playerType);
@@ -112,10 +96,8 @@ public class EntityTrackerBase implements EntityTracker, ClientEntityIdChangeLis
         } else {
             entities.put(clientEntityId, new TrackedEntityImpl(playerType));
         }
-
         this.clientEntityId = clientEntityId;
     }
-
     @Override
     public boolean trackClientEntity() {
         if (clientEntityId != -1) {
@@ -124,62 +106,50 @@ public class EntityTrackerBase implements EntityTracker, ClientEntityIdChangeLis
         }
         return false;
     }
-
     @Override
     public int currentWorldSectionHeight() {
         return currentWorldSectionHeight;
     }
-
     @Override
     public void setCurrentWorldSectionHeight(int currentWorldSectionHeight) {
         this.currentWorldSectionHeight = currentWorldSectionHeight;
     }
-
     @Override
     public int currentMinY() {
         return currentMinY;
     }
-
     @Override
     public void setCurrentMinY(int currentMinY) {
         this.currentMinY = currentMinY;
     }
-
     @Override
     public @Nullable String currentWorld() {
         return currentWorld;
     }
-
     @Override
     public void setCurrentWorld(final String currentWorld) {
         this.currentWorld = currentWorld;
     }
-
     @Override
     public int biomesSent() {
         return biomesSent;
     }
-
     @Override
     public void setBiomesSent(int biomesSent) {
         this.biomesSent = biomesSent;
     }
-
     @Override
     public EntityType playerType() {
         return playerType;
     }
-
     @Override
     public @Nullable DimensionData dimensionData(String dimension) {
         return dimensions.get(Key.stripMinecraftNamespace(dimension));
     }
-
     @Override
     public @Nullable DimensionData dimensionData(int dimensionId) {
-        return dimensions.values().stream().filter(data -> data.id() == dimensionId).findFirst().orElse(null); // TODO Store as array as well
+        return dimensions.values().stream().filter(data -> data.id() == dimensionId).findFirst().orElse(null); 
     }
-
     @Override
     public void setDimensions(Map<String, DimensionData> dimensions) {
         this.dimensions = dimensions;

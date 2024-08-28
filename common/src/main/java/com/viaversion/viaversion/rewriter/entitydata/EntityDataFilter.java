@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,11 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
-
 package com.viaversion.viaversion.rewriter.entitydata;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
@@ -26,14 +24,11 @@ import com.viaversion.viaversion.rewriter.EntityRewriter;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import java.util.Objects;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
                                @Nullable EntityDataType dataType, int index, EntityDataHandler handler) {
-
     public EntityDataFilter {
         Preconditions.checkNotNull(handler, "EntityDataHandler cannot be null");
     }
-
     /**
      * Returns the entity data index to filter, or -1.
      *
@@ -42,7 +37,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
     public int index() {
         return index;
     }
-
     /**
      * Returns the filtered entity type if present.
      *
@@ -51,7 +45,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
     public @Nullable EntityType type() {
         return type;
     }
-
     /**
      * Returns the entity data type to filter, or null.
      *
@@ -60,7 +53,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
     public @Nullable EntityDataType dataType() {
         return dataType;
     }
-
     /**
      * Returns the entity data handler.
      *
@@ -69,7 +61,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
     public EntityDataHandler handler() {
         return handler;
     }
-
     /**
      * Returns whether entity parent types should be checked against as well.
      *
@@ -78,7 +69,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
     public boolean filterFamily() {
         return filterFamily;
     }
-
     /**
      * Returns whether if the entity data should be handled by this filter.
      *
@@ -87,20 +77,16 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
      * @return whether the data should be filtered
      */
     public boolean isFiltered(@Nullable EntityType type, EntityData entityData) {
-        // Check if no specific index is filtered or the indexes are equal
-        // Then check if the filter has no entity type or the type is equal to or part of the filtered parent type
         return (this.index == -1 || entityData.id() == this.index)
             && (this.type == null || matchesType(type))
             && (this.dataType == null || entityData.dataType() == this.dataType);
     }
-
     private boolean matchesType(EntityType type) {
         if (type == null) {
             return false;
         }
         return this.filterFamily ? type.isOrHasParent(this.type) : this.type == type;
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -112,7 +98,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
         if (!Objects.equals(dataType, that.dataType)) return false;
         return Objects.equals(type, that.type);
     }
-
     @Override
     public int hashCode() {
         int result = handler.hashCode();
@@ -122,7 +107,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
         result = 31 * result + (filterFamily ? 1 : 0);
         return result;
     }
-
     @Override
     public String toString() {
         return "EntityDataFilter{" +
@@ -133,7 +117,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
             ", handler=" + handler +
             '}';
     }
-
     public static final class Builder {
         private final EntityRewriter<?, ?> rewriter;
         private EntityType type;
@@ -141,17 +124,14 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
         private int index = -1;
         private boolean filterFamily;
         private EntityDataHandler handler;
-
         public Builder(EntityRewriter<?, ?> rewriter) {
             this.rewriter = rewriter;
         }
-
         public Builder dataType(EntityDataType dataType) {
             Preconditions.checkArgument(this.dataType == null);
             this.dataType = dataType;
             return this;
         }
-
         /**
          * Sets the type to filter, including subtypes.
          * <p>
@@ -168,7 +148,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
             this.filterFamily = true;
             return this;
         }
-
         /**
          * Sets the type to filter, not including subtypes.
          * <p>
@@ -185,19 +164,16 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
             this.filterFamily = false;
             return this;
         }
-
         public Builder index(int index) {
             Preconditions.checkArgument(this.index == -1);
             this.index = index;
             return this;
         }
-
         public Builder handlerNoRegister(EntityDataHandler handler) {
             Preconditions.checkArgument(this.handler == null);
             this.handler = handler;
             return this;
         }
-
         /**
          * Sets the entity data handler and registers the entity data filter.
          * Should always be called last.
@@ -210,7 +186,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
             this.handler = handler;
             register();
         }
-
         public void mapDataType(Int2ObjectFunction<EntityDataType> updateFunction) {
             handler((event, data) -> {
                 EntityDataType mappedType = updateFunction.apply(data.dataType().typeId());
@@ -221,7 +196,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
                 }
             });
         }
-
         /**
          * Sets a handler to remove entity data at the given index without affecting any other indexes and registers the filter.
          * Should always be called last.
@@ -232,7 +206,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
             this.index = index;
             handler((event, data) -> event.cancel());
         }
-
         /**
          * Sets a handler to change the index. Does not do any other transformation or shifting and registers the filter.
          * Should always be called last.
@@ -244,7 +217,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
             Preconditions.checkArgument(this.index != -1);
             handler((event, data) -> event.setIndex(newIndex));
         }
-
         /**
          * Sets a handler incrementing every index above the given one and registers the filter.
          * Should always be called last.
@@ -260,7 +232,6 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
                 }
             });
         }
-
         /**
          * Sets a handler to remove entity data at the given index, decrementing every index above it and registers the filter.
          * Should always be called last.
@@ -279,14 +250,12 @@ public record EntityDataFilter(@Nullable EntityType type, boolean filterFamily,
                 }
             });
         }
-
         /**
          * Creates and registers the created EntityDataFilter in the linked {@link EntityRewriter} instance.
          */
         public void register() {
             rewriter.registerFilter(build());
         }
-
         /**
          * Returns a new entity data filter without registering it.
          *

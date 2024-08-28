@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_15_2to1_16.data;
-
 import com.viaversion.nbt.tag.ByteTag;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.FloatTag;
@@ -25,12 +24,9 @@ import com.viaversion.nbt.tag.ListTag;
 import com.viaversion.nbt.tag.LongTag;
 import com.viaversion.nbt.tag.StringTag;
 import java.util.Arrays;
-
 public class DimensionRegistries1_16 {
-
     private static final CompoundTag DIMENSIONS_TAG = new CompoundTag();
     private static final String[] WORLD_NAMES = {"minecraft:overworld", "minecraft:the_nether", "minecraft:the_end"};
-
     static {
         ListTag<CompoundTag> list = new ListTag<>(CompoundTag.class);
         list.add(createOverworldEntry());
@@ -39,15 +35,12 @@ public class DimensionRegistries1_16 {
         list.add(createEndEntry());
         DIMENSIONS_TAG.put("dimension", list);
     }
-
     public static CompoundTag getDimensionsTag() {
         return DIMENSIONS_TAG.copy();
     }
-
     public static String[] getWorldNames() {
         return Arrays.copyOf(WORLD_NAMES, WORLD_NAMES.length);
     }
-
     private static CompoundTag createOverworldEntry() {
         CompoundTag tag = new CompoundTag();
         tag.put("name", new StringTag("minecraft:overworld"));
@@ -55,7 +48,6 @@ public class DimensionRegistries1_16 {
         addSharedOverwaldEntries(tag);
         return tag;
     }
-
     private static CompoundTag createOverworldCavesEntry() {
         CompoundTag tag = new CompoundTag();
         tag.put("name", new StringTag("minecraft:overworld_caves"));
@@ -63,7 +55,6 @@ public class DimensionRegistries1_16 {
         addSharedOverwaldEntries(tag);
         return tag;
     }
-
     private static void addSharedOverwaldEntries(CompoundTag tag) {
         tag.put("piglin_safe", new ByteTag((byte) 0));
         tag.put("natural", new ByteTag((byte) 1));
@@ -77,7 +68,6 @@ public class DimensionRegistries1_16 {
         tag.put("shrunk", new ByteTag((byte) 0));
         tag.put("ultrawarm", new ByteTag((byte) 0));
     }
-
     private static CompoundTag createNetherEntry() {
         CompoundTag tag = new CompoundTag();
         tag.put("piglin_safe", new ByteTag((byte) 1));
@@ -96,7 +86,6 @@ public class DimensionRegistries1_16 {
         tag.put("has_ceiling", new ByteTag((byte) 1));
         return tag;
     }
-
     private static CompoundTag createEndEntry() {
         CompoundTag tag = new CompoundTag();
         tag.put("piglin_safe", new ByteTag((byte) 0));
@@ -115,5 +104,4 @@ public class DimensionRegistries1_16 {
         tag.put("has_ceiling", new ByteTag((byte) 0));
         return tag;
     }
-
 }

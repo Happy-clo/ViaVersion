@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.entities;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface EntityType {
-
     /**
      * Returns the entity id.
      *
@@ -33,21 +30,18 @@ public interface EntityType {
      * @throws IllegalStateException if ids have not been loaded yet
      */
     int getId();
-
     /**
      * Returns the parent entity type if present.
      *
      * @return parent entity type if present
      */
     @Nullable EntityType getParent();
-
     /**
      * Returns the entity type name, not necessarily matching the Vanilla type name.
      *
      * @return entity type name
      */
     String name();
-
     /**
      * Returns the entity's Vanilla identifier.
      *
@@ -55,18 +49,15 @@ public interface EntityType {
      * @throws IllegalArgumentException if {@link #isAbstractType()} returns true
      */
     String identifier();
-
     /**
      * Returns whether the type does not represent an actual entity, e.g. animal or monster.
      *
      * @return whether the type does not represent an actual entity
      */
     boolean isAbstractType();
-
     default boolean is(EntityType type) {
         return this == type;
     }
-
     /**
      * Returns whether the current type is equal to the given type, or has it as a parent type.
      *
@@ -75,15 +66,12 @@ public interface EntityType {
      */
     default boolean isOrHasParent(EntityType type) {
         EntityType parent = this;
-
         do {
             if (parent == type) {
                 return true;
             }
-
             parent = parent.getParent();
         } while (parent != null);
-
         return false;
     }
 }

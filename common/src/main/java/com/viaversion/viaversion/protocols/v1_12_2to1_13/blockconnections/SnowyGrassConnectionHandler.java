@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -26,17 +25,14 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 public class SnowyGrassConnectionHandler implements ConnectionHandler {
     private static final Object2IntMap<GrassBlock> GRASS_BLOCKS = new Object2IntOpenHashMap<>();
     private static final IntSet SNOWY_GRASS_BLOCKS = new IntOpenHashSet();
-
     static ConnectionData.ConnectorInitAction init() {
         final Set<String> snowyGrassBlocks = new HashSet<>();
         snowyGrassBlocks.add("minecraft:grass_block");
         snowyGrassBlocks.add("minecraft:podzol");
         snowyGrassBlocks.add("minecraft:mycelium");
-
         GRASS_BLOCKS.defaultReturnValue(-1);
         final SnowyGrassConnectionHandler handler = new SnowyGrassConnectionHandler();
         return blockData -> {
@@ -53,14 +49,12 @@ public class SnowyGrassConnectionHandler implements ConnectionHandler {
             }
         };
     }
-
     @Override
     public int connect(UserConnection user, BlockPosition position, int blockState) {
         int blockUpId = getBlockData(user, position.getRelative(BlockFace.TOP));
         int newId = GRASS_BLOCKS.getInt(new GrassBlock(blockState, SNOWY_GRASS_BLOCKS.contains(blockUpId)));
         return newId != -1 ? newId : blockState;
     }
-
     private record GrassBlock(int blockStateId, boolean snowy) {
     }
 }

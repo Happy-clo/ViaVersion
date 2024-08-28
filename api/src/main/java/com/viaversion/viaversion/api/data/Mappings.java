@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,9 +21,7 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 public interface Mappings {
-
     /**
      * Returns the mapped id from the given id, or -1 if invalid/out of bounds.
      *
@@ -31,7 +29,6 @@ public interface Mappings {
      * @return mapped id, or -1 if invalid/out of bounds
      */
     int getNewId(int id);
-
     /**
      * Returns the mapped id from the given id, or the given default if unmapped/invalid.
      *
@@ -43,7 +40,6 @@ public interface Mappings {
         final int mappedId = getNewId(id);
         return mappedId != -1 ? mappedId : def;
     }
-
     /**
      * Returns whether the id has a mapping.
      *
@@ -53,7 +49,6 @@ public interface Mappings {
     default boolean contains(int id) {
         return getNewId(id) != -1;
     }
-
     /**
      * Manually maps a specific id.
      *
@@ -62,14 +57,12 @@ public interface Mappings {
      * @throws IndexOutOfBoundsException if the unmapped id is invalid
      */
     void setNewId(int id, int mappedId);
-
     /**
      * Returns amount of unmapped entries, being the size of the mapping.
      *
      * @return amount of unmapped entries
      */
     int size();
-
     /**
      * Returns the amount of new ids total, even if it does not have a direct mapping.
      * Returns -1 if unknown.
@@ -77,7 +70,6 @@ public interface Mappings {
      * @return amount of new ids, or -1 if unknown
      */
     int mappedSize();
-
     /**
      * Mappings with keys and values swapped.
      *

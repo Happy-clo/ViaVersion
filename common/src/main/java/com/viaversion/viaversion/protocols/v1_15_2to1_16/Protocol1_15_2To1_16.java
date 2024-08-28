@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_15_2to1_16;
-
 import com.google.common.base.Joiner;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -56,47 +55,33 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 public class Protocol1_15_2To1_16 extends AbstractProtocol<ClientboundPackets1_15, ClientboundPackets1_16, ServerboundPackets1_14, ServerboundPackets1_16> {
-
     private static final UUID ZERO_UUID = new UUID(0, 0);
     public static final MappingData MAPPINGS = new MappingDataBase("1.15", "1.16");
     private final EntityPacketRewriter1_16 entityRewriter = new EntityPacketRewriter1_16(this);
     private final ItemPacketRewriter1_16 itemRewriter = new ItemPacketRewriter1_16(this);
     private final ComponentRewriter1_16 componentRewriter = new ComponentRewriter1_16(this);
     private final TagRewriter<ClientboundPackets1_15> tagRewriter = new TagRewriter<>(this);
-
     public Protocol1_15_2To1_16() {
         super(ClientboundPackets1_15.class, ClientboundPackets1_16.class, ServerboundPackets1_14.class, ServerboundPackets1_16.class);
     }
-
     @Override
     protected void registerPackets() {
         super.registerPackets();
-
         WorldPacketRewriter1_16.register(this);
-
         tagRewriter.register(ClientboundPackets1_15.UPDATE_TAGS, RegistryType.ENTITY);
-
         new StatisticsRewriter<>(this).register(ClientboundPackets1_15.AWARD_STATS);
-
-        // Login Success
         registerClientbound(State.LOGIN, ClientboundLoginPackets.GAME_PROFILE.getId(), ClientboundLoginPackets.GAME_PROFILE.getId(), wrapper -> {
-            // Transform string to a uuid
             UUID uuid = UUID.fromString(wrapper.read(Types.STRING));
             wrapper.write(Types.UUID, uuid);
         });
-
-        // Motd Status - line breaks are no longer allowed for player samples
         registerClientbound(State.STATUS, ClientboundStatusPackets.STATUS_RESPONSE.getId(), ClientboundStatusPackets.STATUS_RESPONSE.getId(), wrapper -> {
             String original = wrapper.passthrough(Types.STRING);
             JsonObject object = GsonUtil.getGson().fromJson(original, JsonObject.class);
             JsonObject players = object.getAsJsonObject("players");
             if (players == null) return;
-
             JsonArray sample = players.getAsJsonArray("sample");
             if (sample == null) return;
-
             JsonArray splitSamples = new JsonArray();
             for (JsonElement element : sample) {
                 JsonObject playerInfo = element.getAsJsonObject();
@@ -105,7 +90,6 @@ public class Protocol1_15_2To1_16 extends AbstractProtocol<ClientboundPackets1_1
                     splitSamples.add(playerInfo);
                     continue;
                 }
-
                 String id = playerInfo.getAsJsonPrimitive("id").getAsString();
                 for (String s : name.split("\n")) {
                     JsonObject newSample = new JsonObject();
@@ -114,15 +98,11 @@ public class Protocol1_15_2To1_16 extends AbstractProtocol<ClientboundPackets1_1
                     splitSamples.add(newSample);
                 }
             }
-
-            // Replace data if changed
             if (splitSamples.size() != sample.size()) {
                 players.add("sample", splitSamples);
                 wrapper.set(Types.STRING, 0, object.toString());
             }
         });
-
-        // Handle (relevant) component cases for translatable and score changes
         registerClientbound(ClientboundPackets1_15.CHAT, new PacketHandlers() {
             @Override
             public void register() {
@@ -130,41 +110,34 @@ public class Protocol1_15_2To1_16 extends AbstractProtocol<ClientboundPackets1_1
                 map(Types.BYTE);
                 handler(wrapper -> {
                     componentRewriter.processText(wrapper.user(), wrapper.get(Types.COMPONENT, 0));
-                    wrapper.write(Types.UUID, ZERO_UUID); // Sender uuid - always send as 'system'
+                    wrapper.write(Types.UUID, ZERO_UUID); 
                 });
             }
         });
         componentRewriter.registerBossEvent(ClientboundPackets1_15.BOSS_EVENT);
         componentRewriter.registerTitle(ClientboundPackets1_15.SET_TITLES);
         componentRewriter.registerPlayerCombat(ClientboundPackets1_15.PLAYER_COMBAT);
-
         SoundRewriter<ClientboundPackets1_15> soundRewriter = new SoundRewriter<>(this);
         soundRewriter.registerSound(ClientboundPackets1_15.SOUND);
         soundRewriter.registerSound(ClientboundPackets1_15.SOUND_ENTITY);
-
         registerServerbound(ServerboundPackets1_16.INTERACT, wrapper -> {
-            wrapper.passthrough(Types.VAR_INT); // Entity Id
+            wrapper.passthrough(Types.VAR_INT); 
             int action = wrapper.passthrough(Types.VAR_INT);
             if (action == 0 || action == 2) {
                 if (action == 2) {
-                    // Location
                     wrapper.passthrough(Types.FLOAT);
                     wrapper.passthrough(Types.FLOAT);
                     wrapper.passthrough(Types.FLOAT);
                 }
-
-                wrapper.passthrough(Types.VAR_INT); // Hand
+                wrapper.passthrough(Types.VAR_INT); 
             }
-
-            // New boolean: Whether the client is sneaking/pressing shift
             wrapper.read(Types.BOOLEAN);
         });
-
         if (Via.getConfig().isIgnoreLong1_16ChannelNames()) {
             registerServerbound(ServerboundPackets1_16.CUSTOM_PAYLOAD, new PacketHandlers() {
                 @Override
                 public void register() {
-                    map(Types.STRING); // Channel
+                    map(Types.STRING); 
                     handler(wrapper -> {
                         final String channel = wrapper.get(Types.STRING, 0);
                         final String namespacedChannel = Key.namespaced(channel);
@@ -183,34 +156,27 @@ public class Protocol1_15_2To1_16 extends AbstractProtocol<ClientboundPackets1_1
                                     }
                                     continue;
                                 }
-
                                 checkedChannels.add(registeredChannel);
                             }
-
                             if (checkedChannels.isEmpty()) {
                                 wrapper.cancel();
                                 return;
                             }
-
                             wrapper.write(Types.REMAINING_BYTES, Joiner.on('\0').join(checkedChannels).getBytes(StandardCharsets.UTF_8));
                         }
                     });
                 }
             });
         }
-
         registerServerbound(ServerboundPackets1_16.PLAYER_ABILITIES, wrapper -> {
-            wrapper.passthrough(Types.BYTE); // Flags
-
+            wrapper.passthrough(Types.BYTE); 
             final PlayerAbilitiesProvider playerAbilities = Via.getManager().getProviders().get(PlayerAbilitiesProvider.class);
             wrapper.write(Types.FLOAT, playerAbilities.getFlyingSpeed(wrapper.user()));
             wrapper.write(Types.FLOAT, playerAbilities.getWalkingSpeed(wrapper.user()));
         });
-
         cancelServerbound(ServerboundPackets1_16.JIGSAW_GENERATE);
         cancelServerbound(ServerboundPackets1_16.SET_JIGSAW_BLOCK);
     }
-
     @Override
     protected void onMappingDataLoaded() {
         EntityTypes1_16.initialize(this);
@@ -219,46 +185,37 @@ public class Protocol1_15_2To1_16 extends AbstractProtocol<ClientboundPackets1_1
             .reader("dust", ParticleType.Readers.DUST)
             .reader("falling_dust", ParticleType.Readers.BLOCK)
             .reader("item", ParticleType.Readers.ITEM1_13_2);
-
         tagRewriter.addEmptyTags(RegistryType.ITEM, "minecraft:crimson_stems", "minecraft:non_flammable_wood", "minecraft:piglin_loved",
             "minecraft:piglin_repellents", "minecraft:soul_fire_base_blocks", "minecraft:warped_stems");
         tagRewriter.addEmptyTags(RegistryType.BLOCK, "minecraft:crimson_stems", "minecraft:guarded_by_piglins", "minecraft:hoglin_repellents",
             "minecraft:non_flammable_wood", "minecraft:nylium", "minecraft:piglin_repellents", "minecraft:soul_fire_base_blocks", "minecraft:soul_speed_blocks",
             "minecraft:strider_warm_blocks", "minecraft:warped_stems");
-
         super.onMappingDataLoaded();
     }
-
     @Override
     public void register(ViaProviders providers) {
         providers.register(PlayerAbilitiesProvider.class, new PlayerAbilitiesProvider());
     }
-
     @Override
     public void init(UserConnection userConnection) {
         userConnection.addEntityTracker(this.getClass(), new EntityTrackerBase(userConnection, EntityTypes1_16.PLAYER));
         userConnection.put(new InventoryTracker1_16());
     }
-
     @Override
     public MappingData getMappingData() {
         return MAPPINGS;
     }
-
     @Override
     public EntityPacketRewriter1_16 getEntityRewriter() {
         return entityRewriter;
     }
-
     @Override
     public ItemPacketRewriter1_16 getItemRewriter() {
         return itemRewriter;
     }
-
     public ComponentRewriter1_16 getComponentRewriter() {
         return componentRewriter;
     }
-
     @Override
     public TagRewriter<ClientboundPackets1_15> getTagRewriter() {
         return tagRewriter;

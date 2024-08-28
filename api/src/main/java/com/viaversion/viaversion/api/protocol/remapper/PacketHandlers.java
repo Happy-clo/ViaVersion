@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.remapper;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
@@ -30,14 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Level;
-
 public abstract class PacketHandlers implements PacketHandler {
     private final List<PacketHandler> packetHandlers = new ArrayList<>();
-
     protected PacketHandlers() {
         register();
     }
-
     static PacketHandler fromRemapper(List<PacketHandler> valueRemappers) {
         final PacketHandlers handlers = new PacketHandlers() {
             @Override
@@ -47,7 +43,6 @@ public abstract class PacketHandlers implements PacketHandler {
         handlers.packetHandlers.addAll(valueRemappers);
         return handlers;
     }
-
     /**
      * Reads and writes the given type.
      *
@@ -56,7 +51,6 @@ public abstract class PacketHandlers implements PacketHandler {
     public <T> void map(Type<T> type) {
         handler(wrapper -> wrapper.passthrough(type));
     }
-
     /**
      * Reads the first given type and writes the second given type.
      *
@@ -66,7 +60,6 @@ public abstract class PacketHandlers implements PacketHandler {
     public void map(Type<?> oldType, Type<?> newType) {
         handler(wrapper -> wrapper.passthroughAndMap(oldType, newType));
     }
-
     /**
      * Maps a type from an old type to a transformed new type.
      *
@@ -84,7 +77,6 @@ public abstract class PacketHandlers implements PacketHandler {
             }
         });
     }
-
     /**
      * Maps a type from an old type to a transformed new type based on their input type.
      *
@@ -98,7 +90,6 @@ public abstract class PacketHandlers implements PacketHandler {
         }
         map(transformer.getInputType(), transformer);
     }
-
     /**
      * Maps a type from an old type to a transformed new type.
      *
@@ -110,7 +101,6 @@ public abstract class PacketHandlers implements PacketHandler {
     public <T1, T2> void map(Type<T1> oldType, ValueTransformer<T1, T2> transformer) {
         map(new TypeRemapper<>(oldType), transformer);
     }
-
     /**
      * Maps a type using a basic ValueReader to a ValueWriter.
      *
@@ -121,7 +111,6 @@ public abstract class PacketHandlers implements PacketHandler {
     public <T> void map(ValueReader<T> inputReader, ValueWriter<T> outputWriter) {
         handler(wrapper -> outputWriter.write(wrapper, inputReader.read(wrapper)));
     }
-
     /**
      * Adds a packet handler.
      *
@@ -130,7 +119,6 @@ public abstract class PacketHandlers implements PacketHandler {
     public void handler(PacketHandler handler) {
         packetHandlers.add(handler);
     }
-
     /**
      * Adds a packet handler which will suppress any exceptions thrown by the handler.
      *
@@ -148,7 +136,6 @@ public abstract class PacketHandlers implements PacketHandler {
             }
         });
     }
-
     /**
      * Writes a value.
      *
@@ -158,7 +145,6 @@ public abstract class PacketHandlers implements PacketHandler {
     public <T> void create(Type<T> type, T value) {
         handler(wrapper -> wrapper.write(type, value));
     }
-
     /**
      * Reads (and thus removes) the given type.
      *
@@ -167,19 +153,16 @@ public abstract class PacketHandlers implements PacketHandler {
     public void read(Type<?> type) {
         handler(wrapper -> wrapper.read(type));
     }
-
     /**
      * Registers the handlers for this packet.
      */
     protected abstract void register();
-
     @Override
     public final void handle(PacketWrapper wrapper) throws InformativeException {
         for (PacketHandler handler : packetHandlers) {
             handler.handle(wrapper);
         }
     }
-
     public int handlersSize() {
         return packetHandlers.size();
     }

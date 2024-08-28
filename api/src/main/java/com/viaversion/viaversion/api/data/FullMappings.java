@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Mappings containing the full string identifier mappings.
  */
 public interface FullMappings extends BiMappings {
-
     /**
      * Returns the unmapped integer id for the given identifier, or -1 if not found.
      *
@@ -36,7 +33,6 @@ public interface FullMappings extends BiMappings {
      * @return unmapped int id, or -1 if not found
      */
     int id(String identifier);
-
     /**
      * Returns the mapped integer id for the given mapped identifier, or -1 if not found.
      *
@@ -44,7 +40,6 @@ public interface FullMappings extends BiMappings {
      * @return mapped int id, or -1 if not found
      */
     int mappedId(String mappedIdentifier);
-
     /**
      * Returns the unmapped string identifier for the given mapped id.
      *
@@ -52,7 +47,6 @@ public interface FullMappings extends BiMappings {
      * @return unmapped string identifier, or null if out of bounds
      */
     @Nullable String identifier(int id);
-
     /**
      * Returns the mapped string identifier for the given mapped id.
      *
@@ -60,7 +54,6 @@ public interface FullMappings extends BiMappings {
      * @return mapped string identifier, or null if out of bounds
      */
     @Nullable String mappedIdentifier(int mappedId);
-
     /**
      * Returns the mapped string identifier for the given unmapped identifier.
      *
@@ -68,7 +61,6 @@ public interface FullMappings extends BiMappings {
      * @return mapped string identifier, or null if not found
      */
     @Nullable String mappedIdentifier(String identifier);
-
     @Override
     FullMappings inverse();
 }

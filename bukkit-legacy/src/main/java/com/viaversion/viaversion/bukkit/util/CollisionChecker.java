@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.util;
-
 import com.viaversion.viaversion.api.Via;
 import java.lang.reflect.Method;
 import java.util.AbstractList;
@@ -24,10 +23,8 @@ import java.util.List;
 import java.util.logging.Level;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-
 public class CollisionChecker {
     private static final CollisionChecker INSTANCE;
-
     static {
         CollisionChecker instance = null;
         try {
@@ -40,30 +37,23 @@ public class CollisionChecker {
         }
         INSTANCE = instance;
     }
-
     private final Method GET_ENTITY_HANDLE;
     private final Method GET_ENTITY_BB;
     private final Method GET_BLOCK_BY_ID;
     private final Method GET_WORLD_HANDLE;
     private final Method GET_BLOCK_TYPE;
     private final Method GET_COLLISIONS;
-
     private final Method SET_POSITION;
     private final Object BLOCK_POSITION;
-
     private CollisionChecker() throws ReflectiveOperationException {
         Class<?> blockPosition = NMSUtil.nms("BlockPosition");
         Class<?> mutableBlockPosition = NMSUtil.nms("BlockPosition$MutableBlockPosition");
         Class<?> world = NMSUtil.nms("World");
-
         GET_ENTITY_HANDLE = NMSUtil.obc("entity.CraftEntity").getDeclaredMethod("getHandle");
         GET_ENTITY_BB = GET_ENTITY_HANDLE.getReturnType().getDeclaredMethod("getBoundingBox");
-
         GET_WORLD_HANDLE = NMSUtil.obc("CraftWorld").getDeclaredMethod("getHandle");
         GET_BLOCK_TYPE = world.getDeclaredMethod("getType", blockPosition);
-
         GET_BLOCK_BY_ID = NMSUtil.nms("Block").getDeclaredMethod("getById", int.class);
-
         GET_COLLISIONS = GET_BLOCK_BY_ID.getReturnType().getDeclaredMethod("a",
             world,
             blockPosition,
@@ -71,27 +61,19 @@ public class CollisionChecker {
             GET_ENTITY_BB.getReturnType(),
             List.class,
             GET_ENTITY_HANDLE.getReturnType());
-
         SET_POSITION = mutableBlockPosition.getDeclaredMethod("c", int.class, int.class, int.class);
         BLOCK_POSITION = mutableBlockPosition.getConstructor().newInstance();
     }
-
     public static CollisionChecker getInstance() {
         return INSTANCE;
     }
-
     public Boolean intersects(Block block, Entity entity) {
         try {
             Object nmsPlayer = GET_ENTITY_HANDLE.invoke(entity);
-
             Object nmsBlock = GET_BLOCK_BY_ID.invoke(null, block.getType().getId());
             Object nmsWorld = GET_WORLD_HANDLE.invoke(block.getWorld());
-
             SET_POSITION.invoke(BLOCK_POSITION, block.getX(), block.getY(), block.getZ());
-
-            // Dummy list to avoid saving actual collision BB, we only care about if any collision happened
             List<?> collisions = new DummyList<>();
-
             GET_COLLISIONS.invoke(nmsBlock,
                 nmsWorld,
                 BLOCK_POSITION,
@@ -104,24 +86,19 @@ public class CollisionChecker {
             return null;
         }
     }
-
     private static class DummyList<T> extends AbstractList<T> {
         private boolean any;
-
         @Override
         public T get(int index) {
             throw new UnsupportedOperationException();
         }
-
         @Override
         public void add(int idx, T el) {
             any = true;
         }
-
         @Override
         public int size() {
             return any ? 1 : 0;
         }
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,30 +21,23 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
-
 public class FixedByteArrayType extends Type<byte[]> {
-
     private final int arrayLength;
-
     public FixedByteArrayType(final int arrayLength) {
         super(byte[].class);
         this.arrayLength = arrayLength;
     }
-
     @Override
     public byte[] read(final ByteBuf byteBuf) {
         if (byteBuf.readableBytes() < this.arrayLength) {
             throw new RuntimeException("Readable bytes does not match expected!");
         }
-
         final byte[] byteArray = new byte[this.arrayLength];
         byteBuf.readBytes(byteArray);
         return byteArray;
     }
-
     @Override
     public void write(final ByteBuf byteBuf, final byte[] bytes) {
         byteBuf.writeBytes(bytes);

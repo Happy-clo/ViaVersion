@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,21 +21,16 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.legacy.bossbar;
-
 public enum BossStyle {
-
     SOLID(0),
     SEGMENTED_6(1),
     SEGMENTED_10(2),
     SEGMENTED_12(3),
     SEGMENTED_20(4);
-
     private final int id;
-
     BossStyle(int id) {
         this.id = id;
     }
-
     public int getId() {
         return id;
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api;
-
 import com.viaversion.viaversion.api.connection.ConnectionManager;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.legacy.LegacyViaAPI;
@@ -35,7 +34,6 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * General api point. For more specialized api methods, see {@link Via#getManager()}.
  *
@@ -46,7 +44,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @see ViaPlatform
  */
 public interface ViaAPI<T> {
-
     /**
      * Returns the <b>major version</b> matching {@link #getVersion()}.
      * It is highly advised to check against the major version and to disable/not initiate
@@ -58,7 +55,6 @@ public interface ViaAPI<T> {
     default int majorVersion() {
         return 5;
     }
-
     /**
      * Returns an <b>internally based API version</b> incremented with meaningful API changes.
      * This includes breaking changes to existing API and larger additions.
@@ -68,14 +64,12 @@ public interface ViaAPI<T> {
     default int apiVersion() {
         return 26;
     }
-
     /**
      * Returns the server's protocol version info.
      *
      * @return the server's protocol version info
      */
     ServerProtocolVersion getServerVersion();
-
     /**
      * Returns the protocol version of a player.
      *
@@ -85,7 +79,6 @@ public interface ViaAPI<T> {
     default int getPlayerVersion(T player) {
         return getPlayerProtocolVersion(player).getVersion();
     }
-
     /**
      * Returns the protocol version of a player.
      *
@@ -93,7 +86,6 @@ public interface ViaAPI<T> {
      * @return the protocol version object (see {@link ProtocolVersion}), or ProtocolVersion.unknown if not connected
      */
     ProtocolVersion getPlayerProtocolVersion(T player);
-
     /**
      * Returns the protocol version of a player.
      *
@@ -103,8 +95,6 @@ public interface ViaAPI<T> {
     default int getPlayerVersion(UUID uuid) {
         return getPlayerProtocolVersion(uuid).getVersion();
     }
-
-
     /**
      * Returns the protocol version of a player.
      *
@@ -112,7 +102,6 @@ public interface ViaAPI<T> {
      * @return the protocol version object (see {@link ProtocolVersion}), or ProtocolVersion.unknown if not connected
      */
     ProtocolVersion getPlayerProtocolVersion(UUID uuid);
-
     /**
      * Returns whether Via injected into this player connection.
      *
@@ -120,7 +109,6 @@ public interface ViaAPI<T> {
      * @return whether Via has a cached a UserConnection for this player
      */
     boolean isInjected(UUID uuid);
-
     /**
      * Returns the Via injected UserConnection if present.
      *
@@ -128,14 +116,12 @@ public interface ViaAPI<T> {
      * @return user connection if present
      */
     @Nullable UserConnection getConnection(UUID uuid);
-
     /**
      * Returns the version of the plugin.
      *
      * @return plugin version
      */
     String getVersion();
-
     /**
      * Sends a raw packet to the player.
      *
@@ -144,7 +130,6 @@ public interface ViaAPI<T> {
      * @throws IllegalArgumentException if the player is not injected by Via
      */
     void sendRawPacket(T player, ByteBuf packet);
-
     /**
      * Sends a raw packet to the player.
      *
@@ -153,17 +138,14 @@ public interface ViaAPI<T> {
      * @throws IllegalArgumentException if the player is not injected by Via
      */
     void sendRawPacket(UUID uuid, ByteBuf packet);
-
     @Deprecated
     default SortedSet<Integer> getSupportedVersions() {
         return getSupportedProtocolVersions().stream().map(ProtocolVersion::getVersion).collect(Collectors.toCollection(TreeSet::new));
     }
-
     @Deprecated
     default SortedSet<Integer> getFullSupportedVersions() {
         return getFullSupportedProtocolVersions().stream().map(ProtocolVersion::getVersion).collect(Collectors.toCollection(TreeSet::new));
     }
-
     /**
      * Returns the supported protocol versions.
      * This method removes any blocked protocol versions.
@@ -172,15 +154,12 @@ public interface ViaAPI<T> {
      * @see #getFullSupportedVersions() for a full list
      */
     SortedSet<ProtocolVersion> getSupportedProtocolVersions();
-
-
     /**
      * Returns the supported protocol versions, including blocked protocols.
      *
      * @return a sorted set of protocol versions
      */
     SortedSet<ProtocolVersion> getFullSupportedProtocolVersions();
-
     /**
      * Returns legacy api only applicable on/to legacy versions.
      * <p>

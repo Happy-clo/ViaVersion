@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.packet;
-
 /**
  * Interface representing PLAY state packets, ordered by their packet id.
  *
@@ -29,28 +28,24 @@ package com.viaversion.viaversion.api.protocol.packet;
  * @see ServerboundPacketType
  */
 public sealed interface PacketType permits ClientboundPacketType, ServerboundPacketType {
-
     /**
      * Returns the packet id for the implemented protocol.
      *
      * @return packet id for the implemented protocol
      */
     int getId();
-
     /**
      * Returns the name of the packet, to be consistent over multiple versions.
      *
      * @return name of the packet
      */
     String getName();
-
     /**
      * Clientbound or serverbound direction.
      *
      * @return direction
      */
     Direction direction();
-
     /**
      * Returns the protocol state the packet belongs to.
      *

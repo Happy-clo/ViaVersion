@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,9 +21,7 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 public interface BiMappings extends Mappings {
-
     /**
      * Returns the inverse of the bimappings.
      *
@@ -31,11 +29,9 @@ public interface BiMappings extends Mappings {
      */
     @Override
     BiMappings inverse();
-
     static BiMappings of(final Mappings mappings) {
         return of(mappings, mappings.inverse());
     }
-
     static BiMappings of(final Mappings mappings, final Mappings inverse) {
         return new BiMappingsBase(mappings, inverse);
     }

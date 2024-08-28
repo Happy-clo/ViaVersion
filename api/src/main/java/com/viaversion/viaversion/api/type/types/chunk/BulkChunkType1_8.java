@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,46 +21,36 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.chunk;
-
 import com.viaversion.viaversion.api.minecraft.chunks.Chunk;
 import com.viaversion.viaversion.api.minecraft.chunks.ChunkSection;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class BulkChunkType1_8 extends Type<Chunk[]> {
-
     public static final Type<Chunk[]> TYPE = new BulkChunkType1_8();
     private static final int BLOCKS_PER_SECTION = 16 * 16 * 16;
     private static final int BLOCKS_BYTES = BLOCKS_PER_SECTION * 2;
     private static final int LIGHT_BYTES = BLOCKS_PER_SECTION / 2;
     private static final int BIOME_BYTES = 16 * 16;
-
     public BulkChunkType1_8() {
         super(Chunk[].class);
     }
-
     @Override
     public Chunk[] read(ByteBuf input) {
         final boolean skyLight = input.readBoolean();
         final int count = Types.VAR_INT.readPrimitive(input);
         final Chunk[] chunks = new Chunk[count];
         final ChunkBulkSection[] chunkInfo = new ChunkBulkSection[count];
-
-        // Read metadata
         for (int i = 0; i < chunkInfo.length; i++) {
             chunkInfo[i] = new ChunkBulkSection(input, skyLight);
         }
-        // Read data
         for (int i = 0; i < chunks.length; i++) {
             final ChunkBulkSection chunkBulkSection = chunkInfo[i];
             chunkBulkSection.readData(input);
             chunks[i] = ChunkType1_8.deserialize(chunkBulkSection.chunkX, chunkBulkSection.chunkZ, true, skyLight, chunkBulkSection.bitmask, chunkBulkSection.data());
         }
-
         return chunks;
     }
-
     @Override
     public void write(ByteBuf output, Chunk[] chunks) {
         boolean skyLight = false;
@@ -75,25 +65,20 @@ public class BulkChunkType1_8 extends Type<Chunk[]> {
         }
         output.writeBoolean(skyLight);
         Types.VAR_INT.writePrimitive(output, chunks.length);
-
-        // Write metadata
         for (Chunk chunk : chunks) {
             output.writeInt(chunk.getX());
             output.writeInt(chunk.getZ());
             output.writeShort(chunk.getBitmask());
         }
-        // Write data
         for (Chunk chunk : chunks) {
             output.writeBytes(ChunkType1_8.serialize(chunk));
         }
     }
-
     public static final class ChunkBulkSection {
         private final int chunkX;
         private final int chunkZ;
         private final int bitmask;
         private final byte[] data;
-
         public ChunkBulkSection(final ByteBuf input, final boolean skyLight) {
             this.chunkX = input.readInt();
             this.chunkZ = input.readInt();
@@ -101,23 +86,18 @@ public class BulkChunkType1_8 extends Type<Chunk[]> {
             final int setSections = Integer.bitCount(this.bitmask);
             this.data = new byte[setSections * (BLOCKS_BYTES + (skyLight ? 2 * LIGHT_BYTES : LIGHT_BYTES)) + BIOME_BYTES];
         }
-
         public void readData(final ByteBuf input) {
             input.readBytes(this.data);
         }
-
         public int chunkX() {
             return this.chunkX;
         }
-
         public int chunkZ() {
             return this.chunkZ;
         }
-
         public int bitmask() {
             return this.bitmask;
         }
-
         public byte[] data() {
             return this.data;
         }

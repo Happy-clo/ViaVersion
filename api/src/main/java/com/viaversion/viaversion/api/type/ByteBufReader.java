@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,12 +21,9 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type;
-
 import io.netty.buffer.ByteBuf;
-
 @FunctionalInterface
 public interface ByteBufReader<T> {
-
     /**
      * Reads a value from a ByteBuf.
      *

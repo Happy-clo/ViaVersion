@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.chunk;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.minecraft.Environment;
 import com.viaversion.viaversion.api.minecraft.chunks.BaseChunk;
@@ -35,45 +34,35 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.logging.Level;
-
 public class ChunkType1_9_1 extends Type<Chunk> {
-
     private static final ChunkType1_9_1 WITH_SKYLIGHT = new ChunkType1_9_1(true);
     private static final ChunkType1_9_1 WITHOUT_SKYLIGHT = new ChunkType1_9_1(false);
     private final boolean hasSkyLight;
-
     public ChunkType1_9_1(boolean hasSkyLight) {
         super(Chunk.class);
         this.hasSkyLight = hasSkyLight;
     }
-
     public static ChunkType1_9_1 forEnvironment(Environment environment) {
         return environment == Environment.NORMAL ? WITH_SKYLIGHT : WITHOUT_SKYLIGHT;
     }
-
     @Override
     public Chunk read(ByteBuf input) {
         int chunkX = input.readInt();
         int chunkZ = input.readInt();
-
         boolean groundUp = input.readBoolean();
         int primaryBitmask = Types.VAR_INT.readPrimitive(input);
         ByteBuf data = input.readSlice(Types.VAR_INT.readPrimitive(input));
-
         ChunkSection[] sections = new ChunkSection[16];
         int[] biomeData = groundUp ? new int[256] : null;
         try {
             BitSet usedSections = new BitSet(16);
-            // Calculate section count from bitmask
             for (int i = 0; i < 16; i++) {
                 if ((primaryBitmask & (1 << i)) != 0) {
                     usedSections.set(i);
                 }
             }
-
-            // Read sections
             for (int i = 0; i < 16; i++) {
-                if (!usedSections.get(i)) continue; // Section not set
+                if (!usedSections.get(i)) continue; 
                 ChunkSection section = Types1_9.CHUNK_SECTION.read(data);
                 sections[i] = section;
                 section.getLight().readBlockLight(data);
@@ -81,7 +70,6 @@ public class ChunkType1_9_1 extends Type<Chunk> {
                     section.getLight().readSkyLight(data);
                 }
             }
-
             if (groundUp) {
                 for (int i = 0; i < 256; i++) {
                     biomeData[i] = data.readByte() & 0xFF;
@@ -91,38 +79,30 @@ public class ChunkType1_9_1 extends Type<Chunk> {
             Via.getPlatform().getLogger().log(Level.WARNING, "The server sent an invalid chunk data packet, returning an empty chunk instead", e);
             return ChunkUtil.createEmptyChunk(chunkX, chunkZ);
         }
-
         return new BaseChunk(chunkX, chunkZ, groundUp, false, primaryBitmask, sections, biomeData, new ArrayList<>());
     }
-
     @Override
     public void write(ByteBuf output, Chunk chunk) {
         output.writeInt(chunk.getX());
         output.writeInt(chunk.getZ());
-
         output.writeBoolean(chunk.isFullChunk());
         Types.VAR_INT.writePrimitive(output, chunk.getBitmask());
-
         ByteBuf buf = output.alloc().buffer();
         try {
             for (int i = 0; i < 16; i++) {
                 ChunkSection section = chunk.getSections()[i];
-                if (section == null) continue; // Section not set
+                if (section == null) continue; 
                 Types1_9.CHUNK_SECTION.write(buf, section);
                 section.getLight().writeBlockLight(buf);
-
-                if (!section.getLight().hasSkyLight()) continue; // No sky light, we're done here.
+                if (!section.getLight().hasSkyLight()) continue; 
                 section.getLight().writeSkyLight(buf);
-
             }
             buf.readerIndex(0);
             Types.VAR_INT.writePrimitive(output, buf.readableBytes() + (chunk.isBiomeData() ? 256 : 0));
             output.writeBytes(buf);
         } finally {
-            buf.release(); // release buffer
+            buf.release(); 
         }
-
-        // Write biome data
         if (chunk.isBiomeData()) {
             for (int biome : chunk.getBiomeData()) {
                 output.writeByte((byte) biome);

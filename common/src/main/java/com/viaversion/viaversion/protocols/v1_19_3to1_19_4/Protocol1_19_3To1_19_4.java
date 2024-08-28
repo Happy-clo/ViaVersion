@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19_3to1_19_4;
-
 import com.google.gson.JsonElement;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.entities.EntityTypes1_19_4;
@@ -42,41 +41,32 @@ import com.viaversion.viaversion.rewriter.TagRewriter;
 import com.viaversion.viaversion.util.ComponentUtil;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
 public final class Protocol1_19_3To1_19_4 extends AbstractProtocol<ClientboundPackets1_19_3, ClientboundPackets1_19_4, ServerboundPackets1_19_3, ServerboundPackets1_19_4> {
-
     public static final MappingData1_19_4 MAPPINGS = new MappingData1_19_4();
     private final EntityPacketRewriter1_19_4 entityRewriter = new EntityPacketRewriter1_19_4(this);
     private final ItemPacketRewriter1_19_4 itemRewriter = new ItemPacketRewriter1_19_4(this);
     private final TagRewriter<ClientboundPackets1_19_3> tagRewriter = new TagRewriter<>(this);
-
     public Protocol1_19_3To1_19_4() {
         super(ClientboundPackets1_19_3.class, ClientboundPackets1_19_4.class, ServerboundPackets1_19_3.class, ServerboundPackets1_19_4.class);
     }
-
     @Override
     protected void registerPackets() {
         super.registerPackets();
-
         tagRewriter.registerGeneric(ClientboundPackets1_19_3.UPDATE_TAGS);
         new StatisticsRewriter<>(this).register(ClientboundPackets1_19_3.AWARD_STATS);
-
         final SoundRewriter<ClientboundPackets1_19_3> soundRewriter = new SoundRewriter<>(this);
         soundRewriter.registerSound1_19_3(ClientboundPackets1_19_3.SOUND_ENTITY);
         soundRewriter.registerSound1_19_3(ClientboundPackets1_19_3.SOUND);
-
         new CommandRewriter<>(this) {
             @Override
             public void handleArgument(final PacketWrapper wrapper, final String argumentType) {
                 if (argumentType.equals("minecraft:time")) {
-                    // Minimum
                     wrapper.write(Types.INT, 0);
                 } else {
                     super.handleArgument(wrapper, argumentType);
                 }
             }
         }.registerDeclareCommands1_19(ClientboundPackets1_19_3.COMMANDS);
-
         registerClientbound(ClientboundPackets1_19_3.SERVER_DATA, wrapper -> {
             JsonElement element = wrapper.read(Types.OPTIONAL_COMPONENT);
             if (element != null) {
@@ -84,7 +74,6 @@ public final class Protocol1_19_3To1_19_4 extends AbstractProtocol<ClientboundPa
             } else {
                 wrapper.write(Types.COMPONENT, ComponentUtil.emptyJsonComponent());
             }
-
             final String iconBase64 = wrapper.read(Types.OPTIONAL_STRING);
             byte[] iconBytes = null;
             if (iconBase64 != null && iconBase64.startsWith("data:image/png;base64,")) {
@@ -93,7 +82,6 @@ public final class Protocol1_19_3To1_19_4 extends AbstractProtocol<ClientboundPa
             wrapper.write(Types.OPTIONAL_BYTE_ARRAY_PRIMITIVE, iconBytes);
         });
     }
-
     @Override
     protected void onMappingDataLoaded() {
         EntityTypes1_19_4.initialize(this);
@@ -107,32 +95,25 @@ public final class Protocol1_19_3To1_19_4 extends AbstractProtocol<ClientboundPa
             .reader("vibration", ParticleType.Readers.VIBRATION1_19)
             .reader("sculk_charge", ParticleType.Readers.SCULK_CHARGE)
             .reader("shriek", ParticleType.Readers.SHRIEK);
-
         super.onMappingDataLoaded();
     }
-
     @Override
     public void init(final UserConnection user) {
         addEntityTracker(user, new EntityTrackerBase(user, EntityTypes1_19_4.PLAYER));
-
         user.put(new PlayerVehicleTracker());
     }
-
     @Override
     public MappingData1_19_4 getMappingData() {
         return MAPPINGS;
     }
-
     @Override
     public EntityPacketRewriter1_19_4 getEntityRewriter() {
         return entityRewriter;
     }
-
     @Override
     public ItemPacketRewriter1_19_4 getItemRewriter() {
         return itemRewriter;
     }
-
     @Override
     public TagRewriter<ClientboundPackets1_19_3> getTagRewriter() {
         return tagRewriter;

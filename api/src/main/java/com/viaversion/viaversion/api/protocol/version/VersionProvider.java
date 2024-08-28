@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.version;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.platform.providers.Provider;
-
 @FunctionalInterface
 public interface VersionProvider extends Provider {
-
     /**
      * Optionally allows platforms to specify the client version of a user. This is needed when the platform supports
      * connecting other version types then {@link VersionType#RELEASE} to the server.
@@ -38,7 +35,6 @@ public interface VersionProvider extends Provider {
     default ProtocolVersion getClientProtocol(UserConnection connection) {
         return null;
     }
-
     /**
      * Calls {@link #getClosestServerProtocol(UserConnection)} and catches any exceptions by returning null.
      *
@@ -52,7 +48,6 @@ public interface VersionProvider extends Provider {
             return null;
         }
     }
-
     /**
      * Returns the closest server protocol version to the user's protocol version.
      * On non-proxy servers, this returns the actual server version.

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,17 +21,14 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import java.util.Comparator;
 import net.lenni0451.mcstructs.text.utils.JsonUtils;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class GsonUtil {
     private static final Gson GSON = new GsonBuilder().create();
-
     /**
      * Returns google's Gson magic.
      *
@@ -40,7 +37,6 @@ public final class GsonUtil {
     public static Gson getGson() {
         return GSON;
     }
-
     public static @Nullable JsonElement sort(@Nullable final JsonElement object) {
         return JsonUtils.sort(object, Comparator.naturalOrder());
     }

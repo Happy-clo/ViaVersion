@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.rewriter;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.ListTag;
@@ -59,18 +58,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public abstract class EntityRewriter<C extends ClientboundPacketType, T extends Protocol<C, ?, ?, ?>>
     extends RewriterBase<T> implements com.viaversion.viaversion.api.rewriter.EntityRewriter<T> {
     private static final EntityData[] EMPTY_ARRAY = new EntityData[0];
     protected final List<EntityDataFilter> entityDataFilters = new ArrayList<>();
     protected final boolean trackMappedType;
     protected Mappings typeMappings;
-
     protected EntityRewriter(T protocol) {
         this(protocol, true);
     }
-
     /**
      * Creates a new entity rewriter instance.
      *
@@ -82,7 +78,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
         this.trackMappedType = trackMappedType;
         protocol.put(this);
     }
-
     /**
      * Returns an entity data filter builder.
      * <p>
@@ -93,7 +88,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
     public EntityDataFilter.Builder filter() {
         return new EntityDataFilter.Builder(this);
     }
-
     /**
      * Registers an entity data filter.
      * Note that {@link EntityDataFilter.Builder#register()} already calls this method.
@@ -105,13 +99,10 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
         Preconditions.checkArgument(!entityDataFilters.contains(filter));
         entityDataFilters.add(filter);
     }
-
     @Override
     public void handleEntityData(final int entityId, final List<EntityData> dataList, final UserConnection connection) {
         final TrackedEntity entity = tracker(connection).entity(entityId);
         final EntityType type = entity != null ? entity.entityType() : null;
-
-        // Iterate over indexed list to allow for removal and addition of elements, decrease current index and size if an element is removed
         int size = dataList.size();
         for (int i = 0; i < size; i++) {
             final EntityData entityData = dataList.get(i);
@@ -121,10 +112,8 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
                     continue;
                 }
                 if (event == null) {
-                    // Instantiate lazily and share event instance
                     event = new EntityDataHandlerEventImpl(connection, entity, entityId, entityData, dataList);
                 }
-
                 try {
                     filter.handler().handle(event, entityData);
                 } catch (final Exception e) {
@@ -133,31 +122,24 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
                     size--;
                     break;
                 }
-
                 if (event.cancelled()) {
-                    // Remove entity data, and break current filter loop
                     dataList.remove(i--);
                     size--;
                     break;
                 }
             }
-
             if (event != null && event.hasExtraData()) {
-                // Finally, add newly created entity data
                 dataList.addAll(event.extraData());
             }
         }
-
         if (entity != null) {
             entity.sentEntityData(true);
         }
     }
-
     @Override
     public int newEntityId(int id) {
         return typeMappings != null ? typeMappings.getNewIdOrDefault(id, id) : id;
     }
-
     /**
      * Maps an entity type.
      *
@@ -169,14 +151,12 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
         Preconditions.checkArgument(type.getClass() != mappedType.getClass(), "EntityTypes should not be of the same class/enum");
         mapEntityType(type.getId(), mappedType.getId());
     }
-
     protected void mapEntityType(int id, int mappedId) {
         if (typeMappings == null) {
             typeMappings = Int2IntMapMappings.of();
         }
         typeMappings.setNewId(id, mappedId);
     }
-
     /**
      * Maps entity ids based on the protocol's mapping data.
      */
@@ -185,7 +165,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
         Preconditions.checkNotNull(protocol.getMappingData().getEntityMappings(), "Protocol does not have entity mappings");
         typeMappings = protocol.getMappingData().getEntityMappings();
     }
-
     /**
      * Registers an entity data handler to rewrite, item, block, and particle ids stored in entity data.
      *
@@ -196,11 +175,9 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
     public void registerEntityDataTypeHandler(@Nullable EntityDataType itemType, @Nullable EntityDataType blockStateType, @Nullable EntityDataType particleType) {
         registerEntityDataTypeHandler(itemType, null, blockStateType, particleType, null);
     }
-
     public void registerEntityDataTypeHandler(@Nullable EntityDataType itemType, @Nullable EntityDataType blockStateType, @Nullable EntityDataType optionalBlockStateType, @Nullable EntityDataType particleType, @Nullable EntityDataType particlesType) {
         registerEntityDataTypeHandler(itemType, blockStateType, optionalBlockStateType, particleType, particlesType, null, null);
     }
-
     /**
      * Registers an entity data handler to rewrite, item, block, and particle ids stored in entity data.
      *
@@ -240,39 +217,36 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             }
         });
     }
-
     public void registerBlockStateHandler(final EntityType entityType, final int index) {
         filter().type(entityType).index(index).handler((event, data) -> {
             final int state = (int) data.getValue();
             data.setValue(protocol.getMappingData().getNewBlockStateId(state));
         });
     }
-
     public void registerTracker(C packetType) {
         protocol.registerClientbound(packetType, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-                map(Types.UUID); // 1 - Entity UUID
-                map(Types.VAR_INT); // 2 - Entity Type
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
+                map(Types.VAR_INT); 
                 handler(trackerHandler());
             }
         });
     }
-
     public void registerTrackerWithData(C packetType, EntityType fallingBlockType) {
         protocol.registerClientbound(packetType, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity id
-                map(Types.UUID); // 1 - Entity UUID
-                map(Types.VAR_INT); // 2 - Entity Type
-                map(Types.DOUBLE); // 3 - X
-                map(Types.DOUBLE); // 4 - Y
-                map(Types.DOUBLE); // 5 - Z
-                map(Types.BYTE); // 6 - Pitch
-                map(Types.BYTE); // 7 - Yaw
-                map(Types.INT); // 8 - Data
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
+                map(Types.VAR_INT); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.INT); 
                 handler(trackerHandler());
                 handler(wrapper -> {
                     int entityId = wrapper.get(Types.VAR_INT, 0);
@@ -284,27 +258,25 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             }
         });
     }
-
     public void registerTrackerWithData1_19(C packetType, EntityType fallingBlockType) {
         protocol.registerClientbound(packetType, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // Entity id
-                map(Types.UUID); // Entity UUID
-                map(Types.VAR_INT); // Entity type
-                map(Types.DOUBLE); // X
-                map(Types.DOUBLE); // Y
-                map(Types.DOUBLE); // Z
-                map(Types.BYTE); // Pitch
-                map(Types.BYTE); // Yaw
-                map(Types.BYTE); // Head yaw
-                map(Types.VAR_INT); // Data
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
+                map(Types.VAR_INT); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.VAR_INT); 
                 handler(trackerHandler());
                 handler(wrapper -> {
                     if (protocol.getMappingData() == null) {
                         return;
                     }
-
                     int entityId = wrapper.get(Types.VAR_INT, 0);
                     EntityType entityType = tracker(wrapper.user()).entityType(entityId);
                     if (entityType == fallingBlockType) {
@@ -314,7 +286,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             }
         });
     }
-
     /**
      * Registers an entity tracker for the extra spawn packets like player, painting, or xp orb spawns.
      *
@@ -328,7 +299,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             tracker(wrapper.user()).addEntity(entityId, entityType);
         });
     }
-
     /**
      * Registers an entity tracker for the extra spawn packets.
      *
@@ -338,7 +308,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
     public void registerTracker(C packetType, EntityType entityType) {
         registerTracker(packetType, entityType, Types.VAR_INT);
     }
-
     public void registerRemoveEntities(C packetType) {
         protocol.registerClientbound(packetType, wrapper -> {
             int[] entityIds = wrapper.passthrough(Types.VAR_INT_ARRAY_PRIMITIVE);
@@ -348,7 +317,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             }
         });
     }
-
     public void registerSetEntityData(C packetType, @Nullable Type<List<EntityData>> dataType, Type<List<EntityData>> mappedDataType) {
         protocol.registerClientbound(packetType, wrapper -> {
             int entityId = wrapper.passthrough(Types.VAR_INT);
@@ -362,15 +330,12 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             handleEntityData(entityId, entityData, wrapper.user());
         });
     }
-
     public void registerSetEntityData(C packetType, Type<List<EntityData>> dataType) {
         registerSetEntityData(packetType, null, dataType);
     }
-
     public PacketHandler trackerHandler() {
         return trackerAndRewriterHandler(null);
     }
-
     public PacketHandler playerTrackerHandler() {
         return wrapper -> {
             final EntityTracker tracker = tracker(wrapper.user());
@@ -379,7 +344,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             tracker.addEntity(entityId, tracker.playerType());
         };
     }
-
     /**
      * Returns a packet handler storing height, min_y, and name of the current world.
      * If the client changes to a new world, the stored entity data will be cleared.
@@ -390,7 +354,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
     public PacketHandler worldDataTrackerHandler(int nbtIndex) {
         return wrapper -> {
             EntityTracker tracker = tracker(wrapper.user());
-
             CompoundTag registryData = wrapper.get(Types.NAMED_COMPOUND_TAG, nbtIndex);
             NumberTag height = registryData.getNumberTag("height");
             if (height != null) {
@@ -399,14 +362,12 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             } else {
                 protocol.getLogger().warning("Height missing in dimension data: " + registryData);
             }
-
             NumberTag minY = registryData.getNumberTag("min_y");
             if (minY != null) {
                 tracker.setCurrentMinY(minY.asInt());
             } else {
                 protocol.getLogger().warning("Min Y missing in dimension data: " + registryData);
             }
-
             String world = wrapper.get(Types.STRING, 0);
             if (tracker.currentWorld() != null && !tracker.currentWorld().equals(world)) {
                 tracker.clearEntities();
@@ -415,7 +376,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             tracker.setCurrentWorld(world);
         };
     }
-
     public PacketHandler worldDataTrackerHandlerByKey() {
         return wrapper -> {
             EntityTracker tracker = tracker(wrapper.user());
@@ -426,10 +386,8 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
                 dimensionData = tracker.dimensionData("minecraft:overworld");
                 Preconditions.checkNotNull(dimensionData, "Overworld data missing");
             }
-
             tracker.setCurrentWorldSectionHeight(dimensionData.height() >> 4);
             tracker.setCurrentMinY(dimensionData.minY());
-
             String world = wrapper.get(Types.STRING, 1);
             if (tracker.currentWorld() != null && !tracker.currentWorld().equals(world)) {
                 tracker.clearEntities();
@@ -438,7 +396,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             tracker.setCurrentWorld(world);
         };
     }
-
     public PacketHandler worldDataTrackerHandlerByKey1_20_5(final int dimensionIdIndex) {
         return wrapper -> {
             int dimensionId = wrapper.get(Types.VAR_INT, dimensionIdIndex);
@@ -446,9 +403,7 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             trackWorldDataByKey1_20_5(wrapper.user(), dimensionId, world);
         };
     }
-
     public void trackWorldDataByKey1_20_5(final UserConnection connection, final int dimensionId, final String world) {
-        // Track world height for use in chunk data
         EntityTracker tracker = tracker(connection);
         DimensionData dimensionData = tracker.dimensionData(dimensionId);
         if (dimensionData == null) {
@@ -458,36 +413,28 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
         }
         tracker.setCurrentWorldSectionHeight(dimensionData.height() >> 4);
         tracker.setCurrentMinY(dimensionData.minY());
-
-        // Clear entities if the world changes
         if (tracker.currentWorld() != null && !tracker.currentWorld().equals(world)) {
             tracker.clearEntities();
             tracker.trackClientEntity();
         }
         tracker.setCurrentWorld(world);
     }
-
     public PacketHandler biomeSizeTracker() {
         return wrapper -> trackBiomeSize(wrapper.user(), wrapper.get(Types.NAMED_COMPOUND_TAG, 0));
     }
-
     public PacketHandler configurationBiomeSizeTracker() {
         return wrapper -> trackBiomeSize(wrapper.user(), wrapper.get(Types.COMPOUND_TAG, 0));
     }
-
     public void trackBiomeSize(final UserConnection connection, final CompoundTag registry) {
         final ListTag<?> biomes = TagUtil.getRegistryEntries(registry, "worldgen/biome");
         tracker(connection).setBiomesSent(biomes.size());
     }
-
     public PacketHandler dimensionDataHandler() {
         return wrapper -> cacheDimensionData(wrapper.user(), wrapper.get(Types.NAMED_COMPOUND_TAG, 0));
     }
-
     public PacketHandler configurationDimensionDataHandler() {
         return wrapper -> cacheDimensionData(wrapper.user(), wrapper.get(Types.COMPOUND_TAG, 0));
     }
-
     /**
      * Caches dimension data, later used to get height values and other important info.
      */
@@ -502,7 +449,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
         }
         tracker(connection).setDimensions(dimensionDataMap);
     }
-
     public void handleRegistryData1_20_5(final UserConnection connection, final String registryKey, final RegistryEntry[] entries) {
         if (registryKey.equals("worldgen/biome")) {
             tracker(connection).setBiomesSent(entries.length);
@@ -519,10 +465,6 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             tracker(connection).setDimensions(dimensionDataMap);
         }
     }
-
-    // ---------------------------------------------------------------------------
-    // Sub 1.14.1 methods
-
     /**
      * Returns a packethandler to track and rewrite an entity.
      *
@@ -533,34 +475,26 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
         return wrapper -> {
             int entityId = wrapper.get(Types.VAR_INT, 0);
             int type = wrapper.get(Types.VAR_INT, 1);
-
             int newType = newEntityId(type);
             if (newType != type) {
                 wrapper.set(Types.VAR_INT, 1, newType);
             }
-
             EntityType entType = typeFromId(trackMappedType ? newType : type);
-            // Register Type ID
             tracker(wrapper.user()).addEntity(entityId, entType);
-
             if (dataType != null) {
                 handleEntityData(entityId, wrapper.get(dataType, 0), wrapper.user());
             }
         };
     }
-
     public PacketHandler trackerAndRewriterHandler(@Nullable Type<List<EntityData>> dataType, EntityType entityType) {
         return wrapper -> {
             int entityId = wrapper.get(Types.VAR_INT, 0);
-            // Register Type ID
             tracker(wrapper.user()).addEntity(entityId, entityType);
-
             if (dataType != null) {
                 handleEntityData(entityId, wrapper.get(dataType, 0), wrapper.user());
             }
         };
     }
-
     /**
      * Returns a packethandler to track an object entity.
      *
@@ -570,22 +504,16 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
         return wrapper -> {
             int entityId = wrapper.get(Types.VAR_INT, 0);
             byte type = wrapper.get(Types.BYTE, 0);
-
             EntityType entType = objectTypeFromId(type);
-            // Register Type ID
             tracker(wrapper.user()).addEntity(entityId, entType);
         };
     }
-
-    // ---------------------------------------------------------------------------
-
     public RegistryEntry[] addRegistryEntries(final RegistryEntry[] entries, final RegistryEntry... toAdd) {
         final int length = entries.length;
         final RegistryEntry[] newEntries = Arrays.copyOf(entries, length + toAdd.length);
         System.arraycopy(toAdd, 0, newEntries, length, toAdd.length);
         return newEntries;
     }
-
     public void rewriteParticle(UserConnection connection, Particle particle) {
         ParticleMappings mappings = protocol.getMappingData().getParticleMappings();
         int id = particle.id();
@@ -597,16 +525,13 @@ public abstract class EntityRewriter<C extends ClientboundPacketType, T extends 
             ItemRewriter<?> itemRewriter = protocol.getItemRewriter();
             Item item = itemRewriter.handleItemToClient(connection, data.getValue());
             if (itemRewriter.mappedItemType() != null && itemRewriter.itemType() != itemRewriter.mappedItemType()) {
-                // Replace the type
                 particle.set(0, itemRewriter.mappedItemType(), item);
             } else {
                 data.setValue(item);
             }
         }
-
         particle.setId(protocol.getMappingData().getNewParticleId(id));
     }
-
     private void logException(Exception e, @Nullable EntityType type, List<EntityData> entityDataList, EntityData entityData) {
         if (!Via.getConfig().isSuppressMetadataErrors() || Via.getManager().isDebug()) {
             protocol.getLogger().severe("An error occurred in entity data handler " + this.getClass().getSimpleName()

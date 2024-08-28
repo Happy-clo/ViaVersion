@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,31 +21,24 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import java.util.Objects;
-
 public final class ChunkPosition {
     private final int chunkX;
     private final int chunkZ;
-
     public ChunkPosition(final int chunkX, final int chunkZ) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
     }
-
     public ChunkPosition(final long chunkKey) {
         this.chunkX = (int) chunkKey;
         this.chunkZ = (int) (chunkKey >> 32);
     }
-
     public int chunkX() {
         return chunkX;
     }
-
     public int chunkZ() {
         return chunkZ;
     }
-
     /**
      * Returns a long key for this chunk position.
      *
@@ -54,7 +47,6 @@ public final class ChunkPosition {
     public long chunkKey() {
         return chunkKey(chunkX, chunkZ);
     }
-
     /**
      * Returns a long key for the given chunk coordinates.
      *
@@ -65,7 +57,6 @@ public final class ChunkPosition {
     public static long chunkKey(final int chunkX, final int chunkZ) {
         return (long) chunkX & 0xffffffffL | ((long) chunkZ & 0xffffffffL) << 32;
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -73,12 +64,10 @@ public final class ChunkPosition {
         final ChunkPosition that = (ChunkPosition) o;
         return chunkX == that.chunkX && chunkZ == that.chunkZ;
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(chunkX, chunkZ);
     }
-
     @Override
     public String toString() {
         return "ChunkPosition{" +

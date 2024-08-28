@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.HolderType;
 import io.netty.buffer.ByteBuf;
-
 public record WolfVariant(String wildTexture, String tameTexture, String angryTexture, HolderSet biomes) {
-
     public static HolderType<WolfVariant> TYPE = new HolderType<>() {
         @Override
         public WolfVariant readDirect(final ByteBuf buffer) {
@@ -37,7 +34,6 @@ public record WolfVariant(String wildTexture, String tameTexture, String angryTe
             final HolderSet biomes = Types.HOLDER_SET.read(buffer);
             return new WolfVariant(wildTexture, tameTexture, angryTexture, biomes);
         }
-
         @Override
         public void writeDirect(final ByteBuf buffer, final WolfVariant variant) {
             Types.STRING.write(buffer, variant.wildTexture());

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.packet.mapping;
-
 import com.viaversion.viaversion.api.protocol.packet.State;
 import java.util.Arrays;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 final class PacketArrayMappings implements PacketMappings {
     private final PacketMapping[][] packets = new PacketMapping[State.values().length][];
-
     @Override
     public @Nullable PacketMapping mappedPacket(final State state, final int unmappedId) {
         final PacketMapping[] packets = this.packets[state.ordinal()];
@@ -37,7 +34,6 @@ final class PacketArrayMappings implements PacketMappings {
         }
         return null;
     }
-
     @Override
     public void addMapping(final State state, final int unmappedId, final PacketMapping mapping) {
         final int ordinal = state.ordinal();
@@ -49,7 +45,6 @@ final class PacketArrayMappings implements PacketMappings {
             packets = Arrays.copyOf(packets, unmappedId + 32);
             this.packets[ordinal] = packets;
         }
-
         packets[unmappedId] = mapping;
     }
 }

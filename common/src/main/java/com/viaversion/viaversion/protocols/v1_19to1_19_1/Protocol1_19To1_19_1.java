@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19to1_19_1;
-
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.viaversion.nbt.tag.ByteTag;
@@ -60,21 +59,17 @@ import net.lenni0451.mcstructs.text.ATextComponent;
 import net.lenni0451.mcstructs.text.Style;
 import net.lenni0451.mcstructs.text.components.TranslationComponent;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPackets1_19, ClientboundPackets1_19_1, ServerboundPackets1_19, ServerboundPackets1_19_1> {
-
     public static final ProtocolLogger LOGGER = new ProtocolLogger(Protocol1_19To1_19_1.class);
-
     public Protocol1_19To1_19_1() {
         super(ClientboundPackets1_19.class, ClientboundPackets1_19_1.class, ServerboundPackets1_19.class, ServerboundPackets1_19_1.class);
     }
-
     @Override
     protected void registerPackets() {
         registerClientbound(ClientboundPackets1_19.SYSTEM_CHAT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.COMPONENT); // Content
+                map(Types.COMPONENT); 
                 handler(wrapper -> {
                     final int type = wrapper.read(Types.VAR_INT);
                     final boolean overlay = type == 2;
@@ -86,46 +81,41 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
             @Override
             public void register() {
                 handler(wrapper -> {
-                    // Back to system chat
                     final JsonElement signedContent = wrapper.read(Types.COMPONENT);
                     final JsonElement unsignedContent = wrapper.read(Types.OPTIONAL_COMPONENT);
                     final int chatTypeId = wrapper.read(Types.VAR_INT);
-                    wrapper.read(Types.UUID); // Sender UUID
+                    wrapper.read(Types.UUID); 
                     final JsonElement senderName = wrapper.read(Types.COMPONENT);
                     final JsonElement teamName = wrapper.read(Types.OPTIONAL_COMPONENT);
-
                     final CompoundTag chatType = wrapper.user().get(ChatTypeStorage.class).chatType(chatTypeId);
                     final ChatDecorationResult decorationResult = decorateChatMessage(chatType, chatTypeId, senderName, teamName, unsignedContent != null ? unsignedContent : signedContent);
                     if (decorationResult == null) {
                         wrapper.cancel();
                         return;
                     }
-
                     wrapper.write(Types.COMPONENT, decorationResult.content());
                     wrapper.write(Types.BOOLEAN, decorationResult.overlay());
                 });
-                read(Types.LONG); // Timestamp
-                read(Types.LONG); // Salt
-                read(Types.BYTE_ARRAY_PRIMITIVE); // Signature
+                read(Types.LONG); 
+                read(Types.LONG); 
+                read(Types.BYTE_ARRAY_PRIMITIVE); 
             }
         });
         registerServerbound(ServerboundPackets1_19_1.CHAT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // Message
-                map(Types.LONG); // Timestamp
-                map(Types.LONG); // Salt
-                map(Types.BYTE_ARRAY_PRIMITIVE); // Signature
-                map(Types.BOOLEAN); // Signed preview
+                map(Types.STRING); 
+                map(Types.LONG); 
+                map(Types.LONG); 
+                map(Types.BYTE_ARRAY_PRIMITIVE); 
+                map(Types.BOOLEAN); 
                 handler(wrapper -> {
                     final ChatSession1_19_0 chatSession = wrapper.user().get(ChatSession1_19_0.class);
-
                     if (chatSession != null) {
                         final UUID sender = wrapper.user().getProtocolInfo().getUuid();
                         final String message = wrapper.get(Types.STRING, 0);
                         final long timestamp = wrapper.get(Types.LONG, 0);
                         final long salt = wrapper.get(Types.LONG, 1);
-
                         final MessageMetadata metadata = new MessageMetadata(sender, timestamp, salt);
                         final DecoratableMessage decoratableMessage = new DecoratableMessage(message);
                         final byte[] signature;
@@ -134,127 +124,110 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
                         } catch (final SignatureException e) {
                             throw new RuntimeException(e);
                         }
-
-                        wrapper.set(Types.BYTE_ARRAY_PRIMITIVE, 0, signature); // Signature
-                        wrapper.set(Types.BOOLEAN, 0, decoratableMessage.isDecorated()); // Signed preview
+                        wrapper.set(Types.BYTE_ARRAY_PRIMITIVE, 0, signature); 
+                        wrapper.set(Types.BOOLEAN, 0, decoratableMessage.isDecorated()); 
                     }
                 });
-                read(Types.PLAYER_MESSAGE_SIGNATURE_ARRAY); // Last seen messages
-                read(Types.OPTIONAL_PLAYER_MESSAGE_SIGNATURE); // Last received message
+                read(Types.PLAYER_MESSAGE_SIGNATURE_ARRAY); 
+                read(Types.OPTIONAL_PLAYER_MESSAGE_SIGNATURE); 
             }
         });
         registerServerbound(ServerboundPackets1_19_1.CHAT_COMMAND, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // Command
-                map(Types.LONG); // Timestamp
-                map(Types.LONG); // Salt
+                map(Types.STRING); 
+                map(Types.LONG); 
+                map(Types.LONG); 
                 handler(wrapper -> {
                     final ChatSession1_19_0 chatSession = wrapper.user().get(ChatSession1_19_0.class);
                     final SignableCommandArgumentsProvider argumentsProvider = Via.getManager().getProviders().get(SignableCommandArgumentsProvider.class);
-
                     final int signatures = wrapper.read(Types.VAR_INT);
                     for (int i = 0; i < signatures; i++) {
-                        wrapper.read(Types.STRING); // Argument name
-                        wrapper.read(Types.BYTE_ARRAY_PRIMITIVE); // Signature
+                        wrapper.read(Types.STRING); 
+                        wrapper.read(Types.BYTE_ARRAY_PRIMITIVE); 
                     }
-
                     if (chatSession != null && argumentsProvider != null) {
                         final UUID sender = wrapper.user().getProtocolInfo().getUuid();
                         final String message = wrapper.get(Types.STRING, 0);
                         final long timestamp = wrapper.get(Types.LONG, 0);
                         final long salt = wrapper.get(Types.LONG, 1);
-
                         final List<Pair<String, String>> arguments = argumentsProvider.getSignableArguments(message);
-
-                        wrapper.write(Types.VAR_INT, arguments.size()); // Signature count
+                        wrapper.write(Types.VAR_INT, arguments.size()); 
                         for (Pair<String, String> argument : arguments) {
                             final MessageMetadata metadata = new MessageMetadata(sender, timestamp, salt);
                             final DecoratableMessage decoratableMessage = new DecoratableMessage(argument.value());
-
                             final byte[] signature;
                             try {
                                 signature = chatSession.signChatMessage(metadata, decoratableMessage);
                             } catch (final SignatureException e) {
                                 throw new RuntimeException(e);
                             }
-
-                            wrapper.write(Types.STRING, argument.key()); // Argument name
-                            wrapper.write(Types.BYTE_ARRAY_PRIMITIVE, signature); // Signature
+                            wrapper.write(Types.STRING, argument.key()); 
+                            wrapper.write(Types.BYTE_ARRAY_PRIMITIVE, signature); 
                         }
                     } else {
-                        wrapper.write(Types.VAR_INT, 0); // Signature count
+                        wrapper.write(Types.VAR_INT, 0); 
                     }
                 });
-                map(Types.BOOLEAN); // Signed preview
-                read(Types.PLAYER_MESSAGE_SIGNATURE_ARRAY); // Last seen messages
-                read(Types.OPTIONAL_PLAYER_MESSAGE_SIGNATURE); // Last received message
+                map(Types.BOOLEAN); 
+                read(Types.PLAYER_MESSAGE_SIGNATURE_ARRAY); 
+                read(Types.OPTIONAL_PLAYER_MESSAGE_SIGNATURE); 
             }
         });
         cancelServerbound(ServerboundPackets1_19_1.CHAT_ACK);
-
         registerClientbound(ClientboundPackets1_19.LOGIN, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.INT); // Entity ID
-                map(Types.BOOLEAN); // Hardcore
-                map(Types.BYTE); // Gamemode
-                map(Types.BYTE); // Previous Gamemode
-                map(Types.STRING_ARRAY); // World List
+                map(Types.INT); 
+                map(Types.BOOLEAN); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.STRING_ARRAY); 
                 handler(wrapper -> {
                     final ChatTypeStorage chatTypeStorage = wrapper.user().get(ChatTypeStorage.class);
                     chatTypeStorage.clear();
-
                     final CompoundTag registry = wrapper.passthrough(Types.NAMED_COMPOUND_TAG);
                     final ListTag<CompoundTag> chatTypes = TagUtil.removeRegistryEntries(registry, "chat_type");
                     for (final CompoundTag chatType : chatTypes) {
                         final NumberTag idTag = chatType.getNumberTag("id");
                         chatTypeStorage.addChatType(idTag.asInt(), chatType);
                     }
-
-                    // Replace chat types - they won't actually be used
                     registry.put("minecraft:chat_type", ChatRegistry1_19_1.chatRegistry());
                 });
             }
         });
-
         registerClientbound(ClientboundPackets1_19.SERVER_DATA, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.OPTIONAL_COMPONENT); // Motd
-                map(Types.OPTIONAL_STRING); // Encoded icon
-                map(Types.BOOLEAN); // Previews chat
-                create(Types.BOOLEAN, Via.getConfig().enforceSecureChat()); // Enforces secure chat
+                map(Types.OPTIONAL_COMPONENT); 
+                map(Types.OPTIONAL_STRING); 
+                map(Types.BOOLEAN); 
+                create(Types.BOOLEAN, Via.getConfig().enforceSecureChat()); 
             }
         });
-
         registerServerbound(State.LOGIN, ServerboundLoginPackets.HELLO.getId(), ServerboundLoginPackets.HELLO.getId(), new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // Name
+                map(Types.STRING); 
                 handler(wrapper -> {
-                    final ProfileKey profileKey = wrapper.read(Types.OPTIONAL_PROFILE_KEY); // Profile Key
-
+                    final ProfileKey profileKey = wrapper.read(Types.OPTIONAL_PROFILE_KEY); 
                     final ChatSession1_19_0 chatSession = wrapper.user().get(ChatSession1_19_0.class);
-                    wrapper.write(Types.OPTIONAL_PROFILE_KEY, chatSession == null ? null : chatSession.getProfileKey()); // Profile Key
-
+                    wrapper.write(Types.OPTIONAL_PROFILE_KEY, chatSession == null ? null : chatSession.getProfileKey()); 
                     if (profileKey == null || chatSession != null) {
-                        // Modified client that doesn't include the profile key, or already done in 1.18->1.19 protocol; no need to map it
                         wrapper.user().put(new NonceStorage1_19_1(null));
                     }
                 });
-                read(Types.OPTIONAL_UUID); // Profile uuid
+                read(Types.OPTIONAL_UUID); 
             }
         });
         registerClientbound(State.LOGIN, ClientboundLoginPackets.HELLO.getId(), ClientboundLoginPackets.HELLO.getId(), new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // Server id
+                map(Types.STRING); 
                 handler(wrapper -> {
                     if (wrapper.user().has(NonceStorage1_19_1.class)) {
                         return;
                     }
-
                     final byte[] publicKey = wrapper.passthrough(Types.BYTE_ARRAY_PRIMITIVE);
                     final byte[] nonce = wrapper.passthrough(Types.BYTE_ARRAY_PRIMITIVE);
                     wrapper.user().put(new NonceStorage1_19_1(CipherUtil.encryptNonce(publicKey, nonce)));
@@ -264,18 +237,17 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
         registerServerbound(State.LOGIN, ServerboundLoginPackets.ENCRYPTION_KEY.getId(), ServerboundLoginPackets.ENCRYPTION_KEY.getId(), new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.BYTE_ARRAY_PRIMITIVE); // Keys
+                map(Types.BYTE_ARRAY_PRIMITIVE); 
                 handler(wrapper -> {
                     final NonceStorage1_19_1 nonceStorage = wrapper.user().remove(NonceStorage1_19_1.class);
                     if (nonceStorage.nonce() == null) {
                         return;
                     }
-
                     final boolean isNonce = wrapper.read(Types.BOOLEAN);
                     wrapper.write(Types.BOOLEAN, true);
-                    if (!isNonce) { // Should never be true at this point, but /shrug otherwise
-                        wrapper.read(Types.LONG); // Salt
-                        wrapper.read(Types.BYTE_ARRAY_PRIMITIVE); // Signature
+                    if (!isNonce) { 
+                        wrapper.read(Types.LONG); 
+                        wrapper.read(Types.BYTE_ARRAY_PRIMITIVE); 
                         wrapper.write(Types.BYTE_ARRAY_PRIMITIVE, nonceStorage.nonce());
                     }
                 });
@@ -290,13 +262,9 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
                     String identifier = wrapper.get(Types.STRING, 0);
                     if (identifier.equals("velocity:player_info")) {
                         byte[] data = wrapper.passthrough(Types.REMAINING_BYTES);
-                        // Velocity modern forwarding version above 1 includes the players public key.
-                        // This is an issue because the server will expect a 1.19 key and receive a 1.19.1 key.
-                        // Velocity modern forwarding versions: https://github.com/PaperMC/Velocity/blob/1a3fba4250553702d9dcd05731d04347bfc24c9f/proxy/src/main/java/com/velocitypowered/proxy/connection/VelocityConstants.java#L27-L29
-                        // And the version can be specified with a single byte: https://github.com/PaperMC/Velocity/blob/1a3fba4250553702d9dcd05731d04347bfc24c9f/proxy/src/main/java/com/velocitypowered/proxy/connection/backend/LoginSessionHandler.java#L88
                         if (data.length == 1 && data[0] > 1) {
                             data[0] = 1;
-                        } else if (data.length == 0) { // Or the version is omitted (default version would be used)
+                        } else if (data.length == 0) { 
                             data = new byte[]{1};
                             wrapper.set(Types.REMAINING_BYTES, 0, data);
                         } else {
@@ -307,17 +275,14 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
             }
         });
     }
-
     @Override
     public void init(final UserConnection connection) {
         connection.put(new ChatTypeStorage());
     }
-
     @Override
     public ProtocolLogger getLogger() {
         return LOGGER;
     }
-
     public static @Nullable ChatDecorationResult decorateChatMessage(
         final CompoundTag chatType,
         final int chatTypeId,
@@ -329,27 +294,21 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
             LOGGER.warning("Chat message has unknown chat type id " + chatTypeId + ". Message: " + message);
             return null;
         }
-
         CompoundTag chatData = chatType.getCompoundTag("element").getCompoundTag("chat");
         boolean overlay = false;
         if (chatData == null) {
             chatData = chatType.getCompoundTag("element").getCompoundTag("overlay");
             if (chatData == null) {
-                // Either narration or something we don't know
                 return null;
             }
-
             overlay = true;
         }
-
         final CompoundTag decoration = chatData.getCompoundTag("decoration");
         if (decoration == null) {
             return new ChatDecorationResult(message, overlay);
         }
-
         return new ChatDecorationResult(translatabaleComponentFromTag(decoration, senderName, teamName, message), overlay);
     }
-
     public static JsonElement translatabaleComponentFromTag(
         final CompoundTag tag,
         final JsonElement senderName,
@@ -358,8 +317,6 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
     ) {
         final String translationKey = tag.getStringTag("translation_key").getValue();
         final Style style = new Style();
-
-        // Add the style
         final CompoundTag styleTag = tag.getCompoundTag("style");
         if (styleTag != null) {
             final StringTag color = styleTag.getStringTag("color");
@@ -369,13 +326,11 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
                     style.setFormatting(textColor);
                 }
             }
-
             for (final Map.Entry<String, TextFormatting> entry : TextFormatting.FORMATTINGS.entrySet()) {
                 final NumberTag formattingTag = styleTag.getNumberTag(entry.getKey());
                 if (!(formattingTag instanceof ByteTag)) {
                     continue;
                 }
-
                 final boolean value = formattingTag.asBoolean();
                 final TextFormatting formatting = entry.getValue();
                 if (formatting == TextFormatting.OBFUSCATED) {
@@ -391,8 +346,6 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
                 }
             }
         }
-
-        // Add the replacements
         final ListTag<StringTag> parameters = tag.getListTag("parameters", StringTag.class);
         final List<ATextComponent> arguments = new ArrayList<>();
         if (parameters != null) {
@@ -401,7 +354,7 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
                 switch (element.getValue()) {
                     case "sender" -> argument = senderName;
                     case "content" -> argument = message;
-                    case "team_name", "target" /*So that this method can also be used in VB*/ -> {
+                    case "team_name", "target"  -> {
                         Preconditions.checkNotNull(targetName, "Team name is null");
                         argument = targetName;
                     }
@@ -412,7 +365,6 @@ public final class Protocol1_19To1_19_1 extends AbstractProtocol<ClientboundPack
                 }
             }
         }
-
         return SerializerVersion.V1_18.toJson(new TranslationComponent(translationKey, arguments));
     }
 }

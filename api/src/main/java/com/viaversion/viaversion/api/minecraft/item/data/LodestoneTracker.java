@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.minecraft.GlobalBlockPosition;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public record LodestoneTracker(@Nullable GlobalBlockPosition position, boolean tracked) {
-
     public static final Type<LodestoneTracker> TYPE = new Type<>(LodestoneTracker.class) {
         @Override
         public LodestoneTracker read(final ByteBuf buffer) {
@@ -37,12 +34,10 @@ public record LodestoneTracker(@Nullable GlobalBlockPosition position, boolean t
             final boolean tracked = buffer.readBoolean();
             return new LodestoneTracker(position, tracked);
         }
-
         @Override
         public void write(final ByteBuf buffer, final LodestoneTracker value) {
             Types.OPTIONAL_GLOBAL_POSITION.write(buffer, value.position);
             buffer.writeBoolean(value.tracked);
         }
     };
-
 }

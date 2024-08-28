@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,20 +21,15 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.item;
-
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.type.Type;
-
 abstract class BaseItemArrayType extends Type<Item[]> {
-
     protected BaseItemArrayType() {
         super(Item[].class);
     }
-
     protected BaseItemArrayType(String typeName) {
         super(typeName, Item[].class);
     }
-
     @Override
     public Class<? extends Type> getBaseClass() {
         return BaseItemArrayType.class;

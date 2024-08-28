@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.signature;
-
 import com.viaversion.viaversion.api.platform.providers.Provider;
 import com.viaversion.viaversion.util.Pair;
 import java.util.List;
-
 public abstract class SignableCommandArgumentsProvider implements Provider {
-
     /**
      * @param command The command to get the signable arguments for.
      * @return The signable arguments for the command.

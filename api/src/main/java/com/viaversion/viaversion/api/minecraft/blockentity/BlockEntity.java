@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,31 +21,21 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.blockentity;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface BlockEntity {
-
     static byte pack(int sectionX, int sectionZ) {
         return (byte) (((sectionX) & 15) << 4 | (sectionZ & 15));
     }
-
     default byte sectionX() {
         return (byte) ((packedXZ() >> 4) & 15);
     }
-
     default byte sectionZ() {
         return (byte) (packedXZ() & 15);
     }
-
     byte packedXZ();
-
     short y();
-
     int typeId();
-
     @Nullable CompoundTag tag();
-
     BlockEntity withTypeId(int typeId);
 }

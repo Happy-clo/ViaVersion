@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import com.viaversion.viaversion.api.connection.StorableObject;
-
 public record WorldIdentifiers(String overworld, String nether, String end) implements StorableObject {
     public static final String OVERWORLD_DEFAULT = "minecraft:overworld";
     public static final String NETHER_DEFAULT = "minecraft:the_nether";
     public static final String END_DEFAULT = "minecraft:the_end";
-
     public WorldIdentifiers(String overworld) {
         this(overworld, NETHER_DEFAULT, END_DEFAULT);
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,20 +13,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.provider;
-
 import com.viaversion.viaversion.api.platform.providers.Provider;
 import com.viaversion.viaversion.util.Key;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-
 public class PaintingProvider implements Provider {
     private final Map<String, Integer> paintings = new HashMap<>();
-
     public PaintingProvider() {
         add("kebab");
         add("aztec");
@@ -55,11 +52,9 @@ public class PaintingProvider implements Provider {
         add("skeleton");
         add("donkeykong");
     }
-
     private void add(String motive) {
         paintings.put(Key.namespaced(motive), paintings.size());
     }
-
     public Optional<Integer> getIntByIdentifier(String motive) {
         return Optional.ofNullable(paintings.get(Key.namespaced(motive.toLowerCase(Locale.ROOT))));
     }

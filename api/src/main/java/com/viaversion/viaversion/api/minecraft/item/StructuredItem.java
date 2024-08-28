@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,31 +21,24 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.minecraft.data.StructuredDataContainer;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class StructuredItem implements Item {
     private final StructuredDataContainer data;
     private int identifier;
     private int amount;
-
     public StructuredItem(final int identifier, final int amount) {
         this(identifier, amount, new StructuredDataContainer());
     }
-
     public StructuredItem(final int identifier, final int amount, final StructuredDataContainer data) {
         this.identifier = identifier;
         this.amount = amount;
         this.data = data;
     }
-
     public static StructuredItem empty() {
-        // Data is mutable, create a new item
         return new StructuredItem(0, 0);
     }
-
     public static Item[] emptyArray(final int size) {
         final Item[] items = new Item[size];
         for (int i = 0; i < items.length; i++) {
@@ -53,47 +46,38 @@ public class StructuredItem implements Item {
         }
         return items;
     }
-
     @Override
     public int identifier() {
         return identifier;
     }
-
     @Override
     public void setIdentifier(final int identifier) {
         this.identifier = identifier;
     }
-
     @Override
     public int amount() {
         return amount;
     }
-
     @Override
     public void setAmount(final int amount) {
         this.amount = amount;
     }
-
     @Override
     public @Nullable CompoundTag tag() {
         return null;
     }
-
     @Override
     public void setTag(@Nullable final CompoundTag tag) {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public StructuredDataContainer dataContainer() {
         return data;
     }
-
     @Override
     public StructuredItem copy() {
         return new StructuredItem(identifier, amount, data.copy());
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -103,7 +87,6 @@ public class StructuredItem implements Item {
         if (amount != that.amount) return false;
         return data.equals(that.data);
     }
-
     @Override
     public int hashCode() {
         int result = data.hashCode();
@@ -111,7 +94,6 @@ public class StructuredItem implements Item {
         result = 31 * result + amount;
         return result;
     }
-
     @Override
     public String toString() {
         return "StructuredItem{" +

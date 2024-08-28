@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,43 +21,34 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 public class BiMappingsBase implements BiMappings {
-
     protected final Mappings mappings;
     private final BiMappingsBase inverse;
-
     protected BiMappingsBase(final Mappings mappings, final Mappings inverse) {
         this.mappings = mappings;
         this.inverse = new BiMappingsBase(inverse, this);
     }
-
     private BiMappingsBase(final Mappings mappings, final BiMappingsBase inverse) {
         this.mappings = mappings;
         this.inverse = inverse;
     }
-
     @Override
     public int getNewId(final int id) {
         return mappings.getNewId(id);
     }
-
     @Override
     public void setNewId(final int id, final int mappedId) {
         mappings.setNewId(id, mappedId);
         inverse.mappings.setNewId(mappedId, id);
     }
-
     @Override
     public int size() {
         return mappings.size();
     }
-
     @Override
     public int mappedSize() {
         return mappings.mappedSize();
     }
-
     @Override
     public BiMappings inverse() {
         return this.inverse;

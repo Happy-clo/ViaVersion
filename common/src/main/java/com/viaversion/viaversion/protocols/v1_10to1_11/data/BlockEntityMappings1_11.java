@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,18 +13,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_10to1_11.data;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.viaversion.viaversion.util.Key;
-
 public class BlockEntityMappings1_11 {
     private static final BiMap<String, String> OLD_TO_NEW_NAMES = HashBiMap.create();
-
-    // Source: https://www.minecraftforum.net/forums/minecraft-java-edition/redstone-discussion-and/commands-command-blocks-and/2724507-1-11-nbt-changes-and-additions#AllTiles
     static {
         rewrite("Furnace", "furnace");
         rewrite("Chest", "chest");
@@ -50,15 +46,12 @@ public class BlockEntityMappings1_11 {
         rewrite("EndGateway", "end_gateway");
         rewrite("Control", "command_block");
     }
-
     private static void rewrite(String oldName, String newName) {
         OLD_TO_NEW_NAMES.put(oldName, Key.namespaced(newName));
     }
-
     public static BiMap<String, String> inverse() {
         return OLD_TO_NEW_NAMES.inverse();
     }
-
     public static String toNewIdentifier(String oldId) {
         String newName = OLD_TO_NEW_NAMES.get(oldId);
         if (newName != null) {

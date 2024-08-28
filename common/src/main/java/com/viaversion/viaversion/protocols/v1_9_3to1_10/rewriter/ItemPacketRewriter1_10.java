@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_9_3to1_10.rewriter;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.type.Types;
@@ -24,23 +23,19 @@ import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ClientboundPacke
 import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
 import com.viaversion.viaversion.protocols.v1_9_3to1_10.Protocol1_9_3To1_10;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
-
 public class ItemPacketRewriter1_10 extends ItemRewriter<ClientboundPackets1_9_3, ServerboundPackets1_9_3, Protocol1_9_3To1_10> {
-
     public ItemPacketRewriter1_10(Protocol1_9_3To1_10 protocol) {
         super(protocol, Types.ITEM1_8, Types.ITEM1_8_SHORT_ARRAY);
     }
-
     @Override
     public void registerPackets() {
         registerSetCreativeModeSlot(ServerboundPackets1_9_3.SET_CREATIVE_MODE_SLOT);
     }
-
     @Override
     public Item handleItemToServer(UserConnection connection, Item item) {
         if (item == null) return null;
         boolean newItem = item.identifier() >= 213 && item.identifier() <= 217;
-        if (newItem) { // Replace server-side unknown items
+        if (newItem) { 
             item.setIdentifier(1);
             item.setData((short) 0);
         }

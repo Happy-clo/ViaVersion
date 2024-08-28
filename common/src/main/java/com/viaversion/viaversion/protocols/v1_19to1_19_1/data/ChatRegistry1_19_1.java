@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,21 +13,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19to1_19_1.data;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.data.MappingDataLoader;
-
 public class ChatRegistry1_19_1 {
-
     private static final CompoundTag chatRegistry;
-
     static {
         chatRegistry = MappingDataLoader.INSTANCE.loadNBTFromFile("chat-registry-1.19.1.nbt");
     }
-
     public static CompoundTag chatRegistry() {
         return chatRegistry.copy();
     }

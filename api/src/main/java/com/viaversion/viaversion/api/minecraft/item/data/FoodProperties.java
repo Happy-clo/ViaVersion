@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.Types1_21;
 import io.netty.buffer.ByteBuf;
-
 public record FoodProperties(int nutrition, float saturationModifier, boolean canAlwaysEat, float eatSeconds,
                              Item usingConvertsTo, FoodEffect[] possibleEffects) {
-
     public static final Type<FoodProperties> TYPE1_20_5 = new Type<>(FoodProperties.class) {
         @Override
         public FoodProperties read(final ByteBuf buffer) {
@@ -41,7 +38,6 @@ public record FoodProperties(int nutrition, float saturationModifier, boolean ca
             final FoodEffect[] possibleEffects = FoodEffect.ARRAY_TYPE.read(buffer);
             return new FoodProperties(nutrition, saturationModifier, canAlwaysEat, eatSeconds, null, possibleEffects);
         }
-
         @Override
         public void write(final ByteBuf buffer, final FoodProperties value) {
             Types.VAR_INT.writePrimitive(buffer, value.nutrition);
@@ -62,7 +58,6 @@ public record FoodProperties(int nutrition, float saturationModifier, boolean ca
             final FoodEffect[] possibleEffects = FoodEffect.ARRAY_TYPE.read(buffer);
             return new FoodProperties(nutrition, saturationModifier, canAlwaysEat, eatSeconds, usingConvertsTo, possibleEffects);
         }
-
         @Override
         public void write(final ByteBuf buffer, final FoodProperties value) {
             Types.VAR_INT.writePrimitive(buffer, value.nutrition);

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,36 +21,27 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.signature.model;
-
 import java.time.Instant;
 import java.util.UUID;
-
 public class MessageMetadata {
-
     private final UUID sender;
     private final Instant timestamp;
     private final long salt;
-
     public MessageMetadata(final UUID sender, final Instant timestamp, final long salt) {
         this.sender = sender;
         this.timestamp = timestamp;
         this.salt = salt;
     }
-
     public MessageMetadata(final UUID sender, final long timestamp, final long salt) {
         this(sender, Instant.ofEpochMilli(timestamp), salt);
     }
-
     public UUID sender() {
         return this.sender;
     }
-
     public Instant timestamp() {
         return this.timestamp;
     }
-
     public long salt() {
         return this.salt;
     }
-
 }

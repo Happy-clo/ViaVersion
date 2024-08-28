@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,12 +21,9 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
-
 public record DyedColor(int rgb, boolean showInTooltip) {
-
     public static final Type<DyedColor> TYPE = new Type<>(DyedColor.class) {
         @Override
         public DyedColor read(final ByteBuf buffer) {
@@ -34,12 +31,10 @@ public record DyedColor(int rgb, boolean showInTooltip) {
             final boolean showInTooltip = buffer.readBoolean();
             return new DyedColor(rgb, showInTooltip);
         }
-
         @Override
         public void write(final ByteBuf buffer, final DyedColor value) {
             buffer.writeInt(value.rgb);
             buffer.writeBoolean(value.showInTooltip);
         }
     };
-
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.version;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.types.entitydata.EntityDataListType;
 import com.viaversion.viaversion.api.type.types.entitydata.EntityDataType1_12;
 import java.util.List;
-
 public final class Types1_12 {
-
     /**
      * Entity data type for 1.12
      */

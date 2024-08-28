@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,17 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.TypeConverter;
 import io.netty.buffer.ByteBuf;
-
 public class LongType extends Type<Long> implements TypeConverter<Long> {
-
     public LongType() {
         super(Long.class);
     }
-
     /**
      * @deprecated use {@link #readPrimitive(ByteBuf)} for manual reading to avoid wrapping
      */
@@ -40,7 +36,6 @@ public class LongType extends Type<Long> implements TypeConverter<Long> {
     public Long read(ByteBuf buffer) {
         return buffer.readLong();
     }
-
     /**
      * @deprecated use {@link #readPrimitive(ByteBuf)} for manual reading to avoid wrapping
      */
@@ -49,7 +44,6 @@ public class LongType extends Type<Long> implements TypeConverter<Long> {
     public void write(ByteBuf buffer, Long object) {
         buffer.writeLong(object);
     }
-
     @Override
     public Long from(Object o) {
         if (o instanceof Number number) {
@@ -59,11 +53,9 @@ public class LongType extends Type<Long> implements TypeConverter<Long> {
         }
         throw new UnsupportedOperationException();
     }
-
     public long readPrimitive(ByteBuf buffer) {
         return buffer.readLong();
     }
-
     public void writePrimitive(ByteBuf buffer, long object) {
         buffer.writeLong(object);
     }

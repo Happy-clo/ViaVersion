@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,23 +21,18 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.chunks;
-
 public enum PaletteType {
     BLOCKS(ChunkSection.SIZE, 8),
     BIOMES(ChunkSection.BIOME_SIZE, 3);
-
     private final int size;
     private final int highestBitsPerValue;
-
     PaletteType(final int size, final int highestBitsPerValue) {
         this.size = size;
         this.highestBitsPerValue = highestBitsPerValue;
     }
-
     public int size() {
         return size;
     }
-
     public int highestBitsPerValue() {
         return highestBitsPerValue;
     }

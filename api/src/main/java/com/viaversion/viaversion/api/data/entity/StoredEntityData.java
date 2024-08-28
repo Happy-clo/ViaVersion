@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,19 +21,15 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data.entity;
-
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface StoredEntityData {
-
     /**
      * Returns the entity type of the stored entity.
      *
      * @return entity type
      */
     EntityType type();
-
     /**
      * Checks if the storage contains an object of the given type.
      *
@@ -41,7 +37,6 @@ public interface StoredEntityData {
      * @return whether an object of the given type is in the storage
      */
     boolean has(Class<?> objectClass);
-
     /**
      * Returns an object from the storage if present.
      *
@@ -50,7 +45,6 @@ public interface StoredEntityData {
      * @return object if present
      */
     @Nullable <T> T get(Class<T> objectClass);
-
     /**
      * Removes and returns an object from the storage if present.
      *
@@ -59,7 +53,6 @@ public interface StoredEntityData {
      * @return removed object if present
      */
     @Nullable <T> T remove(Class<T> objectClass);
-
     /**
      * Stores an object based on its class.
      *

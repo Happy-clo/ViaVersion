@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public record WrittenBook(FilterableString title, String author, int generation, FilterableComponent[] pages,
                           boolean resolved) {
-
     public static final Type<WrittenBook> TYPE = new Type<>(WrittenBook.class) {
         @Override
         public WrittenBook read(final ByteBuf buffer) {
@@ -39,7 +36,6 @@ public record WrittenBook(FilterableString title, String author, int generation,
             final boolean resolved = buffer.readBoolean();
             return new WrittenBook(title, author, generation, pages, resolved);
         }
-
         @Override
         public void write(final ByteBuf buffer, final WrittenBook value) {
             FilterableString.TYPE.write(buffer, value.title);
@@ -49,5 +45,4 @@ public record WrittenBook(FilterableString title, String author, int generation,
             buffer.writeBoolean(value.resolved);
         }
     };
-
 }

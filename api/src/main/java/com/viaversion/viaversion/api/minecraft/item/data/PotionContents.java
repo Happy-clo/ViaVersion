@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public record PotionContents(@Nullable Integer potion, @Nullable Integer customColor, PotionEffect[] customEffects) {
-
     public static final Type<PotionContents> TYPE = new Type<>(PotionContents.class) {
         @Override
         public PotionContents read(final ByteBuf buffer) {
@@ -37,19 +34,16 @@ public record PotionContents(@Nullable Integer potion, @Nullable Integer customC
             final PotionEffect[] customEffects = PotionEffect.ARRAY_TYPE.read(buffer);
             return new PotionContents(potion, customColor, customEffects);
         }
-
         @Override
         public void write(final ByteBuf buffer, final PotionContents value) {
             buffer.writeBoolean(value.potion != null);
             if (value.potion != null) {
                 Types.VAR_INT.writePrimitive(buffer, value.potion);
             }
-
             buffer.writeBoolean(value.customColor != null);
             if (value.customColor != null) {
                 buffer.writeInt(value.customColor);
             }
-
             PotionEffect.ARRAY_TYPE.write(buffer, value.customEffects);
         }
     };

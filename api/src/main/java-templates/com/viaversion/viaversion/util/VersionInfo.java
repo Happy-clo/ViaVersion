@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import com.viaversion.viaversion.api.platform.ViaPlatform;
-
 public final class VersionInfo {
-
     /**
      * Plugin version.
      *
@@ -33,11 +30,9 @@ public final class VersionInfo {
      */
     public static final String VERSION = "{{ version }}";
     private static final String IMPLEMENTATION_VERSION = "{{ impl_version }}";
-
     public static String getVersion() {
         return VERSION;
     }
-
     public static String getImplementationVersion() {
         return IMPLEMENTATION_VERSION;
     }

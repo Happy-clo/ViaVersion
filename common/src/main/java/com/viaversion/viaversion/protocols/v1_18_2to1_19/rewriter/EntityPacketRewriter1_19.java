@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_18_2to1_19.rewriter;
-
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.viaversion.nbt.tag.CompoundTag;
@@ -50,35 +49,31 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPackets1_18, Protocol1_18_2To1_19> {
-
     public EntityPacketRewriter1_19(final Protocol1_18_2To1_19 protocol) {
         super(protocol);
     }
-
     @Override
     public void registerPackets() {
         registerTracker(ClientboundPackets1_18.ADD_PLAYER, EntityTypes1_19.PLAYER);
         registerSetEntityData(ClientboundPackets1_18.SET_ENTITY_DATA, Types1_18.ENTITY_DATA_LIST, Types1_19.ENTITY_DATA_LIST);
         registerRemoveEntities(ClientboundPackets1_18.REMOVE_ENTITIES);
-
         protocol.registerClientbound(ClientboundPackets1_18.ADD_ENTITY, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // Entity id
-                map(Types.UUID); // Entity UUID
-                map(Types.VAR_INT); // Entity type
-                map(Types.DOUBLE); // X
-                map(Types.DOUBLE); // Y
-                map(Types.DOUBLE); // Z
-                map(Types.BYTE); // Pitch
-                map(Types.BYTE); // Yaw
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
+                map(Types.VAR_INT); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
                 handler(wrapper -> {
                     final byte yaw = wrapper.get(Types.BYTE, 1);
-                    wrapper.write(Types.BYTE, yaw); // Head yaw
+                    wrapper.write(Types.BYTE, yaw); 
                 });
-                map(Types.INT, Types.VAR_INT); // Data
+                map(Types.INT, Types.VAR_INT); 
                 handler(trackerHandler());
                 handler(wrapper -> {
                     final int entityId = wrapper.get(Types.VAR_INT, 0);
@@ -89,35 +84,30 @@ public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPa
                 });
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_18.ADD_PAINTING, ClientboundPackets1_19.ADD_ENTITY, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // Entity id
-                map(Types.UUID); // Entity UUID
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
                 handler(wrapper -> {
                     wrapper.write(Types.VAR_INT, EntityTypes1_19.PAINTING.getId());
-
                     final int motive = wrapper.read(Types.VAR_INT);
                     final BlockPosition blockPosition = wrapper.read(Types.BLOCK_POSITION1_14);
                     final byte direction = wrapper.read(Types.BYTE);
                     wrapper.write(Types.DOUBLE, blockPosition.x() + 0.5d);
                     wrapper.write(Types.DOUBLE, blockPosition.y() + 0.5d);
                     wrapper.write(Types.DOUBLE, blockPosition.z() + 0.5d);
-                    wrapper.write(Types.BYTE, (byte) 0); // Pitch
-                    wrapper.write(Types.BYTE, (byte) 0); // Yaw
-                    wrapper.write(Types.BYTE, (byte) 0); // Head yaw
-                    wrapper.write(Types.VAR_INT, to3dId(direction)); // Data
-                    wrapper.write(Types.SHORT, (short) 0); // Velocity x
-                    wrapper.write(Types.SHORT, (short) 0); // Velocity y
-                    wrapper.write(Types.SHORT, (short) 0); // Velocity z
-
+                    wrapper.write(Types.BYTE, (byte) 0); 
+                    wrapper.write(Types.BYTE, (byte) 0); 
+                    wrapper.write(Types.BYTE, (byte) 0); 
+                    wrapper.write(Types.VAR_INT, to3dId(direction)); 
+                    wrapper.write(Types.SHORT, (short) 0); 
+                    wrapper.write(Types.SHORT, (short) 0); 
+                    wrapper.write(Types.SHORT, (short) 0); 
                     wrapper.send(Protocol1_18_2To1_19.class);
                     wrapper.cancel();
-
-                    // Send motive in entity data
                     final PacketWrapper entityDataPacket = wrapper.create(ClientboundPackets1_19.SET_ENTITY_DATA);
-                    entityDataPacket.write(Types.VAR_INT, wrapper.get(Types.VAR_INT, 0)); // Entity id
+                    entityDataPacket.write(Types.VAR_INT, wrapper.get(Types.VAR_INT, 0)); 
                     final List<EntityData> entityData = new ArrayList<>();
                     entityData.add(new EntityData(8, Types1_19.ENTITY_DATA_TYPES.paintingVariantType, protocol.getMappingData().getPaintingMappings().getNewIdOrDefault(motive, 0)));
                     entityDataPacket.write(Types1_19.ENTITY_DATA_LIST, entityData);
@@ -125,60 +115,52 @@ public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPa
                 });
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_18.ADD_MOB, ClientboundPackets1_19.ADD_ENTITY, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // Entity ID
-                map(Types.UUID); // Entity UUID
-                map(Types.VAR_INT); // Entity Type
-                map(Types.DOUBLE); // X
-                map(Types.DOUBLE); // Y
-                map(Types.DOUBLE); // Z
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
+                map(Types.VAR_INT); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
+                map(Types.DOUBLE); 
                 handler(wrapper -> {
-                    // Change order
                     final byte yaw = wrapper.read(Types.BYTE);
                     final byte pitch = wrapper.read(Types.BYTE);
                     wrapper.write(Types.BYTE, pitch);
                     wrapper.write(Types.BYTE, yaw);
                 });
-                map(Types.BYTE); // Head yaw
-                create(Types.VAR_INT, 0); // Data
-                map(Types.SHORT); // Velocity x
-                map(Types.SHORT); // Velocity y
-                map(Types.SHORT); // Velocity z
+                map(Types.BYTE); 
+                create(Types.VAR_INT, 0); 
+                map(Types.SHORT); 
+                map(Types.SHORT); 
+                map(Types.SHORT); 
                 handler(trackerHandler());
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_18.UPDATE_MOB_EFFECT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // Entity id
-                map(Types.VAR_INT); // Effect id
-                map(Types.BYTE); // Amplifier
-                map(Types.VAR_INT); // Duration
-                map(Types.BYTE); // Flags
-                create(Types.OPTIONAL_NAMED_COMPOUND_TAG, null); // No factor data
+                map(Types.VAR_INT); 
+                map(Types.VAR_INT); 
+                map(Types.BYTE); 
+                map(Types.VAR_INT); 
+                map(Types.BYTE); 
+                create(Types.OPTIONAL_NAMED_COMPOUND_TAG, null); 
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_18.LOGIN, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.INT); // Entity ID
-                map(Types.BOOLEAN); // Hardcore
-                map(Types.BYTE); // Gamemode
-                map(Types.BYTE); // Previous Gamemode
-                map(Types.STRING_ARRAY); // World List
-                map(Types.NAMED_COMPOUND_TAG); // Registry
+                map(Types.INT); 
+                map(Types.BOOLEAN); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.STRING_ARRAY); 
+                map(Types.NAMED_COMPOUND_TAG); 
                 handler(wrapper -> {
                     final CompoundTag tag = wrapper.get(Types.NAMED_COMPOUND_TAG, 0);
-
-                    // Add necessary chat types
                     tag.put("minecraft:chat_type", protocol.getMappingData().chatRegistry());
-
-                    // Cache a whole lot of data
                     final ListTag<CompoundTag> dimensions = TagUtil.getRegistryEntries(tag, "dimension_type");
                     final Map<String, DimensionData> dimensionDataMap = new HashMap<>(dimensions.size());
                     final Map<CompoundTag, String> dimensionsMap = new HashMap<>(dimensions.size());
@@ -191,26 +173,24 @@ public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPa
                         dimensionsMap.put(element.copy(), name);
                     }
                     tracker(wrapper.user()).setDimensions(dimensionDataMap);
-
                     final DimensionRegistryStorage registryStorage = wrapper.user().get(DimensionRegistryStorage.class);
                     registryStorage.setDimensions(dimensionsMap);
                     writeDimensionKey(wrapper, registryStorage);
                 });
-                map(Types.STRING); // World
-                map(Types.LONG); // Seed
-                map(Types.VAR_INT); // Max players
-                map(Types.VAR_INT); // Chunk radius
-                map(Types.VAR_INT); // Simulation distance
-                map(Types.BOOLEAN); // Reduced debug info
-                map(Types.BOOLEAN); // Show death screen
-                map(Types.BOOLEAN); // Debug
-                map(Types.BOOLEAN); // Flat
-                create(Types.OPTIONAL_GLOBAL_POSITION, null); // Last death location
+                map(Types.STRING); 
+                map(Types.LONG); 
+                map(Types.VAR_INT); 
+                map(Types.VAR_INT); 
+                map(Types.VAR_INT); 
+                map(Types.BOOLEAN); 
+                map(Types.BOOLEAN); 
+                map(Types.BOOLEAN); 
+                map(Types.BOOLEAN); 
+                create(Types.OPTIONAL_GLOBAL_POSITION, null); 
                 handler(playerTrackerHandler());
                 handler(worldDataTrackerHandlerByKey());
                 handler(biomeSizeTracker());
                 handler(wrapper -> {
-                    // Disable the chat preview
                     final PacketWrapper displayPreviewPacket = wrapper.create(ClientboundPackets1_19.SET_DISPLAY_CHAT_PREVIEW);
                     displayPreviewPacket.write(Types.BOOLEAN, false);
                     displayPreviewPacket.scheduleSend(Protocol1_18_2To1_19.class);
@@ -221,48 +201,43 @@ public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPa
             @Override
             public void register() {
                 handler(wrapper -> writeDimensionKey(wrapper, wrapper.user().get(DimensionRegistryStorage.class)));
-                map(Types.STRING); // World
-                map(Types.LONG); // Seed
-                map(Types.UNSIGNED_BYTE); // Gamemode
-                map(Types.BYTE); // Previous gamemode
-                map(Types.BOOLEAN); // Debug
-                map(Types.BOOLEAN); // Flat
-                map(Types.BOOLEAN); // Keep player attributes
-                create(Types.OPTIONAL_GLOBAL_POSITION, null); // Last death location
+                map(Types.STRING); 
+                map(Types.LONG); 
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.BYTE); 
+                map(Types.BOOLEAN); 
+                map(Types.BOOLEAN); 
+                map(Types.BOOLEAN); 
+                create(Types.OPTIONAL_GLOBAL_POSITION, null); 
                 handler(worldDataTrackerHandlerByKey());
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_18.PLAYER_INFO, wrapper -> {
             final int action = wrapper.passthrough(Types.VAR_INT);
             final int entries = wrapper.passthrough(Types.VAR_INT);
             for (int i = 0; i < entries; i++) {
-                wrapper.passthrough(Types.UUID); // UUID
-                if (action == 0) { // Add player
-                    wrapper.passthrough(Types.STRING); // Player Name
-
+                wrapper.passthrough(Types.UUID); 
+                if (action == 0) { 
+                    wrapper.passthrough(Types.STRING); 
                     final int properties = wrapper.passthrough(Types.VAR_INT);
                     for (int j = 0; j < properties; j++) {
-                        wrapper.passthrough(Types.STRING); // Name
-                        wrapper.passthrough(Types.STRING); // Value
-                        wrapper.passthrough(Types.OPTIONAL_STRING); // Signature
+                        wrapper.passthrough(Types.STRING); 
+                        wrapper.passthrough(Types.STRING); 
+                        wrapper.passthrough(Types.OPTIONAL_STRING); 
                     }
-
-                    wrapper.passthrough(Types.VAR_INT); // Gamemode
-                    wrapper.passthrough(Types.VAR_INT); // Ping
-                    final JsonElement displayName = wrapper.read(Types.OPTIONAL_COMPONENT); // Display name
+                    wrapper.passthrough(Types.VAR_INT); 
+                    wrapper.passthrough(Types.VAR_INT); 
+                    final JsonElement displayName = wrapper.read(Types.OPTIONAL_COMPONENT); 
                     if (!Protocol1_18_2To1_19.isTextComponentNull(displayName)) {
                         wrapper.write(Types.OPTIONAL_COMPONENT, displayName);
                     } else {
                         wrapper.write(Types.OPTIONAL_COMPONENT, null);
                     }
-
-                    // No public profile signature
                     wrapper.write(Types.OPTIONAL_PROFILE_KEY, null);
-                } else if (action == 1 || action == 2) { // Update gamemode/update latency
+                } else if (action == 1 || action == 2) { 
                     wrapper.passthrough(Types.VAR_INT);
-                } else if (action == 3) { // Update display name
-                    final JsonElement displayName = wrapper.read(Types.OPTIONAL_COMPONENT); // Display name
+                } else if (action == 3) { 
+                    final JsonElement displayName = wrapper.read(Types.OPTIONAL_COMPONENT); 
                     if (!Protocol1_18_2To1_19.isTextComponentNull(displayName)) {
                         wrapper.write(Types.OPTIONAL_COMPONENT, displayName);
                     } else {
@@ -272,9 +247,7 @@ public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPa
             }
         });
     }
-
     private void writeDimensionKey(final PacketWrapper wrapper, final DimensionRegistryStorage registryStorage) {
-        // Find dimension key by data
         final CompoundTag currentDimension = wrapper.read(Types.NAMED_COMPOUND_TAG);
         addMonsterSpawnData(currentDimension);
         String dimensionKey = registryStorage.dimensionKey(currentDimension);
@@ -284,8 +257,6 @@ public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPa
                     "Plugins and mods have to make sure they are not creating new dimension types while players are online, and proxies need to make sure they don't scramble dimension data." +
                     " Received dimension: " + currentDimension + ". Known dimensions: " + registryStorage.dimensions());
             }
-
-            // Try to find the most similar dimension
             dimensionKey = registryStorage.dimensions().entrySet().stream()
                 .map(it -> new Pair<>(it, Maps.difference(currentDimension.getValue(), it.getKey().getValue()).entriesInCommon()))
                 .filter(it -> it.value().containsKey("min_y") && it.value().containsKey("height"))
@@ -293,27 +264,22 @@ public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPa
                 .orElseThrow(() -> new IllegalArgumentException("Dimension not found in registry data from join packet: " + currentDimension))
                 .key().getValue();
         }
-
         wrapper.write(Types.STRING, dimensionKey);
     }
-
     private int to3dId(final int id) {
         return switch (id) {
-            case -1 -> 1; // Up/down -> Up
-            case 2 -> 2; // North
-            case 0 -> 3; // South
-            case 1 -> 4; // West
-            case 3 -> 5; // East
+            case -1 -> 1; 
+            case 2 -> 2; 
+            case 0 -> 3; 
+            case 1 -> 4; 
+            case 3 -> 5; 
             default -> throw new IllegalArgumentException("Unknown 2d id: " + id);
         };
     }
-
     private void addMonsterSpawnData(final CompoundTag dimension) {
-        // The actual values here don't matter
         dimension.put("monster_spawn_block_light_limit", new IntTag(0));
         dimension.put("monster_spawn_light_level", new IntTag(11));
     }
-
     @Override
     protected void registerRewrites() {
         filter().mapDataType(Types1_19.ENTITY_DATA_TYPES::byId);
@@ -321,30 +287,22 @@ public final class EntityPacketRewriter1_19 extends EntityRewriter<ClientboundPa
             final Particle particle = (Particle) data.getValue();
             final ParticleMappings particleMappings = protocol.getMappingData().getParticleMappings();
             if (particle.id() == particleMappings.id("vibration")) {
-                // Remove the position
                 particle.getArguments().remove(0);
-
                 final String resourceLocation = Key.stripMinecraftNamespace(particle.<String>getArgument(0).getValue());
                 if (resourceLocation.equals("entity")) {
-                    // Add Y offset
                     particle.getArguments().add(2, new Particle.ParticleData<>(Types.FLOAT, 0F));
                 }
             }
-
             rewriteParticle(event.user(), particle);
         });
-
         registerEntityDataTypeHandler(Types1_19.ENTITY_DATA_TYPES.itemType, Types1_19.ENTITY_DATA_TYPES.optionalBlockStateType, null);
         registerBlockStateHandler(EntityTypes1_19.ABSTRACT_MINECART, 11);
-
         filter().type(EntityTypes1_19.CAT).index(19).mapDataType(typeId -> Types1_19.ENTITY_DATA_TYPES.catVariantType);
     }
-
     @Override
     public void onMappingDataLoaded() {
         mapTypes();
     }
-
     @Override
     public EntityType typeFromId(final int type) {
         return EntityTypes1_19.getTypeFromId(type);

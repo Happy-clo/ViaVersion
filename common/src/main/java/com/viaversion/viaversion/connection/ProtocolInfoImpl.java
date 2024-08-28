@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,17 +13,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.connection;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.protocol.ProtocolPipeline;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.UUID;
-
 public class ProtocolInfoImpl implements ProtocolInfo {
     private State clientState = State.HANDSHAKE;
     private State serverState = State.HANDSHAKE;
@@ -32,12 +30,10 @@ public class ProtocolInfoImpl implements ProtocolInfo {
     private String username;
     private UUID uuid;
     private ProtocolPipeline pipeline;
-
     @Override
     public State getClientState() {
         return clientState;
     }
-
     @Override
     public void setClientState(final State clientState) {
         if (Via.getManager().debugHandler().enabled()) {
@@ -45,12 +41,10 @@ public class ProtocolInfoImpl implements ProtocolInfo {
         }
         this.clientState = clientState;
     }
-
     @Override
     public State getServerState() {
         return serverState;
     }
-
     @Override
     public void setServerState(final State serverState) {
         if (Via.getManager().debugHandler().enabled()) {
@@ -58,57 +52,46 @@ public class ProtocolInfoImpl implements ProtocolInfo {
         }
         this.serverState = serverState;
     }
-
     @Override
     public ProtocolVersion protocolVersion() {
         return protocolVersion;
     }
-
     @Override
     public void setProtocolVersion(ProtocolVersion protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
-
     @Override
     public ProtocolVersion serverProtocolVersion() {
         return serverProtocolVersion;
     }
-
     @Override
     public void setServerProtocolVersion(ProtocolVersion serverProtocolVersion) {
         this.serverProtocolVersion = serverProtocolVersion;
     }
-
     @Override
     public String getUsername() {
         return username;
     }
-
     @Override
     public void setUsername(String username) {
         this.username = username;
     }
-
     @Override
     public UUID getUuid() {
         return uuid;
     }
-
     @Override
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
-
     @Override
     public ProtocolPipeline getPipeline() {
         return pipeline;
     }
-
     @Override
     public void setPipeline(ProtocolPipeline pipeline) {
         this.pipeline = pipeline;
     }
-
     @Override
     public String toString() {
         return "ProtocolInfo{" +

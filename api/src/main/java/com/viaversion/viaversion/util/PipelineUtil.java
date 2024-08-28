@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
@@ -35,12 +34,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class PipelineUtil {
     private static final MethodHandle DECODE_METHOD = privateHandleUnchecked(ByteToMessageDecoder.class, "decode", ChannelHandlerContext.class, ByteBuf.class, List.class);
     private static final MethodHandle ENCODE_METHOD = privateHandleUnchecked(MessageToByteEncoder.class, "encode", ChannelHandlerContext.class, Object.class, ByteBuf.class);
     private static final MethodHandle MTM_DECODE = privateHandleUnchecked(MessageToMessageDecoder.class, "decode", ChannelHandlerContext.class, Object.class, List.class);
-
     /**
      * Calls the decode method on a netty ByteToMessageDecoder.
      *
@@ -56,13 +53,12 @@ public final class PipelineUtil {
         try {
             PipelineUtil.DECODE_METHOD.invoke(decoder, ctx, input, output);
         } catch (Exception | Error e) {
-            throw e; // Directly propagate exceptions/errors
+            throw e; 
         } catch (Throwable t) {
             throw new InvocationTargetException(t);
         }
         return output;
     }
-
     /**
      * Calls the encode method on a netty MessageToByteEncoder.
      *
@@ -76,12 +72,11 @@ public final class PipelineUtil {
         try {
             PipelineUtil.ENCODE_METHOD.invoke(encoder, ctx, msg, output);
         } catch (Exception | Error e) {
-            throw e; // Directly propagate exceptions/errors
+            throw e; 
         } catch (Throwable t) {
             throw new InvocationTargetException(t);
         }
     }
-
     /**
      * Calls the decode method on a netty MessageToMessageDecoder.
      *
@@ -103,7 +98,6 @@ public final class PipelineUtil {
         }
         return output;
     }
-
     /**
      * Check if a stack trace contains a certain exception
      *
@@ -116,12 +110,10 @@ public final class PipelineUtil {
             if (c.isAssignableFrom(t.getClass())) {
                 return true;
             }
-
             t = t.getCause();
         } while (t != null);
         return false;
     }
-
     /**
      * Check if a stack trace contains a certain exception and returns it if present.
      *
@@ -132,15 +124,12 @@ public final class PipelineUtil {
     public static <T> @Nullable T getCause(Throwable t, Class<T> c) {
         while (t != null) {
             if (c.isAssignableFrom(t.getClass())) {
-                //noinspection unchecked
                 return (T) t;
             }
-
             t = t.getCause();
         }
         return null;
     }
-
     /**
      * Get the context for the channel handler before a certain name.
      *
@@ -160,7 +149,6 @@ public final class PipelineUtil {
         }
         return null;
     }
-
     public static @Nullable ChannelHandlerContext getPreviousContext(String name, ChannelPipeline pipeline) {
         String previous = null;
         for (String entry : pipeline.toMap().keySet()) {
@@ -171,13 +159,11 @@ public final class PipelineUtil {
         }
         return null;
     }
-
     private static MethodHandle privateHandle(final Class<?> clazz, final String method, final Class<?>... parameterTypes) throws NoSuchMethodException, IllegalAccessException {
         final Method decodeMethod = clazz.getDeclaredMethod(method, parameterTypes);
         decodeMethod.setAccessible(true);
         return MethodHandles.lookup().unreflect(decodeMethod);
     }
-
     private static MethodHandle privateHandleUnchecked(final Class<?> clazz, final String method, final Class<?>... args) {
         try {
             return privateHandle(clazz, method, args);

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,12 +21,9 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.platform;
-
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-
 public interface ProtocolDetectorService {
-
     /**
      * Returns the protocol version of the proxied server, or -1 if unknown.
      *
@@ -34,13 +31,11 @@ public interface ProtocolDetectorService {
      * @return protocol version of the proxied server, or -1 if unknown
      */
     ProtocolVersion serverProtocolVersion(String serverName);
-
     /**
      * Probes all registered proxied servers for their protocol version.
      * This is executed automatically in the interval set in the ViaVersion config.
      */
     void probeAllServers();
-
     /**
      * Sets the stored protocol version of a proxied server.
      *
@@ -48,7 +43,6 @@ public interface ProtocolDetectorService {
      * @param protocolVersion protocol version of the server
      */
     void setProtocolVersion(String serverName, int protocolVersion);
-
     /**
      * Uncaches and returns the previously stored protocol version of the proxied server. Returns -1 if none was stored.
      *
@@ -56,7 +50,6 @@ public interface ProtocolDetectorService {
      * @return previously stored protocol version of the proxied server, or -1 if none was present
      */
     int uncacheProtocolVersion(String serverName);
-
     /**
      * Returns an unmodifiable map of detected protocol versions.
      *

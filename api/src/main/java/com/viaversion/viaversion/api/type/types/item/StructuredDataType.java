@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.item;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.data.FullMappings;
 import com.viaversion.viaversion.api.minecraft.data.StructuredData;
@@ -31,21 +30,16 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class StructuredDataType extends Type<StructuredData<?>> {
-
     private StructuredDataKey<?>[] types;
-
     public StructuredDataType() {
         super(StructuredData.class);
     }
-
     @Override
     public void write(final ByteBuf buffer, final StructuredData<?> object) {
         Types.VAR_INT.writePrimitive(buffer, object.id());
         object.write(buffer);
     }
-
     @Override
     public StructuredData<?> read(final ByteBuf buffer) {
         Preconditions.checkNotNull(types, "StructuredDataType has not been initialized");
@@ -56,30 +50,23 @@ public class StructuredDataType extends Type<StructuredData<?>> {
         }
         return readData(buffer, key, id);
     }
-
     public @Nullable StructuredDataKey<?> key(final int id) {
         return id >= 0 && id < types.length ? types[id] : null;
     }
-
     private <T> StructuredData<T> readData(final ByteBuf buffer, final StructuredDataKey<T> key, final int id) {
         return StructuredData.of(key, key.type().read(buffer), id);
     }
-
     public DataFiller filler(final Protocol<?, ?, ?, ?> protocol) {
         return new DataFiller(protocol);
     }
-
     public final class DataFiller {
-
         private final FullMappings mappings;
-
         private DataFiller(final Protocol<?, ?, ?, ?> protocol) {
             this.mappings = protocol.getMappingData().getDataComponentSerializerMappings();
             Preconditions.checkArgument(mappings != null, "No mappings found for protocol %s", protocol.getClass());
             Preconditions.checkArgument(types == null, "StructuredDataType has already been initialized");
             types = new StructuredDataKey[mappings.mappedSize()];
         }
-
         public DataFiller add(final StructuredDataKey<?> key) {
             final int id = mappings.mappedId(key.identifier());
             Preconditions.checkArgument(id != -1, "No mapped id found for %s", key.identifier());

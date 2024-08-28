@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.data;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.io.CharStreams;
@@ -43,7 +42,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class MappingData1_13 extends MappingDataBase {
     private final Map<String, int[]> blockTags = new HashMap<>();
     private final Map<String, int[]> itemTags = new HashMap<>();
@@ -52,35 +50,27 @@ public class MappingData1_13 extends MappingDataBase {
     private final Map<String, String> translateMapping = new HashMap<>();
     private final Map<String, String> mojangTranslation = new HashMap<>();
     private final BiMap<String, String> channelMappings = HashBiMap.create();
-
     public MappingData1_13() {
         super("1.12", "1.13");
     }
-
     @Override
     protected void loadExtras(final CompoundTag data) {
         loadTags(blockTags, data.getCompoundTag("block_tags"));
         loadTags(itemTags, data.getCompoundTag("item_tags"));
         loadTags(fluidTags, data.getCompoundTag("fluid_tags"));
-
         CompoundTag legacyEnchantments = data.getCompoundTag("legacy_enchantments");
         loadEnchantments(oldEnchantmentsIds, legacyEnchantments);
-
-        // Map minecraft:snow[layers=1] of 1.12 to minecraft:snow[layers=2] in 1.13
         if (Via.getConfig().isSnowCollisionFix()) {
             blockMappings.setNewId(1248, 3416);
         }
-
-        // Remap infested blocks, as they are instantly breakabale in 1.13+ and can't be broken by those clients on older servers
         if (Via.getConfig().isInfestedBlocksFix()) {
-            blockMappings.setNewId(1552, 1); // stone
-            blockMappings.setNewId(1553, 14); // cobblestone
-            blockMappings.setNewId(1554, 3983); // stone bricks
-            blockMappings.setNewId(1555, 3984); // mossy stone bricks
-            blockMappings.setNewId(1556, 3985); // cracked stone bricks
-            blockMappings.setNewId(1557, 3986); // chiseled stone bricks
+            blockMappings.setNewId(1552, 1); 
+            blockMappings.setNewId(1553, 14); 
+            blockMappings.setNewId(1554, 3983); 
+            blockMappings.setNewId(1555, 3984); 
+            blockMappings.setNewId(1556, 3985); 
+            blockMappings.setNewId(1557, 3986); 
         }
-
         JsonObject object = MappingDataLoader.INSTANCE.loadFromDataDir("channelmappings-1.13.json");
         if (object != null) {
             for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
@@ -93,12 +83,10 @@ public class MappingData1_13 extends MappingDataBase {
                 channelMappings.put(oldChannel, newChannel);
             }
         }
-
         Map<String, String> translationMappingData = GsonUtil.getGson().fromJson(
             new InputStreamReader(MappingData1_13.class.getClassLoader().getResourceAsStream("assets/viaversion/data/mapping-lang-1.12-1.13.json")),
             new TypeToken<Map<String, String>>() {
             }.getType());
-
         String[] unmappedTranslationLines;
         try (Reader reader = new InputStreamReader(MappingData1_13.class.getClassLoader()
             .getResourceAsStream("assets/viaversion/data/en_US.properties"), StandardCharsets.UTF_8)) {
@@ -106,32 +94,25 @@ public class MappingData1_13 extends MappingDataBase {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         for (String line : unmappedTranslationLines) {
             if (line.isEmpty()) {
                 continue;
             }
-
             String[] keyAndTranslation = line.split("=", 2);
             if (keyAndTranslation.length != 2) {
                 continue;
             }
-
             String key = keyAndTranslation[0];
             String translation = keyAndTranslation[1].replaceAll("%(\\d\\$)?d", "%$1s").trim();
             mojangTranslation.put(key, translation);
-
-            // Null values in the file mean the key did not change AND the translation has the same amount of placeholders still
             if (translationMappingData.containsKey(key)) {
                 String mappedKey = translationMappingData.get(key);
                 translateMapping.put(key, mappedKey != null ? mappedKey : key);
             }
         }
     }
-
     @Override
     protected @Nullable Mappings loadMappings(final CompoundTag data, final String key) {
-        // Special cursed case
         if (key.equals("blocks")) {
             return super.loadMappings(data, "blockstates");
         } else if (key.equals("blockstates")) {
@@ -140,10 +121,8 @@ public class MappingData1_13 extends MappingDataBase {
             return super.loadMappings(data, key);
         }
     }
-
     @Override
     protected @Nullable BiMappings loadBiMappings(final CompoundTag data, final String key) {
-        // Special cursed case
         if (key.equals("items")) {
             return (BiMappings) MappingDataLoader.INSTANCE.loadMappings(data, "items", size -> {
                 final Int2IntBiHashMap map = new Int2IntBiHashMap(size);
@@ -154,52 +133,41 @@ public class MappingData1_13 extends MappingDataBase {
             return super.loadBiMappings(data, key);
         }
     }
-
     public static String validateNewChannel(String newId) {
         if (!Key.isValid(newId)) {
-            return null; // Not valid
+            return null; 
         }
-
         return Key.namespaced(newId);
     }
-
     private void loadTags(Map<String, int[]> output, CompoundTag newTags) {
         for (Map.Entry<String, Tag> entry : newTags.entrySet()) {
             IntArrayTag ids = (IntArrayTag) entry.getValue();
             output.put(Key.namespaced(entry.getKey()), ids.getValue());
         }
     }
-
     private void loadEnchantments(Map<Short, String> output, CompoundTag enchantments) {
         for (Map.Entry<String, Tag> enty : enchantments.entrySet()) {
             output.put(Short.parseShort(enty.getKey()), ((StringTag) enty.getValue()).getValue());
         }
     }
-
     public Map<String, int[]> getBlockTags() {
         return blockTags;
     }
-
     public Map<String, int[]> getItemTags() {
         return itemTags;
     }
-
     public Map<String, int[]> getFluidTags() {
         return fluidTags;
     }
-
     public BiMap<Short, String> getOldEnchantmentsIds() {
         return oldEnchantmentsIds;
     }
-
     public Map<String, String> getTranslateMapping() {
         return translateMapping;
     }
-
     public Map<String, String> getMojangTranslation() {
         return mojangTranslation;
     }
-
     public BiMap<String, String> getChannelMappings() {
         return channelMappings;
     }

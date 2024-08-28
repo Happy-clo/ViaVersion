@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.misc;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.data.FullMappings;
 import com.viaversion.viaversion.api.minecraft.Particle;
@@ -32,13 +31,10 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
 import com.viaversion.viaversion.util.Key;
 import io.netty.buffer.ByteBuf;
-
 public class ParticleType extends DynamicType<Particle> {
-
     public ParticleType() {
         super(Particle.class);
     }
-
     @Override
     public void write(final ByteBuf buffer, final Particle object) {
         Types.VAR_INT.writePrimitive(buffer, object.id());
@@ -46,7 +42,6 @@ public class ParticleType extends DynamicType<Particle> {
             data.write(buffer);
         }
     }
-
     @Override
     public Particle read(final ByteBuf buffer) {
         final int type = Types.VAR_INT.readPrimitive(buffer);
@@ -54,90 +49,82 @@ public class ParticleType extends DynamicType<Particle> {
         readData(buffer, particle);
         return particle;
     }
-
     @Override
     protected FullMappings mappings(final Protocol<?, ?, ?, ?> protocol) {
         return protocol.getMappingData().getParticleMappings();
     }
-
     public static DataReader<Particle> itemHandler(final Type<Item> itemType) {
         return (buf, particle) -> particle.add(itemType, itemType.read(buf));
     }
-
     public static final class Readers {
-
         public static final DataReader<Particle> BLOCK = (buf, particle) -> {
-            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); // Flat Block
+            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); 
         };
         public static final DataReader<Particle> ITEM1_13 = itemHandler(Types.ITEM1_13);
         public static final DataReader<Particle> ITEM1_13_2 = itemHandler(Types.ITEM1_13_2);
         public static final DataReader<Particle> DUST = (buf, particle) -> {
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Red 0-1
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Green 0-1
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Blue 0-1
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Scale 0.01-4
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
         };
         public static final DataReader<Particle> DUST_TRANSITION = (buf, particle) -> {
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Red 0-1
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Green 0-1
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Blue 0-1
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Scale 0.01-4 (moved to the end as of 24w03a / 1.20.5)
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Red
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Green
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Blue
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
         };
         public static final DataReader<Particle> VIBRATION = (buf, particle) -> {
-            particle.add(Types.BLOCK_POSITION1_14, Types.BLOCK_POSITION1_14.read(buf)); // From block pos
-
+            particle.add(Types.BLOCK_POSITION1_14, Types.BLOCK_POSITION1_14.read(buf)); 
             String resourceLocation = Types.STRING.read(buf);
             particle.add(Types.STRING, resourceLocation);
-
             resourceLocation = Key.stripMinecraftNamespace(resourceLocation);
             if (resourceLocation.equals("block")) {
-                particle.add(Types.BLOCK_POSITION1_14, Types.BLOCK_POSITION1_14.read(buf)); // Target block pos
+                particle.add(Types.BLOCK_POSITION1_14, Types.BLOCK_POSITION1_14.read(buf)); 
             } else if (resourceLocation.equals("entity")) {
-                particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); // Target entity
+                particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); 
             } else {
                 Via.getPlatform().getLogger().warning("Unknown vibration path position source type: " + resourceLocation);
             }
-            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); // Arrival in ticks
+            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); 
         };
         public static final DataReader<Particle> VIBRATION1_19 = (buf, particle) -> {
             String resourceLocation = Types.STRING.read(buf);
             particle.add(Types.STRING, resourceLocation);
-
             resourceLocation = Key.stripMinecraftNamespace(resourceLocation);
             if (resourceLocation.equals("block")) {
-                particle.add(Types.BLOCK_POSITION1_14, Types.BLOCK_POSITION1_14.read(buf)); // Target block pos
+                particle.add(Types.BLOCK_POSITION1_14, Types.BLOCK_POSITION1_14.read(buf)); 
             } else if (resourceLocation.equals("entity")) {
-                particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); // Target entity
-                particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Y offset
+                particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); 
+                particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
             } else {
                 Via.getPlatform().getLogger().warning("Unknown vibration path position source type: " + resourceLocation);
             }
-            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); // Arrival in ticks
+            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); 
         };
         public static final DataReader<Particle> VIBRATION1_20_3 = (buf, particle) -> {
             final int sourceTypeId = Types.VAR_INT.readPrimitive(buf);
             particle.add(Types.VAR_INT, sourceTypeId);
-            if (sourceTypeId == 0) { // Block
-                particle.add(Types.BLOCK_POSITION1_14, Types.BLOCK_POSITION1_14.read(buf)); // Target block pos
-            } else if (sourceTypeId == 1) { // Entity
-                particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); // Target entity
-                particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Y offset
+            if (sourceTypeId == 0) { 
+                particle.add(Types.BLOCK_POSITION1_14, Types.BLOCK_POSITION1_14.read(buf)); 
+            } else if (sourceTypeId == 1) { 
+                particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); 
+                particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
             } else {
                 Via.getPlatform().getLogger().warning("Unknown vibration path position source type: " + sourceTypeId);
             }
-            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); // Arrival in ticks
+            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); 
         };
         public static final DataReader<Particle> SCULK_CHARGE = (buf, particle) -> {
-            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); // Roll
+            particle.add(Types.FLOAT, Types.FLOAT.readPrimitive(buf)); 
         };
         public static final DataReader<Particle> SHRIEK = (buf, particle) -> {
-            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); // Delay
+            particle.add(Types.VAR_INT, Types.VAR_INT.readPrimitive(buf)); 
         };
         public static final DataReader<Particle> COLOR = (buf, particle) -> particle.add(Types.INT, buf.readInt());
-
         public static DataReader<Particle> item(Type<Item> item) {
             return (buf, particle) -> particle.add(item, item.read(buf));
         }

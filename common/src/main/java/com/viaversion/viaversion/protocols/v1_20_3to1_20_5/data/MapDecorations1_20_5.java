@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,14 +13,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_3to1_20_5.data;
-
 import com.viaversion.viaversion.util.KeyMappings;
-
 public final class MapDecorations1_20_5 {
-
     private static final KeyMappings MAP_DECORATIONS = new KeyMappings(
         "player",
         "frame",
@@ -58,11 +55,9 @@ public final class MapDecorations1_20_5 {
         "swamp_hut",
         "trial_chambers"
     );
-
     public static String idToKey(final int index) {
         return index < 0 || index >= MAP_DECORATIONS.size() ? "player" : MAP_DECORATIONS.idToKey(index);
     }
-
     public static int keyToId(final String key) {
         return MAP_DECORATIONS.keyToId(key);
     }

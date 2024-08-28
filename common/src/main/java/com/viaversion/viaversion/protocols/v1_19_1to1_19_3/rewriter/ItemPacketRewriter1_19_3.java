@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19_1to1_19_3.rewriter;
-
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Types;
@@ -28,15 +27,11 @@ import com.viaversion.viaversion.rewriter.BlockRewriter;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
 import com.viaversion.viaversion.rewriter.RecipeRewriter;
 import com.viaversion.viaversion.util.Key;
-
 public final class ItemPacketRewriter1_19_3 extends ItemRewriter<ClientboundPackets1_19_1, ServerboundPackets1_19_3, Protocol1_19_1To1_19_3> {
-
     private static final int MISC_CRAFTING_BOOK_CATEGORY = 0;
-
     public ItemPacketRewriter1_19_3(final Protocol1_19_1To1_19_3 protocol) {
         super(protocol, Types.ITEM1_13_2, Types.ITEM1_13_2_ARRAY);
     }
-
     @Override
     public void registerPackets() {
         final BlockRewriter<ClientboundPackets1_19_1> blockRewriter = BlockRewriter.for1_14(protocol);
@@ -46,7 +41,6 @@ public final class ItemPacketRewriter1_19_3 extends ItemRewriter<ClientboundPack
         blockRewriter.registerLevelEvent(ClientboundPackets1_19_1.LEVEL_EVENT, 1010, 2001);
         blockRewriter.registerLevelChunk1_19(ClientboundPackets1_19_1.LEVEL_CHUNK_WITH_LIGHT, ChunkType1_18::new);
         blockRewriter.registerBlockEntityData(ClientboundPackets1_19_1.BLOCK_ENTITY_DATA);
-
         registerCooldown(ClientboundPackets1_19_1.COOLDOWN);
         registerSetContent1_17_1(ClientboundPackets1_19_1.CONTAINER_SET_CONTENT);
         registerSetSlot1_17_1(ClientboundPackets1_19_1.CONTAINER_SET_SLOT);
@@ -57,48 +51,47 @@ public final class ItemPacketRewriter1_19_3 extends ItemRewriter<ClientboundPack
         registerSetCreativeModeSlot(ServerboundPackets1_19_3.SET_CREATIVE_MODE_SLOT);
         registerContainerSetData(ClientboundPackets1_19_1.CONTAINER_SET_DATA);
         registerLevelParticles1_19(ClientboundPackets1_19_1.LEVEL_PARTICLES);
-
         final RecipeRewriter<ClientboundPackets1_19_1> recipeRewriter = new RecipeRewriter<>(protocol);
         protocol.registerClientbound(ClientboundPackets1_19_1.UPDATE_RECIPES, wrapper -> {
             final int size = wrapper.passthrough(Types.VAR_INT);
             for (int i = 0; i < size; i++) {
                 final String type = Key.stripMinecraftNamespace(wrapper.passthrough(Types.STRING));
-                wrapper.passthrough(Types.STRING); // Recipe Identifier
+                wrapper.passthrough(Types.STRING); 
                 switch (type) {
                     case "crafting_shapeless" -> {
-                        wrapper.passthrough(Types.STRING); // Group
+                        wrapper.passthrough(Types.STRING); 
                         wrapper.write(Types.VAR_INT, MISC_CRAFTING_BOOK_CATEGORY);
                         final int ingredients = wrapper.passthrough(Types.VAR_INT);
                         for (int j = 0; j < ingredients; j++) {
-                            final Item[] items = wrapper.passthrough(Types.ITEM1_13_2_ARRAY); // Ingredients
+                            final Item[] items = wrapper.passthrough(Types.ITEM1_13_2_ARRAY); 
                             for (final Item item : items) {
                                 handleItemToClient(wrapper.user(), item);
                             }
                         }
-                        handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13_2)); // Result
+                        handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13_2)); 
                     }
                     case "crafting_shaped" -> {
                         final int ingredients = wrapper.passthrough(Types.VAR_INT) * wrapper.passthrough(Types.VAR_INT);
-                        wrapper.passthrough(Types.STRING); // Group
+                        wrapper.passthrough(Types.STRING); 
                         wrapper.write(Types.VAR_INT, MISC_CRAFTING_BOOK_CATEGORY);
                         for (int j = 0; j < ingredients; j++) {
-                            final Item[] items = wrapper.passthrough(Types.ITEM1_13_2_ARRAY); // Ingredients
+                            final Item[] items = wrapper.passthrough(Types.ITEM1_13_2_ARRAY); 
                             for (final Item item : items) {
                                 handleItemToClient(wrapper.user(), item);
                             }
                         }
-                        handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13_2)); // Result
+                        handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13_2)); 
                     }
                     case "smelting", "campfire_cooking", "blasting", "smoking" -> {
-                        wrapper.passthrough(Types.STRING); // Group
+                        wrapper.passthrough(Types.STRING); 
                         wrapper.write(Types.VAR_INT, MISC_CRAFTING_BOOK_CATEGORY);
-                        final Item[] items = wrapper.passthrough(Types.ITEM1_13_2_ARRAY); // Ingredients
+                        final Item[] items = wrapper.passthrough(Types.ITEM1_13_2_ARRAY); 
                         for (final Item item : items) {
                             handleItemToClient(wrapper.user(), item);
                         }
-                        handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13_2)); // Result
-                        wrapper.passthrough(Types.FLOAT); // EXP
-                        wrapper.passthrough(Types.VAR_INT); // Cooking time
+                        handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13_2)); 
+                        wrapper.passthrough(Types.FLOAT); 
+                        wrapper.passthrough(Types.VAR_INT); 
                     }
                     case "crafting_special_armordye", "crafting_special_bookcloning", "crafting_special_mapcloning", "crafting_special_mapextending",
                          "crafting_special_firework_rocket", "crafting_special_firework_star", "crafting_special_firework_star_fade", "crafting_special_tippedarrow",
@@ -108,13 +101,12 @@ public final class ItemPacketRewriter1_19_3 extends ItemRewriter<ClientboundPack
                 }
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_19_1.EXPLODE, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.FLOAT, Types.DOUBLE); // X
-                map(Types.FLOAT, Types.DOUBLE); // Y
-                map(Types.FLOAT, Types.DOUBLE); // Z
+                map(Types.FLOAT, Types.DOUBLE); 
+                map(Types.FLOAT, Types.DOUBLE); 
+                map(Types.FLOAT, Types.DOUBLE); 
             }
         });
     }

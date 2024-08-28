@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.exception;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.ViaManager;
 import io.netty.handler.codec.CodecException;
-
 /**
  * Thrown during packet transformation to cancel the packet.
  * Internally catched to then throw the appropriate {@link CodecException} for Netty's handler.
@@ -37,26 +35,20 @@ public class CancelException extends Exception {
             return this;
         }
     };
-
     public CancelException() {
     }
-
     public CancelException(String message) {
         super(message);
     }
-
     public CancelException(String message, Throwable cause) {
         super(message, cause);
     }
-
     public CancelException(Throwable cause) {
         super(cause);
     }
-
     public CancelException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
-
     /**
      * Returns a cached CancelException or a new instance when {@link ViaManager#isDebug()} is true.
      *

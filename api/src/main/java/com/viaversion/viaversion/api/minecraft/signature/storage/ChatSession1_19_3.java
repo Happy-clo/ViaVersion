@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.signature.storage;
-
 import com.google.common.primitives.Ints;
 import com.viaversion.viaversion.api.minecraft.PlayerMessageSignature;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
@@ -31,18 +30,13 @@ import com.viaversion.viaversion.api.minecraft.signature.model.chain.v1_19_3.Mes
 import java.security.PrivateKey;
 import java.security.SignatureException;
 import java.util.UUID;
-
 public class ChatSession1_19_3 extends ChatSession {
-
     private final UUID sessionId = UUID.randomUUID();
     private MessageLink link;
-
     public ChatSession1_19_3(UUID uuid, PrivateKey privateKey, ProfileKey profileKey) {
         super(uuid, privateKey, profileKey);
-
         this.link = new MessageLink(uuid, this.sessionId);
     }
-
     public byte[] signChatMessage(final MessageMetadata metadata, final String content, final PlayerMessageSignature[] lastSeenMessages) throws SignatureException {
         return this.sign(signer -> {
             final MessageLink messageLink = this.nextLink();
@@ -52,18 +46,14 @@ public class ChatSession1_19_3 extends ChatSession {
             messageBody.update(signer);
         });
     }
-
     private MessageLink nextLink() {
         final MessageLink messageLink = this.link;
         if (messageLink != null) {
             this.link = messageLink.next();
         }
-
         return messageLink;
     }
-
     public UUID getSessionId() {
         return this.sessionId;
     }
-
 }

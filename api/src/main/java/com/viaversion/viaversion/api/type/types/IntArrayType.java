@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +21,20 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class IntArrayType extends Type<int[]> {
-
     private final int length;
-
     public IntArrayType(final int length) {
         super(int[].class);
         this.length = length;
     }
-
     public IntArrayType() {
         super(int[].class);
         this.length = -1;
     }
-
     @Override
     public void write(final ByteBuf buffer, final int[] object) {
         if (this.length != -1) {
@@ -52,7 +46,6 @@ public class IntArrayType extends Type<int[]> {
             buffer.writeInt(i);
         }
     }
-
     @Override
     public int[] read(final ByteBuf buffer) {
         final int length = this.length == -1 ? Types.VAR_INT.readPrimitive(buffer) : this.length;

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +21,18 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import com.google.common.base.Preconditions;
-
 public interface Either<X, Y> {
-
     static <X, Y> Either<X, Y> left(final X left) {
         Preconditions.checkNotNull(left);
         return new EitherImpl<>(left, null);
     }
-
     static <X, Y> Either<X, Y> right(final Y right) {
         Preconditions.checkNotNull(right);
         return new EitherImpl<>(null, right);
     }
-
     boolean isLeft();
-
     boolean isRight();
-
     X left();
-
     Y right();
 }

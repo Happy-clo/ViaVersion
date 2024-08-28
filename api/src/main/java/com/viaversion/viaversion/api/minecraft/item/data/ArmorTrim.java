@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.minecraft.Holder;
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-
 public record ArmorTrim(Holder<ArmorTrimMaterial> material, Holder<ArmorTrimPattern> pattern, boolean showInTooltip) {
-
     public static final Type<ArmorTrim> TYPE = new Type<>(ArmorTrim.class) {
         @Override
         public ArmorTrim read(final ByteBuf buffer) {
@@ -37,7 +34,6 @@ public record ArmorTrim(Holder<ArmorTrimMaterial> material, Holder<ArmorTrimPatt
             final boolean showInTooltip = buffer.readBoolean();
             return new ArmorTrim(material, pattern, showInTooltip);
         }
-
         @Override
         public void write(final ByteBuf buffer, final ArmorTrim value) {
             ArmorTrimMaterial.TYPE.write(buffer, value.material);
@@ -45,13 +41,11 @@ public record ArmorTrim(Holder<ArmorTrimMaterial> material, Holder<ArmorTrimPatt
             buffer.writeBoolean(value.showInTooltip);
         }
     };
-
     public ArmorTrim rewrite(final Int2IntFunction idRewriteFunction) {
         Holder<ArmorTrimMaterial> material = this.material;
         if (material.isDirect()) {
             material = Holder.of(material.value().rewrite(idRewriteFunction));
         }
-
         Holder<ArmorTrimPattern> pattern = this.pattern;
         if (pattern.isDirect()) {
             pattern = Holder.of(pattern.value().rewrite(idRewriteFunction));

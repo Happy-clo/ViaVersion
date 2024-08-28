@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.packet.provider;
-
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Provides unmapped and mapped packet types for a Protocol.
  *
@@ -38,7 +36,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @see SimplePacketTypesProvider
  */
 public interface PacketTypesProvider<CU extends ClientboundPacketType, CM extends ClientboundPacketType, SM extends ServerboundPacketType, SU extends ServerboundPacketType> {
-
     /**
      * Returns a map of all unmapped clientbound packet types that are expected to be used within a protocol.
      * This means that if {@code C1} encompasses more than just {@link State#PLAY} packets, the other types are included as well.
@@ -46,7 +43,6 @@ public interface PacketTypesProvider<CU extends ClientboundPacketType, CM extend
      * @return map of unmapped clientbound packet types
      */
     Map<State, PacketTypeMap<CU>> unmappedClientboundPacketTypes();
-
     /**
      * Return a map of all unmapped serverbound packet types that are expected to be used within the protocol.
      * This means that if {@code S2} encompasses more than just {@link State#PLAY} packets, the other types have to be included as well.
@@ -54,36 +50,30 @@ public interface PacketTypesProvider<CU extends ClientboundPacketType, CM extend
      * @return map of unmapped serverbound packet types
      */
     Map<State, PacketTypeMap<SU>> unmappedServerboundPacketTypes();
-
     /**
      * Returns a map of all mapped clientbound packet types that are expected to be used within the protocol.
      *
      * @return map of mapped clientbound packet types
      */
     Map<State, PacketTypeMap<CM>> mappedClientboundPacketTypes();
-
     /**
      * Returns a map of all mapped serverbound packet types that are expected to be used within the protocol.
      *
      * @return map of mapped serverbound packet types
      */
     Map<State, PacketTypeMap<SM>> mappedServerboundPacketTypes();
-
     default @Nullable CU unmappedClientboundType(final State state, final String typeName) {
         PacketTypeMap<CU> map = unmappedClientboundPacketTypes().get(state);
         return map != null ? map.typeByName(typeName) : null;
     }
-
     default @Nullable SU unmappedServerboundType(final State state, final String typeName) {
         PacketTypeMap<SU> map = unmappedServerboundPacketTypes().get(state);
         return map != null ? map.typeByName(typeName) : null;
     }
-
     default @Nullable CU unmappedClientboundType(final State state, final int packetId) {
         PacketTypeMap<CU> map = unmappedClientboundPacketTypes().get(state);
         return map != null ? map.typeById(packetId) : null;
     }
-
     default @Nullable SU unmappedServerboundType(final State state, final int packetId) {
         PacketTypeMap<SU> map = unmappedServerboundPacketTypes().get(state);
         return map != null ? map.typeById(packetId) : null;

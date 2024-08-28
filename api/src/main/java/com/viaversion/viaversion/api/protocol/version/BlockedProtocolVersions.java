@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.version;
-
 import java.util.Set;
-
 public interface BlockedProtocolVersions {
-
     /**
      * Returns whether the given protocol version is blocked per boundary ranges or individually blocked versions.
      *
@@ -33,21 +30,18 @@ public interface BlockedProtocolVersions {
      * @return whether the given protocol version is blocked
      */
     boolean contains(ProtocolVersion protocolVersion);
-
     /**
      * Returns the boundary below which protocol versions are blocked, or -1 if none is set.
      *
      * @return exclusive boundary below which protocol versions are blocked, or -1 if none
      */
     ProtocolVersion blocksBelow();
-
     /**
      * Returns the boundary above which protocol versions are blocked, or -1 if none is set.
      *
      * @return exclusive boundary above which protocol versions are blocked, or -1 if none
      */
     ProtocolVersion blocksAbove();
-
     /**
      * Returns a set of blocked protocol versions between the outer block ranges.
      *

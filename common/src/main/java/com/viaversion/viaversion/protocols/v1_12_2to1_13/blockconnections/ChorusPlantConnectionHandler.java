@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,19 +13,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import java.util.ArrayList;
 import java.util.List;
-
 public class ChorusPlantConnectionHandler extends AbstractFenceConnectionHandler {
     private final int endstone;
-
     static List<ConnectionData.ConnectorInitAction> init() {
         List<ConnectionData.ConnectorInitAction> actions = new ArrayList<>(2);
         ChorusPlantConnectionHandler handler = new ChorusPlantConnectionHandler();
@@ -33,12 +30,10 @@ public class ChorusPlantConnectionHandler extends AbstractFenceConnectionHandler
         actions.add(handler.getExtraAction());
         return actions;
     }
-
     public ChorusPlantConnectionHandler() {
         super(null);
         endstone = ConnectionData.getId("minecraft:end_stone");
     }
-
     private ConnectionData.ConnectorInitAction getExtraAction() {
         return blockData -> {
             if (blockData.getMinecraftKey().equals("minecraft:chorus_flower")) {
@@ -46,7 +41,6 @@ public class ChorusPlantConnectionHandler extends AbstractFenceConnectionHandler
             }
         };
     }
-
     @Override
     protected byte getStates(WrappedBlockData blockData) {
         byte states = super.getStates(blockData);
@@ -54,12 +48,10 @@ public class ChorusPlantConnectionHandler extends AbstractFenceConnectionHandler
         if (blockData.getValue("down").equals("true")) states |= 32;
         return states;
     }
-
     @Override
     protected byte statesSize() {
         return 64;
     }
-
     @Override
     protected byte getStates(UserConnection user, BlockPosition position) {
         byte states = super.getStates(user, position);
@@ -67,7 +59,6 @@ public class ChorusPlantConnectionHandler extends AbstractFenceConnectionHandler
         if (connects(BlockFace.BOTTOM, getBlockData(user, position.getRelative(BlockFace.BOTTOM)), false)) states |= 32;
         return states;
     }
-
     @Override
     protected boolean connects(BlockFace side, int blockState, boolean pre1_12) {
         return getBlockStates().contains(blockState) || (side == BlockFace.BOTTOM && blockState == endstone);

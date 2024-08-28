@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.rewriter;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -34,22 +33,17 @@ import com.viaversion.viaversion.rewriter.ComponentRewriter;
 import com.viaversion.viaversion.util.ComponentUtil;
 import com.viaversion.viaversion.util.SerializerVersion;
 import java.util.logging.Level;
-
 public class ComponentRewriter1_13<C extends ClientboundPacketType> extends ComponentRewriter<C> {
-
     public ComponentRewriter1_13(Protocol<C, ?, ?, ?> protocol) {
         super(protocol, ReadType.JSON);
     }
-
     @Override
     protected void handleHoverEvent(UserConnection connection, JsonObject hoverEvent) {
         super.handleHoverEvent(connection, hoverEvent);
         final String action = hoverEvent.getAsJsonPrimitive("action").getAsString();
         if (!action.equals("show_item")) return;
-
         final JsonElement value = hoverEvent.get("value");
         if (value == null) return;
-
         CompoundTag tag;
         try {
             tag = ComponentUtil.deserializeLegacyShowItem(value, SerializerVersion.V1_12);
@@ -59,26 +53,19 @@ public class ComponentRewriter1_13<C extends ClientboundPacketType> extends Comp
             }
             return;
         }
-
         final CompoundTag itemTag = tag.getCompoundTag("tag");
         final NumberTag damageTag = tag.getNumberTag("Damage");
-
-        // Call item converter
         final short damage = damageTag != null ? damageTag.asShort() : 0;
-
         final Item item = new DataItem();
         item.setData(damage);
         item.setTag(itemTag);
         protocol.getItemRewriter().handleItemToClient(null, item);
-
-        // Serialize again
         if (damage != item.data()) {
             tag.put("Damage", new ShortTag(item.data()));
         }
         if (itemTag != null) {
             tag.put("tag", itemTag);
         }
-
         final JsonArray newValue = new JsonArray();
         final JsonObject showItem = new JsonObject();
         newValue.add(showItem);
@@ -91,7 +78,6 @@ public class ComponentRewriter1_13<C extends ClientboundPacketType> extends Comp
             }
         }
     }
-
     @Override
     protected void handleTranslate(JsonObject object, String translate) {
         super.handleTranslate(object, translate);

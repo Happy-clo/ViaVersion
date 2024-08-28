@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -26,12 +25,10 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import java.util.Arrays;
 import java.util.Locale;
-
 class ChestConnectionHandler implements ConnectionHandler {
     private static final Int2ObjectMap<BlockFace> CHEST_FACINGS = new Int2ObjectOpenHashMap<>();
     private static final int[] CONNECTED_STATES = new int[32];
     private static final IntSet TRAPPED_CHESTS = new IntOpenHashSet();
-
     static ConnectionData.ConnectorInitAction init() {
         Arrays.fill(CONNECTED_STATES, -1);
         final ChestConnectionHandler connectionHandler = new ChestConnectionHandler();
@@ -50,7 +47,6 @@ class ChestConnectionHandler implements ConnectionHandler {
             ConnectionData.connectionHandlerMap.put(blockData.getSavedBlockStateId(), connectionHandler);
         };
     }
-
     private static Byte getStates(WrappedBlockData blockData) {
         byte states = 0;
         String type = blockData.getValue("type");
@@ -60,18 +56,15 @@ class ChestConnectionHandler implements ConnectionHandler {
         if (blockData.getMinecraftKey().equals("minecraft:trapped_chest")) states |= 16;
         return states;
     }
-
     @Override
     public int connect(UserConnection user, BlockPosition position, int blockState) {
         BlockFace facing = CHEST_FACINGS.get(blockState);
         byte states = 0;
         states |= (facing.ordinal() << 2);
-
         boolean trapped = TRAPPED_CHESTS.contains(blockState);
         if (trapped) {
             states |= 16;
         }
-
         int relative;
         if (CHEST_FACINGS.containsKey(relative = getBlockData(user, position.getRelative(BlockFace.NORTH))) && trapped == TRAPPED_CHESTS.contains(relative)) {
             states |= facing == BlockFace.WEST ? 1 : 2;
@@ -82,7 +75,6 @@ class ChestConnectionHandler implements ConnectionHandler {
         } else if (CHEST_FACINGS.containsKey(relative = getBlockData(user, position.getRelative(BlockFace.EAST))) && trapped == TRAPPED_CHESTS.contains(relative)) {
             states |= facing == BlockFace.SOUTH ? 2 : 1;
         }
-
         int newBlockState = CONNECTED_STATES[states];
         return newBlockState == -1 ? blockState : newBlockState;
     }

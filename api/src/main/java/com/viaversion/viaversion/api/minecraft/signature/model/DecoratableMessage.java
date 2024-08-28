@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,40 +21,30 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.signature.model;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 public class DecoratableMessage {
-
     private final String plain;
     private final JsonElement decorated;
-
     public DecoratableMessage(final String plain) {
         this(plain, createLiteralText(plain));
     }
-
     public DecoratableMessage(final String plain, final JsonElement decorated) {
         this.plain = plain;
         this.decorated = decorated;
     }
-
     public String plain() {
         return this.plain;
     }
-
     public JsonElement decorated() {
         return this.decorated;
     }
-
     public boolean isDecorated() {
         return !this.decorated.equals(createLiteralText(plain));
     }
-
     private static JsonElement createLiteralText(final String text) {
         final JsonObject object = new JsonObject();
         object.addProperty("text", text);
         return object;
     }
-
 }

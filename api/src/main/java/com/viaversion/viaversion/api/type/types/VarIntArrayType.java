@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,28 +21,24 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class VarIntArrayType extends Type<int[]> {
     public VarIntArrayType() {
         super(int[].class);
     }
-
     @Override
     public int[] read(ByteBuf buffer) {
         int length = Types.VAR_INT.readPrimitive(buffer);
-        Preconditions.checkArgument(buffer.isReadable(length)); // Sanity check, at least 1 byte will be used for each varint
+        Preconditions.checkArgument(buffer.isReadable(length)); 
         int[] array = new int[length];
         for (int i = 0; i < array.length; i++) {
             array[i] = Types.VAR_INT.readPrimitive(buffer);
         }
         return array;
     }
-
     @Override
     public void write(ByteBuf buffer, int[] object) {
         Types.VAR_INT.writePrimitive(buffer, object.length);

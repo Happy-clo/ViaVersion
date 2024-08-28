@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.configuration;
-
 import com.google.gson.JsonElement;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.configuration.ViaVersionConfig;
@@ -34,14 +33,11 @@ import java.util.logging.Logger;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public abstract class AbstractViaConfig extends Config implements ViaVersionConfig {
     public static final List<String> BUKKIT_ONLY_OPTIONS = Arrays.asList("register-userconnections-on-join", "quick-move-action-fix",
         "change-1_9-hitbox", "change-1_14-hitbox", "blockconnection-method", "armor-toggle-fix", "use-new-deathmessages",
         "item-cache", "nms-player-ticking");
-
     public static final List<String> VELOCITY_ONLY_OPTIONS = Arrays.asList("velocity-ping-interval", "velocity-ping-save", "velocity-servers");
-
     private boolean checkForUpdates;
     private boolean preventCollision;
     private boolean useNewEffectIndicator;
@@ -95,17 +91,14 @@ public abstract class AbstractViaConfig extends Config implements ViaVersionConf
     private boolean handleInvalidItemCount;
     private boolean cancelBlockSounds;
     private boolean hideScoreboardNumbers;
-
     protected AbstractViaConfig(final File configFile, final Logger logger) {
         super(configFile, logger);
     }
-
     @Override
     public void reload() {
         super.reload();
         loadFields();
     }
-
     protected void loadFields() {
         checkForUpdates = getBoolean("check-for-updates", true);
         preventCollision = getBoolean("prevent-collision", true);
@@ -164,7 +157,6 @@ public abstract class AbstractViaConfig extends Config implements ViaVersionConf
         cancelBlockSounds = getBoolean("cancel-block-sounds", true);
         hideScoreboardNumbers = getBoolean("hide-scoreboard-numbers", false);
     }
-
     private BlockedProtocolVersions loadBlockedProtocolVersions() {
         List<Integer> blockProtocols = getListSafe("block-protocols", Integer.class, "Invalid blocked version protocol found in config: '%s'");
         List<String> blockVersions = getListSafe("block-versions", String.class, "Invalid blocked version found in config: '%s'");
@@ -175,15 +167,12 @@ public abstract class AbstractViaConfig extends Config implements ViaVersionConf
             if (s.isEmpty()) {
                 continue;
             }
-
             char c = s.charAt(0);
             if (c == '<' || c == '>') {
-                // Set lower/upper bound
                 ProtocolVersion protocolVersion = protocolVersion(s.substring(1));
                 if (protocolVersion == null) {
                     continue;
                 }
-
                 if (c == '<') {
                     if (lowerBound.isKnown()) {
                         logger.warning("Already set lower bound " + lowerBound + " overridden by " + protocolVersion.getName());
@@ -197,19 +186,14 @@ public abstract class AbstractViaConfig extends Config implements ViaVersionConf
                 }
                 continue;
             }
-
             ProtocolVersion protocolVersion = protocolVersion(s);
             if (protocolVersion == null) {
                 continue;
             }
-
-            // Add single protocol version and check for duplication
             if (!blockedProtocols.add(protocolVersion)) {
                 logger.warning("Duplicated blocked protocol version " + protocolVersion);
             }
         }
-
-        // Check for duplicated entries
         if (lowerBound.isKnown() || upperBound.isKnown()) {
             final ProtocolVersion finalLowerBound = lowerBound;
             final ProtocolVersion finalUpperBound = upperBound;
@@ -223,7 +207,6 @@ public abstract class AbstractViaConfig extends Config implements ViaVersionConf
         }
         return new BlockedProtocolVersionsImpl(blockedProtocols, lowerBound, upperBound);
     }
-
     private @Nullable ProtocolVersion protocolVersion(String s) {
         ProtocolVersion protocolVersion = ProtocolVersion.getClosest(s);
         if (protocolVersion == null) {
@@ -232,319 +215,255 @@ public abstract class AbstractViaConfig extends Config implements ViaVersionConf
         }
         return protocolVersion;
     }
-
     @Override
     public boolean isCheckForUpdates() {
         return checkForUpdates;
     }
-
     @Override
     public void setCheckForUpdates(boolean checkForUpdates) {
         this.checkForUpdates = checkForUpdates;
         set("checkforupdates", checkForUpdates);
     }
-
     @Override
     public boolean isPreventCollision() {
         return preventCollision;
     }
-
     @Override
     public boolean isNewEffectIndicator() {
         return useNewEffectIndicator;
     }
-
     @Override
     public boolean isShowNewDeathMessages() {
         return false;
     }
-
     @Override
     public boolean isSuppressMetadataErrors() {
         return suppressMetadataErrors;
     }
-
     @Override
     public boolean isShieldBlocking() {
         return shieldBlocking;
     }
-
     @Override
     public boolean isNoDelayShieldBlocking() {
         return noDelayShieldBlocking;
     }
-
     @Override
     public boolean isShowShieldWhenSwordInHand() {
         return showShieldWhenSwordInHand;
     }
-
     @Override
     public boolean isHologramPatch() {
         return hologramPatch;
     }
-
     @Override
     public boolean isPistonAnimationPatch() {
         return pistonAnimationPatch;
     }
-
     @Override
     public boolean isBossbarPatch() {
         return bossbarPatch;
     }
-
     @Override
     public boolean isBossbarAntiflicker() {
         return bossbarAntiFlicker;
     }
-
     @Override
     public double getHologramYOffset() {
         return hologramOffset;
     }
-
     @Override
     public int getMaxPPS() {
         return maxPPS;
     }
-
     @Override
     public String getMaxPPSKickMessage() {
         return maxPPSKickMessage;
     }
-
     @Override
     public int getTrackingPeriod() {
         return trackingPeriod;
     }
-
     @Override
     public int getWarningPPS() {
         return warningPPS;
     }
-
     @Override
     public int getMaxWarnings() {
         return maxPPSWarnings;
     }
-
     @Override
     public String getMaxWarningsKickMessage() {
         return maxPPSWarningsKickMessage;
     }
-
     @Override
     public boolean isSendSupportedVersions() {
         return sendSupportedVersions;
     }
-
     @Override
     public boolean isSimulatePlayerTick() {
         return simulatePlayerTick;
     }
-
     @Override
     public boolean isItemCache() {
         return false;
     }
-
     @Override
     public boolean isNMSPlayerTicking() {
         return false;
     }
-
     @Override
     public boolean isReplacePistons() {
         return replacePistons;
     }
-
     @Override
     public int getPistonReplacementId() {
         return pistonReplacementId;
     }
-
     @Override
     public boolean isChunkBorderFix() {
         return chunkBorderFix;
     }
-
     @Override
     public boolean isAutoTeam() {
-        // Collision has to be enabled first
         return preventCollision && autoTeam;
     }
-
     @Override
     public boolean is1_12NBTArrayFix() {
         return nbtArrayFix;
     }
-
     @Override
     public boolean shouldRegisterUserConnectionOnJoin() {
         return false;
     }
-
     @Override
     public boolean is1_12QuickMoveActionFix() {
         return false;
     }
-
     @Override
     public BlockedProtocolVersions blockedProtocolVersions() {
         return blockedProtocolVersions;
     }
-
     @Override
     public String getBlockedDisconnectMsg() {
         return blockedDisconnectMessage;
     }
-
     @Override
     public String getReloadDisconnectMsg() {
         return reloadDisconnectMessage;
     }
-
     @Override
     public boolean is1_13TeamColourFix() {
         return teamColourFix;
     }
-
     @Override
     public boolean isSuppressConversionWarnings() {
-        return suppressConversionWarnings && !Via.getManager().isDebug(); // Debug mode overrules config
+        return suppressConversionWarnings && !Via.getManager().isDebug(); 
     }
-
     @Override
     public boolean isDisable1_13AutoComplete() {
         return disable1_13TabComplete;
     }
-
     @Override
     public boolean isServersideBlockConnections() {
         return serversideBlockConnections;
     }
-
     @Override
     public String getBlockConnectionMethod() {
         return "packet";
     }
-
     @Override
     public boolean isReduceBlockStorageMemory() {
         return reduceBlockStorageMemory;
     }
-
     @Override
     public boolean isStemWhenBlockAbove() {
         return flowerStemWhenBlockAbove;
     }
-
     @Override
     public boolean isVineClimbFix() {
         return vineClimbFix;
     }
-
     @Override
     public boolean isSnowCollisionFix() {
         return snowCollisionFix;
     }
-
     @Override
     public boolean isInfestedBlocksFix() {
         return infestedBlocksFix;
     }
-
     @Override
     public int get1_13TabCompleteDelay() {
         return tabCompleteDelay;
     }
-
     @Override
     public boolean isTruncate1_14Books() {
         return truncate1_14Books;
     }
-
     @Override
     public boolean isLeftHandedHandling() {
         return leftHandedHandling;
     }
-
     @Override
     public boolean is1_9HitboxFix() {
         return false;
     }
-
     @Override
     public boolean is1_14HitboxFix() {
         return false;
     }
-
     @Override
     public boolean isNonFullBlockLightFix() {
         return fullBlockLightFix;
     }
-
     @Override
     public boolean is1_14HealthNaNFix() {
         return healthNaNFix;
     }
-
     @Override
     public boolean is1_15InstantRespawn() {
         return instantRespawn;
     }
-
     @Override
     public boolean isIgnoreLong1_16ChannelNames() {
         return ignoreLongChannelNames;
     }
-
     @Override
     public boolean isForcedUse1_17ResourcePack() {
         return forcedUse1_17ResourcePack;
     }
-
     @Override
     public JsonElement get1_17ResourcePackPrompt() {
         return resourcePack1_17PromptMessage;
     }
-
     @Override
     public WorldIdentifiers get1_16WorldNamesMap() {
         return map1_16WorldNames;
     }
-
     @Override
     public boolean cache1_17Light() {
         return cache1_17Light;
     }
-
     @Override
     public boolean isArmorToggleFix() {
         return false;
     }
-
     @Override
     public boolean translateOcelotToCat() {
         return translateOcelotToCat;
     }
-
     @Override
     public boolean enforceSecureChat() {
         return enforceSecureChat;
     }
-
     @Override
     public boolean handleInvalidItemCount() {
         return handleInvalidItemCount;
     }
-
     @Override
     public boolean cancelBlockSounds() {
         return cancelBlockSounds;
     }
-
     @Override
     public boolean hideScoreboardNumbers() {
         return hideScoreboardNumbers;

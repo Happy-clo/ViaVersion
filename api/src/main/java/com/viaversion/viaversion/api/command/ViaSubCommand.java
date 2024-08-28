@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,27 +21,22 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.command;
-
 import com.viaversion.viaversion.util.ChatColorUtil;
 import java.util.Collections;
 import java.util.List;
-
 public interface ViaSubCommand {
-
     /**
      * Subcommand name
      *
      * @return The commands name
      */
     String name();
-
     /**
      * subcommand description, this'll show in /viaversion list
      *
      * @return The commands description
      */
     String description();
-
     /**
      * Usage example:
      * "playerversion [name]"
@@ -51,7 +46,6 @@ public interface ViaSubCommand {
     default String usage() {
         return name();
     }
-
     /**
      * Permission, null for everyone
      *
@@ -60,7 +54,6 @@ public interface ViaSubCommand {
     default String permission() {
         return "viaversion.admin." + name();
     }
-
     /**
      * Gets triggered on execution
      *
@@ -69,7 +62,6 @@ public interface ViaSubCommand {
      * @return commands executed succesfully if false, show usage
      */
     boolean execute(ViaCommandSender sender, String[] args);
-
     /**
      * Yay, possibility to implement tab-completion
      *
@@ -80,7 +72,6 @@ public interface ViaSubCommand {
     default List<String> onTabComplete(ViaCommandSender sender, String[] args) {
         return Collections.emptyList();
     }
-
     /**
      * Replaces color codes in a string.
      *
@@ -90,7 +81,6 @@ public interface ViaSubCommand {
     static String color(String s) {
         return ChatColorUtil.translateAlternateColorCodes(s);
     }
-
     /**
      * Send a color coded string with replacements to a user.
      *

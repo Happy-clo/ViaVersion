@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,17 +13,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.data;
-
 import java.util.HashMap;
 import java.util.Map;
-
 public class StatisticMappings1_13 {
-
     public static final Map<String, Integer> CUSTOM_STATS = new HashMap<>();
-
     static {
         CUSTOM_STATS.put("stat.leaveGame", 0);
         CUSTOM_STATS.put("stat.playOneMinute", 1);
@@ -110,5 +106,4 @@ public class StatisticMappings1_13 {
         CUSTOM_STATS.put("achievement.exploreAllBiomes", -1);
         CUSTOM_STATS.put("achievement.overpowered", -1);
     }
-
 }

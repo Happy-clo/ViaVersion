@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,28 +13,23 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20to1_20_2.rewriter;
-
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.rewriter.RecipeRewriter1_19_4;
-
 public class RecipeRewriter1_20_2<C extends ClientboundPacketType> extends RecipeRewriter1_19_4<C> {
-
     public RecipeRewriter1_20_2(final Protocol<C, ?, ?, ?> protocol) {
         super(protocol);
     }
-
     @Override
     protected Type<Item> itemType() {
         return Types.ITEM1_20_2;
     }
-
     @Override
     protected Type<Item[]> itemArrayType() {
         return Types.ITEM1_20_2_ARRAY;

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.listeners.v1_18_2to1_19;
-
 import com.viaversion.viaversion.ViaVersionPlugin;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -28,11 +27,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
-
 public final class BlockBreakListener extends ViaBukkitListener {
-
     private static final Class<?> CRAFT_BLOCK_STATE_CLASS;
-
     static {
         try {
             CRAFT_BLOCK_STATE_CLASS = NMSUtil.obc("block.CraftBlockState");
@@ -40,19 +36,15 @@ public final class BlockBreakListener extends ViaBukkitListener {
             throw new RuntimeException(e);
         }
     }
-
     public BlockBreakListener(ViaVersionPlugin plugin) {
         super(plugin, Protocol1_18_2To1_19.class);
     }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void blockBreak(BlockBreakEvent event) {
         final Block block = event.getBlock();
         if (!event.isCancelled() || !isBlockEntity(block.getState())) {
             return;
         }
-
-        // We need to resend the block entity data after an ack has been sent out
         final ProtocolVersion serverProtocolVersion = Via.getAPI().getServerVersion().highestSupportedProtocolVersion();
         final long delay = serverProtocolVersion.newerThan(ProtocolVersion.v1_8) && serverProtocolVersion.olderThan(ProtocolVersion.v1_14) ? 2 : 1;
         getPlugin().getServer().getScheduler().runTaskLater(getPlugin(), () -> {
@@ -62,9 +54,7 @@ public final class BlockBreakListener extends ViaBukkitListener {
             }
         }, delay);
     }
-
     private boolean isBlockEntity(final BlockState state) {
-        // We love legacy versions
         return state.getClass() != CRAFT_BLOCK_STATE_CLASS;
     }
 }

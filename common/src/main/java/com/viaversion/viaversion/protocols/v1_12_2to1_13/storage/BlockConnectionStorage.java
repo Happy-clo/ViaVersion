@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.storage;
-
 import com.google.common.collect.EvictingQueue;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.StorableObject;
@@ -27,79 +26,60 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class BlockConnectionStorage implements StorableObject {
     private static Constructor<?> fastUtilLongObjectHashMap;
-
     private final Map<Long, SectionData> blockStorage = createLongObjectMap();
     @SuppressWarnings("UnstableApiUsage")
     private final Queue<BlockPosition> modified = EvictingQueue.create(5);
-
-    // Cache to retrieve section quicker
     private long lastIndex = -1;
     private SectionData lastSection;
-
     static {
         try {
-            //noinspection StringBufferReplaceableByString - prevent relocation
             String className = new StringBuilder("it").append(".unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap").toString();
             fastUtilLongObjectHashMap = Class.forName(className).getConstructor();
             Via.getPlatform().getLogger().info("Using FastUtil Long2ObjectOpenHashMap for block connections");
         } catch (ClassNotFoundException | NoSuchMethodException ignored) {
         }
     }
-
     public static void init() {
     }
-
     public void store(int x, int y, int z, int blockState) {
         long index = getChunkSectionIndex(x, y, z);
         SectionData section = getSection(index);
         if (section == null) {
             if (blockState == 0) {
-                // No need to store empty sections
                 return;
             }
-
             blockStorage.put(index, section = new SectionData());
             lastSection = section;
             lastIndex = index;
         }
-
         section.setBlockAt(x, y, z, blockState);
     }
-
     public int get(int x, int y, int z) {
         long pair = getChunkSectionIndex(x, y, z);
         SectionData section = getSection(pair);
         if (section == null) {
             return 0;
         }
-
         return section.blockAt(x, y, z);
     }
-
     public void remove(int x, int y, int z) {
         long index = getChunkSectionIndex(x, y, z);
         SectionData section = getSection(index);
         if (section == null) {
             return;
         }
-
         section.setBlockAt(x, y, z, 0);
-
         if (section.nonEmptyBlocks() == 0) {
             removeSection(index);
         }
     }
-
     public void markModified(BlockPosition pos) {
-        // Avoid saving the same pos twice
         if (!modified.contains(pos)) {
             this.modified.add(pos);
         }
     }
-
     public boolean recentlyModified(BlockPosition pos) {
         for (BlockPosition p : modified) {
             if (Math.abs(pos.x() - p.x()) + Math.abs(pos.y() - p.y()) + Math.abs(pos.z() - p.z()) <= 2) {
@@ -108,24 +88,20 @@ public class BlockConnectionStorage implements StorableObject {
         }
         return false;
     }
-
     public void clear() {
         blockStorage.clear();
         lastSection = null;
         lastIndex = -1;
         modified.clear();
     }
-
     public void unloadChunk(int x, int z) {
         for (int y = 0; y < 16; y++) {
             unloadSection(x, y, z);
         }
     }
-
     public void unloadSection(int x, int y, int z) {
         removeSection(getChunkSectionIndex(x << 4, y << 4, z << 4));
     }
-
     private @Nullable SectionData getSection(long index) {
         if (lastIndex == index) {
             return lastSection;
@@ -133,7 +109,6 @@ public class BlockConnectionStorage implements StorableObject {
         lastIndex = index;
         return lastSection = blockStorage.get(index);
     }
-
     private void removeSection(long index) {
         blockStorage.remove(index);
         if (lastIndex == index) {
@@ -141,15 +116,12 @@ public class BlockConnectionStorage implements StorableObject {
             lastSection = null;
         }
     }
-
     private static long getChunkSectionIndex(int x, int y, int z) {
         return (((x >> 4) & 0x3FFFFFFL) << 38) | (((y >> 4) & 0xFFFL) << 26) | ((z >> 4) & 0x3FFFFFFL);
     }
-
     private <T> Map<Long, T> createLongObjectMap() {
         if (fastUtilLongObjectHashMap != null) {
             try {
-                //noinspection unchecked
                 return (Map<Long, T>) fastUtilLongObjectHashMap.newInstance();
             } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
@@ -157,21 +129,17 @@ public class BlockConnectionStorage implements StorableObject {
         }
         return new HashMap<>();
     }
-
     private static final class SectionData {
         private final short[] blockStates = new short[4096];
         private short nonEmptyBlocks;
-
         public int blockAt(int x, int y, int z) {
             return blockStates[encodeBlockPos(x, y, z)];
         }
-
         public void setBlockAt(int x, int y, int z, int blockState) {
             int index = encodeBlockPos(x, y, z);
             if (blockState == blockStates[index]) {
                 return;
             }
-
             blockStates[index] = (short) blockState;
             if (blockState == 0) {
                 nonEmptyBlocks--;
@@ -179,11 +147,9 @@ public class BlockConnectionStorage implements StorableObject {
                 nonEmptyBlocks++;
             }
         }
-
         public short nonEmptyBlocks() {
             return nonEmptyBlocks;
         }
-
         private static int encodeBlockPos(int x, int y, int z) {
             return ((y & 0xF) << 8) | ((x & 0xF) << 4) | (z & 0xF);
         }

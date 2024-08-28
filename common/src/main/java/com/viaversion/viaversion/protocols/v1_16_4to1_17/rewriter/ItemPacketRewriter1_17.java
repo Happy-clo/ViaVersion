@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_16_4to1_17.rewriter;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.IntTag;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -32,13 +31,10 @@ import com.viaversion.viaversion.protocols.v1_16_4to1_17.packet.ServerboundPacke
 import com.viaversion.viaversion.protocols.v1_16_4to1_17.storage.InventoryAcknowledgements;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
 import com.viaversion.viaversion.rewriter.RecipeRewriter;
-
 public final class ItemPacketRewriter1_17 extends ItemRewriter<ClientboundPackets1_16_2, ServerboundPackets1_17, Protocol1_16_4To1_17> {
-
     public ItemPacketRewriter1_17(Protocol1_16_4To1_17 protocol) {
         super(protocol, Types.ITEM1_13_2, Types.ITEM1_13_2_SHORT_ARRAY);
     }
-
     @Override
     public void registerPackets() {
         registerCooldown(ClientboundPackets1_16_2.COOLDOWN);
@@ -48,88 +44,64 @@ public final class ItemPacketRewriter1_17 extends ItemRewriter<ClientboundPacket
         registerAdvancements(ClientboundPackets1_16_2.UPDATE_ADVANCEMENTS);
         registerSetEquipment(ClientboundPackets1_16_2.SET_EQUIPMENT);
         registerLevelParticles(ClientboundPackets1_16_2.LEVEL_PARTICLES, Types.DOUBLE);
-
         new RecipeRewriter<>(protocol).register(ClientboundPackets1_16_2.UPDATE_RECIPES);
-
         registerSetCreativeModeSlot(ServerboundPackets1_17.SET_CREATIVE_MODE_SLOT);
-
         protocol.registerServerbound(ServerboundPackets1_17.EDIT_BOOK, wrapper -> handleItemToServer(wrapper.user(), wrapper.passthrough(Types.ITEM1_13_2)));
-
         protocol.registerServerbound(ServerboundPackets1_17.CONTAINER_CLICK, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.UNSIGNED_BYTE); // Window Id
-                map(Types.SHORT); // Slot
-                map(Types.BYTE); // Button
-                handler(wrapper -> wrapper.write(Types.SHORT, (short) 0)); // Action id - doesn't matter, as the sent out confirmation packet will be cancelled
-                map(Types.VAR_INT); // Action
-
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.SHORT); 
+                map(Types.BYTE); 
+                handler(wrapper -> wrapper.write(Types.SHORT, (short) 0)); 
+                map(Types.VAR_INT); 
                 handler(wrapper -> {
-                    // Affected items - throw them away!
                     int length = wrapper.read(Types.VAR_INT);
                     for (int i = 0; i < length; i++) {
-                        wrapper.read(Types.SHORT); // Slot
+                        wrapper.read(Types.SHORT); 
                         wrapper.read(Types.ITEM1_13_2);
                     }
-
-                    // 1.17 clients send the then carried item, but 1.16 expects the clicked one
                     Item item = wrapper.read(Types.ITEM1_13_2);
                     int action = wrapper.get(Types.VAR_INT, 0);
                     if (action == 5 || action == 1) {
-                        // Quick craft (= dragging / mouse movement while clicking on an empty slot)
-                        // OR Quick move (= shift click to move a whole stack to the other inventory)
-                        // The server always expects an empty item here
                         item = null;
                     } else {
-                        // Use the item sent
                         handleItemToServer(wrapper.user(), item);
                     }
-
                     wrapper.write(Types.ITEM1_13_2, item);
                 });
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_16_2.CONTAINER_ACK, null, wrapper -> {
             short inventoryId = wrapper.read(Types.UNSIGNED_BYTE);
             short confirmationId = wrapper.read(Types.SHORT);
             boolean accepted = wrapper.read(Types.BOOLEAN);
             if (!accepted) {
-                // Use the new ping packet to replace the removed acknowledgement, extra bit for fast dismissal
                 int id = (1 << 30) | (inventoryId << 16) | (confirmationId & 0xFFFF);
                 wrapper.user().get(InventoryAcknowledgements.class).addId(id);
-
                 PacketWrapper pingPacket = wrapper.create(ClientboundPackets1_17.PING);
                 pingPacket.write(Types.INT, id);
                 pingPacket.send(Protocol1_16_4To1_17.class);
             }
-
             wrapper.cancel();
         });
-
-        // New pong packet
         protocol.registerServerbound(ServerboundPackets1_17.PONG, null, wrapper -> {
             int id = wrapper.read(Types.INT);
-            // Check extra bit for fast dismissal
             if ((id & (1 << 30)) != 0 && wrapper.user().get(InventoryAcknowledgements.class).removeId(id)) {
-                // Decode our requested inventory acknowledgement
                 short inventoryId = (short) ((id >> 16) & 0xFF);
                 short confirmationId = (short) (id & 0xFFFF);
                 PacketWrapper packet = wrapper.create(ServerboundPackets1_16_2.CONTAINER_ACK);
                 packet.write(Types.UNSIGNED_BYTE, inventoryId);
                 packet.write(Types.SHORT, confirmationId);
-                packet.write(Types.BOOLEAN, true); // Accept
+                packet.write(Types.BOOLEAN, true); 
                 packet.sendToServer(Protocol1_16_4To1_17.class);
             }
-
             wrapper.cancel();
         });
     }
-
     @Override
     public Item handleItemToClient(UserConnection connection, Item item) {
         if (item == null) return null;
-
         CompoundTag tag = item.tag();
         if (item.identifier() == 733) {
             if (tag == null) {
@@ -139,9 +111,7 @@ public final class ItemPacketRewriter1_17 extends ItemRewriter<ClientboundPacket
                 tag.put("map", new IntTag(0));
             }
         }
-
         item.setIdentifier(this.protocol.getMappingData().getNewItemId(item.identifier()));
         return item;
     }
-
 }

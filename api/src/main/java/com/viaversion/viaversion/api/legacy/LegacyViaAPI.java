@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,18 +21,15 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.legacy;
-
 import com.viaversion.viaversion.api.legacy.bossbar.BossBar;
 import com.viaversion.viaversion.api.legacy.bossbar.BossColor;
 import com.viaversion.viaversion.api.legacy.bossbar.BossStyle;
-
 /**
  * API only applicable on or to legacy versions of Minecraft.
  *
  * @param <T> player type
  */
 public interface LegacyViaAPI<T> {
-
     /**
      * Creates a new bossbar instance. This only works on pre 1.9 servers for 1.9+ clients.
      *
@@ -43,7 +40,6 @@ public interface LegacyViaAPI<T> {
      * @return new bossbar instance
      */
     BossBar createLegacyBossBar(String title, float health, BossColor color, BossStyle style);
-
     /**
      * Creates a new bossbar instance with full health. This only works on pre 1.9 servers for 1.9+ clients.
      *

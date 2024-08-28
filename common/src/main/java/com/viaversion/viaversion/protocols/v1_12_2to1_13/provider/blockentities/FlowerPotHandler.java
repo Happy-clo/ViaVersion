@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.blockentities;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.BlockEntityProvider;
@@ -24,11 +23,8 @@ import com.viaversion.viaversion.util.Key;
 import com.viaversion.viaversion.util.Pair;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 public class FlowerPotHandler implements BlockEntityProvider.BlockEntityHandler {
-    // Object -> string (id without namespace) or byte (numeric id)
     private static final Map<Pair<?, Byte>, Integer> flowers = new ConcurrentHashMap<>();
-
     static {
         register("air", (byte) 0, (byte) 0, 5265);
         register("sapling", (byte) 6, (byte) 0, 5266);
@@ -52,20 +48,15 @@ public class FlowerPotHandler implements BlockEntityProvider.BlockEntityHandler 
         register("brown_mushroom", (byte) 39, (byte) 0, 5284);
         register("deadbush", (byte) 32, (byte) 0, 5285);
         register("cactus", (byte) 81, (byte) 0, 5286);
-
     }
-
     public static void register(String identifier, byte numbericBlockId, byte blockData, int newId) {
         flowers.put(new Pair<>(identifier, blockData), newId);
         flowers.put(new Pair<>(numbericBlockId, blockData), newId);
     }
-
     @Override
     public int transform(UserConnection user, CompoundTag tag) {
         Object item = tag.contains("Item") ? tag.get("Item").getValue() : null;
         Object data = tag.contains("Data") ? tag.get("Data").getValue() : null;
-
-        // Convert item to String without namespace or to Byte
         if (item instanceof String) {
             item = Key.stripMinecraftNamespace((String) item);
         } else if (item instanceof Number) {
@@ -73,19 +64,15 @@ public class FlowerPotHandler implements BlockEntityProvider.BlockEntityHandler 
         } else {
             item = (byte) 0;
         }
-
-        // Convert data to Byte
         if (data instanceof Number) {
             data = ((Number) data).byteValue();
         } else {
             data = (byte) 0;
         }
-
         Integer flower = flowers.get(new Pair<>(item, (byte) data));
         if (flower != null) return flower;
         flower = flowers.get(new Pair<>(item, (byte) 0));
         if (flower != null) return flower;
-
-        return 5265; // Fallback to empty pot
+        return 5265; 
     }
 }

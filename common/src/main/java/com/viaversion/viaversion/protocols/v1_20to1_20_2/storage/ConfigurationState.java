@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20to1_20_2.storage;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.connection.StorableObject;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -31,9 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class ConfigurationState implements StorableObject {
-
     private static final QueuedPacket[] EMPTY_PACKET_ARRAY = new QueuedPacket[0];
     private final List<QueuedPacket> packetQueue = new ArrayList<>();
     private BridgePhase bridgePhase = BridgePhase.NONE;
@@ -41,19 +38,15 @@ public class ConfigurationState implements StorableObject {
     private boolean queuedJoinGame;
     private CompoundTag lastDimensionRegistry;
     private ClientInformation clientInformation;
-
     public BridgePhase bridgePhase() {
         return bridgePhase;
     }
-
     public void setBridgePhase(final BridgePhase bridgePhase) {
         this.bridgePhase = bridgePhase;
     }
-
     public @Nullable CompoundTag lastDimensionRegistry() {
         return lastDimensionRegistry;
     }
-
     /**
      * Sets the last dimension registry and returns whether it differs from the previously stored one.
      *
@@ -65,37 +58,28 @@ public class ConfigurationState implements StorableObject {
         this.lastDimensionRegistry = dimensionRegistry;
         return !equals;
     }
-
     public void setClientInformation(final ClientInformation clientInformation) {
         this.clientInformation = clientInformation;
     }
-
     public void addPacketToQueue(final PacketWrapper wrapper, final boolean clientbound) {
         packetQueue.add(toQueuedPacket(wrapper, clientbound, false));
     }
-
     private QueuedPacket toQueuedPacket(final PacketWrapper wrapper, final boolean clientbound, final boolean skipCurrentPipeline) {
-        // Caching packet buffers is cursed, copy to heap buffers to make sure we don't start leaking in dumb cases
         final ByteBuf copy = Unpooled.buffer();
         final PacketType packetType = wrapper.getPacketType();
         final int packetId = wrapper.getId();
-        // Don't write the packet id to the buffer
-        //noinspection deprecation
         wrapper.setId(-1);
         wrapper.writeToBuffer(copy);
         return new QueuedPacket(copy, clientbound, packetType, packetId, skipCurrentPipeline);
     }
-
     public void setJoinGamePacket(final PacketWrapper wrapper) {
         this.joinGamePacket = toQueuedPacket(wrapper, true, true);
         queuedJoinGame = true;
     }
-
     @Override
     public boolean clearOnServerSwitch() {
         return false;
     }
-
     @Override
     public void onRemove() {
         for (final QueuedPacket packet : packetQueue) {
@@ -105,32 +89,26 @@ public class ConfigurationState implements StorableObject {
             joinGamePacket.buf().release();
         }
     }
-
     public void sendQueuedPackets(final UserConnection connection) {
         final boolean hasJoinGamePacket = joinGamePacket != null;
         if (hasJoinGamePacket) {
             packetQueue.add(0, joinGamePacket);
             joinGamePacket = null;
         }
-
         final PacketWrapper clientInformationPacket = clientInformationPacket(connection);
         if (clientInformationPacket != null) {
             packetQueue.add(hasJoinGamePacket ? 1 : 0, toQueuedPacket(clientInformationPacket, false, true));
         }
-
         final ConfigurationState.QueuedPacket[] queuedPackets = packetQueue.toArray(EMPTY_PACKET_ARRAY);
         packetQueue.clear();
-
         for (final ConfigurationState.QueuedPacket packet : queuedPackets) {
             final PacketWrapper queuedWrapper;
             try {
                 if (packet.packetType() != null) {
                     queuedWrapper = PacketWrapper.create(packet.packetType(), packet.buf(), connection);
                 } else {
-                    //noinspection deprecation
                     queuedWrapper = PacketWrapper.create(packet.packetId(), packet.buf(), connection);
                 }
-
                 if (packet.clientbound()) {
                     queuedWrapper.send(Protocol1_20To1_20_2.class, packet.skipCurrentPipeline());
                 } else {
@@ -141,27 +119,21 @@ public class ConfigurationState implements StorableObject {
             }
         }
     }
-
     public void clear() {
         packetQueue.clear();
         bridgePhase = BridgePhase.NONE;
         queuedJoinGame = false;
     }
-
     public boolean queuedOrSentJoinGame() {
         return queuedJoinGame;
     }
-
     public enum BridgePhase {
         NONE, PROFILE_SENT, CONFIGURATION, REENTERING_CONFIGURATION
     }
-
     public @Nullable PacketWrapper clientInformationPacket(final UserConnection connection) {
         if (clientInformation == null) {
-            // Should never be null, but we also shouldn't error
             return null;
         }
-
         final PacketWrapper settingsPacket = PacketWrapper.create(ServerboundPackets1_19_4.CLIENT_INFORMATION, connection);
         settingsPacket.write(Types.STRING, clientInformation.language);
         settingsPacket.write(Types.BYTE, clientInformation.viewDistance);
@@ -173,14 +145,12 @@ public class ConfigurationState implements StorableObject {
         settingsPacket.write(Types.BOOLEAN, clientInformation.allowListing);
         return settingsPacket;
     }
-
     public static final class QueuedPacket {
         private final ByteBuf buf;
         private final boolean clientbound;
         private final PacketType packetType;
         private final int packetId;
         private final boolean skipCurrentPipeline;
-
         private QueuedPacket(final ByteBuf buf, final boolean clientbound, final PacketType packetType,
                              final int packetId, final boolean skipCurrentPipeline) {
             this.buf = buf;
@@ -189,28 +159,22 @@ public class ConfigurationState implements StorableObject {
             this.packetId = packetId;
             this.skipCurrentPipeline = skipCurrentPipeline;
         }
-
         public ByteBuf buf() {
             return buf;
         }
-
         public boolean clientbound() {
             return clientbound;
         }
-
         public int packetId() {
             return packetId;
         }
-
         public @Nullable PacketType packetType() {
             return packetType;
         }
-
         public boolean skipCurrentPipeline() {
             return skipCurrentPipeline;
         }
     }
-
     public static final class ClientInformation {
         private final String language;
         private final byte viewDistance;
@@ -220,7 +184,6 @@ public class ConfigurationState implements StorableObject {
         private final int mainHand;
         private final boolean textFiltering;
         private final boolean allowListing;
-
         public ClientInformation(final String language, final byte viewDistance, final int chatVisibility,
                                  final boolean showChatColors, final short modelCustomization, final int mainHand,
                                  final boolean textFiltering, final boolean allowListing) {

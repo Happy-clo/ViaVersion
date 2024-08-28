@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,33 +13,27 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet;
-
 import com.viaversion.viaversion.api.protocol.packet.State;
-
 public enum ServerboundConfigurationPackets1_20_5 implements ServerboundPacket1_20_5 {
-
-    CLIENT_INFORMATION, // 0x00
-    COOKIE_RESPONSE, // 0x01
-    CUSTOM_PAYLOAD, // 0x02
-    FINISH_CONFIGURATION, // 0x03
-    KEEP_ALIVE, // 0x04
-    PONG, // 0x05
-    RESOURCE_PACK, // 0x06
-    SELECT_KNOWN_PACKS; // 0x07
-
+    CLIENT_INFORMATION, 
+    COOKIE_RESPONSE, 
+    CUSTOM_PAYLOAD, 
+    FINISH_CONFIGURATION, 
+    KEEP_ALIVE, 
+    PONG, 
+    RESOURCE_PACK, 
+    SELECT_KNOWN_PACKS; 
     @Override
     public int getId() {
         return ordinal();
     }
-
     @Override
     public String getName() {
         return name();
     }
-
     @Override
     public State state() {
         return State.CONFIGURATION;

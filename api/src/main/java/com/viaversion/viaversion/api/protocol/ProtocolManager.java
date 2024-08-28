@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol;
-
 import com.google.common.collect.Range;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
@@ -38,16 +37,13 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.concurrent.CompletableFuture;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface ProtocolManager {
-
     /**
      * Returns the server protocol version. Its methods will return -1 if not set yet.
      *
      * @return server protocol version
      */
     ServerProtocolVersion getServerProtocolVersion();
-
     /**
      * Returns a protocol instance by its class.
      *
@@ -56,7 +52,6 @@ public interface ProtocolManager {
      * @return protocol if present
      */
     @Nullable <T extends Protocol> T getProtocol(Class<T> protocolClass);
-
     /**
      * Returns a protocol transforming packets for server version to the given client version.
      *
@@ -65,14 +60,12 @@ public interface ProtocolManager {
      * @return protocol if present, else null
      */
     @Nullable Protocol getProtocol(ProtocolVersion clientVersion, ProtocolVersion serverVersion);
-
     /**
      * Returns the base protocol handling serverbound handshake packets.
      *
      * @return base protocol
      */
     Protocol getBaseProtocol();
-
     /**
      * Returns the base protocols for a specific server and client protocol version.
      * The standard base protocols deal with status and login packets for userconnection initialization.
@@ -82,14 +75,12 @@ public interface ProtocolManager {
      * @return base protocols for the given server and client protocol version
      */
     List<Protocol> getBaseProtocols(@Nullable ProtocolVersion clientVersion, @Nullable ProtocolVersion serverVersion);
-
     /**
      * Returns an immutable collection of registered protocols.
      *
      * @return immutable collection of registered protocols
      */
     Collection<Protocol<?, ?, ?, ?>> getProtocols();
-
     /**
      * @deprecated use Protocol#isBaseProtocol()
      */
@@ -97,7 +88,6 @@ public interface ProtocolManager {
     default boolean isBaseProtocol(Protocol protocol) {
         return protocol.isBaseProtocol();
     }
-
     /**
      * Register and initializes a protocol.
      *
@@ -107,7 +97,6 @@ public interface ProtocolManager {
      * @throws IllegalArgumentException if the client protocol version is equal to the server protocol version
      */
     void registerProtocol(Protocol protocol, ProtocolVersion clientVersion, ProtocolVersion serverVersion);
-
     /**
      * Register and initializes protocol.
      *
@@ -117,7 +106,6 @@ public interface ProtocolManager {
      * @throws IllegalArgumentException if a supported client protocol version is equal to the server protocol version
      */
     void registerProtocol(Protocol protocol, List<ProtocolVersion> supportedClientVersion, ProtocolVersion serverVersion);
-
     /**
      * Registers and initializes a base protocol. Base Protocols registered later have higher priority.
      * Only base protocol will always be added to pipeline.
@@ -128,7 +116,6 @@ public interface ProtocolManager {
      * @throws IllegalArgumentException if the protocol is not a base protocol as given by {@link Protocol#isBaseProtocol()}
      */
     void registerBaseProtocol(Direction direction, Protocol baseProtocol, Range<ProtocolVersion> supportedProtocols);
-
     /**
      * Calculates and returns the protocol path from a client protocol version to server protocol version.
      * Returns null if no path could be found or the path length exceeds the value given by {@link #getMaxProtocolPathSize()}.
@@ -138,12 +125,10 @@ public interface ProtocolManager {
      * @return path generated, or null if not supported or the length exceeds {@link #getMaxProtocolPathSize()}
      */
     @Nullable List<ProtocolPathEntry> getProtocolPath(ProtocolVersion clientVersion, ProtocolVersion serverVersion);
-
     @Deprecated
     default @Nullable List<ProtocolPathEntry> getProtocolPath(int clientVersion, int serverVersion) {
         return getProtocolPath(ProtocolVersion.getProtocol(clientVersion), ProtocolVersion.getProtocol(serverVersion));
     }
-
     /**
      * Returns a versioned packet transformer to transform and send packets from a given base version to any client version supported by Via.
      * The used packet types have to match the given protocol version.
@@ -173,7 +158,6 @@ public interface ProtocolManager {
         > VersionedPacketTransformer<C, S> createPacketTransformer(ProtocolVersion inputVersion,
                                                                    @Nullable Class<C> clientboundPacketsClass,
                                                                    @Nullable Class<S> serverboundPacketsClass);
-
     /**
      * Sets the max delta the path calculation allows the distance to the target protocol version to increase.
      * <p>
@@ -184,7 +168,6 @@ public interface ProtocolManager {
      * @param maxPathDeltaIncrease the max delta the path calculation allows the distance to the target protocol version to increase
      */
     void setMaxPathDeltaIncrease(int maxPathDeltaIncrease);
-
     /**
      * Returns the max delta the path calculation allows the distance to the target protocol version to increase. 0 by default.
      * <p>
@@ -207,14 +190,12 @@ public interface ProtocolManager {
      * @return max delta the path calculation allows the distance to the target protocol version to increase
      */
     int getMaxPathDeltaIncrease();
-
     /**
      * Returns the maximum protocol path size applied to {@link #getProtocolPath(ProtocolVersion, ProtocolVersion)}.
      *
      * @return maximum protocol path size
      */
     int getMaxProtocolPathSize();
-
     /**
      * Sets the maximum protocol path size applied to {@link #getProtocolPath(ProtocolVersion, ProtocolVersion)}.
      * Its default is 50.
@@ -222,35 +203,30 @@ public interface ProtocolManager {
      * @param maxProtocolPathSize maximum protocol path size
      */
     void setMaxProtocolPathSize(int maxProtocolPathSize);
-
     /**
      * Returns the protocol versions compatible with the server.
      *
      * @return sorted, immutable set of supported protocol versions
      */
     SortedSet<ProtocolVersion> getSupportedVersions();
-
     /**
      * Check if this plugin is useful to the server.
      *
      * @return true if there is a useful pipe
      */
     boolean isWorkingPipe();
-
     /**
      * Ensure that mapping data for that protocol has already been loaded, completes it otherwise.
      *
      * @param protocolClass protocol class
      */
     void completeMappingDataLoading(Class<? extends Protocol> protocolClass);
-
     /**
      * Shuts down the executor and uncaches mappings if all futures have been completed.
      *
      * @return true if the executor has now been shut down
      */
     boolean checkForMappingCompletion();
-
     /**
      * Executes the given runnable asynchronously, adding a {@link CompletableFuture}
      * to the list of data to load bound to their protocols.
@@ -259,7 +235,6 @@ public interface ProtocolManager {
      * @param runnable      runnable to be executed asynchronously
      */
     void addMappingLoaderFuture(Class<? extends Protocol> protocolClass, Runnable runnable);
-
     /**
      * Executes the given runnable asynchronously after the other protocol has finished its data loading,
      * adding a {@link CompletableFuture} to the list of data to load bound to their protocols.
@@ -269,7 +244,6 @@ public interface ProtocolManager {
      * @param runnable      runnable to be executed asynchronously
      */
     void addMappingLoaderFuture(Class<? extends Protocol> protocolClass, Class<? extends Protocol> dependsOn, Runnable runnable);
-
     /**
      * Returns the data loading future bound to the protocol, or null if all loading is complete.
      * The future may or may not have already been completed.
@@ -278,7 +252,6 @@ public interface ProtocolManager {
      * @return data loading future bound to the protocol, or null if all loading is complete
      */
     @Nullable CompletableFuture<Void> getMappingLoaderFuture(Class<? extends Protocol> protocolClass);
-
     /**
      * Creates a new packet wrapper instance.
      *
@@ -289,7 +262,6 @@ public interface ProtocolManager {
      * @see PacketWrapper#create(PacketType, ByteBuf, UserConnection)
      */
     PacketWrapper createPacketWrapper(@Nullable PacketType packetType, @Nullable ByteBuf buf, UserConnection connection);
-
     /**
      * Creates a new packet wrapper instance.
      *
@@ -301,7 +273,6 @@ public interface ProtocolManager {
      */
     @Deprecated
     PacketWrapper createPacketWrapper(int packetId, @Nullable ByteBuf buf, UserConnection connection);
-
     /**
      * Returns whether the mappings have been loaded and the mapping loader executor shutdown.
      *

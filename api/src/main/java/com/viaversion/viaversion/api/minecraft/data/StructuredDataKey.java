@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.data;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viaversion.api.minecraft.GameProfile;
@@ -54,9 +53,7 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.Types1_20_5;
 import com.viaversion.viaversion.api.type.types.version.Types1_21;
 import com.viaversion.viaversion.util.Unit;
-
 public record StructuredDataKey<T>(String identifier, Type<T> type) {
-
     public static final StructuredDataKey<CompoundTag> CUSTOM_DATA = new StructuredDataKey<>("custom_data", Types.COMPOUND_TAG);
     public static final StructuredDataKey<Integer> MAX_STACK_SIZE = new StructuredDataKey<>("max_stack_size", Types.VAR_INT);
     public static final StructuredDataKey<Integer> MAX_DAMAGE = new StructuredDataKey<>("max_damage", Types.VAR_INT);
@@ -77,7 +74,7 @@ public record StructuredDataKey<T>(String identifier, Type<T> type) {
     public static final StructuredDataKey<Integer> REPAIR_COST = new StructuredDataKey<>("repair_cost", Types.VAR_INT);
     public static final StructuredDataKey<Unit> CREATIVE_SLOT_LOCK = new StructuredDataKey<>("creative_slot_lock", Types.EMPTY);
     public static final StructuredDataKey<Boolean> ENCHANTMENT_GLINT_OVERRIDE = new StructuredDataKey<>("enchantment_glint_override", Types.BOOLEAN);
-    public static final StructuredDataKey<Tag> INTANGIBLE_PROJECTILE = new StructuredDataKey<>("intangible_projectile", Types.TAG); // Doesn't actually hold data
+    public static final StructuredDataKey<Tag> INTANGIBLE_PROJECTILE = new StructuredDataKey<>("intangible_projectile", Types.TAG); 
     public static final StructuredDataKey<FoodProperties> FOOD1_20_5 = new StructuredDataKey<>("food", FoodProperties.TYPE1_20_5);
     public static final StructuredDataKey<FoodProperties> FOOD1_21 = new StructuredDataKey<>("food", FoodProperties.TYPE1_21);
     public static final StructuredDataKey<Unit> FIRE_RESISTANT = new StructuredDataKey<>("fire_resistant", Types.EMPTY);
@@ -119,7 +116,6 @@ public record StructuredDataKey<T>(String identifier, Type<T> type) {
     public static final StructuredDataKey<Bee[]> BEES = new StructuredDataKey<>("bees", Bee.ARRAY_TYPE);
     public static final StructuredDataKey<Tag> LOCK = new StructuredDataKey<>("lock", Types.TAG);
     public static final StructuredDataKey<CompoundTag> CONTAINER_LOOT = new StructuredDataKey<>("container_loot", Types.COMPOUND_TAG);
-
     @Override
     public String toString() {
         return "StructuredDataKey{" +

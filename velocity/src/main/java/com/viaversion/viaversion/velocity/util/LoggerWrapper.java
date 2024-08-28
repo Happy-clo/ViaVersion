@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,28 +13,23 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.util;
-
 import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import org.slf4j.Logger;
-
 public class LoggerWrapper extends java.util.logging.Logger {
     private final Logger base;
-
     public LoggerWrapper(Logger logger) {
         super("logger", null);
         this.base = logger;
     }
-
     @Override
     public void log(LogRecord record) {
         log(record.getLevel(), record.getMessage());
     }
-
     @Override
     public void log(Level level, String msg) {
         if (level == Level.FINE)
@@ -48,7 +43,6 @@ public class LoggerWrapper extends java.util.logging.Logger {
         else
             base.trace(msg);
     }
-
     @Override
     public void log(Level level, String msg, Object param1) {
         if (level == Level.FINE)
@@ -62,12 +56,10 @@ public class LoggerWrapper extends java.util.logging.Logger {
         else
             base.trace(msg, param1);
     }
-
     @Override
     public void log(Level level, String msg, Object[] params) {
-        log(level, MessageFormat.format(msg, params)); // workaround not formatting correctly
+        log(level, MessageFormat.format(msg, params)); 
     }
-
     @Override
     public void log(Level level, String msg, Throwable params) {
         if (level == Level.FINE)
@@ -81,5 +73,4 @@ public class LoggerWrapper extends java.util.logging.Logger {
         else
             base.trace(msg, params);
     }
-
 }

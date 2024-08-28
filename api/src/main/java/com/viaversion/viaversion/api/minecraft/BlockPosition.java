@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,38 +21,30 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 public class BlockPosition {
     protected final int x;
     protected final int y;
     protected final int z;
-
     public BlockPosition(int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
-
     public BlockPosition getRelative(BlockFace face) {
         return new BlockPosition(x + face.modX(), y + face.modY(), z + face.modZ());
     }
-
     public int x() {
         return x;
     }
-
     public int y() {
         return y;
     }
-
     public int z() {
         return z;
     }
-
     public GlobalBlockPosition withDimension(String dimension) {
         return new GlobalBlockPosition(dimension, x, y, z);
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -62,7 +54,6 @@ public class BlockPosition {
         if (y != position.y) return false;
         return z == position.z;
     }
-
     @Override
     public int hashCode() {
         int result = x;
@@ -70,7 +61,6 @@ public class BlockPosition {
         result = 31 * result + z;
         return result;
     }
-
     @Override
     public String toString() {
         return "BlockPosition{" +

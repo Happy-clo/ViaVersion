@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,19 +21,16 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.item;
-
 import com.viaversion.viaversion.api.minecraft.item.DataItem;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class ItemType1_13_2 extends Type<Item> {
     public ItemType1_13_2() {
         super(Item.class);
     }
-
     @Override
     public @Nullable Item read(ByteBuf buffer) {
         boolean present = buffer.readBoolean();
@@ -47,7 +44,6 @@ public class ItemType1_13_2 extends Type<Item> {
             return item;
         }
     }
-
     @Override
     public void write(ByteBuf buffer, @Nullable Item object) {
         if (object == null) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,9 +21,7 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 public final class MathUtil {
-
     /**
      * Returns the ceiled log to the base of 2 for the given number.
      *
@@ -33,7 +31,6 @@ public final class MathUtil {
     public static int ceilLog2(final int i) {
         return i > 0 ? 32 - Integer.numberOfLeadingZeros(i - 1) : 0;
     }
-
     /**
      * Returns the clamped number within the given range.
      *

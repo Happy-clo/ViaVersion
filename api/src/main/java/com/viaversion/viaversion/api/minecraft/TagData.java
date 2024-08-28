@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import java.util.Arrays;
-
 public record TagData(String identifier, int[] entries) {
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -34,7 +31,6 @@ public record TagData(String identifier, int[] entries) {
         if (!identifier.equals(tagData.identifier)) return false;
         return Arrays.equals(entries, tagData.entries);
     }
-
     @Override
     public int hashCode() {
         int result = identifier.hashCode();

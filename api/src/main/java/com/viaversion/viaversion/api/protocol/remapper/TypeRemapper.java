@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,18 +21,14 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.remapper;
-
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.exception.InformativeException;
-
 public record TypeRemapper<T>(Type<T> type) implements ValueReader<T>, ValueWriter<T> {
-
     @Override
     public T read(PacketWrapper wrapper) throws InformativeException {
         return wrapper.read(type);
     }
-
     @Override
     public void write(PacketWrapper output, T inputValue) throws InformativeException {
         output.write(type, inputValue);

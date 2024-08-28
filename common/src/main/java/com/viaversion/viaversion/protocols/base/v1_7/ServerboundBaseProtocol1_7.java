@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.base.v1_7;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -34,22 +33,16 @@ import com.viaversion.viaversion.protocols.base.packet.BaseServerboundPacket;
 import com.viaversion.viaversion.util.ChatColorUtil;
 import com.viaversion.viaversion.util.ComponentUtil;
 import io.netty.channel.ChannelFuture;
-
 public class ServerboundBaseProtocol1_7 extends AbstractProtocol<BaseClientboundPacket, BaseClientboundPacket, BaseServerboundPacket, BaseServerboundPacket> {
-
     public ServerboundBaseProtocol1_7() {
         super(BaseClientboundPacket.class, BaseClientboundPacket.class, BaseServerboundPacket.class, BaseServerboundPacket.class);
     }
-
     @Override
     protected void registerPackets() {
-        // State tracking
         registerServerbound(ServerboundLoginPackets.LOGIN_ACKNOWLEDGED, wrapper -> {
             final ProtocolInfo info = wrapper.user().getProtocolInfo();
             info.setState(State.CONFIGURATION);
         });
-
-        // Handle blocked version disconnect
         registerServerbound(ServerboundLoginPackets.HELLO, wrapper -> {
             final UserConnection user = wrapper.user();
             final ProtocolVersion protocol = user.getProtocolInfo().protocolVersion();
@@ -57,25 +50,19 @@ public class ServerboundBaseProtocol1_7 extends AbstractProtocol<BaseClientbound
                 if (!user.getChannel().isOpen() || !user.shouldApplyBlockProtocol()) {
                     return;
                 }
-
-                wrapper.cancel(); // cancel current
-
+                wrapper.cancel(); 
                 final String disconnectMessage = ChatColorUtil.translateAlternateColorCodes(Via.getConfig().getBlockedDisconnectMsg());
                 final PacketWrapper disconnectPacket = PacketWrapper.create(ClientboundLoginPackets.LOGIN_DISCONNECT, user);
                 disconnectPacket.write(Types.COMPONENT, ComponentUtil.plainToJson(disconnectMessage));
-
-                // Send and close
                 final ChannelFuture future = disconnectPacket.sendFuture(null);
                 future.addListener(f -> user.getChannel().close());
             }
         });
     }
-
     @Override
     public boolean isBaseProtocol() {
         return true;
     }
-
     @Override
     protected PacketTypesProvider<BaseClientboundPacket, BaseClientboundPacket, BaseServerboundPacket, BaseServerboundPacket> createPacketTypesProvider() {
         return BasePacketTypesProvider.INSTANCE;

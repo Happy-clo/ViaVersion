@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +21,19 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.signature.model.chain.v1_19_1;
-
 import com.viaversion.viaversion.api.minecraft.signature.util.DataConsumer;
 import java.util.UUID;
-
 public class MessageHeader {
-
     private final byte[] precedingSignature;
     private final UUID sender;
-
     public MessageHeader(final byte[] precedingSignature, final UUID sender) {
         this.precedingSignature = precedingSignature;
         this.sender = sender;
     }
-
     public void update(final DataConsumer dataConsumer) {
         if (this.precedingSignature != null) {
             dataConsumer.accept(this.precedingSignature);
         }
-
         dataConsumer.accept(this.sender);
     }
-
 }

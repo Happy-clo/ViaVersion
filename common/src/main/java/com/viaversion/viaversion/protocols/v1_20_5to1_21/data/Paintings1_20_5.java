@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,14 +13,11 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_5to1_21.data;
-
 import com.viaversion.viaversion.api.minecraft.PaintingVariant;
-
 public final class Paintings1_20_5 {
-
     public static final PaintingVariant[] PAINTINGS = {
         new PaintingVariant(1, 1, "kebab"),
         new PaintingVariant(1, 1, "aztec"),

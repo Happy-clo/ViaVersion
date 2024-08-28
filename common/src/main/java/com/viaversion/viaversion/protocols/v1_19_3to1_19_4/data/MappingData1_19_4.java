@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,27 +13,21 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19_3to1_19_4.data;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.data.MappingDataBase;
 import com.viaversion.viaversion.api.data.MappingDataLoader;
-
 public final class MappingData1_19_4 extends MappingDataBase {
-
     private CompoundTag damageTypesRegistry;
-
     public MappingData1_19_4() {
         super("1.19.3", "1.19.4");
     }
-
     @Override
     protected void loadExtras(final CompoundTag data) {
         damageTypesRegistry = MappingDataLoader.INSTANCE.loadNBTFromFile("damage-types-1.19.4.nbt");
     }
-
     public CompoundTag damageTypesRegistry() {
         return damageTypesRegistry.copy();
     }

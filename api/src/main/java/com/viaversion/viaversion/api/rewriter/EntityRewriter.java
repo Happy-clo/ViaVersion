@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.rewriter;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.data.entity.EntityTracker;
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import java.util.List;
-
 public interface EntityRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T> {
-
     /**
      * Returns the entity type from the given (mapped) type id.
      *
@@ -38,7 +35,6 @@ public interface EntityRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter
      * @return entity type
      */
     EntityType typeFromId(int type);
-
     /**
      * Returns the entity type from the given id.
      * From 1.14 and onwards, this is the same exact value as {@link #typeFromId(int)}.
@@ -49,7 +45,6 @@ public interface EntityRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter
     default EntityType objectTypeFromId(int type) {
         return typeFromId(type);
     }
-
     /**
      * Returns the mapped entity (or the same if it has not changed).
      *
@@ -57,7 +52,6 @@ public interface EntityRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter
      * @return mapped entity id
      */
     int newEntityId(int id);
-
     /**
      * Handles and transforms entity data of an entity.
      *
@@ -66,7 +60,6 @@ public interface EntityRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter
      * @param connection   user connection
      */
     void handleEntityData(int entityId, List<EntityData> dataList, UserConnection connection);
-
     /**
      * Returns the entity tracker for the current protocol.
      *

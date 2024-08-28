@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol;
-
 /**
  * A simple protocol which does not have any packet types.
  * <p>
@@ -29,7 +28,6 @@ package com.viaversion.viaversion.api.protocol;
  */
 public abstract class AbstractSimpleProtocol extends AbstractProtocol<SimpleProtocol.DummyPacketTypes, SimpleProtocol.DummyPacketTypes,
     SimpleProtocol.DummyPacketTypes, SimpleProtocol.DummyPacketTypes> implements SimpleProtocol {
-
     protected AbstractSimpleProtocol() {
         super(null, null, null, null);
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,30 +21,25 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.debug;
-
 import com.google.common.annotations.Beta;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketType;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import java.util.logging.Level;
-
 public interface DebugHandler {
-
     /**
      * Returns whether debug mode is enabled.
      *
      * @return whether debug mode is enabled
      */
     boolean enabled();
-
     /**
      * Sets debug mode.
      *
      * @param enabled whether debug should be enabled
      */
     void setEnabled(boolean enabled);
-
     /**
      * Adds a packet type name to the list of packet types to log.
      *
@@ -52,7 +47,6 @@ public interface DebugHandler {
      */
     @Beta
     void addPacketTypeNameToLog(String packetTypeName);
-
     /**
      * Adds a packet id to the list of packet types to log.
      * Packets will be checked on each protocol transformer, so this is best used on single protocol pipes.
@@ -61,7 +55,6 @@ public interface DebugHandler {
      */
     @Beta
     void addPacketTypeToLog(PacketType packetType);
-
     /**
      * Removes a packet type name from the list of packet types to log.
      *
@@ -69,13 +62,11 @@ public interface DebugHandler {
      */
     @Beta
     boolean removePacketTypeNameToLog(String packetTypeName);
-
     /**
      * Resets packet type filters.
      */
     @Beta
     void clearPacketTypesToLog();
-
     /**
      * Returns whether packets should be logged after being transformed.
      * Set to true by default.
@@ -84,7 +75,6 @@ public interface DebugHandler {
      */
     @Beta
     boolean logPostPacketTransform();
-
     /**
      * Sets whether packets should be logged after being transformed.
      *
@@ -92,7 +82,6 @@ public interface DebugHandler {
      */
     @Beta
     void setLogPostPacketTransform(boolean logPostPacketTransform);
-
     /**
      * Returns whether the given packet should be logged.
      * If no specific packet type has been added, all packet types will be logged.
@@ -102,7 +91,6 @@ public interface DebugHandler {
      * @return whether the packet should be logged
      */
     boolean shouldLog(PacketWrapper wrapper, Direction direction);
-
     @Beta
     default void enableAndLogIds(final PacketType... packetTypes) {
         setEnabled(true);
@@ -110,7 +98,6 @@ public interface DebugHandler {
             addPacketTypeToLog(packetType);
         }
     }
-
     /**
      * Logs an error if debug mode is enabled or error suppression is disabled.
      *

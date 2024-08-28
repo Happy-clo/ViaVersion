@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.commands.defaultsubs;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
@@ -26,36 +25,29 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
 public class ListSubCmd implements ViaSubCommand {
     @Override
     public String name() {
         return "list";
     }
-
     @Override
     public String description() {
         return "Shows lists of the versions from logged in players.";
     }
-
     @Override
     public String usage() {
         return "list";
     }
-
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
         Map<ProtocolVersion, Set<String>> playerVersions = new TreeMap<>(ProtocolVersion::compareTo);
-
         for (UserConnection p : Via.getManager().getConnectionManager().getConnections()) {
             ProtocolVersion version = p.getProtocolInfo().protocolVersion();
             playerVersions.computeIfAbsent(version, s -> new HashSet<>()).add(p.getProtocolInfo().getUsername());
         }
-
         for (Map.Entry<ProtocolVersion, Set<String>> entry : playerVersions.entrySet()) {
             sendMessage(sender, "&8[&6%s&8] (&7%d&8): &b%s", entry.getKey().getName(), entry.getValue().size(), entry.getValue());
         }
-
         playerVersions.clear();
         return true;
     }

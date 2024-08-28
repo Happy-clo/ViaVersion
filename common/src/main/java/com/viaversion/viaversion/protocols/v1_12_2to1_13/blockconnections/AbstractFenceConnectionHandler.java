@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -24,18 +23,15 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import java.util.Arrays;
-
 public abstract class AbstractFenceConnectionHandler implements ConnectionHandler {
     private static final StairConnectionHandler STAIR_CONNECTION_HANDLER = new StairConnectionHandler();
     private final IntSet blockStates = new IntOpenHashSet();
     private final int[] connectedBlockStates = new int[statesSize()];
     private final int blockConnectionsTypeId;
-
     protected AbstractFenceConnectionHandler(String blockConnections) {
         this.blockConnectionsTypeId = blockConnections != null ? BlockData.connectionTypeId(blockConnections) : -1;
         Arrays.fill(connectedBlockStates, -1);
     }
-
     ConnectionData.ConnectorInitAction getInitAction(final String key) {
         final AbstractFenceConnectionHandler handler = this;
         return blockData -> {
@@ -43,7 +39,6 @@ public abstract class AbstractFenceConnectionHandler implements ConnectionHandle
                 if (blockData.hasData("waterlogged") && blockData.getValue("waterlogged").equals("true")) {
                     return;
                 }
-
                 blockStates.add(blockData.getSavedBlockStateId());
                 ConnectionData.connectionHandlerMap.put(blockData.getSavedBlockStateId(), handler);
                 byte internalStateId = getStates(blockData);
@@ -51,7 +46,6 @@ public abstract class AbstractFenceConnectionHandler implements ConnectionHandle
             }
         };
     }
-
     protected byte getStates(WrappedBlockData blockData) {
         byte states = 0;
         if (blockData.getValue("east").equals("true")) states |= 1;
@@ -60,7 +54,6 @@ public abstract class AbstractFenceConnectionHandler implements ConnectionHandle
         if (blockData.getValue("west").equals("true")) states |= 8;
         return states;
     }
-
     protected byte getStates(UserConnection user, BlockPosition position) {
         byte states = 0;
         boolean pre1_12 = user.getProtocolInfo().serverProtocolVersion().olderThan(ProtocolVersion.v1_12);
@@ -70,30 +63,24 @@ public abstract class AbstractFenceConnectionHandler implements ConnectionHandle
         if (connects(BlockFace.WEST, getBlockData(user, position.getRelative(BlockFace.WEST)), pre1_12)) states |= 8;
         return states;
     }
-
     protected byte statesSize() {
         return 16;
     }
-
     @Override
     public int getBlockData(UserConnection user, BlockPosition position) {
         return STAIR_CONNECTION_HANDLER.connect(user, position, ConnectionHandler.super.getBlockData(user, position));
     }
-
     @Override
     public int connect(UserConnection user, BlockPosition position, int blockState) {
         final int newBlockState = connectedBlockStates[getStates(user, position)];
         return newBlockState == -1 ? blockState : newBlockState;
     }
-
     protected boolean connects(BlockFace side, int blockState, boolean pre1_12) {
         if (blockStates.contains(blockState)) return true;
         if (blockConnectionsTypeId == -1) return false;
-
         BlockData blockData = ConnectionData.blockConnectionData.get(blockState);
         return blockData != null && blockData.connectsTo(blockConnectionsTypeId, side.opposite(), pre1_12);
     }
-
     public IntSet getBlockStates() {
         return blockStates;
     }

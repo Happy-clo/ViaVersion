@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,29 +21,23 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.TypeConverter;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class BooleanType extends Type<Boolean> implements TypeConverter<Boolean> {
     public BooleanType() {
         super(Boolean.class);
     }
-
     @Override
     public Boolean read(ByteBuf buffer) {
         return buffer.readBoolean();
     }
-
     @Override
     public void write(ByteBuf buffer, Boolean object) {
         buffer.writeBoolean(object);
     }
-
-
     @Override
     public Boolean from(Object o) {
         if (o instanceof Number number) {
@@ -51,10 +45,7 @@ public class BooleanType extends Type<Boolean> implements TypeConverter<Boolean>
         }
         return (Boolean) o;
     }
-
-    // Lol
     public static final class OptionalBooleanType extends OptionalType<Boolean> {
-
         public OptionalBooleanType() {
             super(Types.BOOLEAN);
         }

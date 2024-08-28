@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,19 +13,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.util.Key;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
-
 public final class WrappedBlockData {
     private final LinkedHashMap<String, String> blockData = new LinkedHashMap<>();
     private final String minecraftKey;
     private final int savedBlockStateId;
-
     public static WrappedBlockData fromString(String s) {
         String[] array = s.split("\\[");
         String key = array[0];
@@ -41,12 +38,10 @@ public final class WrappedBlockData {
         }
         return wrappedBlockdata;
     }
-
     private WrappedBlockData(String minecraftKey, int savedBlockStateId) {
         this.minecraftKey = Key.namespaced(minecraftKey);
         this.savedBlockStateId = savedBlockStateId;
     }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(minecraftKey + "[");
@@ -55,30 +50,24 @@ public final class WrappedBlockData {
         }
         return sb.substring(0, sb.length() - 1) + "]";
     }
-
     public String getMinecraftKey() {
         return minecraftKey;
     }
-
     public int getSavedBlockStateId() {
         return savedBlockStateId;
     }
-
     public int getBlockStateId() {
         return ConnectionData.getId(toString());
     }
-
     public WrappedBlockData set(String data, Object value) {
         if (!hasData(data))
             throw new UnsupportedOperationException("No blockdata found for " + data + " at " + minecraftKey);
         blockData.put(data, value.toString());
         return this;
     }
-
     public String getValue(String data) {
         return blockData.get(data);
     }
-
     public boolean hasData(String key) {
         return blockData.containsKey(key);
     }

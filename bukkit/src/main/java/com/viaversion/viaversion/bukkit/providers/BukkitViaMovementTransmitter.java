@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.providers;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.bukkit.util.NMSUtil;
@@ -30,33 +29,26 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 public class BukkitViaMovementTransmitter extends MovementTransmitterProvider {
     private static boolean USE_NMS = true;
-    // Used for packet mode
     private Object idlePacket;
     private Object idlePacket2;
-    // Use for nms
     private Method getHandle;
     private Field connection;
     private Method handleFlying;
-
     public BukkitViaMovementTransmitter() {
         USE_NMS = Via.getConfig().isNMSPlayerTicking();
-
         Class<?> idlePacketClass;
         try {
             idlePacketClass = NMSUtil.nms("PacketPlayInFlying");
         } catch (ClassNotFoundException e) {
-            return; // We'll hope this is 1.9.4+
+            return; 
         }
         try {
             idlePacket = idlePacketClass.newInstance();
             idlePacket2 = idlePacketClass.newInstance();
-
             Field flying = idlePacketClass.getDeclaredField("f");
             flying.setAccessible(true);
-
             flying.set(idlePacket2, true);
         } catch (NoSuchFieldException | InstantiationException | IllegalArgumentException | IllegalAccessException e) {
             throw new RuntimeException("Couldn't make player idle packet, help!", e);
@@ -67,13 +59,11 @@ public class BukkitViaMovementTransmitter extends MovementTransmitterProvider {
             } catch (NoSuchMethodException | ClassNotFoundException e) {
                 throw new RuntimeException("Couldn't find CraftPlayer", e);
             }
-
             try {
                 connection = NMSUtil.nms("EntityPlayer").getDeclaredField("playerConnection");
             } catch (NoSuchFieldException | ClassNotFoundException e) {
                 throw new RuntimeException("Couldn't find Player Connection", e);
             }
-
             try {
                 handleFlying = NMSUtil.nms("PlayerConnection").getDeclaredMethod("a", idlePacketClass);
             } catch (NoSuchMethodException | ClassNotFoundException e) {
@@ -81,31 +71,24 @@ public class BukkitViaMovementTransmitter extends MovementTransmitterProvider {
             }
         }
     }
-
     public Object getFlyingPacket() {
         if (idlePacket == null) throw new NullPointerException("Could not locate flying packet");
-
         return idlePacket;
     }
-
     public Object getGroundPacket() {
         if (idlePacket == null) throw new NullPointerException("Could not locate flying packet");
-
         return idlePacket2;
     }
-
     @Override
     public void sendPlayer(UserConnection info) {
         if (USE_NMS) {
             Player player = Bukkit.getPlayer(info.getProtocolInfo().getUuid());
             if (player != null) {
                 try {
-                    // Tick player
                     Object entityPlayer = getHandle.invoke(player);
                     Object pc = connection.get(entityPlayer);
                     if (pc != null) {
                         handleFlying.invoke(pc, (info.get(MovementTracker.class).isGround() ? idlePacket2 : idlePacket));
-                        // Tick world
                         info.get(MovementTracker.class).incrementIdlePacket();
                     }
                 } catch (IllegalAccessException | InvocationTargetException e) {

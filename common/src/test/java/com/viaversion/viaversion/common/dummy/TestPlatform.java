@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.common.dummy;
-
 import com.google.gson.JsonObject;
 import com.viaversion.viaversion.ViaAPIBase;
 import com.viaversion.viaversion.api.ViaAPI;
@@ -29,76 +28,60 @@ import io.netty.buffer.ByteBuf;
 import java.io.File;
 import java.util.UUID;
 import java.util.logging.Logger;
-
 public final class TestPlatform implements ViaPlatform {
-
     private static final Logger log = Logger.getGlobal();
     private final TestConfig testConfig = new TestConfig(null, log);
-
     @Override
     public Logger getLogger() {
         return log;
     }
-
     @Override
     public String getPlatformName() {
         return "Test";
     }
-
     @Override
     public String getPlatformVersion() {
         return "test";
     }
-
     @Override
     public String getPluginVersion() {
         return "test";
     }
-
     @Override
     public PlatformTask runAsync(Runnable runnable) {
         return null;
     }
-
     @Override
     public PlatformTask runRepeatingAsync(final Runnable runnable, final long ticks) {
         return null;
     }
-
     @Override
     public PlatformTask runSync(Runnable runnable) {
         return null;
     }
-
     @Override
     public PlatformTask runSync(Runnable runnable, long delay) {
         return null;
     }
-
     @Override
     public PlatformTask runRepeatingSync(Runnable runnable, long period) {
         return null;
     }
-
     @Override
     public ViaCommandSender[] getOnlinePlayers() {
         return new ViaCommandSender[0];
     }
-
     @Override
     public void sendMessage(UUID uuid, String message) {
     }
-
     @Override
     public boolean kickPlayer(UUID uuid, String message) {
         return false;
     }
-
     @Override
     public boolean isPluginEnabled() {
         return false;
     }
-
     @Override
     public ViaAPI getApi() {
         return new ViaAPIBase() {
@@ -106,37 +89,30 @@ public final class TestPlatform implements ViaPlatform {
             public ProtocolVersion getPlayerProtocolVersion(Object player) {
                 return ProtocolVersion.unknown;
             }
-
             @Override
             public void sendRawPacket(Object player, ByteBuf packet) {
             }
         };
     }
-
     @Override
     public ViaVersionConfig getConf() {
         return testConfig;
     }
-
     @Override
     public File getDataFolder() {
         return null;
     }
-
     @Override
     public void onReload() {
     }
-
     @Override
     public JsonObject getDump() {
         return null;
     }
-
     @Override
     public boolean hasPlugin(final String name) {
         return false;
     }
-
     @Override
     public boolean couldBeReloading() {
         return false;

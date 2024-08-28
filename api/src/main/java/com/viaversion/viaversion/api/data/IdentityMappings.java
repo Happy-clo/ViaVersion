@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,19 +21,15 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 public record IdentityMappings(int size, int mappedSize) implements Mappings {
-
     @Override
     public int getNewId(final int id) {
         return id >= 0 && id < size ? id : -1;
     }
-
     @Override
     public void setNewId(final int id, final int mappedId) {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public Mappings inverse() {
         return new IdentityMappings(mappedSize, size);

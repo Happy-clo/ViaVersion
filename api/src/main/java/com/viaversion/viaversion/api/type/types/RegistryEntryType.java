@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,23 +21,18 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.minecraft.RegistryEntry;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class RegistryEntryType extends Type<RegistryEntry> {
-
     public RegistryEntryType() {
         super(RegistryEntry.class);
     }
-
     @Override
     public RegistryEntry read(final ByteBuf buffer) {
         return new RegistryEntry(Types.STRING.read(buffer), Types.OPTIONAL_TAG.read(buffer));
     }
-
     @Override
     public void write(final ByteBuf buffer, final RegistryEntry entry) {
         Types.STRING.write(buffer, entry.key());

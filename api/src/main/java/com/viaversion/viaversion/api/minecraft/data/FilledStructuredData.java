@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,59 +21,47 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.data;
-
 import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
 import java.util.Objects;
-
 final class FilledStructuredData<T> implements StructuredData<T> {
-
     private final StructuredDataKey<T> key;
     private T value;
     private int id;
-
     FilledStructuredData(final StructuredDataKey<T> key, final T value, final int id) {
         Preconditions.checkNotNull(key);
         this.key = key;
         this.value = value;
         this.id = id;
     }
-
     @Override
     public void setValue(final T value) {
         this.value = value;
     }
-
     @Override
     public void write(final ByteBuf buffer) {
         key.type().write(buffer, value);
     }
-
     @Override
     public void setId(final int id) {
         this.id = id;
     }
-
     @Override
     public StructuredDataKey<T> key() {
         return key;
     }
-
     @Override
     public T value() {
         return value;
     }
-
     @Override
     public boolean isEmpty() {
         return false;
     }
-
     @Override
     public int id() {
         return id;
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -83,7 +71,6 @@ final class FilledStructuredData<T> implements StructuredData<T> {
         if (!key.equals(that.key)) return false;
         return Objects.equals(value, that.value);
     }
-
     @Override
     public int hashCode() {
         int result = key.hashCode();
@@ -91,7 +78,6 @@ final class FilledStructuredData<T> implements StructuredData<T> {
         result = 31 * result + id;
         return result;
     }
-
     @Override
     public String toString() {
         return "FilledStructuredData{" +

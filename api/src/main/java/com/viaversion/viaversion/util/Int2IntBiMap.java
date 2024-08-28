@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,23 +21,19 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
-
 /**
  * Simple wrapper class for two {@link Int2IntMap}s.
  *
  * @see #inverse() to get the inversed map
  */
 public interface Int2IntBiMap extends Int2IntMap {
-
     /**
      * Returns the inverse of this bimap.
      *
      * @return the inverse of this bimap
      */
     Int2IntBiMap inverse();
-
     /**
      * Puts the key and value into the maps.
      *

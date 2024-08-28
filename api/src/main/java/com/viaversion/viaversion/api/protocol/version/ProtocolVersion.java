@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.version;
-
 import com.google.common.base.Preconditions;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -35,13 +34,9 @@ import java.util.Map;
 import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class ProtocolVersion implements Comparable<ProtocolVersion> {
-
-    // These need to be at the top of the class to be initialized first
     private static final Map<VersionType, Int2ObjectMap<ProtocolVersion>> VERSIONS = new EnumMap<>(VersionType.class);
     private static final List<ProtocolVersion> VERSION_LIST = new ArrayList<>();
-
     public static final ProtocolVersion v1_7_2 = register(4, "1.7.2-1.7.5", new SubVersionRange("1.7", 2, 5));
     @Deprecated(forRemoval=true) public static final ProtocolVersion v1_7_1 = v1_7_2;
     public static final ProtocolVersion v1_7_6 = register(5, "1.7.6-1.7.10", new SubVersionRange("1.7", 6, 10));
@@ -86,23 +81,19 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public static final ProtocolVersion v1_20_5 = register(766, "1.20.5-1.20.6", new SubVersionRange("1.20", 5, 6));
     public static final ProtocolVersion v1_21 = register(767, "1.21-1.21.1", new SubVersionRange("1.21", 0, 1));
     public static final ProtocolVersion unknown = new ProtocolVersion(VersionType.SPECIAL, -1, -1, "UNKNOWN", null);
-
     public static ProtocolVersion register(int version, String name) {
         return register(version, -1, name);
     }
-
     public static ProtocolVersion register(int version, int snapshotVersion, String name) {
         final ProtocolVersion protocolVersion = new ProtocolVersion(VersionType.RELEASE, version, snapshotVersion, name, null);
         register(protocolVersion);
         return protocolVersion;
     }
-
     public static ProtocolVersion register(int version, String name, @Nullable SubVersionRange versionRange) {
         final ProtocolVersion protocolVersion = new ProtocolVersion(VersionType.RELEASE, version, -1, name, versionRange);
         register(protocolVersion);
         return protocolVersion;
     }
-
     /**
      * Registers a protocol version.
      *
@@ -111,14 +102,12 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public static void register(ProtocolVersion protocolVersion) {
         VERSION_LIST.add(protocolVersion);
         VERSION_LIST.sort(ProtocolVersion::compareTo);
-
         final Int2ObjectMap<ProtocolVersion> versions = VERSIONS.computeIfAbsent(protocolVersion.versionType, $ -> new Int2ObjectOpenHashMap<>());
         versions.put(protocolVersion.version, protocolVersion);
         if (protocolVersion.isSnapshot()) {
             versions.put(protocolVersion.getFullSnapshotVersion(), protocolVersion);
         }
     }
-
     /**
      * Returns whether a protocol with the given protocol version is registered.
      *
@@ -129,11 +118,9 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
         final Int2ObjectMap<ProtocolVersion> versions = VERSIONS.get(versionType);
         return versions != null && versions.containsKey(version);
     }
-
     public static boolean isRegistered(int version) {
         return isRegistered(VersionType.RELEASE, version);
     }
-
     /**
      * Returns a ProtocolVersion instance, even if this protocol version
      * has not been registered. See {@link #isRegistered(VersionType, int)} beforehand or {@link #isKnown()}.
@@ -152,11 +139,9 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
         }
         return new ProtocolVersion(VersionType.SPECIAL, version, -1, "Unknown (" + version + ")", null);
     }
-
     public static @NonNull ProtocolVersion getProtocol(final int version) {
         return getProtocol(VersionType.RELEASE, version);
     }
-
     /**
      * Returns the internal index of the stored protocol version.
      *
@@ -168,7 +153,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public static int getIndex(ProtocolVersion version) {
         return VERSION_LIST.indexOf(version);
     }
-
     /**
      * Returns an immutable list of registered protocol versions.
      *
@@ -177,7 +161,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public static List<ProtocolVersion> getProtocols() {
         return Collections.unmodifiableList(VERSION_LIST);
     }
-
     /**
      * Returns the registered protocol version if present, else null.
      * This accepts the actual registered names (like "1.16.4/1.16.5") as well as
@@ -195,13 +178,11 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
         }
         return null;
     }
-
     private final VersionType versionType;
     private final int version;
     private final int snapshotVersion;
     private final String name;
     private final Set<String> includedVersions;
-
     /**
      * Constructs a new ProtocolVersion instance.
      *
@@ -216,22 +197,19 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
         this.version = version;
         this.snapshotVersion = snapshotVersion;
         this.name = name;
-
         Preconditions.checkArgument(!(isVersionWildcard() && versionRange == null), "A wildcard name must have a version range");
         if (versionRange != null) {
             includedVersions = new LinkedHashSet<>();
             for (int i = versionRange.rangeFrom(); i <= versionRange.rangeTo(); i++) {
                 if (i == 0) {
-                    includedVersions.add(versionRange.baseVersion()); // Keep both the base version and with ".0" appended
+                    includedVersions.add(versionRange.baseVersion()); 
                 }
-
                 includedVersions.add(versionRange.baseVersion() + "." + i);
             }
         } else {
             includedVersions = Collections.singleton(name);
         }
     }
-
     /**
      * Returns the type of version (excluding whether it is a snapshot).
      *
@@ -241,7 +219,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public VersionType getVersionType() {
         return versionType;
     }
-
     /**
      * Returns the release protocol version.
      *
@@ -250,7 +227,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public int getVersion() {
         return version;
     }
-
     /**
      * Returns the snapshot protocol version without the snapshot indicator bit if this is a snapshot protocol version.
      *
@@ -262,7 +238,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
         Preconditions.checkArgument(isSnapshot());
         return snapshotVersion;
     }
-
     /**
      * Returns the snapshot protocol version with the snapshot indicator bit if this is a snapshot protocol version.
      *
@@ -272,9 +247,8 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
      */
     public int getFullSnapshotVersion() {
         Preconditions.checkArgument(isSnapshot());
-        return (1 << 30) | snapshotVersion; // Bit indicating snapshot versions
+        return (1 << 30) | snapshotVersion; 
     }
-
     /**
      * Returns the release version if release, snapshot version (with the snapshot indicator bit) if snapshot.
      *
@@ -283,7 +257,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public int getOriginalVersion() {
         return snapshotVersion == -1 ? version : ((1 << 30) | snapshotVersion);
     }
-
     /**
      * Returns whether the protocol is set. Should only be unknown for unregistered protocols returned by {@link #getProtocol(int)}.
      *
@@ -292,7 +265,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean isKnown() {
         return version != -1;
     }
-
     /**
      * Returns whether the protocol includes a range of versions (but not an entire major version range), for example 1.7-1.7.5.
      *
@@ -302,7 +274,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean isRange() {
         return includedVersions.size() != 1;
     }
-
     /**
      * Returns an immutable set of all included versions if the protocol is a version range.
      * If the protocol only includes a single Minecraft version or the entire major version as a wildcard ({@link #isVersionWildcard()}),
@@ -314,7 +285,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public Set<String> getIncludedVersions() {
         return Collections.unmodifiableSet(includedVersions);
     }
-
     /**
      * Returns whether the protocol includes an entire major version range (for example 1.8.x).
      *
@@ -323,7 +293,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean isVersionWildcard() {
         return this.name.endsWith(".x");
     }
-
     /**
      * Returns the version name.
      *
@@ -332,7 +301,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public String getName() {
         return name;
     }
-
     /**
      * Returns whether this represents a snapshot version.
      *
@@ -341,7 +309,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean isSnapshot() {
         return snapshotVersion != -1;
     }
-
     /**
      * Returns whether this protocol version is equal to the other protocol version.
      *
@@ -351,7 +318,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean equalTo(final ProtocolVersion other) {
         return this.compareTo(other) == 0;
     }
-
     /**
      * Returns whether this protocol version is higher than the other protocol version.
      *
@@ -361,7 +327,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean newerThan(final ProtocolVersion other) {
         return this.compareTo(other) > 0;
     }
-
     /**
      * Returns whether this protocol version is higher than or equal to the other protocol version.
      *
@@ -371,7 +336,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean newerThanOrEqualTo(final ProtocolVersion other) {
         return this.compareTo(other) >= 0;
     }
-
     /**
      * Returns whether this protocol version is lower than the other protocol version.
      *
@@ -381,7 +345,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean olderThan(final ProtocolVersion other) {
         return this.compareTo(other) < 0;
     }
-
     /**
      * Returns whether this protocol version is lower than or equal to the other protocol version.
      *
@@ -391,7 +354,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean olderThanOrEqualTo(final ProtocolVersion other) {
         return this.compareTo(other) <= 0;
     }
-
     /**
      * Returns whether this protocol version is between the given protocol versions, inclusive.
      *
@@ -402,7 +364,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean betweenInclusive(final ProtocolVersion min, final ProtocolVersion max) {
         return this.newerThanOrEqualTo(min) && this.olderThanOrEqualTo(max);
     }
-
     /**
      * Returns whether this protocol version is between the given protocol versions, exclusive.
      *
@@ -413,7 +374,6 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public boolean betweenExclusive(final ProtocolVersion min, final ProtocolVersion max) {
         return this.newerThan(min) && this.olderThan(max);
     }
-
     /**
      * Returns a custom comparator used to compare protocol versions.
      * Must be overridden if the version type is {@link VersionType#SPECIAL}
@@ -423,16 +383,13 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     protected @Nullable Comparator<ProtocolVersion> customComparator() {
         return null;
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         final ProtocolVersion that = (ProtocolVersion) o;
         return version == that.version && versionType == that.versionType && snapshotVersion == that.snapshotVersion;
     }
-
     @Override
     public int hashCode() {
         int result = versionType.hashCode();
@@ -440,29 +397,22 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
         result = 31 * result + snapshotVersion;
         return result;
     }
-
     @Override
     public String toString() {
         return String.format("%s (%d)", this.name, this.version);
     }
-
     @Override
     public int compareTo(final ProtocolVersion other) {
-        // Cursed custom comparators
         if (this.versionType == VersionType.SPECIAL && customComparator() != null) {
             return customComparator().compare(this, other);
         } else if (other.versionType == VersionType.SPECIAL && other.customComparator() != null) {
             return other.customComparator().compare(this, other);
         }
-
         if (this.versionType != other.versionType) {
-            // Compare by version type first since version ids have reset multiple times
             return this.versionType.ordinal() < other.versionType.ordinal() ? -1 : 1;
         } else if (this.version != other.version) {
-            // Compare by release version
             return this.version < other.version ? -1 : 1;
         }
-        // Finally, compare by snapshot version
         return Integer.compare(this.snapshotVersion, other.snapshotVersion);
     }
 }

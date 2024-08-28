@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,25 +13,21 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19_3to1_19_4.rewriter;
-
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_19_1to1_19_3.rewriter.RecipeRewriter1_19_3;
-
 public class RecipeRewriter1_19_4<C extends ClientboundPacketType> extends RecipeRewriter1_19_3<C> {
-
     public RecipeRewriter1_19_4(final Protocol<C, ?, ?, ?> protocol) {
         super(protocol);
     }
-
     @Override
     public void handleCraftingShaped(final PacketWrapper wrapper) {
         super.handleCraftingShaped(wrapper);
-        wrapper.passthrough(Types.BOOLEAN); // Show notification
+        wrapper.passthrough(Types.BOOLEAN); 
     }
 }

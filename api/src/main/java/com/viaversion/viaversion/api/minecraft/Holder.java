@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,9 +21,7 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 public interface Holder<T> {
-
     /**
      * Returns an indirect id holder.
      *
@@ -35,7 +33,6 @@ public interface Holder<T> {
     static <T> Holder<T> of(final int id) {
         return new HolderImpl<>(id);
     }
-
     /**
      * Returns a direct value holder.
      *
@@ -46,7 +43,6 @@ public interface Holder<T> {
     static <T> Holder<T> of(final T value) {
         return new HolderImpl<>(value);
     }
-
     /**
      * Returns true if this holder is backed by a direct value.
      *
@@ -54,7 +50,6 @@ public interface Holder<T> {
      * @see #hasId()
      */
     boolean isDirect();
-
     /**
      * Returns true if this holder has an id.
      *
@@ -62,7 +57,6 @@ public interface Holder<T> {
      * @see #isDirect()
      */
     boolean hasId();
-
     /**
      * Returns the value of this holder.
      *
@@ -71,7 +65,6 @@ public interface Holder<T> {
      * @see #isDirect()
      */
     T value();
-
     /**
      * Returns the id of this holder, or -1 if this holder is direct.
      *

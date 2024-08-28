@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.item;
-
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class ItemShortArrayType1_13_2 extends BaseItemArrayType {
-
     @Override
     public Item[] read(ByteBuf buffer) {
         int amount = Types.SHORT.readPrimitive(buffer);
@@ -37,7 +34,6 @@ public class ItemShortArrayType1_13_2 extends BaseItemArrayType {
         }
         return array;
     }
-
     @Override
     public void write(ByteBuf buffer, Item[] object) {
         Types.SHORT.writePrimitive(buffer, (short) object.length);

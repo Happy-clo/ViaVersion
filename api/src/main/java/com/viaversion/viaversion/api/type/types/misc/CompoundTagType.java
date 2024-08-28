@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.misc;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import java.io.IOException;
-
-
 /**
  * Compound tag type, functionally equivalent to {@link TagType} with an additional cast.
  * <p>
@@ -37,11 +34,9 @@ import java.io.IOException;
  * as a CompoundTag, so we provide this type for convenience.
  */
 public class CompoundTagType extends Type<CompoundTag> {
-
     public CompoundTagType() {
         super(CompoundTag.class);
     }
-
     @Override
     public CompoundTag read(final ByteBuf buffer) {
         try {
@@ -50,7 +45,6 @@ public class CompoundTagType extends Type<CompoundTag> {
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public void write(final ByteBuf buffer, final CompoundTag object) {
         try {
@@ -59,9 +53,7 @@ public class CompoundTagType extends Type<CompoundTag> {
             throw new RuntimeException(e);
         }
     }
-
     public static final class OptionalCompoundTagType extends OptionalType<CompoundTag> {
-
         public OptionalCompoundTagType() {
             super(Types.COMPOUND_TAG);
         }

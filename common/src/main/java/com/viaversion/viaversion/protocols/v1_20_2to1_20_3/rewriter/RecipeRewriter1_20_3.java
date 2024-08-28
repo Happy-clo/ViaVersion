@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_2to1_20_3.rewriter;
-
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
@@ -24,42 +23,34 @@ import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.rewriter.RecipeRewriter1_19_4;
-
 public class RecipeRewriter1_20_3<C extends ClientboundPacketType> extends RecipeRewriter1_19_4<C> {
-
     public RecipeRewriter1_20_3(final Protocol<C, ?, ?, ?> protocol) {
         super(protocol);
     }
-
     @Override
     public void handleCraftingShaped(final PacketWrapper wrapper) {
-        wrapper.passthrough(Types.STRING); // Group
-        wrapper.passthrough(Types.VAR_INT); // Crafting book category
+        wrapper.passthrough(Types.STRING); 
+        wrapper.passthrough(Types.VAR_INT); 
         final int ingredients = wrapper.passthrough(Types.VAR_INT) * wrapper.passthrough(Types.VAR_INT);
         for (int i = 0; i < ingredients; i++) {
             handleIngredient(wrapper);
         }
-
-        final Item item = rewrite(wrapper.user(), wrapper.read(itemType())); // Result
+        final Item item = rewrite(wrapper.user(), wrapper.read(itemType())); 
         wrapper.write(mappedItemType(), item);
-        wrapper.passthrough(Types.BOOLEAN); // Show notification
+        wrapper.passthrough(Types.BOOLEAN); 
     }
-
     @Override
     protected Type<Item> itemType() {
         return protocol.getItemRewriter().itemType();
     }
-
     @Override
     protected Type<Item[]> itemArrayType() {
         return protocol.getItemRewriter().itemArrayType();
     }
-
     @Override
     protected Type<Item> mappedItemType() {
         return protocol.getItemRewriter().mappedItemType();
     }
-
     @Override
     protected Type<Item[]> mappedItemArrayType() {
         return protocol.getItemRewriter().mappedItemArrayType();

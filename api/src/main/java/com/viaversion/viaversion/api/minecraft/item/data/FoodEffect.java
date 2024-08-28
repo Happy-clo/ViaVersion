@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.types.ArrayType;
 import io.netty.buffer.ByteBuf;
-
 public record FoodEffect(PotionEffect effect, float probability) {
-
     public static final Type<FoodEffect> TYPE = new Type<>(FoodEffect.class) {
         @Override
         public FoodEffect read(final ByteBuf buffer) {
@@ -35,7 +32,6 @@ public record FoodEffect(PotionEffect effect, float probability) {
             final float probability = buffer.readFloat();
             return new FoodEffect(effect, probability);
         }
-
         @Override
         public void write(final ByteBuf buffer, final FoodEffect value) {
             PotionEffect.TYPE.write(buffer, value.effect);
@@ -43,5 +39,4 @@ public record FoodEffect(PotionEffect effect, float probability) {
         }
     };
     public static final Type<FoodEffect[]> ARRAY_TYPE = new ArrayType<>(TYPE);
-
 }

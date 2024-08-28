@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,21 +21,16 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.configuration;
-
 import java.util.Map;
-
 public interface Config {
-
     /**
      * Reloads the config
      */
     void reload();
-
     /**
      * Saves the config
      */
     void save();
-
     /**
      * Sets the specified path to the given value.
      *
@@ -43,7 +38,6 @@ public interface Config {
      * @param value New value to set the path to
      */
     void set(String path, Object value);
-
     /**
      * Get all the configuration values
      *

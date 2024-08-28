@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,17 +13,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20to1_20_2.data;
-
 import com.viaversion.viaversion.util.Key;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class PotionEffects1_20_2 {
-
     private static final Object2IntMap<String> KEY_TO_ID = new Object2IntOpenHashMap<>();
     private static final String[] POTION_EFFECTS = {
         "speed",
@@ -60,7 +57,6 @@ public final class PotionEffects1_20_2 {
         "hero_of_the_village",
         "darkness"
     };
-
     static {
         for (int i = 0; i < POTION_EFFECTS.length; i++) {
             final String effect = POTION_EFFECTS[i];
@@ -68,15 +64,12 @@ public final class PotionEffects1_20_2 {
         }
         KEY_TO_ID.defaultReturnValue(-1);
     }
-
     public static @Nullable String idToKey(final int id) {
         return id >= 0 && id < POTION_EFFECTS.length ? Key.namespaced(POTION_EFFECTS[id]) : null;
     }
-
     public static String idToKeyOrLuck(final int id) {
         return id >= 0 && id < POTION_EFFECTS.length ? Key.namespaced(POTION_EFFECTS[id]) : "minecraft:luck";
     }
-
     public static int keyToId(final String key) {
         return KEY_TO_ID.getInt(Key.stripMinecraftNamespace(key));
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.util;
-
 import com.google.gson.JsonElement;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,7 +36,6 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.nodes.NodeId;
 import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
-
 @SuppressWarnings("VulnerableCodeUsages")
 public abstract class Config {
     private static final ThreadLocal<Yaml> YAML = ThreadLocal.withInitial(() -> {
@@ -47,21 +45,17 @@ public abstract class Config {
         options.setIndent(2);
         return new Yaml(new CustomSafeConstructor(), new Representer(options), options);
     });
-
     private static final class CustomSafeConstructor extends SafeConstructor {
-
         public CustomSafeConstructor() {
             super(new LoaderOptions());
             yamlClassConstructors.put(NodeId.mapping, new ConstructYamlMap());
             yamlConstructors.put(Tag.OMAP, new ConstructYamlOmap());
         }
     }
-
     private final CommentStore commentStore = new CommentStore('.', 2);
     private final File configFile;
     protected final Logger logger;
     private Map<String, Object> config;
-
     /**
      * Create a new Config instance, this will *not* load the config by default.
      * To load config see {@link #reload()}
@@ -73,15 +67,12 @@ public abstract class Config {
         this.configFile = configFile;
         this.logger = logger;
     }
-
     public URL getDefaultConfigURL() {
         return getClass().getClassLoader().getResource("assets/viaversion/config.yml");
     }
-
     public InputStream getDefaultConfigInputStream() {
         return getClass().getClassLoader().getResourceAsStream("assets/viaversion/config.yml");
     }
-
     public Map<String, Object> loadConfig(File location) {
         final URL defaultConfigUrl = getDefaultConfigURL();
         if (defaultConfigUrl != null) {
@@ -89,11 +80,9 @@ public abstract class Config {
         }
         return loadConfig(location, this::getDefaultConfigInputStream);
     }
-
     public synchronized Map<String, Object> loadConfig(File location, URL jarConfigFile) {
         return loadConfig(location, jarConfigFile::openStream);
     }
-
     private synchronized Map<String, Object> loadConfig(File location, InputStreamSupplier configSupplier) {
         List<String> unsupported = getUnsupportedOptions();
         try (InputStream inputStream = configSupplier.get()) {
@@ -107,12 +96,9 @@ public abstract class Config {
         } catch (IOException e) {
             throw new RuntimeException("Failed to load default config comments", e);
         }
-
-        // Load actual file data
         Map<String, Object> config = null;
         if (location.exists()) {
             try (FileInputStream input = new FileInputStream(location)) {
-                //noinspection unchecked
                 config = (Map<String, Object>) YAML.get().load(input);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to load config", e);
@@ -124,11 +110,8 @@ public abstract class Config {
         if (config == null) {
             config = new HashMap<>();
         }
-
-        // Load default config and merge with current to make sure we always have an up-to-date/correct config
         Map<String, Object> mergedConfig;
         try (InputStream stream = configSupplier.get()) {
-            //noinspection unchecked
             mergedConfig = (Map<String, Object>) YAML.get().load(stream);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load default config", e);
@@ -137,18 +120,13 @@ public abstract class Config {
             mergedConfig.remove(option);
         }
         for (Map.Entry<String, Object> entry : config.entrySet()) {
-            // Set option in new conf if it exists
             mergedConfig.computeIfPresent(entry.getKey(), (key, value) -> entry.getValue());
         }
-
         handleConfig(mergedConfig);
         save(location, mergedConfig);
-
         return mergedConfig;
     }
-
     protected abstract void handleConfig(Map<String, Object> config);
-
     public synchronized void save(File location, Map<String, Object> config) {
         try {
             commentStore.writeComments(YAML.get().dump(config), location);
@@ -156,35 +134,28 @@ public abstract class Config {
             e.printStackTrace();
         }
     }
-
     public abstract List<String> getUnsupportedOptions();
-
     public void set(String path, Object value) {
         config.put(path, value);
     }
-
     public void save() {
         if (this.configFile.getParentFile() != null) {
             this.configFile.getParentFile().mkdirs();
         }
         save(this.configFile, this.config);
     }
-
     public void save(final File file) {
         save(file, this.config);
     }
-
     public void reload() {
         if (this.configFile.getParentFile() != null) {
             this.configFile.getParentFile().mkdirs();
         }
         this.config = new ConcurrentSkipListMap<>(loadConfig(this.configFile));
     }
-
     public Map<String, Object> getValues() {
         return this.config;
     }
-
     public @Nullable <T> T get(String key, T def) {
         Object o = this.config.get(key);
         if (o != null) {
@@ -193,7 +164,6 @@ public abstract class Config {
             return def;
         }
     }
-
     public boolean getBoolean(String key, boolean def) {
         Object o = this.config.get(key);
         if (o instanceof Boolean) {
@@ -202,7 +172,6 @@ public abstract class Config {
             return def;
         }
     }
-
     public @Nullable String getString(String key, @Nullable String def) {
         final Object o = this.config.get(key);
         if (o instanceof String) {
@@ -211,7 +180,6 @@ public abstract class Config {
             return def;
         }
     }
-
     public int getInt(String key, int def) {
         Object o = this.config.get(key);
         if (o instanceof Number) {
@@ -220,7 +188,6 @@ public abstract class Config {
             return def;
         }
     }
-
     public double getDouble(String key, double def) {
         Object o = this.config.get(key);
         if (o instanceof Number) {
@@ -229,17 +196,14 @@ public abstract class Config {
             return def;
         }
     }
-
     public List<Integer> getIntegerList(String key) {
         Object o = this.config.get(key);
         return o != null ? (List<Integer>) o : new ArrayList<>();
     }
-
     public List<String> getStringList(String key) {
         Object o = this.config.get(key);
         return o != null ? (List<String>) o : new ArrayList<>();
     }
-
     public <T> List<T> getListSafe(String key, Class<T> type, String invalidValueMessage) {
         Object o = this.config.get(key);
         if (o instanceof List<?> list) {
@@ -255,7 +219,6 @@ public abstract class Config {
         }
         return new ArrayList<>();
     }
-
     public @Nullable JsonElement getSerializedComponent(String key) {
         final Object o = this.config.get(key);
         if (o != null && !((String) o).isEmpty()) {

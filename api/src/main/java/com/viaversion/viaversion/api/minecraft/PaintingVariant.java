@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.HolderType;
 import io.netty.buffer.ByteBuf;
-
 public record PaintingVariant(int width, int height, String assetId) {
-
     public static HolderType<PaintingVariant> TYPE = new HolderType<>() {
         @Override
         public PaintingVariant readDirect(final ByteBuf buffer) {
@@ -36,7 +33,6 @@ public record PaintingVariant(int width, int height, String assetId) {
             final String assetId = Types.STRING.read(buffer);
             return new PaintingVariant(width, height, assetId);
         }
-
         @Override
         public void writeDirect(final ByteBuf buffer, final PaintingVariant variant) {
             Types.VAR_INT.writePrimitive(buffer, variant.width());

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,12 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.version;
-
 /**
  * Categories of Minecraft versions from classic to modern releases, ordered by date.
  */
 public enum VersionType {
-
     /**
      * Classic versions of Minecraft (Classic 0.0.2a to 0.30).
      */

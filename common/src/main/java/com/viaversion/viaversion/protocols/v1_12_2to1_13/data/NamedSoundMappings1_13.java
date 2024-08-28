@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,19 +13,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.data;
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 public class NamedSoundMappings1_13 {
     private static final Map<String, String> oldToNew = new HashMap<>();
-
     static {
-        // Extracted from Minecraft Wiki
         oldToNew.put("block.cloth.break", "block.wool.break");
         oldToNew.put("block.cloth.fall", "block.wool.fall");
         oldToNew.put("block.cloth.hit", "block.wool.hit");
@@ -162,7 +158,6 @@ public class NamedSoundMappings1_13 {
         oldToNew.put("record.wait", "music_disc.wait");
         oldToNew.put("record.ward", "music_disc.ward");
     }
-
     public static String getNewId(String old) {
         String newId = oldToNew.get(old);
         return newId != null ? newId : old.toLowerCase(Locale.ROOT);

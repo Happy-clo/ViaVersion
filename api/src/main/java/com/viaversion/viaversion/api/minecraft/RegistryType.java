@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,43 +21,33 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import java.util.HashMap;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public enum RegistryType {
-
     BLOCK("block"),
     ITEM("item"),
     FLUID("fluid"),
     ENTITY("entity_type"),
     GAME_EVENT("game_event"),
     ENCHANTMENT("enchantment");
-
     private static final Map<String, RegistryType> MAP = new HashMap<>();
     private static final RegistryType[] VALUES = values();
-
     static {
         for (RegistryType type : getValues()) {
             MAP.put(type.resourceLocation, type);
         }
     }
-
     public static RegistryType[] getValues() {
         return VALUES;
     }
-
     public static @Nullable RegistryType getByKey(String resourceKey) {
         return MAP.get(resourceKey);
     }
-
     private final String resourceLocation;
-
     RegistryType(final String resourceLocation) {
         this.resourceLocation = resourceLocation;
     }
-
     public String resourceLocation() {
         return resourceLocation;
     }

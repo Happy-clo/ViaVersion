@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,17 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.math;
-
 import com.viaversion.viaversion.api.minecraft.Quaternion;
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
-
 public class QuaternionType extends Type<Quaternion> {
-
     public QuaternionType() {
         super(Quaternion.class);
     }
-
     @Override
     public Quaternion read(final ByteBuf buffer) {
         final float x = buffer.readFloat();
@@ -40,7 +36,6 @@ public class QuaternionType extends Type<Quaternion> {
         final float w = buffer.readFloat();
         return new Quaternion(x, y, z, w);
     }
-
     @Override
     public void write(final ByteBuf buffer, final Quaternion object) {
         buffer.writeFloat(object.x());

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +21,21 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.math;
-
 import com.viaversion.viaversion.api.minecraft.EulerAngle;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class EulerAngleType extends Type<EulerAngle> {
     public EulerAngleType() {
         super(EulerAngle.class);
     }
-
     @Override
     public EulerAngle read(ByteBuf buffer) {
         float x = Types.FLOAT.readPrimitive(buffer);
         float y = Types.FLOAT.readPrimitive(buffer);
         float z = Types.FLOAT.readPrimitive(buffer);
-
         return new EulerAngle(x, y, z);
     }
-
     @Override
     public void write(ByteBuf buffer, EulerAngle object) {
         Types.FLOAT.writePrimitive(buffer, object.x());

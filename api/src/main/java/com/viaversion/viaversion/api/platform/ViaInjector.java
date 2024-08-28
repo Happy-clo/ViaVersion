@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,28 +21,23 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.platform;
-
 import com.google.gson.JsonObject;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import java.util.SortedSet;
-
 public interface ViaInjector {
-
     /**
      * Inject into the current Platform
      *
      * @throws Exception if there is an error with injecting
      */
     void inject() throws Exception;
-
     /**
      * Uninject into the current Platform
      *
      * @throws Exception if there is an error with uninjecting
      */
     void uninject() throws Exception;
-
     /**
      * Returns true if the protocol version cannot be used in the early init.
      * Namely, this returns true for forks of Vanilla without extra API to get the protocol version.
@@ -52,7 +47,6 @@ public interface ViaInjector {
     default boolean lateProtocolVersionSetting() {
         return false;
     }
-
     /**
      * Returns the server protocol version.
      * For proxies, this returns the lowest supported protocol version.
@@ -62,7 +56,6 @@ public interface ViaInjector {
      * @see ViaPlatform#isProxy()
      */
     ProtocolVersion getServerProtocolVersion() throws Exception;
-
     /**
      * Returns the supported server protocol versions.
      *
@@ -75,7 +68,6 @@ public interface ViaInjector {
         versions.add(getServerProtocolVersion());
         return versions;
     }
-
     /**
      * Get the name of the encoder for then netty pipeline for this platform.
      *
@@ -84,7 +76,6 @@ public interface ViaInjector {
     default String getEncoderName() {
         return "via-encoder";
     }
-
     /**
      * Get the name of the decoder for then netty pipeline for this platform.
      *
@@ -93,7 +84,6 @@ public interface ViaInjector {
     default String getDecoderName() {
         return "via-decoder";
     }
-
     /**
      * Get any relevant data for debugging injection issues.
      *

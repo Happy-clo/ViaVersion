@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -24,13 +23,11 @@ import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-
 public class RedstoneConnectionHandler implements ConnectionHandler {
     private static final IntSet REDSTONE = new IntOpenHashSet();
     private static final Int2IntMap CONNECTED_BLOCK_STATES = new Int2IntOpenHashMap(1296);
     private static final Int2IntMap POWER_MAPPINGS = new Int2IntOpenHashMap(1296);
     private static final int BLOCK_CONNECTION_TYPE_ID = BlockData.connectionTypeId("redstone");
-
     static ConnectionData.ConnectorInitAction init() {
         final RedstoneConnectionHandler connectionHandler = new RedstoneConnectionHandler();
         final String redstoneKey = "minecraft:redstone_wire";
@@ -38,14 +35,12 @@ public class RedstoneConnectionHandler implements ConnectionHandler {
             if (!redstoneKey.equals(blockData.getMinecraftKey())) {
                 return;
             }
-
             REDSTONE.add(blockData.getSavedBlockStateId());
             ConnectionData.connectionHandlerMap.put(blockData.getSavedBlockStateId(), connectionHandler);
             CONNECTED_BLOCK_STATES.put(getStates(blockData), blockData.getSavedBlockStateId());
             POWER_MAPPINGS.put(blockData.getSavedBlockStateId(), Integer.parseInt(blockData.getValue("power")));
         };
     }
-
     private static short getStates(WrappedBlockData data) {
         short b = 0;
         b |= getState(data.getValue("east"));
@@ -55,15 +50,13 @@ public class RedstoneConnectionHandler implements ConnectionHandler {
         b |= Integer.parseInt(data.getValue("power")) << 8;
         return b;
     }
-
     private static int getState(String value) {
         return switch (value) {
             case "side" -> 1;
             case "up" -> 2;
-            default -> 0; // Implicit "none"
+            default -> 0; 
         };
     }
-
     @Override
     public int connect(UserConnection user, BlockPosition position, int blockState) {
         short b = 0;
@@ -74,24 +67,22 @@ public class RedstoneConnectionHandler implements ConnectionHandler {
         b |= POWER_MAPPINGS.get(blockState) << 8;
         return CONNECTED_BLOCK_STATES.getOrDefault(b, blockState);
     }
-
     private int connects(UserConnection user, BlockPosition position, BlockFace side) {
         final BlockPosition relative = position.getRelative(side);
         int blockState = getBlockData(user, relative);
         if (connects(side, blockState)) {
-            return 1; //side
+            return 1; 
         }
         int up = getBlockData(user, relative.getRelative(BlockFace.TOP));
         if (REDSTONE.contains(up) && !ConnectionData.OCCLUDING_STATES.contains(getBlockData(user, position.getRelative(BlockFace.TOP)))) {
-            return 2; //"up"
+            return 2; 
         }
         int down = getBlockData(user, relative.getRelative(BlockFace.BOTTOM));
         if (REDSTONE.contains(down) && !ConnectionData.OCCLUDING_STATES.contains(getBlockData(user, relative))) {
-            return 1; //side
+            return 1; 
         }
-        return 0; //none
+        return 0; 
     }
-
     private boolean connects(BlockFace side, int blockState) {
         final BlockData blockData = ConnectionData.blockConnectionData.get(blockState);
         return blockData != null && blockData.connectsTo(BLOCK_CONNECTION_TYPE_ID, side.opposite(), false);

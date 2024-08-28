@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,13 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.entitydata;
-
 import com.google.common.base.Preconditions;
 import java.util.Objects;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class EntityData {
     private int id;
     private EntityDataType dataType;
     private Object value;
-
     /**
      * Creates a new entity data instance.
      *
@@ -44,19 +41,15 @@ public final class EntityData {
         this.dataType = dataType;
         this.value = checkValue(dataType, value);
     }
-
     public int id() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public EntityDataType dataType() {
         return dataType;
     }
-
     /**
      * Sets the entity data type if compatible with the current value.
      *
@@ -68,15 +61,12 @@ public final class EntityData {
         checkValue(dataType, this.value);
         this.dataType = dataType;
     }
-
     public @Nullable <T> T value() {
         return (T) value;
     }
-
     public @Nullable Object getValue() {
         return value;
     }
-
     /**
      * Sets the entity data value if compatible with the current data type.
      *
@@ -87,7 +77,6 @@ public final class EntityData {
     public void setValue(@Nullable Object value) {
         this.value = checkValue(this.dataType, value);
     }
-
     /**
      * Sets entity data type and value.
      *
@@ -99,7 +88,6 @@ public final class EntityData {
         this.value = checkValue(dataType, value);
         this.dataType = dataType;
     }
-
     private Object checkValue(EntityDataType dataType, @Nullable Object value) {
         Preconditions.checkNotNull(dataType);
         if (value != null && !dataType.type().getOutputClass().isAssignableFrom(value.getClass())) {
@@ -108,12 +96,10 @@ public final class EntityData {
         }
         return value;
     }
-
     @Deprecated
     public void setDataTypeUnsafe(EntityDataType type) {
         this.dataType = type;
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -123,7 +109,6 @@ public final class EntityData {
         if (dataType != entityData.dataType) return false;
         return Objects.equals(value, entityData.value);
     }
-
     @Override
     public int hashCode() {
         int result = id;
@@ -131,7 +116,6 @@ public final class EntityData {
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
-
     @Override
     public String toString() {
         return "EntityData{" +

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -30,14 +29,11 @@ import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class ComponentType extends Type<JsonElement> {
     private static final StringType STRING_TAG = new StringType(262144);
-
     public ComponentType() {
         super(JsonElement.class);
     }
-
     @Override
     public JsonElement read(ByteBuf buffer) {
         String s = STRING_TAG.read(buffer);
@@ -50,14 +46,11 @@ public class ComponentType extends Type<JsonElement> {
             throw e;
         }
     }
-
     @Override
     public void write(ByteBuf buffer, JsonElement object) {
         STRING_TAG.write(buffer, object.toString());
     }
-
     public static final class OptionalComponentType extends OptionalType<JsonElement> {
-
         public OptionalComponentType() {
             super(Types.COMPONENT);
         }

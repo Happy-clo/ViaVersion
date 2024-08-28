@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,9 +21,7 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.chunks;
-
 public interface DataPalette {
-
     /**
      * Returns the packet section index of the given coordinates.
      *
@@ -33,7 +31,6 @@ public interface DataPalette {
      * @return packed section index of the given coordinates
      */
     int index(final int x, final int y, final int z);
-
     /**
      * Returns the value of the given chunk coordinate.
      *
@@ -41,7 +38,6 @@ public interface DataPalette {
      * @return section state of the given index
      */
     int idAt(int sectionCoordinate);
-
     /**
      * Returns the value of the section coordinate.
      *
@@ -53,7 +49,6 @@ public interface DataPalette {
     default int idAt(final int sectionX, final int sectionY, final int sectionZ) {
         return idAt(index(sectionX, sectionY, sectionZ));
     }
-
     /**
      * Set a value in the chunk section.
      * This method does not update non-air blocks count.
@@ -62,7 +57,6 @@ public interface DataPalette {
      * @param id                id value
      */
     void setIdAt(int sectionCoordinate, int id);
-
     /**
      * Set a value in the chunk section.
      * This method does not update non-air blocks count.
@@ -75,7 +69,6 @@ public interface DataPalette {
     default void setIdAt(final int sectionX, final int sectionY, final int sectionZ, final int id) {
         setIdAt(index(sectionX, sectionY, sectionZ), id);
     }
-
     /**
      * Returns the id assigned to the given palette index.
      *
@@ -83,7 +76,6 @@ public interface DataPalette {
      * @return id assigned to the given palette index
      */
     int idByIndex(int index);
-
     /**
      * Assigns an id assigned to the given palette index.
      *
@@ -91,7 +83,6 @@ public interface DataPalette {
      * @param id    id value
      */
     void setIdByIndex(int index, int id);
-
     /**
      * Returns the palette index of the given section index.
      *
@@ -99,7 +90,6 @@ public interface DataPalette {
      * @return palette index of the given section index
      */
     int paletteIndexAt(int packedCoordinate);
-
     /**
      * Sets the index of the given section coordinate.
      *
@@ -107,14 +97,12 @@ public interface DataPalette {
      * @param index             palette index
      */
     void setPaletteIndexAt(int sectionCoordinate, int index);
-
     /**
      * Adds a new id to the palette.
      *
      * @param id id value
      */
     void addId(int id);
-
     /**
      * Replaces an id in the palette.
      *
@@ -122,14 +110,12 @@ public interface DataPalette {
      * @param newId new id
      */
     void replaceId(int oldId, int newId);
-
     /**
      * Returns the size of the palette.
      *
      * @return palette size
      */
     int size();
-
     /**
      * Clears the palette.
      */

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,42 +13,36 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_5to1_21.packet;
-
 import com.viaversion.viaversion.api.protocol.packet.State;
-
 public enum ClientboundConfigurationPackets1_21 implements ClientboundPacket1_21 {
-
-    COOKIE_REQUEST, // 0x00
-    CUSTOM_PAYLOAD, // 0x01
-    DISCONNECT, // 0x02
-    FINISH_CONFIGURATION, // 0x03
-    KEEP_ALIVE, // 0x04
-    PING, // 0x05
-    RESET_CHAT, // 0x06
-    REGISTRY_DATA, // 0x07
-    RESOURCE_PACK_POP, // 0x08
-    RESOURCE_PACK_PUSH, // 0x09
-    STORE_COOKIE, // 0x0A
-    TRANSFER, // 0x0B
-    UPDATE_ENABLED_FEATURES, // 0x0C
-    UPDATE_TAGS, // 0x0D
-    SELECT_KNOWN_PACKS, // 0x0E
-    CUSTOM_REPORT_DETAILS, // 0x0F
-    SERVER_LINKS; // 0x10
-
+    COOKIE_REQUEST, 
+    CUSTOM_PAYLOAD, 
+    DISCONNECT, 
+    FINISH_CONFIGURATION, 
+    KEEP_ALIVE, 
+    PING, 
+    RESET_CHAT, 
+    REGISTRY_DATA, 
+    RESOURCE_PACK_POP, 
+    RESOURCE_PACK_PUSH, 
+    STORE_COOKIE, 
+    TRANSFER, 
+    UPDATE_ENABLED_FEATURES, 
+    UPDATE_TAGS, 
+    SELECT_KNOWN_PACKS, 
+    CUSTOM_REPORT_DETAILS, 
+    SERVER_LINKS; 
     @Override
     public int getId() {
         return ordinal();
     }
-
     @Override
     public String getName() {
         return name();
     }
-
     @Override
     public State state() {
         return State.CONFIGURATION;

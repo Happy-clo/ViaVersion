@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viaversion.api.minecraft.Holder;
 import com.viaversion.viaversion.api.minecraft.SoundEvent;
@@ -30,17 +29,13 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.HolderType;
 import com.viaversion.viaversion.util.Either;
 import io.netty.buffer.ByteBuf;
-
 public record JukeboxPlayable(Either<Holder<JukeboxSong>, String> song, boolean showInTooltip) {
-
     public JukeboxPlayable(final Holder<JukeboxSong> song, final boolean showInTooltip) {
         this(Either.left(song), showInTooltip);
     }
-
     public JukeboxPlayable(final String resourceKey, final boolean showInTooltip) {
         this(Either.right(resourceKey), showInTooltip);
     }
-
     public static final Type<JukeboxPlayable> TYPE = new Type<>(JukeboxPlayable.class) {
         @Override
         public JukeboxPlayable read(final ByteBuf buffer) {
@@ -48,17 +43,14 @@ public record JukeboxPlayable(Either<Holder<JukeboxSong>, String> song, boolean 
             final boolean showInTooltip = buffer.readBoolean();
             return new JukeboxPlayable(position, showInTooltip);
         }
-
         @Override
         public void write(final ByteBuf buffer, final JukeboxPlayable value) {
             Type.writeEither(buffer, value.song, JukeboxSong.TYPE, Types.STRING);
             buffer.writeBoolean(value.showInTooltip);
         }
     };
-
     public record JukeboxSong(Holder<SoundEvent> soundEvent, Tag description,
                               float lengthInSeconds, int comparatorOutput) {
-
         public static final HolderType<JukeboxSong> TYPE = new HolderType<>() {
             @Override
             public JukeboxSong readDirect(final ByteBuf buffer) {
@@ -68,7 +60,6 @@ public record JukeboxPlayable(Either<Holder<JukeboxSong>, String> song, boolean 
                 final int useDuration = Types.VAR_INT.readPrimitive(buffer);
                 return new JukeboxSong(soundEvent, description, lengthInSeconds, useDuration);
             }
-
             @Override
             public void writeDirect(final ByteBuf buffer, final JukeboxSong value) {
                 Types.SOUND_EVENT.write(buffer, value.soundEvent);

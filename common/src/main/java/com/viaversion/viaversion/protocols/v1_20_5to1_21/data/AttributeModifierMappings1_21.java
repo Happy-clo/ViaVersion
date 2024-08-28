@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_5to1_21.data;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.viaversion.viaversion.util.Key;
@@ -24,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class AttributeModifierMappings1_21 {
     private static final Map<UUID, String> ATTRIBUTE_MODIFIER_IDS = new HashMap<>();
     private static final Map<String, UUID> ATTRIBUTE_MODIFIER_INVERSE_IDS = new HashMap<>();
@@ -35,7 +33,6 @@ public final class AttributeModifierMappings1_21 {
         "Zombie reinforcement callee charge", "reinforcement_callee_charge",
         "Zombie reinforcement caller charge", "reinforcement_caller_charge"
     ));
-
     static {
         add(-4483571535397864886L, -5989644940537681742L, "armor.body");
         add(8144722948526719024L, -7778190119041365872L, "effect.slowness");
@@ -78,23 +75,18 @@ public final class AttributeModifierMappings1_21 {
         add(1286946037536540352L, -5768092872487507967L, "enchantment.depth_strider");
         add(-3801225194067177672L, -6586624321849018929L, "base_attack_damage");
     }
-
     public static @Nullable String uuidToId(final UUID uuid) {
         return ATTRIBUTE_MODIFIER_IDS.get(uuid);
     }
-
     public static @Nullable UUID idToUuid(final String id) {
         return ATTRIBUTE_MODIFIER_INVERSE_IDS.get(Key.stripMinecraftNamespace(id));
     }
-
     public static @Nullable String nameToId(final String name) {
         return ATTRIBUTE_MODIFIER_NAMES.get(name);
     }
-
     public static @Nullable String idToName(final String id) {
         return ATTRIBUTE_MODIFIER_NAMES.inverse().get(id);
     }
-
     private static void add(final long msb, final long lsb, final String id) {
         final UUID uuid = new UUID(msb, lsb);
         ATTRIBUTE_MODIFIER_IDS.put(uuid, id);

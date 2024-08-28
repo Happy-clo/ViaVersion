@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.ArrayType;
 import io.netty.buffer.ByteBuf;
-
 public record AttributeModifiers1_21(AttributeModifier[] modifiers, boolean showInTooltip) {
-
     public static final Type<AttributeModifiers1_21> TYPE = new Type<>(AttributeModifiers1_21.class) {
         @Override
         public AttributeModifiers1_21 read(final ByteBuf buffer) {
@@ -36,16 +33,13 @@ public record AttributeModifiers1_21(AttributeModifier[] modifiers, boolean show
             final boolean showInTooltip = buffer.readBoolean();
             return new AttributeModifiers1_21(modifiers, showInTooltip);
         }
-
         @Override
         public void write(final ByteBuf buffer, final AttributeModifiers1_21 value) {
             AttributeModifier.ARRAY_TYPE.write(buffer, value.modifiers());
             buffer.writeBoolean(value.showInTooltip());
         }
     };
-
     public record AttributeModifier(int attribute, ModifierData modifier, int slotType) {
-
         public static final Type<AttributeModifier> TYPE = new Type<>(AttributeModifier.class) {
             @Override
             public AttributeModifier read(final ByteBuf buffer) {
@@ -54,7 +48,6 @@ public record AttributeModifiers1_21(AttributeModifier[] modifiers, boolean show
                 final int slot = Types.VAR_INT.readPrimitive(buffer);
                 return new AttributeModifier(attribute, modifier, slot);
             }
-
             @Override
             public void write(final ByteBuf buffer, final AttributeModifier value) {
                 Types.VAR_INT.writePrimitive(buffer, value.attribute);
@@ -64,9 +57,7 @@ public record AttributeModifiers1_21(AttributeModifier[] modifiers, boolean show
         };
         public static final Type<AttributeModifier[]> ARRAY_TYPE = new ArrayType<>(TYPE);
     }
-
     public record ModifierData(String id, double amount, int operation) {
-
         public static final Type<ModifierData> TYPE = new Type<>(ModifierData.class) {
             @Override
             public ModifierData read(final ByteBuf buffer) {
@@ -75,7 +66,6 @@ public record AttributeModifiers1_21(AttributeModifier[] modifiers, boolean show
                 final int operation = Types.VAR_INT.readPrimitive(buffer);
                 return new ModifierData(id, amount, operation);
             }
-
             @Override
             public void write(final ByteBuf buffer, final ModifierData value) {
                 Types.STRING.write(buffer, value.id);

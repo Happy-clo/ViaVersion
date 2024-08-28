@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,28 +21,21 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.entitydata.types;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityDataType;
 import com.viaversion.viaversion.api.type.Type;
-
 public abstract class AbstractEntityDataTypes implements EntityDataTypes {
-
     private final EntityDataType[] values;
-
     protected AbstractEntityDataTypes(final int values) {
         this.values = new EntityDataType[values];
     }
-
     @Override
     public EntityDataType byId(final int id) {
         return values[id];
     }
-
     @Override
     public EntityDataType[] values() {
         return values;
     }
-
     protected EntityDataType add(final int typeId, final Type<?> type) {
         final EntityDataType dataType = EntityDataType.create(typeId, type);
         values[typeId] = dataType;

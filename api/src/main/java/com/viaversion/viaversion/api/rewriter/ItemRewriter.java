@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.rewriter;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.type.Type;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface ItemRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T> {
-
     /**
      * Returns the rewritten item, which may or may not be the same given Item instance.
      *
@@ -39,7 +36,6 @@ public interface ItemRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T
      */
     @Nullable
     Item handleItemToClient(UserConnection connection, @Nullable Item item);
-
     /**
      * Returns the rewritten item, which may or may not be the same given Item instance.
      *
@@ -49,7 +45,6 @@ public interface ItemRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T
      */
     @Nullable
     Item handleItemToServer(UserConnection connection, @Nullable Item item);
-
     /**
      * Returns the item type of the current protocol.
      *
@@ -59,7 +54,6 @@ public interface ItemRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T
     default Type<Item> itemType() {
         return null;
     }
-
     /**
      * Returns the item array type of the current protocol.
      *
@@ -69,7 +63,6 @@ public interface ItemRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T
     default Type<Item[]> itemArrayType() {
         return null;
     }
-
     /**
      * Returns the mapped item type of the target protocol.
      *
@@ -79,7 +72,6 @@ public interface ItemRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T
     default Type<Item> mappedItemType() {
         return itemType();
     }
-
     /**
      * Returns the mapped item array type of the target protocol.
      *
@@ -89,7 +81,6 @@ public interface ItemRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T
     default Type<Item[]> mappedItemArrayType() {
         return itemArrayType();
     }
-
     /**
      * Returns the NBT tag name used for storing original item data.
      *
@@ -98,7 +89,6 @@ public interface ItemRewriter<T extends Protocol<?, ?, ?, ?>> extends Rewriter<T
     default String nbtTagName() {
         return "VV|" + protocol().getClass().getSimpleName();
     }
-
     /**
      * Prefixes the NBT tag name with the current protocol's {@link #nbtTagName()}.
      *

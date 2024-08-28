@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,25 +13,20 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.providers;
-
 import com.viaversion.viaversion.ViaVersionPlugin;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.bukkit.tasks.v1_18_2to1_19.AckSequenceTask;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.provider.AckSequenceProvider;
 import com.viaversion.viaversion.protocols.v1_18_2to1_19.storage.SequenceStorage;
-
 public final class BukkitAckSequenceProvider extends AckSequenceProvider {
-
     private final ViaVersionPlugin plugin;
-
     public BukkitAckSequenceProvider(final ViaVersionPlugin plugin) {
         this.plugin = plugin;
     }
-
     @Override
     public void handleSequence(final UserConnection connection, final int sequence) {
         final SequenceStorage sequenceStorage = connection.get(SequenceStorage.class);
@@ -39,7 +34,6 @@ public final class BukkitAckSequenceProvider extends AckSequenceProvider {
         if (previousSequence == -1) {
             final ProtocolVersion serverProtocolVersion = connection.getProtocolInfo().serverProtocolVersion();
             final long delay = serverProtocolVersion.newerThan(ProtocolVersion.v1_8) && serverProtocolVersion.olderThan(ProtocolVersion.v1_14) ? 2 : 1;
-
             if (plugin.isEnabled()) {
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new AckSequenceTask(connection, sequenceStorage), delay);
             }

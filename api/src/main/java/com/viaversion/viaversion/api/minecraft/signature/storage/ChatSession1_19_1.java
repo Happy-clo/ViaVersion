@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.signature.storage;
-
 import com.viaversion.viaversion.api.minecraft.PlayerMessageSignature;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.model.DecoratableMessage;
@@ -31,15 +30,11 @@ import com.viaversion.viaversion.api.minecraft.signature.model.chain.v1_19_1.Mes
 import java.security.PrivateKey;
 import java.security.SignatureException;
 import java.util.UUID;
-
 public class ChatSession1_19_1 extends ChatSession {
-
     private byte[] precedingSignature;
-
     public ChatSession1_19_1(UUID uuid, PrivateKey privateKey, ProfileKey profileKey) {
         super(uuid, privateKey, profileKey);
     }
-
     public byte[] signChatMessage(final MessageMetadata metadata, final DecoratableMessage content, final PlayerMessageSignature[] lastSeenMessages) throws SignatureException {
         final byte[] signature = this.sign(signer -> {
             final MessageHeader messageHeader = new MessageHeader(this.precedingSignature, metadata.sender());
@@ -50,5 +45,4 @@ public class ChatSession1_19_1 extends ChatSession {
         this.precedingSignature = signature;
         return signature;
     }
-
 }

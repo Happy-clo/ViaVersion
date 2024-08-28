@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,25 +21,20 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol.remapper;
-
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.exception.InformativeException;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public abstract class ValueTransformer<T1, T2> implements ValueWriter<T1> {
     private final Type<T1> inputType;
     private final Type<T2> outputType;
-
     protected ValueTransformer(@Nullable Type<T1> inputType, Type<T2> outputType) {
         this.inputType = inputType;
         this.outputType = outputType;
     }
-
     protected ValueTransformer(Type<T2> outputType) {
         this(null, outputType);
     }
-
     /**
      * Transform a value from one type to another
      *
@@ -48,7 +43,6 @@ public abstract class ValueTransformer<T1, T2> implements ValueWriter<T1> {
      * @return The value to write to the wrapper
      */
     public abstract T2 transform(PacketWrapper wrapper, T1 inputValue) throws InformativeException;
-
     @Override
     public void write(PacketWrapper writer, T1 inputValue) throws InformativeException {
         try {
@@ -58,11 +52,9 @@ public abstract class ValueTransformer<T1, T2> implements ValueWriter<T1> {
             throw e;
         }
     }
-
     public @Nullable Type<T1> getInputType() {
         return inputType;
     }
-
     public Type<T2> getOutputType() {
         return outputType;
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.commands.defaultsubs;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
@@ -24,23 +23,19 @@ import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import java.util.ArrayList;
 import java.util.List;
-
 public class PlayerSubCmd implements ViaSubCommand {
     @Override
     public String name() {
         return "player";
     }
-
     @Override
     public String description() {
         return "Shows connection information about one or all players.";
     }
-
     @Override
     public String usage() {
         return "player <name|*>";
     }
-
     @Override
     public boolean execute(final ViaCommandSender sender, final String[] args) {
         if (args.length == 0) {
@@ -54,12 +49,10 @@ public class PlayerSubCmd implements ViaSubCommand {
         }
         return true;
     }
-
     @Override
     public List<String> onTabComplete(final ViaCommandSender sender, final String[] args) {
         if (args.length == 1) {
             final String input = args[0].toLowerCase();
-
             final List<String> matches = new ArrayList<>();
             for (final UserConnection connection : Via.getManager().getConnectionManager().getConnections()) {
                 final String name = connection.getProtocolInfo().getUsername();

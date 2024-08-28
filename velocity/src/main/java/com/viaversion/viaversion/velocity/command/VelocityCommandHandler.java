@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,32 +13,27 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.command;
-
 import com.velocitypowered.api.command.SimpleCommand;
 import com.viaversion.viaversion.commands.ViaCommandHandler;
 import com.viaversion.viaversion.velocity.command.subs.ProbeSubCmd;
 import java.util.List;
-
 public class VelocityCommandHandler extends ViaCommandHandler implements SimpleCommand {
     public VelocityCommandHandler() {
         registerSubCommand(new ProbeSubCmd());
     }
-
     @Override
     public void execute(Invocation invocation) {
         onCommand(new VelocityCommandSender(invocation.source()), invocation.arguments());
     }
-
     @Override
     public List<String> suggest(Invocation invocation) {
         return onTabComplete(new VelocityCommandSender(invocation.source()), invocation.arguments());
     }
-
     @Override
     public boolean hasPermission(Invocation invocation) {
-        return invocation.source().hasPermission("viaversion.command"); // The permission is also referenced here to filter root suggestions (/via<tab>)
+        return invocation.source().hasPermission("viaversion.command"); 
     }
 }

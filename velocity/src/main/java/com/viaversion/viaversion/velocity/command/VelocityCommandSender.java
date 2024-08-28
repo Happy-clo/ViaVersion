@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,28 +13,23 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.command;
-
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.viaversion.viaversion.VelocityPlugin;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import java.util.UUID;
-
 public record VelocityCommandSender(CommandSource source) implements ViaCommandSender {
-
     @Override
     public boolean hasPermission(String permission) {
         return source.hasPermission(permission);
     }
-
     @Override
     public void sendMessage(String msg) {
         source.sendMessage(VelocityPlugin.COMPONENT_SERIALIZER.deserialize(msg));
     }
-
     @Override
     public UUID getUUID() {
         if (source instanceof Player player) {
@@ -42,12 +37,11 @@ public record VelocityCommandSender(CommandSource source) implements ViaCommandS
         }
         return new UUID(0, 0);
     }
-
     @Override
     public String getName() {
         if (source instanceof Player player) {
             return player.getUsername();
         }
-        return "?"; // :(
+        return "?"; 
     }
 }

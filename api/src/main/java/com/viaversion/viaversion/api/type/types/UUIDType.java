@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,32 +21,25 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import java.util.UUID;
-
 public class UUIDType extends Type<UUID> {
-
     public UUIDType() {
         super(UUID.class);
     }
-
     @Override
     public UUID read(ByteBuf buffer) {
         return new UUID(buffer.readLong(), buffer.readLong());
     }
-
     @Override
     public void write(ByteBuf buffer, UUID object) {
         buffer.writeLong(object.getMostSignificantBits());
         buffer.writeLong(object.getLeastSignificantBits());
     }
-
     public static final class OptionalUUIDType extends OptionalType<UUID> {
-
         public OptionalUUIDType() {
             super(Types.UUID);
         }

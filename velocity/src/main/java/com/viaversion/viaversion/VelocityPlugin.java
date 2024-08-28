@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion;
-
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.PostOrder;
@@ -52,19 +51,17 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.slf4j.Logger;
-
 @Plugin(
     id = "viaversion",
     name = "ViaVersion",
     version = VersionInfo.VERSION,
     authors = {"_MylesC", "creeper123123321", "Gerrygames", "kennytv", "Matsv", "EnZaXD", "RK_01"},
     description = "Allows the connection of newer clients to older server versions for Minecraft servers.",
-    url = "https://viaversion.com"
+    url = "https:
 )
 public class VelocityPlugin implements ViaServerProxyPlatform<Player> {
     public static final LegacyComponentSerializer COMPONENT_SERIALIZER = LegacyComponentSerializer.builder().character(ChatColorUtil.COLOR_CHAR).extractUrls().build();
     public static ProxyServer PROXY;
-
     @Inject
     private ProxyServer proxy;
     @Inject
@@ -72,16 +69,13 @@ public class VelocityPlugin implements ViaServerProxyPlatform<Player> {
     @Inject
     @DataDirectory
     private Path configDir;
-
     private final ProtocolDetectorService protocolDetectorService = new ProtocolDetectorService();
     private VelocityViaAPI api;
     private java.util.logging.Logger logger;
     private VelocityViaConfig conf;
-
     @Subscribe
     public void onProxyInit(ProxyInitializeEvent e) {
         if (!hasConnectionEvent()) {
-            // No way to disable the plugin :(
             Logger logger = this.loggerslf4j;
             logger.error("      / \\");
             logger.error("     /   \\");
@@ -91,7 +85,6 @@ public class VelocityPlugin implements ViaServerProxyPlatform<Player> {
             logger.error(" /     o     \\");
             logger.error("/_____________\\");
         }
-
         PROXY = proxy;
         VelocityCommandHandler commandHandler = new VelocityCommandHandler();
         PROXY.getCommandManager().register("viaver", commandHandler, "vvvelocity", "viaversion");
@@ -105,41 +98,34 @@ public class VelocityPlugin implements ViaServerProxyPlatform<Player> {
             .injector(new VelocityViaInjector()).build());
         conf.reload();
     }
-
     @Subscribe(order = PostOrder.LAST)
     public void onProxyLateInit(ProxyInitializeEvent e) {
         final ViaManagerImpl manager = (ViaManagerImpl) Via.getManager();
         manager.init();
         manager.onServerLoaded();
     }
-
     @Override
     public String getPlatformName() {
         String proxyImpl = ProxyServer.class.getPackage().getImplementationTitle();
         return (proxyImpl != null) ? proxyImpl : "Velocity";
     }
-
     @Override
     public String getPlatformVersion() {
         String version = ProxyServer.class.getPackage().getImplementationVersion();
         return (version != null) ? version : "Unknown";
     }
-
     @Override
     public boolean isProxy() {
         return true;
     }
-
     @Override
     public String getPluginVersion() {
         return VersionInfo.VERSION;
     }
-
     @Override
     public PlatformTask runAsync(Runnable runnable) {
         return runSync(runnable);
     }
-
     @Override
     public PlatformTask runRepeatingAsync(final Runnable runnable, final long ticks) {
         return new VelocityViaTask(
@@ -148,12 +134,10 @@ public class VelocityPlugin implements ViaServerProxyPlatform<Player> {
                 .repeat(ticks * 50, TimeUnit.MILLISECONDS).schedule()
         );
     }
-
     @Override
     public PlatformTask runSync(Runnable runnable) {
         return runSync(runnable, 0L);
     }
-
     @Override
     public PlatformTask runSync(Runnable runnable, long delay) {
         return new VelocityViaTask(
@@ -162,24 +146,20 @@ public class VelocityPlugin implements ViaServerProxyPlatform<Player> {
                 .delay(delay * 50, TimeUnit.MILLISECONDS).schedule()
         );
     }
-
     @Override
     public PlatformTask runRepeatingSync(Runnable runnable, long period) {
         return runRepeatingAsync(runnable, period);
     }
-
     @Override
     public ViaCommandSender[] getOnlinePlayers() {
         return PROXY.getAllPlayers().stream()
             .map(VelocityCommandSender::new)
             .toArray(ViaCommandSender[]::new);
     }
-
     @Override
     public void sendMessage(UUID uuid, String message) {
         PROXY.getPlayer(uuid).ifPresent(player -> player.sendMessage(COMPONENT_SERIALIZER.deserialize(message)));
     }
-
     @Override
     public boolean kickPlayer(UUID uuid, String message) {
         return PROXY.getPlayer(uuid).map(it -> {
@@ -187,32 +167,25 @@ public class VelocityPlugin implements ViaServerProxyPlatform<Player> {
             return true;
         }).orElse(false);
     }
-
     @Override
     public boolean isPluginEnabled() {
         return true;
     }
-
     @Override
     public File getDataFolder() {
         return configDir.toFile();
     }
-
     @Override
     public VelocityViaAPI getApi() {
         return api;
     }
-
     @Override
     public VelocityViaConfig getConf() {
         return conf;
     }
-
     @Override
     public void onReload() {
-
     }
-
     @Override
     public JsonObject getDump() {
         JsonObject extra = new JsonObject();
@@ -230,22 +203,18 @@ public class VelocityPlugin implements ViaServerProxyPlatform<Player> {
         extra.add("servers", GsonUtil.getGson().toJsonTree(protocolDetectorService.detectedProtocolVersions()));
         return extra;
     }
-
     @Override
     public boolean hasPlugin(final String name) {
         return proxy.getPluginManager().getPlugin(name).isPresent();
     }
-
     @Override
     public java.util.logging.Logger getLogger() {
         return logger;
     }
-
     @Override
     public ProtocolDetectorService protocolDetectorService() {
         return protocolDetectorService;
     }
-
     private boolean hasConnectionEvent() {
         try {
             Class.forName("com.velocitypowered.proxy.protocol.VelocityConnectionEvent");

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,23 +13,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_8to1_9.storage;
-
 import com.google.common.collect.Sets;
 import com.viaversion.viaversion.api.connection.StorableObject;
 import java.util.Set;
-
 public class ClientChunks implements StorableObject {
     private final Set<Long> loadedChunks = Sets.newConcurrentHashSet();
-
     public static long toLong(int msw, int lsw) {
         return ((long) msw << 32) + lsw + 2147483648L;
     }
-
     public Set<Long> getLoadedChunks() {
         return loadedChunks;
     }
-
 }

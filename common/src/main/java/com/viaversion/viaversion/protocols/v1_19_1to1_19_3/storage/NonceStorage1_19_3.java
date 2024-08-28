@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,12 +13,10 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19_1to1_19_3.storage;
-
 import com.viaversion.viaversion.api.connection.StorableObject;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public record NonceStorage1_19_3(byte @Nullable [] nonce) implements StorableObject {
 }

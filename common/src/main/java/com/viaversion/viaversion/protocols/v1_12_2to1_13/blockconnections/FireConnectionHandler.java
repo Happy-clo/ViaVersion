@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -25,18 +24,15 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import java.util.HashSet;
 import java.util.Set;
-
 public class FireConnectionHandler implements ConnectionHandler {
     private static final String[] WOOD_TYPES = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak"};
     private static final int[] CONNECTED_BLOCKS = new int[32];
     private static final IntSet FLAMMABLE_BLOCKS = new IntOpenHashSet();
-
     private static void addWoodTypes(Set<String> set, String suffix) {
         for (String woodType : WOOD_TYPES) {
             set.add(Key.namespaced(woodType + suffix));
         }
     }
-
     static ConnectionData.ConnectorInitAction init() {
         Set<String> flammabeIds = new HashSet<>();
         flammabeIds.add("minecraft:tnt");
@@ -51,7 +47,6 @@ public class FireConnectionHandler implements ConnectionHandler {
         addWoodTypes(flammabeIds, "_fence");
         addWoodTypes(flammabeIds, "_fence_gate");
         addWoodTypes(flammabeIds, "_stairs");
-
         FireConnectionHandler connectionHandler = new FireConnectionHandler();
         return blockData -> {
             String key = blockData.getMinecraftKey();
@@ -64,7 +59,6 @@ public class FireConnectionHandler implements ConnectionHandler {
             }
         };
     }
-
     private static byte getStates(WrappedBlockData blockData) {
         byte states = 0;
         if (blockData.getValue("east").equals("true")) states |= 1;
@@ -74,7 +68,6 @@ public class FireConnectionHandler implements ConnectionHandler {
         if (blockData.getValue("west").equals("true")) states |= 16;
         return states;
     }
-
     @Override
     public int connect(UserConnection user, BlockPosition position, int blockState) {
         byte states = 0;

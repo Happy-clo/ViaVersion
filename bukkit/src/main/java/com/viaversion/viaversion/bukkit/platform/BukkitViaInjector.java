@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.platform;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -36,45 +35,34 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class BukkitViaInjector extends LegacyViaInjector {
-
     private static final boolean HAS_WORLD_VERSION_PROTOCOL_VERSION = PaperViaInjector.hasClass("net.minecraft.SharedConstants")
         && PaperViaInjector.hasClass("net.minecraft.WorldVersion")
         && !PaperViaInjector.hasClass("com.mojang.bridge.game.GameVersion");
-
     @Override
     public void inject() throws ReflectiveOperationException {
         if (PaperViaInjector.PAPER_INJECTION_METHOD) {
             PaperViaInjector.setPaperChannelInitializeListener();
             return;
         }
-
         super.inject();
     }
-
     @Override
     public void uninject() throws ReflectiveOperationException {
         if (PaperViaInjector.PAPER_INJECTION_METHOD) {
             PaperViaInjector.removePaperChannelInitializeListener();
             return;
         }
-
         super.uninject();
     }
-
     @Override
     public ProtocolVersion getServerProtocolVersion() throws ReflectiveOperationException {
         if (PaperViaInjector.PAPER_PROTOCOL_METHOD) {
-            //noinspection deprecation
             return ProtocolVersion.getProtocol(Bukkit.getUnsafe().getProtocolVersion());
         }
-
         return ProtocolVersion.getProtocol(HAS_WORLD_VERSION_PROTOCOL_VERSION ? cursedProtocolDetection() : veryCursedProtocolDetection());
     }
-
     private int cursedProtocolDetection() throws ReflectiveOperationException {
-        // Get the version from SharedConstants.getWorldVersion().getProtocolVersion()
         Class<?> sharedConstantsClass = Class.forName("net.minecraft.SharedConstants");
         Class<?> worldVersionClass = Class.forName("net.minecraft.WorldVersion");
         Method getWorldVersionMethod = null;
@@ -85,7 +73,6 @@ public class BukkitViaInjector extends LegacyViaInjector {
             }
         }
         Preconditions.checkNotNull(getWorldVersionMethod, "Failed to get world version method");
-
         Object worldVersion = getWorldVersionMethod.invoke(null);
         for (Method method : worldVersionClass.getDeclaredMethods()) {
             if (method.getReturnType() == int.class && method.getParameterTypes().length == 0) {
@@ -94,15 +81,10 @@ public class BukkitViaInjector extends LegacyViaInjector {
         }
         throw new IllegalAccessException("Failed to find protocol version method in WorldVersion");
     }
-
     private int veryCursedProtocolDetection() throws ReflectiveOperationException {
-        // Time to go on a journey! The protocol version is hidden inside an int in ServerPing.ServerData, that is only set once the server has ticked once
-        // Grab a static instance of the server
         Class<?> serverClazz = NMSUtil.nms("MinecraftServer", "net.minecraft.server.MinecraftServer");
         Object server = ReflectionUtil.invokeStatic(serverClazz, "getServer");
         Preconditions.checkNotNull(server, "Failed to get server instance");
-
-        // Grab the ping class and find the field to access it
         Class<?> pingClazz = NMSUtil.nms(
             "ServerPing",
             "net.minecraft.network.protocol.status.ServerPing"
@@ -116,8 +98,6 @@ public class BukkitViaInjector extends LegacyViaInjector {
             }
         }
         Preconditions.checkNotNull(ping, "Failed to get server ping");
-
-        // Now get the ServerData inside ServerPing
         Class<?> serverDataClass = NMSUtil.nms(
             "ServerPing$ServerData",
             "net.minecraft.network.protocol.status.ServerPing$ServerData"
@@ -131,13 +111,10 @@ public class BukkitViaInjector extends LegacyViaInjector {
             }
         }
         Preconditions.checkNotNull(serverData, "Failed to get server data");
-
-        // Get protocol version field
         for (Field field : serverDataClass.getDeclaredFields()) {
             if (field.getType() != int.class) {
                 continue;
             }
-
             field.setAccessible(true);
             int protocolVersion = (int) field.get(serverData);
             if (protocolVersion != -1) {
@@ -146,7 +123,6 @@ public class BukkitViaInjector extends LegacyViaInjector {
         }
         throw new RuntimeException("Failed to get server");
     }
-
     @Override
     protected @Nullable Object getServerConnection() throws ReflectiveOperationException {
         Class<?> serverClass = NMSUtil.nms(
@@ -157,14 +133,11 @@ public class BukkitViaInjector extends LegacyViaInjector {
             "ServerConnection",
             "net.minecraft.server.network.ServerConnection"
         );
-
         Object server = ReflectionUtil.invokeStatic(serverClass, "getServer");
         for (Method method : serverClass.getDeclaredMethods()) {
             if (method.getReturnType() != connectionClass || method.getParameterTypes().length != 0) {
                 continue;
             }
-
-            // We need the method that initiates the connection if not yet set
             Object connection = method.invoke(server);
             if (connection != null) {
                 return connection;
@@ -172,15 +145,12 @@ public class BukkitViaInjector extends LegacyViaInjector {
         }
         return null;
     }
-
     @Override
     protected WrappedChannelInitializer createChannelInitializer(ChannelInitializer<Channel> oldInitializer) {
         return new BukkitChannelInitializer(oldInitializer);
     }
-
     @Override
     protected void blame(ChannelHandler bootstrapAcceptor) throws ReflectiveOperationException {
-        // Let's find who to blame!
         ClassLoader classLoader = bootstrapAcceptor.getClass().getClassLoader();
         if (classLoader.getClass().getName().equals("org.bukkit.plugin.java.PluginClassLoader")) {
             PluginDescriptionFile description = ReflectionUtil.get(classLoader, "description", PluginDescriptionFile.class);
@@ -189,12 +159,10 @@ public class BukkitViaInjector extends LegacyViaInjector {
             throw new RuntimeException("Unable to find core component 'childHandler', please check your plugins. issue: " + bootstrapAcceptor.getClass().getName());
         }
     }
-
     @Override
     public boolean lateProtocolVersionSetting() {
         return !(PaperViaInjector.PAPER_PROTOCOL_METHOD || HAS_WORLD_VERSION_PROTOCOL_VERSION);
     }
-
     public boolean isBinded() {
         if (PaperViaInjector.PAPER_INJECTION_METHOD) {
             return true;
@@ -204,15 +172,12 @@ public class BukkitViaInjector extends LegacyViaInjector {
             if (connection == null) {
                 return false;
             }
-
             for (Field field : connection.getClass().getDeclaredFields()) {
                 if (!List.class.isAssignableFrom(field.getType())) {
                     continue;
                 }
-
                 field.setAccessible(true);
                 List<?> value = (List<?>) field.get(connection);
-                // Check if the list has at least one element
                 synchronized (value) {
                     if (!value.isEmpty() && value.get(0) instanceof ChannelFuture) {
                         return true;

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,36 +21,29 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.TypeConverter;
 import io.netty.buffer.ByteBuf;
-
 public class ByteType extends Type<Byte> implements TypeConverter<Byte> {
     public ByteType() {
         super(Byte.class);
     }
-
     public byte readPrimitive(ByteBuf buffer) {
         return buffer.readByte();
     }
-
     public void writePrimitive(ByteBuf buffer, byte object) {
         buffer.writeByte(object);
     }
-
     @Override
     @Deprecated
     public Byte read(ByteBuf buffer) {
         return buffer.readByte();
     }
-
     @Override
     @Deprecated
     public void write(ByteBuf buffer, Byte object) {
         buffer.writeByte(object);
     }
-
     @Override
     public Byte from(Object o) {
         if (o instanceof Number number) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,41 +21,34 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.minecraft.data.StructuredDataContainer;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface Item {
-
     /**
      * Returns the item identifier.
      *
      * @return item identifier
      */
     int identifier();
-
     /**
      * Sets the item identifier.
      *
      * @param identifier item identifier
      */
     void setIdentifier(int identifier);
-
     /**
      * Returns the item amount.
      *
      * @return item amount
      */
     int amount();
-
     /**
      * Returns the item amount.
      *
      * @param amount item amount
      */
     void setAmount(int amount);
-
     /**
      * Returns the item data. Always 0 for 1.13+ items.
      *
@@ -64,7 +57,6 @@ public interface Item {
     default short data() {
         return 0;
     }
-
     /**
      * Sets the item data used in versions before 1.13.
      *
@@ -74,7 +66,6 @@ public interface Item {
     default void setData(short data) {
         throw new UnsupportedOperationException();
     }
-
     /**
      * Returns the item compound tag if present.
      *
@@ -82,28 +73,24 @@ public interface Item {
      */
     @Nullable
     CompoundTag tag();
-
     /**
      * Sets the item compound tag.
      *
      * @param tag item tag
      */
     void setTag(@Nullable CompoundTag tag);
-
     /**
      * Returns the data container for item data components.
      *
      * @return the data container
      */
     StructuredDataContainer dataContainer();
-
     /**
      * Returns a copy of the item.
      *
      * @return copy of the item
      */
     Item copy();
-
     /**
      * Returns true if the item is empty.
      *

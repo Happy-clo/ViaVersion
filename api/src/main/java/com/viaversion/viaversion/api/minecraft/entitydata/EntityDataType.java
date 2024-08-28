@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,50 +21,40 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.entitydata;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.type.Type;
-
 public interface EntityDataType {
-
     /**
      * Get the write/read type
      *
      * @return Type instance
      */
     Type type();
-
     /**
      * Get type id from the specific EntityDataType
      *
      * @return Type id as an integer
      */
     int typeId();
-
     static EntityDataType create(final int typeId, final Type<?> type) {
         return new EntityDataTypeImpl(typeId, type);
     }
-
     final class EntityDataTypeImpl implements EntityDataType {
         private final int typeId;
         private final Type<?> type;
-
         EntityDataTypeImpl(final int typeId, final Type<?> type) {
             Preconditions.checkNotNull(type);
             this.typeId = typeId;
             this.type = type;
         }
-
         @Override
         public int typeId() {
             return typeId;
         }
-
         @Override
         public Type<?> type() {
             return type;
         }
-
         @Override
         public String toString() {
             return "EntityDataTypeImpl{" +
@@ -72,7 +62,6 @@ public interface EntityDataType {
                 ", type=" + type +
                 '}';
         }
-
         @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
@@ -81,7 +70,6 @@ public interface EntityDataType {
             if (typeId != dataType.typeId) return false;
             return type.equals(dataType.type);
         }
-
         @Override
         public int hashCode() {
             int result = typeId;

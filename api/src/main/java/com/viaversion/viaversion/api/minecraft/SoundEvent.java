@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public record SoundEvent(String identifier, @Nullable Float fixedRange) {
-
     public SoundEvent withIdentifier(final String identifier) {
         return new SoundEvent(identifier, this.fixedRange);
     }

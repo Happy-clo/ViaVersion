@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,12 +13,10 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.util;
-
 import java.util.Arrays;
-
 /**
  * For type safety and effort reasons, buffer types use arrays instead of lists.
  * <p>
@@ -26,14 +24,12 @@ import java.util.Arrays;
  * (obviously being more expensive due to the required array copies for every modification).
  */
 public final class ArrayUtil {
-
     public static <T> T[] add(final T[] array, final T element) {
         final int length = array.length;
         final T[] newArray = Arrays.copyOf(array, length + 1);
         newArray[length] = element;
         return newArray;
     }
-
     @SafeVarargs
     public static <T> T[] add(final T[] array, final T... elements) {
         final int length = array.length;
@@ -41,7 +37,6 @@ public final class ArrayUtil {
         System.arraycopy(elements, 0, newArray, length, elements.length);
         return newArray;
     }
-
     public static <T> T[] remove(final T[] array, final int index) {
         final T[] newArray = Arrays.copyOf(array, array.length - 1);
         System.arraycopy(array, index + 1, newArray, index, newArray.length - index);

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_8to1_9.storage;
-
 import com.google.common.cache.CacheBuilder;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -49,7 +48,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
 public class EntityTracker1_9 extends EntityTrackerBase {
     public static final String WITHER_TRANSLATABLE = "{\"translate\":\"entity.WitherBoss.name\"}";
     public static final String DRAGON_TRANSLATABLE = "{\"translate\":\"entity.EnderDragon.name\"}";
@@ -71,46 +69,35 @@ public class EntityTracker1_9 extends EntityTrackerBase {
     private String currentTeam;
     private int heldItemSlot;
     private Item itemInSecondHand;
-
     public EntityTracker1_9(UserConnection user) {
         super(user, EntityType.PLAYER);
     }
-
     public UUID getEntityUUID(int id) {
         return uuidMap.computeIfAbsent(id, k -> UUID.randomUUID());
     }
-
     public void setSecondHand(Item item) {
         setSecondHand(clientEntityId(), item);
     }
-
     public void setSecondHand(int entityID, Item item) {
         PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_9.SET_EQUIPPED_ITEM, null, user());
         wrapper.write(Types.VAR_INT, entityID);
-        wrapper.write(Types.VAR_INT, 1); // slot
+        wrapper.write(Types.VAR_INT, 1); 
         wrapper.write(Types.ITEM1_8, this.itemInSecondHand = item);
         wrapper.scheduleSend(Protocol1_8To1_9.class);
     }
-
     public Item getItemInSecondHand() {
         return itemInSecondHand;
     }
-
     /**
      * It will set a shield to the offhand if a sword is in the main hand.
      * The item in the offhand will be cleared if there is no sword in the main hand.
      */
     public void syncShieldWithSword() {
         boolean swordInHand = hasSwordInHand();
-
-        // Update if there is no sword in the main hand or if the player has no shield in the second hand but a sword in the main hand
         if (!swordInHand || this.itemInSecondHand == null) {
-
-            // Update shield in off-hand depending on whether a sword is in the main hand
             setSecondHand(swordInHand ? new DataItem(442, (byte) 1, (short) 0, null) : null);
         }
     }
-
     /**
      * Returns true if the item in the held inventory slot is a sword.
      *
@@ -118,31 +105,23 @@ public class EntityTracker1_9 extends EntityTrackerBase {
      */
     public boolean hasSwordInHand() {
         InventoryTracker inventoryTracker = user().get(InventoryTracker.class);
-
-        // Get item in new selected slot
-        int inventorySlot = this.heldItemSlot + 36; // Hotbar slot index to inventory slot
+        int inventorySlot = this.heldItemSlot + 36; 
         int itemIdentifier = inventoryTracker.getItemId((short) 0, (short) inventorySlot);
-
         return Protocol1_8To1_9.isSword(itemIdentifier);
     }
-
     @Override
     public void removeEntity(int entityId) {
         super.removeEntity(entityId);
-
         vehicleMap.remove(entityId);
         uuidMap.remove(entityId);
         validBlocking.remove(entityId);
         knownHolograms.remove(entityId);
-
         BossBar bar = bossBarMap.remove(entityId);
         if (bar != null) {
             bar.hide();
-            // Send to provider
             Via.getManager().getProviders().get(BossBarProvider.class).handleRemove(user(), bar.getId());
         }
     }
-
     public boolean interactedBlockRecently(final int x, final int y, final int z) {
         for (final BlockPosition position : blockInteractions) {
             if (Math.abs(position.x() - x) <= 1 && Math.abs(position.y() - y) <= 1 && Math.abs(position.z() - z) <= 1) {
@@ -151,36 +130,28 @@ public class EntityTracker1_9 extends EntityTrackerBase {
         }
         return false;
     }
-
     public void addBlockInteraction(BlockPosition p) {
         blockInteractions.add(p);
     }
-
     public void handleEntityData(int entityId, List<EntityData> entityDataList) {
         com.viaversion.viaversion.api.minecraft.entities.EntityType type = entityType(entityId);
         if (type == null) {
             return;
         }
-
         for (EntityData entityData : new ArrayList<>(entityDataList)) {
             if (type == EntityType.SKELETON) {
                 if ((getDataByIndex(entityDataList, 12)) == null) {
                     entityDataList.add(new EntityData(12, EntityDataTypes1_9.BOOLEAN, true));
                 }
             }
-
-            // 1.8 can handle out of range values and will just not show any armor, 1.9+ clients will get
-            // exceptions and won't render the entity at all
             if (type == EntityType.HORSE && entityData.id() == 16) {
                 final int value = entityData.value();
-                if (value < 0 || value > 3) { // no armor, iron armor, gold armor and diamond armor
+                if (value < 0 || value > 3) { 
                     entityData.setValue(0);
                 }
             }
-
             if (type == EntityType.PLAYER) {
                 if (entityData.id() == 0) {
-                    // Byte
                     byte data = (byte) entityData.getValue();
                     if (entityId != getProvidedEntityId() && Via.getConfig().isShieldBlocking()) {
                         if ((data & 0x10) == 0x10) {
@@ -195,9 +166,9 @@ public class EntityTracker1_9 extends EntityTrackerBase {
                         }
                     }
                 }
-                if (entityData.id() == 12 && Via.getConfig().isLeftHandedHandling()) { // Player model
+                if (entityData.id() == 12 && Via.getConfig().isLeftHandedHandling()) { 
                     entityDataList.add(new EntityData(
-                        13, // Main hand
+                        13, 
                         EntityDataTypes1_9.BYTE,
                         (byte) (((((byte) entityData.getValue()) & 0x80) != 0) ? 0 : 1)
                     ));
@@ -205,9 +176,8 @@ public class EntityTracker1_9 extends EntityTrackerBase {
             }
             if (type == EntityType.ARMOR_STAND && Via.getConfig().isHologramPatch()) {
                 if (entityData.id() == 0 && getDataByIndex(entityDataList, 10) != null) {
-                    EntityData data = getDataByIndex(entityDataList, 10); //Only happens if the armorstand is small
+                    EntityData data = getDataByIndex(entityDataList, 10); 
                     byte value = (byte) entityData.getValue();
-                    // Check invisible | Check small | Check if custom name is empty | Check if custom name visible is true
                     EntityData displayName;
                     EntityData displayNameVisible;
                     if ((value & 0x20) == 0x20 && ((byte) data.getValue() & 0x01) == 0x01
@@ -215,7 +185,6 @@ public class EntityTracker1_9 extends EntityTrackerBase {
                         && (displayNameVisible = getDataByIndex(entityDataList, 3)) != null && (boolean) displayNameVisible.getValue()) {
                         if (!knownHolograms.contains(entityId)) {
                             knownHolograms.add(entityId);
-                            // Send movement
                             PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_9.MOVE_ENTITY_POS, null, user());
                             wrapper.write(Types.VAR_INT, entityId);
                             wrapper.write(Types.SHORT, (short) 0);
@@ -227,7 +196,6 @@ public class EntityTracker1_9 extends EntityTrackerBase {
                     }
                 }
             }
-            // Boss bar
             if (Via.getConfig().isBossbarPatch()) {
                 if (type == EntityType.ENDER_DRAGON || type == EntityType.WITHER) {
                     if (entityData.id() == 2) {
@@ -239,15 +207,12 @@ public class EntityTracker1_9 extends EntityTrackerBase {
                             bossBarMap.put(entityId, bar);
                             bar.addConnection(user());
                             bar.show();
-
-                            // Send to provider
                             Via.getManager().getProviders().get(BossBarProvider.class).handleAdd(user(), bar.getId());
                         } else {
                             bar.setTitle(title);
                         }
-                    } else if (entityData.id() == 6 && !Via.getConfig().isBossbarAntiflicker()) { // If anti flicker is enabled, don't update health
+                    } else if (entityData.id() == 6 && !Via.getConfig().isBossbarAntiflicker()) { 
                         BossBar bar = bossBarMap.get(entityId);
-                        // Make health range between 0 and 1
                         float maxHealth = type == EntityType.ENDER_DRAGON ? 200.0f : 300.0f;
                         float health = Math.max(0.0f, Math.min(((float) entityData.getValue()) / maxHealth, 1.0f));
                         if (bar == null) {
@@ -256,7 +221,6 @@ public class EntityTracker1_9 extends EntityTrackerBase {
                             bossBarMap.put(entityId, bar);
                             bar.addConnection(user());
                             bar.show();
-                            // Send to provider
                             Via.getManager().getProviders().get(BossBarProvider.class).handleAdd(user(), bar.getId());
                         } else {
                             bar.setHealth(health);
@@ -266,7 +230,6 @@ public class EntityTracker1_9 extends EntityTrackerBase {
             }
         }
     }
-
     public EntityData getDataByIndex(List<EntityData> list, int index) {
         for (EntityData data : list)
             if (index == data.id()) {
@@ -274,27 +237,25 @@ public class EntityTracker1_9 extends EntityTrackerBase {
             }
         return null;
     }
-
     public void sendTeamPacket(boolean add, boolean now) {
         PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_9.SET_PLAYER_TEAM, null, user());
-        wrapper.write(Types.STRING, "viaversion"); // Use viaversion as name
+        wrapper.write(Types.STRING, "viaversion"); 
         if (add) {
-            // add
             if (!teamExists) {
-                wrapper.write(Types.BYTE, (byte) 0); // make team
+                wrapper.write(Types.BYTE, (byte) 0); 
                 wrapper.write(Types.STRING, "viaversion");
-                wrapper.write(Types.STRING, "§f"); // prefix
-                wrapper.write(Types.STRING, ""); // suffix
-                wrapper.write(Types.BYTE, (byte) 0); // friendly fire
-                wrapper.write(Types.STRING, ""); // nametags
-                wrapper.write(Types.STRING, "never"); // collision rule :)
-                wrapper.write(Types.BYTE, (byte) 15); // color
+                wrapper.write(Types.STRING, "§f"); 
+                wrapper.write(Types.STRING, ""); 
+                wrapper.write(Types.BYTE, (byte) 0); 
+                wrapper.write(Types.STRING, ""); 
+                wrapper.write(Types.STRING, "never"); 
+                wrapper.write(Types.BYTE, (byte) 15); 
             } else {
                 wrapper.write(Types.BYTE, (byte) 3);
             }
             wrapper.write(Types.STRING_ARRAY, new String[]{user().getProtocolInfo().getUsername()});
         } else {
-            wrapper.write(Types.BYTE, (byte) 1); // remove team
+            wrapper.write(Types.BYTE, (byte) 1); 
         }
         teamExists = add;
         if (now) {
@@ -303,7 +264,6 @@ public class EntityTracker1_9 extends EntityTrackerBase {
             wrapper.scheduleSend(Protocol1_8To1_9.class);
         }
     }
-
     public int getProvidedEntityId() {
         try {
             return Via.getManager().getProviders().get(EntityIdProvider.class).getEntityId(user());
@@ -311,75 +271,57 @@ public class EntityTracker1_9 extends EntityTrackerBase {
             return clientEntityId();
         }
     }
-
     public Int2ObjectMap<UUID> getUuidMap() {
         return uuidMap;
     }
-
     public Int2IntMap getVehicleMap() {
         return vehicleMap;
     }
-
     public Int2ObjectMap<BossBar> getBossBarMap() {
         return bossBarMap;
     }
-
     public IntSet getValidBlocking() {
         return validBlocking;
     }
-
     public IntSet getKnownHolograms() {
         return knownHolograms;
     }
-
     public Set<BlockPosition> getBlockInteractions() {
         return blockInteractions;
     }
-
     public boolean isBlocking() {
         return blocking;
     }
-
     public void setBlocking(boolean blocking) {
         this.blocking = blocking;
     }
-
     public boolean isAutoTeam() {
         return autoTeam;
     }
-
     public void setAutoTeam(boolean autoTeam) {
         this.autoTeam = autoTeam;
     }
-
     public BlockPosition getCurrentlyDigging() {
         return currentlyDigging;
     }
-
     public void setCurrentlyDigging(BlockPosition currentlyDigging) {
         this.currentlyDigging = currentlyDigging;
     }
-
     public boolean isTeamExists() {
         return teamExists;
     }
-
     public GameMode getGameMode() {
         return gameMode;
     }
-
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
     }
-
     public String getCurrentTeam() {
         return currentTeam;
     }
-
     public void setCurrentTeam(String currentTeam) {
         this.currentTeam = currentTeam;
     }
-
     public void setHeldItemSlot(int heldItemSlot) {
         this.heldItemSlot = heldItemSlot;
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,19 +13,15 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_11_1to1_12.data;
-
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 public class AchievementTranslations1_12 {
-
     private static final Object2ObjectOpenHashMap<String, String> ACHIEVEMENTS = new Object2ObjectOpenHashMap<>(150, 0.99f);
     private static final Set<String> SPECIAL_ACHIEVEMENTS = new HashSet<>(10);
-
     static {
         add("chat.type.achievement", "%s has just earned the achievement %s");
         add("chat.type.achievement.taken", "%s has lost the achievement %s");
@@ -178,22 +174,17 @@ public class AchievementTranslations1_12 {
         add("achievement.bookcase", "Librarian");
         add("achievement.bookcase.desc", "Build some bookshelves to improve your enchantment table");
     }
-
     private static void add(String key, String value) {
         ACHIEVEMENTS.put(key, value);
     }
-
     private static void addSpecial(String key, String value) {
         add(key, value);
         SPECIAL_ACHIEVEMENTS.add(key);
     }
-
     public static String get(String key) {
         return ACHIEVEMENTS.get(key);
     }
-
     public static boolean isSpecial(String key) {
         return SPECIAL_ACHIEVEMENTS.contains(key);
     }
-
 }

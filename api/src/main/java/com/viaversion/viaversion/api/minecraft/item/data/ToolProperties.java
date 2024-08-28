@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-
 public record ToolProperties(ToolRule[] rules, float defaultMiningSpeed, int damagePerBlock) {
-
     public static final Type<ToolProperties> TYPE = new Type<>(ToolProperties.class) {
         @Override
         public ToolProperties read(final ByteBuf buffer) {
@@ -37,7 +34,6 @@ public record ToolProperties(ToolRule[] rules, float defaultMiningSpeed, int dam
             final int damagePerBlock = Types.VAR_INT.readPrimitive(buffer);
             return new ToolProperties(rules, defaultMiningSpeed, damagePerBlock);
         }
-
         @Override
         public void write(final ByteBuf buffer, final ToolProperties value) {
             ToolRule.ARRAY_TYPE.write(buffer, value.rules());
@@ -45,7 +41,6 @@ public record ToolProperties(ToolRule[] rules, float defaultMiningSpeed, int dam
             Types.VAR_INT.writePrimitive(buffer, value.damagePerBlock());
         }
     };
-
     public ToolProperties rewrite(final Int2IntFunction blockIdRewriter) {
         final ToolRule[] rules = new ToolRule[this.rules.length];
         for (int i = 0; i < rules.length; i++) {

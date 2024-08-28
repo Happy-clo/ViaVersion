@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-
 public record Enchantments(Int2IntMap enchantments, boolean showInTooltip) {
-
     public static final Type<Enchantments> TYPE = new Type<>(Enchantments.class) {
         @Override
         public Enchantments read(final ByteBuf buffer) {
@@ -40,10 +37,8 @@ public record Enchantments(Int2IntMap enchantments, boolean showInTooltip) {
                 final int level = Types.VAR_INT.readPrimitive(buffer);
                 enchantments.put(id, level);
             }
-
             return new Enchantments(enchantments, buffer.readBoolean());
         }
-
         @Override
         public void write(final ByteBuf buffer, final Enchantments value) {
             Types.VAR_INT.writePrimitive(buffer, value.enchantments.size());
@@ -54,27 +49,21 @@ public record Enchantments(Int2IntMap enchantments, boolean showInTooltip) {
             buffer.writeBoolean(value.showInTooltip());
         }
     };
-
     public Enchantments(final boolean showInTooltip) {
         this(new Int2IntOpenHashMap(), showInTooltip);
     }
-
     public int size() {
         return enchantments.size();
     }
-
     public void add(final int id, final int level) {
         enchantments.put(id, level);
     }
-
     public void remove(final int id) {
         enchantments.remove(id);
     }
-
     public void clear() {
         enchantments.clear();
     }
-
     public int getLevel(final int id) {
         return enchantments.getOrDefault(id, -1);
     }

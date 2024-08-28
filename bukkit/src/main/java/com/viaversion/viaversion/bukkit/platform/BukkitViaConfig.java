@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,16 +13,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.platform;
-
 import com.viaversion.viaversion.configuration.AbstractViaConfig;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 public class BukkitViaConfig extends AbstractViaConfig {
     private boolean quickMoveActionFix;
     private boolean hitboxFix1_9;
@@ -33,11 +31,9 @@ public class BukkitViaConfig extends AbstractViaConfig {
     private boolean useNewDeathMessages;
     private boolean itemCache;
     private boolean nmsPlayerTicking;
-
     public BukkitViaConfig(final File folder, final Logger logger) {
         super(new File(folder, "config.yml"), logger);
     }
-
     @Override
     protected void loadFields() {
         super.loadFields();
@@ -51,56 +47,45 @@ public class BukkitViaConfig extends AbstractViaConfig {
         itemCache = getBoolean("item-cache", true);
         nmsPlayerTicking = getBoolean("nms-player-ticking", true);
     }
-
     @Override
     protected void handleConfig(Map<String, Object> config) {
     }
-
     @Override
     public boolean shouldRegisterUserConnectionOnJoin() {
         return registerUserConnectionOnJoin;
     }
-
     @Override
     public boolean is1_12QuickMoveActionFix() {
         return quickMoveActionFix;
     }
-
     @Override
     public boolean is1_9HitboxFix() {
         return hitboxFix1_9;
     }
-
     @Override
     public boolean is1_14HitboxFix() {
         return hitboxFix1_14;
     }
-
     @Override
     public String getBlockConnectionMethod() {
         return blockConnectionMethod;
     }
-
     @Override
     public boolean isArmorToggleFix() {
         return armorToggleFix;
     }
-
     @Override
     public boolean isShowNewDeathMessages() {
         return useNewDeathMessages;
     }
-
     @Override
     public boolean isItemCache() {
         return itemCache;
     }
-
     @Override
     public boolean isNMSPlayerTicking() {
         return nmsPlayerTicking;
     }
-
     @Override
     public List<String> getUnsupportedOptions() {
         return VELOCITY_ONLY_OPTIONS;

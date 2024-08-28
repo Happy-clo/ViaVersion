@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,17 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.entitydata;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.types.EntityDataTypes;
-
 public final class EntityDataType extends ModernEntityDataType {
-
     private final EntityDataTypes dataTypes;
-
     public EntityDataType(final EntityDataTypes dataTypes) {
         this.dataTypes = dataTypes;
     }
-
     @Override
     protected com.viaversion.viaversion.api.minecraft.entitydata.EntityDataType getType(final int index) {
         return dataTypes.byId(index);

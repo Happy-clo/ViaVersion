@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,10 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
-
 /**
  * Byte array with a short prefix, used in 1.7
  */
@@ -32,13 +30,11 @@ public class ShortByteArrayType extends Type<byte[]> {
     public ShortByteArrayType() {
         super(byte[].class);
     }
-
     @Override
     public void write(ByteBuf buffer, byte[] object) {
         buffer.writeShort(object.length);
         buffer.writeBytes(object);
     }
-
     @Override
     public byte[] read(ByteBuf buffer) {
         byte[] array = new byte[buffer.readShort()];

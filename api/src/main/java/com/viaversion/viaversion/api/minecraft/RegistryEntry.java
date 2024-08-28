@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,10 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import com.viaversion.nbt.tag.Tag;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Represents an entry in a registry.
  *
@@ -32,7 +30,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @param tag data of the registry entry, or null if the client should use its default
  */
 public record RegistryEntry(String key, @Nullable Tag tag) {
-
     public RegistryEntry withKey(final String key) {
         return new RegistryEntry(key, tag != null ? tag.copy() : null);
     }

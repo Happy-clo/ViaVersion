@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,15 +13,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_8to1_9.data;
-
 import java.util.HashMap;
 import java.util.Map;
-
 public enum SoundEffectMappings1_9 {
-
     MOB_HORSE_ZOMBIE_IDLE("mob.horse.zombie.idle", "entity.zombie_horse.ambient", SoundCategories1_8.NEUTRAL),
     NOTE_SNARE("note.snare", "block.note.snare", SoundCategories1_8.RECORD),
     RANDOM_WOOD_CLICK("random.wood_click", "block.wood_button.click_on", SoundCategories1_8.BLOCK),
@@ -170,7 +167,7 @@ public enum SoundEffectMappings1_9 {
     MOB_CAT_HISS("mob.cat.hiss", "entity.cat.hiss", SoundCategories1_8.NEUTRAL),
     NOTE_BD("note.bd", "block.note.basedrum", SoundCategories1_8.RECORD),
     MOB_SPIDER_SAY("mob.spider.say", "entity.spider.ambient", SoundCategories1_8.HOSTILE),
-    STEP_STONE("step.stone", "block.stone.step", SoundCategories1_8.NEUTRAL, true), //Is used for glass placement sound
+    STEP_STONE("step.stone", "block.stone.step", SoundCategories1_8.NEUTRAL, true), 
     RANDOM_LEVELUP("random.levelup", "entity.player.levelup", SoundCategories1_8.PLAYER),
     LIQUID_LAVAPOP("liquid.lavapop", "block.lava.pop", SoundCategories1_8.BLOCK),
     MOB_SHEEP_SAY("mob.sheep.say", "entity.sheep.ambient", SoundCategories1_8.NEUTRAL),
@@ -268,51 +265,41 @@ public enum SoundEffectMappings1_9 {
     RECORDS_WAIT("records.wait", "record.wait", SoundCategories1_8.RECORD),
     MUSIC_GAME_END_CREDITS("music.game.end.credits", "music.credits", SoundCategories1_8.MUSIC),
     MUSIC_GAME_CREATIVE("music.game.creative", "music.creative", SoundCategories1_8.MUSIC);
-
     private final String name;
     private final String newName;
     private final SoundCategories1_8 category;
     private final boolean breakSound;
-
     private static final Map<String, SoundEffectMappings1_9> effects;
-
     static {
         effects = new HashMap<>();
         for (SoundEffectMappings1_9 e : SoundEffectMappings1_9.values()) {
             effects.put(e.getName(), e);
         }
     }
-
     SoundEffectMappings1_9(String name, String newName, SoundCategories1_8 category) {
         this.category = category;
         this.newName = newName;
         this.name = name;
         this.breakSound = name.startsWith("dig.");
     }
-
     SoundEffectMappings1_9(String name, String newName, SoundCategories1_8 category, boolean shouldIgnore) {
         this.category = category;
         this.newName = newName;
         this.name = name;
         this.breakSound = name.startsWith("dig.") || shouldIgnore;
     }
-
     public static SoundEffectMappings1_9 getByName(String name) {
         return effects.get(name);
     }
-
     public String getName() {
         return name;
     }
-
     public String getNewName() {
         return newName;
     }
-
     public SoundCategories1_8 getCategory() {
         return category;
     }
-
     public boolean isBreakSound() {
         return breakSound;
     }

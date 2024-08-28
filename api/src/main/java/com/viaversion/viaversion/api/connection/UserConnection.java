@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.connection;
-
 import com.viaversion.viaversion.api.configuration.ViaVersionConfig;
 import com.viaversion.viaversion.api.data.entity.EntityTracker;
 import com.viaversion.viaversion.api.protocol.Protocol;
@@ -37,9 +36,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface UserConnection {
-
     /**
      * Get an object from the storage.
      *
@@ -48,7 +45,6 @@ public interface UserConnection {
      * @return The requested object
      */
     @Nullable <T extends StorableObject> T get(Class<T> objectClass);
-
     /**
      * Check if the storage has an object.
      *
@@ -56,7 +52,6 @@ public interface UserConnection {
      * @return True if the object is in the storage
      */
     boolean has(Class<? extends StorableObject> objectClass);
-
     /**
      * Removes and returns an object from the storage.
      *
@@ -65,21 +60,18 @@ public interface UserConnection {
      * @return removed storable object if present
      */
     @Nullable <T extends StorableObject> T remove(Class<T> objectClass);
-
     /**
      * Put an object into the stored objects based on class.
      *
      * @param object The object to store.
      */
     void put(StorableObject object);
-
     /**
      * Returns a collection of entity trackers currently registered.
      *
      * @return collection of entity trackers currently registered
      */
     Collection<EntityTracker> getEntityTrackers();
-
     /**
      * Returns the entity tracker by the given protocol class if present.
      *
@@ -88,7 +80,6 @@ public interface UserConnection {
      * @return entity tracker if present
      */
     @Nullable <T extends EntityTracker> T getEntityTracker(Class<? extends Protocol> protocolClass);
-
     /**
      * Adds an entity tracker to the user connection.
      * Does not override existing entity trackers.
@@ -97,14 +88,12 @@ public interface UserConnection {
      * @param tracker       entity tracker
      */
     void addEntityTracker(Class<? extends Protocol> protocolClass, EntityTracker tracker);
-
     /**
      * Clear stored objects and entity trackers.
      */
     default void clearStoredObjects() {
         clearStoredObjects(false);
     }
-
     /**
      * Clear stored objects and entity trackers.
      * If cleared for a proxy server switch, some stored objects and tracker data will be retained.
@@ -112,21 +101,18 @@ public interface UserConnection {
      * @param isServerSwitch whether the clear is due to a server switch
      */
     void clearStoredObjects(boolean isServerSwitch);
-
     /**
      * Sends a raw packet to the connection on the current thread.
      *
      * @param packet raw packet to send
      */
     void sendRawPacket(ByteBuf packet);
-
     /**
      * Send a raw packet to the player, submitted to the netty event loop.
      *
      * @param packet raw packet to send
      */
     void scheduleSendRawPacket(ByteBuf packet);
-
     /**
      * Send a raw packet to the player with returning the future.
      *
@@ -134,49 +120,42 @@ public interface UserConnection {
      * @return ChannelFuture of the packet being sent
      */
     ChannelFuture sendRawPacketFuture(ByteBuf packet);
-
     /**
      * Returns the user's packet tracker used for the inbuilt packet-limiter.
      *
      * @return packet tracker
      */
     PacketTracker getPacketTracker();
-
     /**
      * Disconnect a connection.
      *
      * @param reason The reason to use, not used if player is not active.
      */
     void disconnect(String reason);
-
     /**
      * Sends a raw packet to the server on the current thread.
      *
      * @param packet raw packet to be sent
      */
     void sendRawPacketToServer(ByteBuf packet);
-
     /**
      * Sends a raw packet to the server, submitted to the netty event loop.
      *
      * @param packet raw packet to be sent
      */
     void scheduleSendRawPacketToServer(ByteBuf packet);
-
     /**
      * Monitors serverbound packets and returns whether a packet can/should be processed.
      *
      * @return false if this packet should be cancelled
      */
     boolean checkServerboundPacket();
-
     /**
      * Monitors clientbound packets and returns whether a packet can/should be processed.
      *
      * @return false if this packet should be cancelled
      */
     boolean checkClientboundPacket();
-
     /**
      * @see #checkClientboundPacket()
      * @see #checkServerboundPacket()
@@ -184,7 +163,6 @@ public interface UserConnection {
     default boolean checkIncomingPacket() {
         return isClientSide() ? checkClientboundPacket() : checkServerboundPacket();
     }
-
     /**
      * @see #checkClientboundPacket()
      * @see #checkServerboundPacket()
@@ -192,14 +170,12 @@ public interface UserConnection {
     default boolean checkOutgoingPacket() {
         return isClientSide() ? checkServerboundPacket() : checkClientboundPacket();
     }
-
     /**
      * Checks if packets needs transforming.
      *
      * @return whether packets should be passed through
      */
     boolean shouldTransformPacket();
-
     /**
      * Transforms the clientbound packet contained in ByteBuf.
      *
@@ -209,7 +185,6 @@ public interface UserConnection {
      * @throws InformativeException if packet transforming failed
      */
     void transformClientbound(ByteBuf buf, Function<Throwable, CodecException> cancelSupplier) throws InformativeException;
-
     /**
      * Transforms the serverbound packet contained in ByteBuf.
      *
@@ -220,7 +195,6 @@ public interface UserConnection {
      * @throws InformativeException if packet transforming failed
      */
     void transformServerbound(ByteBuf buf, Function<Throwable, CodecException> cancelSupplier) throws InformativeException;
-
     /**
      * Transforms the packet depending on whether the connection is clientside or not.
      *
@@ -234,7 +208,6 @@ public interface UserConnection {
             transformClientbound(buf, cancelSupplier);
         }
     }
-
     /**
      * Transforms the packet depending on whether the connection is clientside or not.
      *
@@ -248,28 +221,24 @@ public interface UserConnection {
             transformServerbound(buf, cancelSupplier);
         }
     }
-
     /**
      * Returns the internal id incremented for each new connection.
      *
      * @return internal id
      */
     long getId();
-
     /**
      * Returns the netty channel if present.
      *
      * @return netty channel if present
      */
     @Nullable Channel getChannel();
-
     /**
      * Returns info containing the current protocol state and userdata.
      *
      * @return info containing the current protocol state and userdata
      */
     ProtocolInfo getProtocolInfo();
-
     /**
      * Returns a map of stored objects.
      *
@@ -279,25 +248,20 @@ public interface UserConnection {
      * @see #put(StorableObject)
      */
     Map<Class<?>, StorableObject> getStoredObjects();
-
     /**
      * Returns whether the connection has protocols other than the base protocol applied.
      *
      * @return whether the connection is active
      */
     boolean isActive();
-
     void setActive(boolean active);
-
     /**
      * Returns whether the connection is pending a disconnect, initiated through {@link #disconnect(String)}.
      *
      * @return whether the connection is pending a disconnect
      */
     boolean isPendingDisconnect();
-
     void setPendingDisconnect(boolean pendingDisconnect);
-
     /**
      * Returns whether this is a client-side connection.
      * This is a mod integrated into the client itself, or for example a backend Velocity connection.
@@ -305,14 +269,12 @@ public interface UserConnection {
      * @return whether this is a client-side connection
      */
     boolean isClientSide();
-
     /**
      * Returns whether {@link ViaVersionConfig#blockedProtocolVersions()} should be checked for this connection.
      *
      * @return whether blocked protocols should be applied
      */
     boolean shouldApplyBlockProtocol();
-
     /**
      * Returns a newly generated uuid that will let a packet be passed through without
      * transformig its contents if used together with {@link PacketWrapper#PASSTHROUGH_ID}.

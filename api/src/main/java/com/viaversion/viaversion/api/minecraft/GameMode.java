@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,32 +21,26 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 public enum GameMode {
-
     NOT_SET(""),
     SURVIVAL("Survival Mode"),
     CREATIVE("Creative Mode"),
     ADVENTURE("Adventure Mode"),
     SPECTATOR("Spectator Mode");
-
     private final String text;
-
     GameMode(String text) {
         this.text = text;
     }
-
     public String text() {
         return text;
     }
-
     public static GameMode getById(int id) {
         return switch (id) {
             case -1 -> NOT_SET;
             case 1 -> CREATIVE;
             case 2 -> ADVENTURE;
             case 3 -> SPECTATOR;
-            default /*0*/ -> SURVIVAL;
+            default  -> SURVIVAL;
         };
     }
 }

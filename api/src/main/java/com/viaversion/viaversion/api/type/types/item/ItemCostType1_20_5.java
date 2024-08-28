@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.item;
-
 import com.viaversion.viaversion.api.minecraft.data.StructuredData;
 import com.viaversion.viaversion.api.minecraft.data.StructuredDataContainer;
 import com.viaversion.viaversion.api.minecraft.item.Item;
@@ -30,18 +29,13 @@ import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
-// Very similar to normal items (and just results in an item), except it allows non-positive amounts and has id/amount swapped because ???
 public final class ItemCostType1_20_5 extends Type<Item> {
-
     private static final StructuredData<?>[] EMPTY_DATA_ARRAY = new StructuredData[0];
     private final Type<StructuredData<?>[]> dataArrayType;
-
     public ItemCostType1_20_5(final Type<StructuredData<?>[]> dataArrayType) {
         super(Item.class);
         this.dataArrayType = dataArrayType;
     }
-
     @Override
     public Item read(final ByteBuf buffer) {
         final int id = Types.VAR_INT.readPrimitive(buffer);
@@ -49,16 +43,13 @@ public final class ItemCostType1_20_5 extends Type<Item> {
         final StructuredData<?>[] dataArray = dataArrayType.read(buffer);
         return new StructuredItem(id, amount, new StructuredDataContainer(dataArray));
     }
-
     @Override
     public void write(final ByteBuf buffer, final Item object) {
         Types.VAR_INT.writePrimitive(buffer, object.identifier());
         Types.VAR_INT.writePrimitive(buffer, object.amount());
         dataArrayType.write(buffer, object.dataContainer().data().values().toArray(EMPTY_DATA_ARRAY));
     }
-
     public static final class OptionalItemCostType extends OptionalType<Item> {
-
         public OptionalItemCostType(final Type<Item> type) {
             super(type);
         }

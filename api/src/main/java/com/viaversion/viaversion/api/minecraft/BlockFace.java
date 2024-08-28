@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,10 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import java.util.EnumMap;
 import java.util.Map;
-
 public enum BlockFace {
     NORTH((byte) 0, (byte) 0, (byte) -1, EnumAxis.Z),
     SOUTH((byte) 0, (byte) 0, (byte) 1, EnumAxis.Z),
@@ -32,10 +30,8 @@ public enum BlockFace {
     WEST((byte) -1, (byte) 0, (byte) 0, EnumAxis.X),
     TOP((byte) 0, (byte) 1, (byte) 0, EnumAxis.Y),
     BOTTOM((byte) 0, (byte) -1, (byte) 0, EnumAxis.Y);
-
     public static final BlockFace[] HORIZONTAL = {NORTH, SOUTH, EAST, WEST};
     private static final Map<BlockFace, BlockFace> opposites = new EnumMap<>(BlockFace.class);
-
     static {
         opposites.put(BlockFace.NORTH, BlockFace.SOUTH);
         opposites.put(BlockFace.SOUTH, BlockFace.NORTH);
@@ -44,39 +40,31 @@ public enum BlockFace {
         opposites.put(BlockFace.TOP, BlockFace.BOTTOM);
         opposites.put(BlockFace.BOTTOM, BlockFace.TOP);
     }
-
     private final byte modX;
     private final byte modY;
     private final byte modZ;
     private final EnumAxis axis;
-
     BlockFace(byte modX, byte modY, byte modZ, EnumAxis axis) {
         this.modX = modX;
         this.modY = modY;
         this.modZ = modZ;
         this.axis = axis;
     }
-
     public BlockFace opposite() {
         return opposites.get(this);
     }
-
     public byte modX() {
         return modX;
     }
-
     public byte modY() {
         return modY;
     }
-
     public byte modZ() {
         return modZ;
     }
-
     public EnumAxis axis() {
         return axis;
     }
-
     public enum EnumAxis {
         X, Y, Z
     }

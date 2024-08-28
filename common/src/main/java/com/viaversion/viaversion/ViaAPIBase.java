@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.ViaAPI;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -30,47 +29,37 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public abstract class ViaAPIBase<T> implements ViaAPI<T> {
-
     private final LegacyAPI<T> legacy = new LegacyAPI<>();
-
     @Override
     public ServerProtocolVersion getServerVersion() {
         return Via.getManager().getProtocolManager().getServerProtocolVersion();
     }
-
     @Override
     public ProtocolVersion getPlayerProtocolVersion(UUID uuid) {
         UserConnection connection = Via.getManager().getConnectionManager().getConnectedClient(uuid);
         return connection != null ? connection.getProtocolInfo().protocolVersion() : ProtocolVersion.unknown;
     }
-
     @Override
     public String getVersion() {
         return Via.getPlatform().getPluginVersion();
     }
-
     @Override
     public boolean isInjected(UUID uuid) {
         return Via.getManager().getConnectionManager().isClientConnected(uuid);
     }
-
     @Override
     public @Nullable UserConnection getConnection(final UUID uuid) {
         return Via.getManager().getConnectionManager().getConnectedClient(uuid);
     }
-
     @Override
     public void sendRawPacket(UUID uuid, ByteBuf packet) throws IllegalArgumentException {
         if (!isInjected(uuid)) {
             throw new IllegalArgumentException("This player is not controlled by ViaVersion!");
         }
-
         UserConnection user = Via.getManager().getConnectionManager().getConnectedClient(uuid);
         user.scheduleSendRawPacket(packet);
     }
-
     @Override
     public SortedSet<ProtocolVersion> getSupportedProtocolVersions() {
         SortedSet<ProtocolVersion> outputSet = new TreeSet<>(Via.getManager().getProtocolManager().getSupportedVersions());
@@ -78,12 +67,10 @@ public abstract class ViaAPIBase<T> implements ViaAPI<T> {
         outputSet.removeIf(blockedVersions::contains);
         return outputSet;
     }
-
     @Override
     public SortedSet<ProtocolVersion> getFullSupportedProtocolVersions() {
         return Via.getManager().getProtocolManager().getSupportedVersions();
     }
-
     @Override
     public LegacyViaAPI<T> legacyAPI() {
         return legacy;

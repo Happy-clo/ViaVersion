@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,18 +13,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_8to1_9.data;
-
 import java.util.HashMap;
 import java.util.Map;
-
 public class EntityIds1_8 {
-
     public static final Map<String, Integer> ENTITY_NAME_TO_ID = new HashMap<>();
     public static final Map<Integer, String> ENTITY_ID_TO_NAME = new HashMap<>();
-
     static {
         register(1, "Item");
         register(2, "XPOrb");
@@ -89,7 +85,6 @@ public class EntityIds1_8 {
         register(120, "Villager");
         register(200, "EnderCrystal");
     }
-
     private static void register(final int id, final String name) {
         ENTITY_ID_TO_NAME.put(id, name);
         ENTITY_NAME_TO_ID.put(name, id);

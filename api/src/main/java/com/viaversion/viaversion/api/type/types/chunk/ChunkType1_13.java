@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.chunk;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.minecraft.Environment;
@@ -36,36 +35,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-
 public class ChunkType1_13 extends Type<Chunk> {
-
     private static final ChunkType1_13 WITH_SKYLIGHT = new ChunkType1_13(true);
     private static final ChunkType1_13 WITHOUT_SKYLIGHT = new ChunkType1_13(false);
     private final boolean hasSkyLight;
-
     public ChunkType1_13(boolean hasSkyLight) {
         super(Chunk.class);
         this.hasSkyLight = hasSkyLight;
     }
-
     public static ChunkType1_13 forEnvironment(Environment environment) {
         return environment == Environment.NORMAL ? WITH_SKYLIGHT : WITHOUT_SKYLIGHT;
     }
-
     @Override
     public Chunk read(ByteBuf input) {
         int chunkX = input.readInt();
         int chunkZ = input.readInt();
-
         boolean fullChunk = input.readBoolean();
         int primaryBitmask = Types.VAR_INT.readPrimitive(input);
         ByteBuf data = input.readSlice(Types.VAR_INT.readPrimitive(input));
-
-        // Read sections
         ChunkSection[] sections = new ChunkSection[16];
         for (int i = 0; i < 16; i++) {
-            if ((primaryBitmask & (1 << i)) == 0) continue; // Section not set
-
+            if ((primaryBitmask & (1 << i)) == 0) continue; 
             ChunkSection section = Types1_13.CHUNK_SECTION.read(data);
             sections[i] = section;
             section.getLight().readBlockLight(data);
@@ -73,7 +63,6 @@ public class ChunkType1_13 extends Type<Chunk> {
                 section.getLight().readSkyLight(data);
             }
         }
-
         int[] biomeData = fullChunk ? new int[256] : null;
         if (fullChunk) {
             if (data.readableBytes() >= 256 * 4) {
@@ -84,46 +73,36 @@ public class ChunkType1_13 extends Type<Chunk> {
                 Via.getPlatform().getLogger().log(Level.WARNING, "Chunk x=" + chunkX + " z=" + chunkZ + " doesn't have biome data!");
             }
         }
-
         List<CompoundTag> nbtData = new ArrayList<>(Arrays.asList(Types.NAMED_COMPOUND_TAG_ARRAY.read(input)));
         return new BaseChunk(chunkX, chunkZ, fullChunk, false, primaryBitmask, sections, biomeData, nbtData);
     }
-
     @Override
     public void write(ByteBuf output, Chunk chunk) {
         output.writeInt(chunk.getX());
         output.writeInt(chunk.getZ());
-
         output.writeBoolean(chunk.isFullChunk());
         Types.VAR_INT.writePrimitive(output, chunk.getBitmask());
-
         ByteBuf buf = output.alloc().buffer();
         try {
             for (int i = 0; i < 16; i++) {
                 ChunkSection section = chunk.getSections()[i];
-                if (section == null) continue; // Section not set
+                if (section == null) continue; 
                 Types1_13.CHUNK_SECTION.write(buf, section);
                 section.getLight().writeBlockLight(buf);
-
-                if (!section.getLight().hasSkyLight()) continue; // No sky light, we're done here.
+                if (!section.getLight().hasSkyLight()) continue; 
                 section.getLight().writeSkyLight(buf);
-
             }
             buf.readerIndex(0);
             Types.VAR_INT.writePrimitive(output, buf.readableBytes() + (chunk.isBiomeData() ? 1024 : 0));
             output.writeBytes(buf);
         } finally {
-            buf.release(); // release buffer
+            buf.release(); 
         }
-
-        // Write biome data
         if (chunk.isBiomeData()) {
             for (int value : chunk.getBiomeData()) {
                 output.writeInt(value);
             }
         }
-
-        // Write Block Entities
         Types.NAMED_COMPOUND_TAG_ARRAY.write(output, chunk.getBlockEntities().toArray(new CompoundTag[0]));
     }
 }

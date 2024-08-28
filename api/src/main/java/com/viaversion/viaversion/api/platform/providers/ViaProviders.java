@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,30 +21,24 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.platform.providers;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class ViaProviders {
     private final Map<Class<? extends Provider>, Provider> providers = new HashMap<>();
     private final List<Class<? extends Provider>> lonelyProviders = new ArrayList<>();
-
     public void require(Class<? extends Provider> provider) {
         lonelyProviders.add(provider);
     }
-
     public <T extends Provider> void register(Class<T> provider, T value) {
         providers.put(provider, value);
     }
-
     public <T extends Provider> void use(Class<T> provider, T value) {
         lonelyProviders.remove(provider);
         providers.put(provider, value);
     }
-
     public @Nullable <T extends Provider> T get(Class<T> provider) {
         Provider rawProvider = providers.get(provider);
         if (rawProvider != null) {

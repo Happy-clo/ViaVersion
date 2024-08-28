@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,24 +21,19 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.entitydata;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityData;
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityDataType;
 import io.netty.buffer.ByteBuf;
-
 public abstract class OldEntityDataType extends EntityDataTypeTemplate {
     private static final int END = 127;
-
     @Override
     public EntityData read(final ByteBuf buffer) {
         final byte index = buffer.readByte();
-        if (index == END) return null; // End of data
+        if (index == END) return null; 
         final EntityDataType type = this.getType((index & 224) >> 5);
         return new EntityData(index & 31, type, type.type().read(buffer));
     }
-
     protected abstract EntityDataType getType(final int index);
-
     @Override
     public void write(final ByteBuf buffer, final EntityData object) {
         if (object == null) {

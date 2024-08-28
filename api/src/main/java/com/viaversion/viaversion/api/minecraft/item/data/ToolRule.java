@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.minecraft.HolderSet;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
@@ -29,9 +28,7 @@ import com.viaversion.viaversion.api.type.types.ArrayType;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public record ToolRule(HolderSet blocks, @Nullable Float speed, @Nullable Boolean correctForDrops) {
-
     public static final Type<ToolRule> TYPE = new Type<>(ToolRule.class) {
         @Override
         public ToolRule read(final ByteBuf buffer) {
@@ -40,7 +37,6 @@ public record ToolRule(HolderSet blocks, @Nullable Float speed, @Nullable Boolea
             final Boolean correctForDrops = Types.OPTIONAL_BOOLEAN.read(buffer);
             return new ToolRule(blocks, speed, correctForDrops);
         }
-
         @Override
         public void write(final ByteBuf buffer, final ToolRule value) {
             Types.HOLDER_SET.write(buffer, value.blocks);
@@ -49,7 +45,6 @@ public record ToolRule(HolderSet blocks, @Nullable Float speed, @Nullable Boolea
         }
     };
     public static final Type<ToolRule[]> ARRAY_TYPE = new ArrayType<>(TYPE);
-
     public ToolRule rewrite(final Int2IntFunction blockIdRewriter) {
         return blocks.hasIds() ? new ToolRule(blocks.rewrite(blockIdRewriter), speed, correctForDrops) : this;
     }

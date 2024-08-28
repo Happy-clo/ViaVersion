@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,46 +21,36 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import com.viaversion.viaversion.util.EitherImpl;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-
 final class HolderSetImpl extends EitherImpl<String, int[]> implements HolderSet {
-
     HolderSetImpl(final String tagKey) {
         super(tagKey, null);
     }
-
     HolderSetImpl(final int[] ids) {
         super(null, ids);
     }
-
     @Override
     public String tagKey() {
         return left();
     }
-
     @Override
     public boolean hasTagKey() {
         return isLeft();
     }
-
     @Override
     public int[] ids() {
         return right();
     }
-
     @Override
     public boolean hasIds() {
         return isRight();
     }
-
     @Override
     public HolderSet rewrite(final Int2IntFunction idRewriter) {
         if (hasTagKey()) {
             return this;
         }
-
         final int[] ids = ids();
         final int[] mappedIds = new int[ids.length];
         for (int i = 0; i < mappedIds.length; i++) {

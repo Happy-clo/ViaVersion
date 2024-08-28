@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.version;
-
 import com.viaversion.viaversion.api.minecraft.Particle;
 import com.viaversion.viaversion.api.minecraft.data.StructuredData;
 import com.viaversion.viaversion.api.minecraft.item.Item;
@@ -36,17 +35,13 @@ import com.viaversion.viaversion.api.type.types.entitydata.EntityDataListType;
 import com.viaversion.viaversion.api.type.types.entitydata.EntityDataType;
 import com.viaversion.viaversion.api.type.types.misc.ParticleType;
 import java.util.List;
-
-// Most of these are only safe to use after protocol loading
 public final class Types1_20_5 {
-
     public static final StructuredDataType STRUCTURED_DATA = new StructuredDataType();
     public static final Type<StructuredData<?>[]> STRUCTURED_DATA_ARRAY = new ArrayType<>(STRUCTURED_DATA);
     public static final Type<Item> ITEM = new ItemType1_20_5(STRUCTURED_DATA);
     public static final Type<Item[]> ITEM_ARRAY = new ArrayType<>(ITEM);
     public static final Type<Item> ITEM_COST = new ItemCostType1_20_5(STRUCTURED_DATA_ARRAY);
     public static final Type<Item> OPTIONAL_ITEM_COST = new ItemCostType1_20_5.OptionalItemCostType(ITEM_COST);
-
     public static final ParticleType PARTICLE = new ParticleType();
     public static final ArrayType<Particle> PARTICLES = new ArrayType<>(PARTICLE);
     public static final EntityDataTypes1_20_5 ENTITY_DATA_TYPES = new EntityDataTypes1_20_5(PARTICLE, PARTICLES);

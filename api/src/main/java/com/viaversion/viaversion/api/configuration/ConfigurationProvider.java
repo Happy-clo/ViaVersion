@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,25 +21,20 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.configuration;
-
 import java.util.Collection;
-
 public interface ConfigurationProvider {
-
     /**
      * Registers a config to be saved or reloaded when {@link #reloadConfigs()} is called.
      *
      * @param config the config to register
      */
     void register(Config config);
-
     /**
      * Returns all registered configs.
      *
      * @return unmodifiable collection of all registered configs
      */
     Collection<Config> configs();
-
     /**
      * Reloads the configuration files.
      */

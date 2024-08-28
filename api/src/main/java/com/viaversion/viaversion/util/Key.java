@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import java.util.regex.Pattern;
-
 public final class Key {
-
     private static final Pattern PATTERN = Pattern.compile("([0-9a-z_.-]*:)?[0-9a-z_/.-]*");
     private static final int MINECRAFT_NAMESPACE_LENGTH = "minecraft:".length();
-
     public static String stripNamespace(final String identifier) {
         int index = identifier.indexOf(':');
         if (index == -1) {
@@ -36,7 +32,6 @@ public final class Key {
         }
         return identifier.substring(index + 1);
     }
-
     public static String stripMinecraftNamespace(final String identifier) {
         if (identifier.startsWith("minecraft:")) {
             return identifier.substring(MINECRAFT_NAMESPACE_LENGTH);
@@ -45,11 +40,9 @@ public final class Key {
         }
         return identifier;
     }
-
     public static boolean equals(final String firstIdentifier, final String secondIdentifier) {
         return stripMinecraftNamespace(firstIdentifier).equals(stripMinecraftNamespace(secondIdentifier));
     }
-
     public static String namespaced(final String identifier) {
         final int index = identifier.indexOf(':');
         if (index == -1) {
@@ -59,7 +52,6 @@ public final class Key {
         }
         return identifier;
     }
-
     public static boolean isValid(final String identifier) {
         return PATTERN.matcher(identifier).matches();
     }

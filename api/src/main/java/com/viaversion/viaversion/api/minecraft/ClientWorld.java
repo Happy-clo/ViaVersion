@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,27 +21,21 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 import com.viaversion.viaversion.api.connection.StorableObject;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Stored up until 1.14 to be used in chunk sending.
  */
 public class ClientWorld implements StorableObject {
     private Environment environment;
-
     public ClientWorld() {
     }
-
     public ClientWorld(final Environment environment) {
         this.environment = environment;
     }
-
     public @Nullable Environment getEnvironment() {
         return environment;
     }
-
     public void setEnvironment(final int environmentId) {
         this.environment = Environment.getEnvironmentById(environmentId);
     }

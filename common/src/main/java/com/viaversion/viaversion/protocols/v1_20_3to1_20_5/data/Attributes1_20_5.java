@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,16 +13,13 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_20_3to1_20_5.data;
-
 import com.viaversion.viaversion.util.Key;
 import com.viaversion.viaversion.util.KeyMappings;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class Attributes1_20_5 {
-
     private static final KeyMappings ATTRIBUTES = new KeyMappings(
         "generic.armor",
         "generic.armor_toughness",
@@ -47,11 +44,9 @@ public final class Attributes1_20_5 {
         "zombie.spawn_reinforcements",
         "generic.step_height"
     );
-
     public static @Nullable String idToKey(final int id) {
         return ATTRIBUTES.idToKey(id);
     }
-
     public static int keyToId(String attribute) {
         if (Key.stripMinecraftNamespace(attribute).equals("horse.jump_strength")) {
             attribute = "generic.jump_strength";

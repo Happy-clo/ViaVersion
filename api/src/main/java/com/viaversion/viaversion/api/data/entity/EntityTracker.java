@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,14 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data.entity;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface EntityTracker {
-
     /**
      * User connection the tracker belongs to.
      *
@@ -36,7 +33,6 @@ public interface EntityTracker {
      */
     @Deprecated
     UserConnection user();
-
     /**
      * Tracks an entity.
      *
@@ -44,7 +40,6 @@ public interface EntityTracker {
      * @param type entity type
      */
     void addEntity(int id, EntityType type);
-
     /**
      * Returns whether the entity is currently tracked.
      *
@@ -52,7 +47,6 @@ public interface EntityTracker {
      * @return whether the entity is tracked
      */
     boolean hasEntity(int id);
-
     /**
      * Returns the tracked entity for the given entity id if present.
      *
@@ -60,7 +54,6 @@ public interface EntityTracker {
      * @return tracked entity if tracked
      */
     @Nullable TrackedEntity entity(int entityId);
-
     /**
      * Entity type of the entity if tracked.
      * This returning null does not necessarily mean no entity by the id exists.
@@ -69,19 +62,16 @@ public interface EntityTracker {
      * @return entity type of the entity if tracked
      */
     @Nullable EntityType entityType(int id);
-
     /**
      * Untracks an entity.
      *
      * @param id entity id
      */
     void removeEntity(int id);
-
     /**
      * Clears stored entity types and data.
      */
     void clearEntities();
-
     /**
      * Returns the stored entity data if an entity with the id is tracked, else null.
      * If no data has been initialized yet, it will be done and returned by this method.
@@ -91,7 +81,6 @@ public interface EntityTracker {
      * @throws IllegalArgumentException if entity data storage has not been enabled via the implementation
      */
     @Nullable StoredEntityData entityData(int id);
-
     /**
      * Returns stored entity data if it has previously been initialized by {@link #entityData(int)}, else null.
      *
@@ -100,21 +89,18 @@ public interface EntityTracker {
      * @throws IllegalArgumentException if entity data storage has not been enabled via the implementation
      */
     @Nullable StoredEntityData entityDataIfPresent(int id);
-
     /**
      * Returns the client entity id or -1 if unset.
      *
      * @return client entity id or -1 if unset
      */
     int clientEntityId();
-
     /**
      * Sets the client entity id.
      *
      * @param clientEntityId client entity id
      */
     void setClientEntityId(int clientEntityId);
-
     /**
      * Returns the current world section height (block height / 16).
      * This is always 16 for sub 1.17 worlds.
@@ -122,54 +108,42 @@ public interface EntityTracker {
      * @return current world section height
      */
     int currentWorldSectionHeight();
-
     /**
      * Sets the current world section height.
      *
      * @param currentWorldSectionHeight world section height
      */
     void setCurrentWorldSectionHeight(int currentWorldSectionHeight);
-
     /**
      * Returns the minimum y of the current player world.
      *
      * @return minimum y of the current world
      */
     int currentMinY();
-
     /**
      * Sets the minimum y of the current player world.
      *
      * @param currentMinY minimum y of the current world
      */
     void setCurrentMinY(int currentMinY);
-
     /**
      * Returns the name of the world the player is currently in.
      *
      * @return world name of the current world
      */
     @Nullable String currentWorld();
-
     /**
      * Sets the name of the world the player is currently in.
      *
      * @param currentWorld name of the current world
      */
     void setCurrentWorld(String currentWorld);
-
     int biomesSent();
-
     void setBiomesSent(int biomesSent);
-
     EntityType playerType();
-
     @Nullable DimensionData dimensionData(String dimension);
-
     @Nullable DimensionData dimensionData(int dimensionId);
-
     void setDimensions(Map<String, DimensionData> dimensions);
-
     /**
      * Adds the client player entity to the tracker.
      * If the client entity has not been set yet, this will return false.

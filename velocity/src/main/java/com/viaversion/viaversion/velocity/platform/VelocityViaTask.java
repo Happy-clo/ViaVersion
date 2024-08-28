@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,15 +13,12 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.platform;
-
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.viaversion.viaversion.api.platform.PlatformTask;
-
 public record VelocityViaTask(ScheduledTask task) implements PlatformTask<ScheduledTask> {
-
     @Override
     public void cancel() {
         task.cancel();

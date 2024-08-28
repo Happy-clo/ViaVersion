@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,21 +13,17 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.util;
-
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
-
 public final class CipherUtil {
-
     private static final KeyFactory RSA_FACTORY;
-
     static {
         try {
             RSA_FACTORY = KeyFactory.getInstance("RSA");
@@ -35,7 +31,6 @@ public final class CipherUtil {
             throw new RuntimeException(e);
         }
     }
-
     public static byte[] encryptNonce(final byte[] publicKeyBytes, final byte[] nonceBytes) {
         try {
             final EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);

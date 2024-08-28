@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,22 +21,17 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.util.Unit;
 import io.netty.buffer.ByteBuf;
-
 public final class EmptyType extends Type<Unit> {
-
     public EmptyType() {
         super(Unit.class);
     }
-
     @Override
     public Unit read(final ByteBuf buffer) {
         return Unit.INSTANCE;
     }
-
     @Override
     public void write(final ByteBuf buffer, final Unit value) {
     }

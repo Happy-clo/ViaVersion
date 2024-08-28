@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.provider;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.StringTag;
 import com.viaversion.viaversion.api.Via;
@@ -35,10 +34,8 @@ import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.blockentities.
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.blockentities.SpawnerHandler;
 import java.util.HashMap;
 import java.util.Map;
-
 public class BlockEntityProvider implements Provider {
     private final Map<String, BlockEntityHandler> handlers = new HashMap<>();
-
     public BlockEntityProvider() {
         handlers.put("minecraft:flower_pot", new FlowerPotHandler());
         handlers.put("minecraft:bed", new BedHandler());
@@ -47,7 +44,6 @@ public class BlockEntityProvider implements Provider {
         handlers.put("minecraft:mob_spawner", new SpawnerHandler());
         handlers.put("minecraft:command_block", new CommandBlockHandler());
     }
-
     /**
      * Transforms the BlockEntities to blocks!
      *
@@ -60,7 +56,6 @@ public class BlockEntityProvider implements Provider {
     public int transform(UserConnection user, BlockPosition position, CompoundTag tag, boolean sendUpdate) {
         StringTag idTag = tag.getStringTag("id");
         if (idTag == null) return -1;
-
         BlockEntityHandler handler = handlers.get(idTag.getValue());
         if (handler == null) {
             if (Via.getManager().isDebug()) {
@@ -68,27 +63,20 @@ public class BlockEntityProvider implements Provider {
             }
             return -1;
         }
-
         int newBlock = handler.transform(user, tag);
-
         if (sendUpdate && newBlock != -1) {
             sendBlockChange(user, position, newBlock);
         }
-
         return newBlock;
     }
-
     private void sendBlockChange(UserConnection user, BlockPosition position, int blockId) {
         PacketWrapper wrapper = PacketWrapper.create(ClientboundPackets1_13.BLOCK_UPDATE, null, user);
         wrapper.write(Types.BLOCK_POSITION1_8, position);
         wrapper.write(Types.VAR_INT, blockId);
-
         wrapper.send(Protocol1_12_2To1_13.class);
     }
-
     @FunctionalInterface
     public interface BlockEntityHandler {
-
         int transform(UserConnection user, CompoundTag tag);
     }
 }

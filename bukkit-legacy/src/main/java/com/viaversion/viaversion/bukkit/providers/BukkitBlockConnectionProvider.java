@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.providers;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections.providers.BlockConnectionProvider;
 import java.util.UUID;
@@ -25,10 +24,8 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
 public class BukkitBlockConnectionProvider extends BlockConnectionProvider {
     private Chunk lastChunk;
-
     @Override
     public int getWorldBlockData(UserConnection user, int bx, int by, int bz) {
         UUID uuid = user.getProtocolInfo().getUuid();
@@ -45,7 +42,6 @@ public class BukkitBlockConnectionProvider extends BlockConnectionProvider {
         }
         return 0;
     }
-
     public Chunk getChunk(World world, int x, int z) {
         if (lastChunk != null && lastChunk.getWorld().equals(world) && lastChunk.getX() == x && lastChunk.getZ() == z) {
             return lastChunk;

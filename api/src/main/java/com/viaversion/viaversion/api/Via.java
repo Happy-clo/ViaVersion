@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.configuration.ViaVersionConfig;
 import com.viaversion.viaversion.api.platform.ViaPlatform;
 import com.viaversion.viaversion.api.platform.ViaServerProxyPlatform;
-
 public final class Via {
     private static ViaManager manager;
-
     /**
      * Returns the API associated with the current platform.
      *
@@ -39,7 +36,6 @@ public final class Via {
     public static ViaAPI getAPI() {
         return manager().getPlatform().getApi();
     }
-
     /**
      * Returns the ViaManager with methods beyond the simple API {@link ViaAPI} provides.
      *
@@ -49,7 +45,6 @@ public final class Via {
     public static ViaManager getManager() {
         return manager();
     }
-
     /**
      * Returns the config associated with the current platform.
      *
@@ -59,16 +54,13 @@ public final class Via {
     public static ViaVersionConfig getConfig() {
         return manager().getPlatform().getConf();
     }
-
     public static ViaPlatform getPlatform() {
         return manager().getPlatform();
     }
-
     public static ViaServerProxyPlatform<?> proxyPlatform() {
         Preconditions.checkArgument(manager().getPlatform() instanceof ViaServerProxyPlatform, "Platform is not proxying Minecraft servers!");
         return (ViaServerProxyPlatform<?>) manager().getPlatform();
     }
-
     /**
      * Register the ViaManager associated with the platform.
      *
@@ -79,7 +71,6 @@ public final class Via {
         Preconditions.checkArgument(manager == null, "ViaManager is already set");
         Via.manager = viaManager;
     }
-
     private static ViaManager manager() {
         Preconditions.checkArgument(manager != null, "ViaVersion has not loaded the platform yet");
         return manager;

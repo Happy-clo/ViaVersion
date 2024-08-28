@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,42 +21,33 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data;
-
 import java.util.Arrays;
-
 public class IntArrayMappings implements Mappings {
     private final int[] mappings;
     private final int mappedIds;
-
     protected IntArrayMappings(final int[] mappings, final int mappedIds) {
         this.mappings = mappings;
         this.mappedIds = mappedIds;
     }
-
     public static IntArrayMappings of(final int[] mappings, final int mappedIds) {
         return new IntArrayMappings(mappings, mappedIds);
     }
-
     @Override
     public int getNewId(int id) {
         return id >= 0 && id < mappings.length ? mappings[id] : -1;
     }
-
     @Override
     public void setNewId(int id, int mappedId) {
         mappings[id] = mappedId;
     }
-
     @Override
     public int size() {
         return mappings.length;
     }
-
     @Override
     public int mappedSize() {
         return mappedIds;
     }
-
     @Override
     public Mappings inverse() {
         final int[] inverse = new int[mappedIds];
@@ -69,7 +60,6 @@ public class IntArrayMappings implements Mappings {
         }
         return of(inverse, mappings.length);
     }
-
     public int[] raw() {
         return mappings;
     }

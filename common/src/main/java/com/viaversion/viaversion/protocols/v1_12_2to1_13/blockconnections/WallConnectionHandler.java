@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,51 +13,42 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.blockconnections;
-
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockFace;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
 import java.util.ArrayList;
 import java.util.List;
-
 public class WallConnectionHandler extends AbstractFenceConnectionHandler {
     private static final BlockFace[] BLOCK_FACES = {BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST};
     private static final int[] OPPOSITES = {3, 2, 1, 0};
-
     static List<ConnectionData.ConnectorInitAction> init() {
         List<ConnectionData.ConnectorInitAction> actions = new ArrayList<>(2);
         actions.add(new WallConnectionHandler("cobbleWall").getInitAction("minecraft:cobblestone_wall"));
         actions.add(new WallConnectionHandler("cobbleWall").getInitAction("minecraft:mossy_cobblestone_wall"));
         return actions;
     }
-
-
     public WallConnectionHandler(String blockConnections) {
         super(blockConnections);
     }
-
     @Override
     protected byte getStates(WrappedBlockData blockData) {
         byte states = super.getStates(blockData);
         if (blockData.getValue("up").equals("true")) states |= 16;
         return states;
     }
-
     @Override
     protected byte getStates(UserConnection user, BlockPosition position) {
         byte states = super.getStates(user, position);
         if (up(user, position)) states |= 16;
         return states;
     }
-
     @Override
     protected byte statesSize() {
         return 32;
     }
-
     public boolean up(UserConnection user, BlockPosition position) {
         if (isWall(getBlockData(user, position.getRelative(BlockFace.BOTTOM))) || isWall(getBlockData(user, position.getRelative(BlockFace.TOP))))
             return true;
@@ -68,7 +59,6 @@ public class WallConnectionHandler extends AbstractFenceConnectionHandler {
         }
         return false;
     }
-
     private int getBlockFaces(UserConnection user, BlockPosition position) {
         int blockFaces = 0;
         for (int i = 0; i < BLOCK_FACES.length; i++) {
@@ -78,7 +68,6 @@ public class WallConnectionHandler extends AbstractFenceConnectionHandler {
         }
         return blockFaces;
     }
-
     private boolean isWall(int id) {
         return getBlockStates().contains(id);
     }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.util;
-
 import com.google.gson.JsonElement;
 import com.viaversion.nbt.tag.Tag;
 import net.lenni0451.mcstructs.snbt.SNbtSerializer;
@@ -25,7 +24,6 @@ import net.lenni0451.mcstructs.snbt.exceptions.SNbtSerializeException;
 import net.lenni0451.mcstructs.text.ATextComponent;
 import net.lenni0451.mcstructs.text.serializer.TextComponentCodec;
 import net.lenni0451.mcstructs.text.serializer.TextComponentSerializer;
-
 public enum SerializerVersion {
     V1_6(TextComponentSerializer.V1_6, null),
     V1_7(TextComponentSerializer.V1_7, SNbtSerializer.V1_7),
@@ -41,42 +39,34 @@ public enum SerializerVersion {
     V1_19_4(TextComponentSerializer.V1_19_4, SNbtSerializer.V1_14),
     V1_20_3(TextComponentCodec.V1_20_3, SNbtSerializer.V1_14),
     V1_20_5(TextComponentCodec.V1_20_5, SNbtSerializer.V1_14);
-
     final TextComponentSerializer jsonSerializer;
     final SNbtSerializer<? extends Tag> snbtSerializer;
     final TextComponentCodec codec;
-
     SerializerVersion(final TextComponentSerializer jsonSerializer, final SNbtSerializer<? extends Tag> snbtSerializer) {
         this.jsonSerializer = jsonSerializer;
         this.snbtSerializer = snbtSerializer;
         this.codec = null;
     }
-
     SerializerVersion(final TextComponentCodec codec, final SNbtSerializer<? extends Tag> snbtSerializer) {
         this.codec = codec;
         this.jsonSerializer = codec.asSerializer();
         this.snbtSerializer = snbtSerializer;
     }
-
     public String toString(final ATextComponent component) {
         return jsonSerializer.serialize(component);
     }
-
     public JsonElement toJson(final ATextComponent component) {
         return jsonSerializer.serializeJson(component);
     }
-
     public Tag toTag(final ATextComponent component) {
         if (codec == null) {
             throw new IllegalStateException("Cannot convert component to NBT with this version");
         }
         return codec.serializeNbt(component);
     }
-
     public ATextComponent toComponent(final JsonElement json) {
         return jsonSerializer.deserialize(json);
     }
-
     public ATextComponent toComponent(final String json) {
         if (ordinal() >= SerializerVersion.V1_20_3.ordinal()) {
             return jsonSerializer.deserializeParser(json);
@@ -86,14 +76,12 @@ public enum SerializerVersion {
             return jsonSerializer.deserialize(json);
         }
     }
-
     public ATextComponent toComponent(final Tag tag) {
         if (codec == null) {
             throw new IllegalStateException("Cannot convert NBT to component with this version");
         }
         return codec.deserializeNbtTree(tag);
     }
-
     public Tag toTag(final String snbt) {
         if (snbtSerializer == null) {
             throw new IllegalStateException("Cannot convert SNBT to NBT with this version");
@@ -104,7 +92,6 @@ public enum SerializerVersion {
             throw new RuntimeException(e);
         }
     }
-
     public String toSNBT(final Tag tag) {
         if (snbtSerializer == null) {
             throw new IllegalStateException("Cannot convert SNBT to NBT with this version");

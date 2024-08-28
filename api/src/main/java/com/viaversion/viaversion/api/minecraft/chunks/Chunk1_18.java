@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,20 +21,17 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.chunks;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.minecraft.blockentity.BlockEntity;
 import java.util.BitSet;
 import java.util.List;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class Chunk1_18 implements Chunk {
     protected final int x;
     protected final int z;
     protected ChunkSection[] sections;
     protected CompoundTag heightMap;
     protected final List<BlockEntity> blockEntities;
-
     public Chunk1_18(int x, int z, ChunkSection[] sections, CompoundTag heightMap, List<BlockEntity> blockEntities) {
         this.x = x;
         this.z = z;
@@ -42,92 +39,74 @@ public class Chunk1_18 implements Chunk {
         this.heightMap = heightMap;
         this.blockEntities = blockEntities;
     }
-
     @Override
     public boolean isBiomeData() {
         return false;
     }
-
     @Override
     public int getX() {
         return x;
     }
-
     @Override
     public int getZ() {
         return z;
     }
-
     @Override
     public boolean isFullChunk() {
         return true;
     }
-
     @Override
     public boolean isIgnoreOldLightData() {
         return false;
     }
-
     @Override
     public void setIgnoreOldLightData(boolean ignoreOldLightData) {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public int getBitmask() {
         return -1;
     }
-
     @Override
     public void setBitmask(int bitmask) {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public @Nullable BitSet getChunkMask() {
         return null;
     }
-
     @Override
     public void setChunkMask(BitSet chunkSectionMask) {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public ChunkSection[] getSections() {
         return sections;
     }
-
     @Override
     public void setSections(ChunkSection[] sections) {
         this.sections = sections;
     }
-
     @Override
     public int @Nullable [] getBiomeData() {
         return null;
     }
-
     @Override
     public void setBiomeData(int @Nullable [] biomeData) {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public @Nullable CompoundTag getHeightMap() {
         return heightMap;
     }
-
     @Override
     public void setHeightMap(final CompoundTag heightMap) {
         this.heightMap = heightMap;
     }
-
     @Override
     public List<CompoundTag> getBlockEntities() {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public List<BlockEntity> blockEntities() {
         return blockEntities;

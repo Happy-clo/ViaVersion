@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,8 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.protocol;
-
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-
 public interface ProtocolPathEntry {
-
     /**
      * Returns the resulting protocol after transformation using
      * the {@link #protocol()} protocol handlers.
@@ -33,12 +30,10 @@ public interface ProtocolPathEntry {
      * @return output protocol version after transformation
      */
     ProtocolVersion outputProtocolVersion();
-
     /**
      * Returns the protocol to be applied with this entry.
      *
      * @return protocol to be applied with this entry
      */
     Protocol<?, ?, ?, ?> protocol();
-
 }

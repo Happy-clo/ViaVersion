@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,13 +21,10 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.viaversion.api.type.Type;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
-
 public record AdventureModePredicate(BlockPredicate[] predicates, boolean showInTooltip) {
-
     public static final Type<AdventureModePredicate> TYPE = new Type<>(AdventureModePredicate.class) {
         @Override
         public AdventureModePredicate read(final ByteBuf buffer) {
@@ -35,14 +32,12 @@ public record AdventureModePredicate(BlockPredicate[] predicates, boolean showIn
             final boolean showInTooltip = buffer.readBoolean();
             return new AdventureModePredicate(predicates, showInTooltip);
         }
-
         @Override
         public void write(final ByteBuf buffer, final AdventureModePredicate value) {
             BlockPredicate.ARRAY_TYPE.write(buffer, value.predicates);
             buffer.writeBoolean(value.showInTooltip);
         }
     };
-
     public AdventureModePredicate rewrite(final Int2IntFunction blockIdRewriter) {
         final BlockPredicate[] predicates = new BlockPredicate[this.predicates.length];
         for (int i = 0; i < predicates.length; i++) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,23 +13,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_18_2to1_19.storage;
-
 import com.viaversion.viaversion.api.connection.StorableObject;
-
 public final class SequenceStorage implements StorableObject {
-
     private final Object lock = new Object();
     private int sequenceId = -1;
-
     public int sequenceId() {
         synchronized (lock) {
             return sequenceId;
         }
     }
-
     public int setSequenceId(final int sequenceId) {
         synchronized (lock) {
             final int previousSequence = this.sequenceId;

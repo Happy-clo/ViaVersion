@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,28 +21,22 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 public enum Environment {
-
     NORMAL(0),
     NETHER(-1),
     END(1);
-
     private final int id;
-
     Environment(int id) {
         this.id = id;
     }
-
     public int id() {
         return id;
     }
-
     public static Environment getEnvironmentById(int id) {
         return switch (id) {
             case 0 -> NORMAL;
             case 1 -> END;
-            default -> NETHER; // -1 implicitly
+            default -> NETHER; 
         };
     }
 }

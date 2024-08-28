@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.listeners.v1_19_3to1_19_4;
-
 import com.viaversion.viaversion.ViaVersionPlugin;
 import com.viaversion.viaversion.bukkit.listeners.ViaBukkitListener;
 import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.Protocol1_19_3To1_19_4;
@@ -28,13 +27,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-
 public final class ArmorToggleListener extends ViaBukkitListener {
-
     public ArmorToggleListener(final ViaVersionPlugin plugin) {
         super(plugin, Protocol1_19_3To1_19_4.class);
     }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void itemUse(final PlayerInteractEvent event) {
         final Player player = event.getPlayer();
@@ -42,16 +38,13 @@ public final class ArmorToggleListener extends ViaBukkitListener {
         if (item == null || event.getHand() == null) {
             return;
         }
-
         final EquipmentSlot armorItemSlot = item.getType().getEquipmentSlot();
         if (armorItemSlot == EquipmentSlot.HAND || armorItemSlot == EquipmentSlot.OFF_HAND || item.getType().isBlock()) {
             return;
         }
-
         if (isOnPipe(player)) {
             final PlayerInventory inventory = player.getInventory();
             final ItemStack armor = inventory.getItem(armorItemSlot);
-            // If two pieces of armor are equal, the client will do nothing.
             if (armor != null && armor.getType() != Material.AIR && !armor.equals(item)) {
                 inventory.setItem(event.getHand(), inventory.getItem(event.getHand()));
                 inventory.setItem(armorItemSlot, armor);

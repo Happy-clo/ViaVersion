@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,21 +13,16 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.data;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.viaversion.viaversion.util.Key;
 import java.util.Optional;
-
 public class SpawnEggMappings1_13 {
     private static final BiMap<String, Integer> spawnEggs = HashBiMap.create();
-
     static {
-        // Class yz.java in 18w14b
-        // Register spawn eggs (generated with GT)
         registerSpawnEgg("bat");
         registerSpawnEgg("blaze");
         registerSpawnEgg("cave_spider");
@@ -48,7 +43,6 @@ public class SpawnEggMappings1_13 {
         registerSpawnEgg("mooshroom");
         registerSpawnEgg("mule");
         registerSpawnEgg("ocelot");
-
         registerSpawnEgg("parrot");
         registerSpawnEgg("pig");
         registerSpawnEgg("polar_bear");
@@ -73,20 +67,14 @@ public class SpawnEggMappings1_13 {
         registerSpawnEgg("zombie_pigman");
         registerSpawnEgg("zombie_villager");
     }
-
     private static void registerSpawnEgg(String name) {
         spawnEggs.put(Key.namespaced(name), spawnEggs.size());
     }
-
-    // Make it a non-existing block id
     public static int getSpawnEggId(String entityIdentifier) {
-        // Fallback to bat
         if (!spawnEggs.containsKey(entityIdentifier))
-            //return 25100288;
             return -1;
         return (383 << 16 | (spawnEggs.get(entityIdentifier) & 0xFFFF));
     }
-
     public static Optional<String> getEntityId(int spawnEggId) {
         if (spawnEggId >> 16 != 383) return Optional.empty();
         return Optional.ofNullable(spawnEggs.inverse().get(spawnEggId & 0xFFFF));

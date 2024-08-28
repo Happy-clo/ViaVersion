@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,24 +21,19 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.chunks;
-
 import io.netty.buffer.ByteBuf;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface ChunkSectionLight {
-
     /**
      * Length of the sky and block light nibble arrays.
      */
-    int LIGHT_LENGTH = 16 * 16 * 16 / 2; // Dimensions / 2 (nibble bit count)
-
+    int LIGHT_LENGTH = 16 * 16 * 16 / 2; 
     /**
      * Returns whether the section has sky light.
      *
      * @return true if skylight is present
      */
     boolean hasSkyLight();
-
     /**
      * Returns whether the section has block light.
      * This returns true unless specifically set to null.
@@ -46,7 +41,6 @@ public interface ChunkSectionLight {
      * @return true if skylight is present
      */
     boolean hasBlockLight();
-
     /**
      * Returns the nibblearray's raw sky light byte array if present.
      *
@@ -54,7 +48,6 @@ public interface ChunkSectionLight {
      * @see #hasSkyLight()
      */
     byte @Nullable [] getSkyLight();
-
     /**
      * Returns the nibblearray's raw block light byte array if present.
      *
@@ -62,21 +55,18 @@ public interface ChunkSectionLight {
      * @see #hasBlockLight()
      */
     byte @Nullable [] getBlockLight();
-
     /**
      * Set the sky light array.
      *
      * @param data raw sky light data
      */
     void setSkyLight(byte[] data);
-
     /**
      * Set the block light array.
      *
      * @param data raw block light data
      */
     void setBlockLight(byte[] data);
-
     /**
      * Returns the sky light nibblearray.
      *
@@ -84,7 +74,6 @@ public interface ChunkSectionLight {
      * @see #hasSkyLight()
      */
     @Nullable NibbleArray getSkyLightNibbleArray();
-
     /**
      * Returns the block light nibblearray.
      *
@@ -92,18 +81,14 @@ public interface ChunkSectionLight {
      * @see #hasBlockLight()
      */
     @Nullable NibbleArray getBlockLightNibbleArray();
-
     void readSkyLight(ByteBuf input);
-
     void readBlockLight(ByteBuf input);
-
     /**
      * Write the sky light to a buffer.
      *
      * @param output buffer to write to
      */
     void writeSkyLight(ByteBuf output);
-
     /**
      * Write the block light to a buffer.
      *

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_8to1_9.rewriter;
-
 import com.viaversion.viaversion.api.data.entity.EntityTracker;
 import com.viaversion.viaversion.api.minecraft.entities.EntityTypes1_8;
 import com.viaversion.viaversion.api.minecraft.entities.EntityTypes1_9;
@@ -36,7 +35,6 @@ import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ClientboundPackets1_
 import com.viaversion.viaversion.protocols.v1_8to1_9.storage.EntityTracker1_9;
 import java.util.ArrayList;
 import java.util.List;
-
 public class SpawnPacketRewriter1_9 {
     public static final ValueTransformer<Integer, Double> toNewDouble = new ValueTransformer<>(Types.DOUBLE) {
         @Override
@@ -44,41 +42,31 @@ public class SpawnPacketRewriter1_9 {
             return inputValue / 32D;
         }
     };
-
     public static void register(Protocol1_8To1_9 protocol) {
         protocol.registerClientbound(ClientboundPackets1_8.ADD_ENTITY, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-
+                map(Types.VAR_INT); 
                 handler(wrapper -> {
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
-                    wrapper.write(Types.UUID, tracker.getEntityUUID(entityID)); // 1 - UUID
+                    wrapper.write(Types.UUID, tracker.getEntityUUID(entityID)); 
                 });
-                map(Types.BYTE); // 2 - Type
-
-                // Parse this info
+                map(Types.BYTE); 
                 handler(wrapper -> {
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     int typeID = wrapper.get(Types.BYTE, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
                     tracker.addEntity(entityID, EntityTypes1_9.getTypeFromId(typeID, true));
                 });
-
-                map(Types.INT, toNewDouble); // 3 - X - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 4 - Y - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 5 - Z - Needs to be divided by 32
-
-                map(Types.BYTE); // 6 - Pitch
-                map(Types.BYTE); // 7 - Yaw
-
-                map(Types.INT); // 8 - Data
-
-                // Create last 3 shorts
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.INT); 
                 handler(wrapper -> {
-                    int data = wrapper.get(Types.INT, 0); // Data (1st Integer)
-
+                    int data = wrapper.get(Types.INT, 0); 
                     short vX = 0;
                     short vY = 0;
                     short vZ = 0;
@@ -87,31 +75,24 @@ public class SpawnPacketRewriter1_9 {
                         vY = wrapper.read(Types.SHORT);
                         vZ = wrapper.read(Types.SHORT);
                     }
-
                     wrapper.write(Types.SHORT, vX);
                     wrapper.write(Types.SHORT, vY);
                     wrapper.write(Types.SHORT, vZ);
                 });
-
-                // Handle potions
                 handler(wrapper -> {
                     final int entityID = wrapper.get(Types.VAR_INT, 0);
-                    final int data = wrapper.get(Types.INT, 0); // Data
-
+                    final int data = wrapper.get(Types.INT, 0); 
                     int typeID = wrapper.get(Types.BYTE, 0);
                     if (EntityTypes1_8.getTypeFromId(typeID, true) == EntityTypes1_8.EntityType.POTION) {
-                        // Convert this to entity data, woo!
                         PacketWrapper entityDataPacket = wrapper.create(ClientboundPackets1_9.SET_ENTITY_DATA, wrapper1 -> {
                             wrapper1.write(Types.VAR_INT, entityID);
                             List<EntityData> entityData = new ArrayList<>();
-                            Item item = new DataItem(373, (byte) 1, (short) data, null); // Potion
-                            protocol.getItemRewriter().handleItemToClient(wrapper.user(), item); // Rewrite so that it gets the right nbt
-                            // TEMP FIX FOR POTIONS UNTIL WE FIGURE OUT HOW TO TRANSFORM SENT PACKETS
+                            Item item = new DataItem(373, (byte) 1, (short) data, null); 
+                            protocol.getItemRewriter().handleItemToClient(wrapper.user(), item); 
                             EntityData potion = new EntityData(5, EntityDataTypes1_9.ITEM, item);
                             entityData.add(potion);
                             wrapper1.write(Types1_9.ENTITY_DATA_LIST, entityData);
                         });
-                        // Fix packet order
                         wrapper.send(Protocol1_8To1_9.class);
                         entityDataPacket.send(Protocol1_8To1_9.class);
                         wrapper.cancel();
@@ -119,78 +100,61 @@ public class SpawnPacketRewriter1_9 {
                 });
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_8.ADD_EXPERIENCE_ORB, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-
-                // Parse this info
+                map(Types.VAR_INT); 
                 handler(wrapper -> {
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
                     tracker.addEntity(entityID, EntityTypes1_9.EntityType.EXPERIENCE_ORB);
                 });
-
-                map(Types.INT, toNewDouble); // 1 - X - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 2 - Y - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 3 - Z - Needs to be divided by 32
-
-                map(Types.SHORT); // 4 - Amount to spawn
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.SHORT); 
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_8.ADD_GLOBAL_ENTITY, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-                map(Types.BYTE); // 1 - Type
-                // Parse this info
+                map(Types.VAR_INT); 
+                map(Types.BYTE); 
                 handler(wrapper -> {
-                    // Currently only lightning uses this
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
                     tracker.addEntity(entityID, EntityTypes1_9.EntityType.LIGHTNING_BOLT);
                 });
-
-                map(Types.INT, toNewDouble); // 2 - X - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 3 - Y - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 4 - Z - Needs to be divided by 32
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_8.ADD_MOB, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-
+                map(Types.VAR_INT); 
                 handler(wrapper -> {
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
-                    wrapper.write(Types.UUID, tracker.getEntityUUID(entityID)); // 1 - UUID
+                    wrapper.write(Types.UUID, tracker.getEntityUUID(entityID)); 
                 });
-                map(Types.UNSIGNED_BYTE); // 2 - Type
-
-                // Parse this info
+                map(Types.UNSIGNED_BYTE); 
                 handler(wrapper -> {
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     int typeID = wrapper.get(Types.UNSIGNED_BYTE, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
                     tracker.addEntity(entityID, EntityTypes1_9.getTypeFromId(typeID, false));
                 });
-
-                map(Types.INT, toNewDouble); // 3 - X - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 4 - Y - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 5 - Z - Needs to be divided by 32
-
-                map(Types.BYTE); // 6 - Yaw
-                map(Types.BYTE); // 7 - Pitch
-                map(Types.BYTE); // 8 - Head Pitch
-
-                map(Types.SHORT); // 9 - Velocity X
-                map(Types.SHORT); // 10 - Velocity Y
-                map(Types.SHORT); // 11 - Velocity Z
-
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
+                map(Types.SHORT); 
+                map(Types.SHORT); 
+                map(Types.SHORT); 
                 map(Types1_8.ENTITY_DATA_LIST, Types1_9.ENTITY_DATA_LIST);
                 handler(wrapper -> {
                     List<EntityData> entityDataList = wrapper.get(Types1_9.ENTITY_DATA_LIST, 0);
@@ -203,7 +167,6 @@ public class SpawnPacketRewriter1_9 {
                         entityDataList.clear();
                     }
                 });
-                // Handler for entity data
                 handler(wrapper -> {
                     List<EntityData> entityDataList = wrapper.get(Types1_9.ENTITY_DATA_LIST, 0);
                     int entityID = wrapper.get(Types.VAR_INT, 0);
@@ -212,13 +175,10 @@ public class SpawnPacketRewriter1_9 {
                 });
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_8.ADD_PAINTING, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-
-                // Parse this info
+                map(Types.VAR_INT); 
                 handler(wrapper -> {
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
@@ -227,36 +187,28 @@ public class SpawnPacketRewriter1_9 {
                 handler(wrapper -> {
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
-                    wrapper.write(Types.UUID, tracker.getEntityUUID(entityID)); // 1 - UUID
+                    wrapper.write(Types.UUID, tracker.getEntityUUID(entityID)); 
                 });
-
-                map(Types.STRING); // 2 - Title
-                map(Types.BLOCK_POSITION1_8); // 3 - Position
-                map(Types.BYTE); // 4 - Direction
+                map(Types.STRING); 
+                map(Types.BLOCK_POSITION1_8); 
+                map(Types.BYTE); 
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_8.ADD_PLAYER, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-                map(Types.UUID); // 1 - Player UUID
-
-                // Parse this info
+                map(Types.VAR_INT); 
+                map(Types.UUID); 
                 handler(wrapper -> {
                     int entityID = wrapper.get(Types.VAR_INT, 0);
                     EntityTracker1_9 tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
                     tracker.addEntity(entityID, EntityTypes1_9.EntityType.PLAYER);
                 });
-
-                map(Types.INT, toNewDouble); // 2 - X - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 3 - Y - Needs to be divided by 32
-                map(Types.INT, toNewDouble); // 4 - Z - Needs to be divided by 32
-
-                map(Types.BYTE); // 5 - Yaw
-                map(Types.BYTE); // 6 - Pitch
-
-                //Handle discontinued player hand item
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.INT, toNewDouble); 
+                map(Types.BYTE); 
+                map(Types.BYTE); 
                 handler(wrapper -> {
                     short item = wrapper.read(Types.SHORT);
                     if (item != 0) {
@@ -267,9 +219,7 @@ public class SpawnPacketRewriter1_9 {
                         packet.send(Protocol1_8To1_9.class);
                     }
                 });
-
                 map(Types1_8.ENTITY_DATA_LIST, Types1_9.ENTITY_DATA_LIST);
-
                 handler(wrapper -> {
                     List<EntityData> entityDataList = wrapper.get(Types1_9.ENTITY_DATA_LIST, 0);
                     int entityId = wrapper.get(Types.VAR_INT, 0);
@@ -281,8 +231,6 @@ public class SpawnPacketRewriter1_9 {
                         entityDataList.clear();
                     }
                 });
-
-                // Handler for entity data
                 handler(wrapper -> {
                     List<EntityData> entityDataList = wrapper.get(Types1_9.ENTITY_DATA_LIST, 0);
                     int entityID = wrapper.get(Types.VAR_INT, 0);
@@ -291,18 +239,14 @@ public class SpawnPacketRewriter1_9 {
                 });
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_8.REMOVE_ENTITIES, new PacketHandlers() {
-
             @Override
             public void register() {
-                map(Types.VAR_INT_ARRAY_PRIMITIVE); // 0 - Entities to destroy
-
+                map(Types.VAR_INT_ARRAY_PRIMITIVE); 
                 handler(wrapper -> {
                     int[] entities = wrapper.get(Types.VAR_INT_ARRAY_PRIMITIVE, 0);
                     EntityTracker tracker = wrapper.user().getEntityTracker(Protocol1_8To1_9.class);
                     for (int entity : entities) {
-                        // EntityTracker
                         tracker.removeEntity(entity);
                     }
                 });

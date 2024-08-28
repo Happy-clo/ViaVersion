@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.misc.HolderType;
 import io.netty.buffer.ByteBuf;
-
 public record ChatType(ChatTypeDecoration chatDecoration, ChatTypeDecoration narrationDecoration) {
-
     public static final HolderType<ChatType> TYPE = new HolderType<>() {
         @Override
         public ChatType readDirect(final ByteBuf buffer) {
@@ -37,18 +34,14 @@ public record ChatType(ChatTypeDecoration chatDecoration, ChatTypeDecoration nar
             final ChatTypeDecoration narrationDecoration = ChatTypeDecoration.TYPE.read(buffer);
             return new ChatType(chatDecoration, narrationDecoration);
         }
-
         @Override
         public void writeDirect(final ByteBuf buffer, final ChatType value) {
             ChatTypeDecoration.TYPE.write(buffer, value.chatDecoration());
             ChatTypeDecoration.TYPE.write(buffer, value.narrationDecoration());
         }
     };
-
     public record ChatTypeDecoration(String translationKey, int[] parameters, Tag style) {
-
         public static final Type<ChatTypeDecoration> TYPE = new Type<>(ChatTypeDecoration.class) {
-
             @Override
             public ChatTypeDecoration read(final ByteBuf buffer) {
                 final String translationKey = Types.STRING.read(buffer);
@@ -56,7 +49,6 @@ public record ChatType(ChatTypeDecoration chatDecoration, ChatTypeDecoration nar
                 final Tag style = Types.TAG.read(buffer);
                 return new ChatTypeDecoration(translationKey, parameters, style);
             }
-
             @Override
             public void write(final ByteBuf buffer, final ChatTypeDecoration value) {
                 Types.STRING.write(buffer, value.translationKey());

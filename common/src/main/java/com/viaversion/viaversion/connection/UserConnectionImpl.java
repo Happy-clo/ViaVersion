@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.connection;
-
 import com.google.common.cache.CacheBuilder;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
@@ -52,7 +51,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class UserConnectionImpl implements UserConnection {
     private static final AtomicLong IDS = new AtomicLong();
     private final long id = IDS.incrementAndGet();
@@ -67,7 +65,6 @@ public class UserConnectionImpl implements UserConnection {
     private final boolean clientSide;
     private boolean active = true;
     private boolean pendingDisconnect;
-
     /**
      * Creates an UserConnection. When it's a client-side connection, some method behaviors are modified.
      *
@@ -78,24 +75,20 @@ public class UserConnectionImpl implements UserConnection {
         this.channel = channel;
         this.clientSide = clientSide;
     }
-
     /**
      * @see #UserConnectionImpl(Channel, boolean)
      */
     public UserConnectionImpl(@Nullable Channel channel) {
         this(channel, false);
     }
-
     @Override
     public @Nullable <T extends StorableObject> T get(Class<T> objectClass) {
         return (T) storedObjects.get(objectClass);
     }
-
     @Override
     public boolean has(Class<? extends StorableObject> objectClass) {
         return storedObjects.containsKey(objectClass);
     }
-
     @Override
     public <T extends StorableObject> @Nullable T remove(Class<T> objectClass) {
         final StorableObject object = storedObjects.remove(objectClass);
@@ -104,7 +97,6 @@ public class UserConnectionImpl implements UserConnection {
         }
         return (T) object;
     }
-
     @Override
     public void put(StorableObject object) {
         final StorableObject previousObject = storedObjects.put(object.getClass(), object);
@@ -112,24 +104,20 @@ public class UserConnectionImpl implements UserConnection {
             previousObject.onRemove();
         }
     }
-
     @Override
     public Collection<EntityTracker> getEntityTrackers() {
         return entityTrackers.values();
     }
-
     @Override
     public @Nullable <T extends EntityTracker> T getEntityTracker(Class<? extends Protocol> protocolClass) {
         return (T) entityTrackers.get(protocolClass);
     }
-
     @Override
     public void addEntityTracker(Class<? extends Protocol> protocolClass, EntityTracker tracker) {
         if (!entityTrackers.containsKey(protocolClass)) {
             entityTrackers.put(protocolClass, tracker);
         }
     }
-
     @Override
     public void clearStoredObjects(boolean isServerSwitch) {
         if (isServerSwitch) {
@@ -152,17 +140,14 @@ public class UserConnectionImpl implements UserConnection {
             entityTrackers.clear();
         }
     }
-
     @Override
     public void sendRawPacket(ByteBuf packet) {
         sendRawPacket(packet, true);
     }
-
     @Override
     public void scheduleSendRawPacket(ByteBuf packet) {
         sendRawPacket(packet, false);
     }
-
     private void sendRawPacket(final ByteBuf packet, final boolean currentThread) {
         if (currentThread) {
             sendRawPacketNow(packet);
@@ -170,51 +155,43 @@ public class UserConnectionImpl implements UserConnection {
             try {
                 channel.eventLoop().submit(() -> sendRawPacketNow(packet));
             } catch (Throwable e) {
-                packet.release(); // Couldn't schedule
+                packet.release(); 
                 e.printStackTrace();
             }
         }
     }
-
     private void sendRawPacketNow(final ByteBuf buf) {
         final ChannelPipeline pipeline = getChannel().pipeline();
         final ViaInjector injector = Via.getManager().getInjector();
         if (clientSide) {
-            // We'll just assume that Via decoder isn't wrapping the original decoder
             pipeline.context(injector.getDecoderName()).fireChannelRead(buf);
         } else {
             pipeline.context(injector.getEncoderName()).writeAndFlush(buf);
         }
     }
-
     @Override
     public ChannelFuture sendRawPacketFuture(final ByteBuf packet) {
         if (clientSide) {
-            // Assume that decoder isn't wrapping
             getChannel().pipeline().context(Via.getManager().getInjector().getDecoderName()).fireChannelRead(packet);
             return getChannel().newSucceededFuture();
         } else {
             return channel.pipeline().context(Via.getManager().getInjector().getEncoderName()).writeAndFlush(packet);
         }
     }
-
     @Override
     public PacketTracker getPacketTracker() {
         return packetTracker;
     }
-
     @Override
     public void disconnect(String reason) {
         if (!channel.isOpen() || pendingDisconnect) return;
-
         pendingDisconnect = true;
         Via.getPlatform().runSync(() -> {
             if (!Via.getPlatform().disconnect(this, ChatColorUtil.translateAlternateColorCodes(reason))) {
-                channel.close(); // =)
+                channel.close(); 
             }
         });
     }
-
     @Override
     public void sendRawPacketToServer(ByteBuf packet) {
         if (clientSide) {
@@ -223,7 +200,6 @@ public class UserConnectionImpl implements UserConnection {
             sendRawPacketToServerServerSide(packet, true);
         }
     }
-
     @Override
     public void scheduleSendRawPacketToServer(ByteBuf packet) {
         if (clientSide) {
@@ -232,20 +208,15 @@ public class UserConnectionImpl implements UserConnection {
             sendRawPacketToServerServerSide(packet, false);
         }
     }
-
     private void sendRawPacketToServerServerSide(final ByteBuf packet, final boolean currentThread) {
         final ByteBuf buf = packet.alloc().buffer();
         try {
-            // We'll use passing through because there are some encoder wrappers
             ChannelHandlerContext context = PipelineUtil
                 .getPreviousContext(Via.getManager().getInjector().getDecoderName(), channel.pipeline());
-
             if (shouldTransformPacket()) {
-                // Bypass serverbound packet decoder transforming
                 Types.VAR_INT.writePrimitive(buf, PacketWrapper.PASSTHROUGH_ID);
                 Types.UUID.write(buf, generatePassthroughToken());
             }
-
             buf.writeBytes(packet);
             if (currentThread) {
                 fireChannelRead(context, buf);
@@ -253,7 +224,6 @@ public class UserConnectionImpl implements UserConnection {
                 try {
                     channel.eventLoop().submit(() -> fireChannelRead(context, buf));
                 } catch (Throwable t) {
-                    // Couldn't schedule
                     buf.release();
                     throw t;
                 }
@@ -262,7 +232,6 @@ public class UserConnectionImpl implements UserConnection {
             packet.release();
         }
     }
-
     private void fireChannelRead(@Nullable final ChannelHandlerContext context, final ByteBuf buf) {
         if (context != null) {
             context.fireChannelRead(buf);
@@ -270,7 +239,6 @@ public class UserConnectionImpl implements UserConnection {
             channel.pipeline().fireChannelRead(buf);
         }
     }
-
     private void sendRawPacketToServerClientSide(final ByteBuf packet, final boolean currentThread) {
         if (currentThread) {
             writeAndFlush(packet);
@@ -279,50 +247,41 @@ public class UserConnectionImpl implements UserConnection {
                 getChannel().eventLoop().submit(() -> writeAndFlush(packet));
             } catch (Throwable e) {
                 e.printStackTrace();
-                packet.release(); // Couldn't schedule
+                packet.release(); 
             }
         }
     }
-
     private void writeAndFlush(final ByteBuf buf) {
         getChannel().pipeline().context(Via.getManager().getInjector().getEncoderName()).writeAndFlush(buf);
     }
-
     @Override
     public boolean checkServerboundPacket() {
         if (pendingDisconnect) {
             return false;
         }
-        // Increment received + Check PPS
         return !packetTracker.isPacketLimiterEnabled() || !packetTracker.incrementReceived() || !packetTracker.exceedsMaxPPS();
     }
-
     @Override
     public boolean checkClientboundPacket() {
         packetTracker.incrementSent();
         return true;
     }
-
     @Override
     public boolean shouldTransformPacket() {
         return active;
     }
-
     @Override
     public void transformClientbound(ByteBuf buf, Function<Throwable, CodecException> cancelSupplier) throws InformativeException, CodecException {
         transform(buf, Direction.CLIENTBOUND, cancelSupplier);
     }
-
     @Override
     public void transformServerbound(ByteBuf buf, Function<Throwable, CodecException> cancelSupplier) throws InformativeException, CodecException {
         transform(buf, Direction.SERVERBOUND, cancelSupplier);
     }
-
     private void transform(ByteBuf buf, Direction direction, Function<Throwable, CodecException> cancelSupplier) throws InformativeException, CodecException {
         if (!buf.isReadable()) {
             return;
         }
-
         int id = Types.VAR_INT.readPrimitive(buf);
         if (id == PacketWrapper.PASSTHROUGH_ID) {
             if (!passthroughTokens.remove(Types.UUID.read(buf))) {
@@ -330,7 +289,6 @@ public class UserConnectionImpl implements UserConnection {
             }
             return;
         }
-
         PacketWrapper wrapper = new PacketWrapperImpl(id, buf, this);
         State state = protocolInfo.getState(direction);
         try {
@@ -338,7 +296,6 @@ public class UserConnectionImpl implements UserConnection {
         } catch (CancelException ex) {
             throw cancelSupplier.apply(ex);
         }
-
         ByteBuf transformed = buf.alloc().buffer();
         try {
             wrapper.writeToBuffer(transformed);
@@ -347,64 +304,52 @@ public class UserConnectionImpl implements UserConnection {
             transformed.release();
         }
     }
-
     @Override
     public long getId() {
         return id;
     }
-
     @Override
     public @Nullable Channel getChannel() {
         return channel;
     }
-
     @Override
     public ProtocolInfo getProtocolInfo() {
         return protocolInfo;
     }
-
     @Override
     public Map<Class<?>, StorableObject> getStoredObjects() {
         return storedObjects;
     }
-
     @Override
     public boolean isActive() {
         return active;
     }
-
     @Override
     public void setActive(boolean active) {
         this.active = active;
     }
-
     @Override
     public boolean isPendingDisconnect() {
         return pendingDisconnect;
     }
-
     @Override
     public void setPendingDisconnect(boolean pendingDisconnect) {
         this.pendingDisconnect = pendingDisconnect;
     }
-
     @Override
     public boolean isClientSide() {
         return clientSide;
     }
-
     @Override
     public boolean shouldApplyBlockProtocol() {
-        return !clientSide; // Don't apply protocol blocking on client-side
+        return !clientSide; 
     }
-
     @Override
     public UUID generatePassthroughToken() {
         UUID token = UUID.randomUUID();
         passthroughTokens.add(token);
         return token;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -412,7 +357,6 @@ public class UserConnectionImpl implements UserConnection {
         UserConnectionImpl that = (UserConnectionImpl) o;
         return id == that.id;
     }
-
     @Override
     public int hashCode() {
         return Long.hashCode(id);

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,38 +21,31 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.misc;
-
 import com.viaversion.viaversion.api.minecraft.Holder;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public abstract class HolderType<T> extends Type<Holder<T>> {
-
     protected HolderType() {
         super(Holder.class);
     }
-
     @Override
     public Holder<T> read(final ByteBuf buffer) {
-        final int id = Types.VAR_INT.readPrimitive(buffer) - 1; // Normalize id
+        final int id = Types.VAR_INT.readPrimitive(buffer) - 1; 
         if (id == -1) {
             return Holder.of(readDirect(buffer));
         }
         return Holder.of(id);
     }
-
     @Override
     public void write(final ByteBuf buffer, final Holder<T> object) {
         if (object.hasId()) {
-            Types.VAR_INT.writePrimitive(buffer, object.id() + 1); // Normalize id
+            Types.VAR_INT.writePrimitive(buffer, object.id() + 1); 
         } else {
             Types.VAR_INT.writePrimitive(buffer, 0);
             writeDirect(buffer, object.value());
         }
     }
-
     public abstract T readDirect(final ByteBuf buffer);
-
     public abstract void writeDirect(final ByteBuf buffer, final T object);
 }

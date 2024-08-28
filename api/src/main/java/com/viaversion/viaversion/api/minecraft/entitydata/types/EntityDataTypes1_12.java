@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.entitydata.types;
-
 import com.viaversion.viaversion.api.minecraft.entitydata.EntityDataType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
-
 public enum EntityDataTypes1_12 implements EntityDataType {
     BYTE(Types.BYTE),
     VAR_INT(Types.VAR_INT),
@@ -41,22 +39,17 @@ public enum EntityDataTypes1_12 implements EntityDataType {
     OPTIONAL_UUID(Types.OPTIONAL_UUID),
     OPTIONAL_BLOCK_STATE(Types.VAR_INT),
     COMPOUND_TAG(Types.NAMED_COMPOUND_TAG);
-
     private final Type<?> type;
-
     EntityDataTypes1_12(Type<?> type) {
         this.type = type;
     }
-
     public static EntityDataTypes1_12 byId(int id) {
         return values()[id];
     }
-
     @Override
     public int typeId() {
         return ordinal();
     }
-
     @Override
     public Type type() {
         return type;

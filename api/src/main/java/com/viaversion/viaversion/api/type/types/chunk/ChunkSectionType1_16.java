@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.chunk;
-
 import com.viaversion.viaversion.api.minecraft.chunks.ChunkSection;
 import com.viaversion.viaversion.api.minecraft.chunks.ChunkSectionImpl;
 import com.viaversion.viaversion.api.minecraft.chunks.DataPalette;
@@ -30,25 +29,19 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.util.CompactArrayUtil;
 import io.netty.buffer.ByteBuf;
-
 public class ChunkSectionType1_16 extends Type<ChunkSection> {
     private static final int GLOBAL_PALETTE = 15;
-
     public ChunkSectionType1_16() {
         super(ChunkSection.class);
     }
-
     @Override
     public ChunkSection read(ByteBuf buffer) {
-        // Reaad bits per block
         int bitsPerBlock = buffer.readUnsignedByte();
         if (bitsPerBlock > 8) {
             bitsPerBlock = GLOBAL_PALETTE;
         } else if (bitsPerBlock < 4) {
             bitsPerBlock = 4;
         }
-
-        // Read palette
         ChunkSection chunkSection;
         if (bitsPerBlock != GLOBAL_PALETTE) {
             int paletteLength = Types.VAR_INT.readPrimitive(buffer);
@@ -60,8 +53,6 @@ public class ChunkSectionType1_16 extends Type<ChunkSection> {
         } else {
             chunkSection = new ChunkSectionImpl(false);
         }
-
-        // Read blocks
         long[] blockData = Types.LONG_ARRAY_PRIMITIVE.read(buffer);
         if (blockData.length > 0) {
             char valuesPerLong = (char) (64 / bitsPerBlock);
@@ -72,10 +63,8 @@ public class ChunkSectionType1_16 extends Type<ChunkSection> {
                     bitsPerBlock == GLOBAL_PALETTE ? blockPalette::setIdAt : blockPalette::setPaletteIndexAt);
             }
         }
-
         return chunkSection;
     }
-
     @Override
     public void write(ByteBuf buffer, ChunkSection chunkSection) {
         int bitsPerBlock = 4;
@@ -83,21 +72,16 @@ public class ChunkSectionType1_16 extends Type<ChunkSection> {
         while (blockPalette.size() > 1 << bitsPerBlock) {
             bitsPerBlock += 1;
         }
-
         if (bitsPerBlock > 8) {
             bitsPerBlock = GLOBAL_PALETTE;
         }
-
         buffer.writeByte(bitsPerBlock);
-
-        // Write palette
         if (bitsPerBlock != GLOBAL_PALETTE) {
             Types.VAR_INT.writePrimitive(buffer, blockPalette.size());
             for (int i = 0; i < blockPalette.size(); i++) {
                 Types.VAR_INT.writePrimitive(buffer, blockPalette.idByIndex(i));
             }
         }
-
         long[] data = CompactArrayUtil.createCompactArrayWithPadding(bitsPerBlock, ChunkSection.SIZE,
             bitsPerBlock == GLOBAL_PALETTE ? blockPalette::idAt : blockPalette::paletteIndexAt);
         Types.LONG_ARRAY_PRIMITIVE.write(buffer, data);

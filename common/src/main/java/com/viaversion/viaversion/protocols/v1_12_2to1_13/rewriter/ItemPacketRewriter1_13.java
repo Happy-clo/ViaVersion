@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.rewriter;
-
 import com.google.common.base.Joiner;
 import com.google.common.primitives.Ints;
 import com.viaversion.nbt.tag.CompoundTag;
@@ -47,31 +46,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-
 public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_1, ServerboundPackets1_13, Protocol1_12_2To1_13> {
-
     public ItemPacketRewriter1_13(Protocol1_12_2To1_13 protocol) {
         super(protocol, Types.ITEM1_8, Types.ITEM1_8_SHORT_ARRAY, Types.ITEM1_13, Types.ITEM1_13_SHORT_ARRAY);
     }
-
     @Override
     public void registerPackets() {
         protocol.registerClientbound(ClientboundPackets1_12_1.CONTAINER_SET_SLOT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.UNSIGNED_BYTE); // 0 - Window ID
-                map(Types.SHORT); // 1 - Slot ID
-                map(Types.ITEM1_8, Types.ITEM1_13); // 2 - Slot Value
-
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.SHORT); 
+                map(Types.ITEM1_8, Types.ITEM1_13); 
                 handler(wrapper -> handleItemToClient(wrapper.user(), wrapper.get(Types.ITEM1_13, 0)));
             }
         });
         protocol.registerClientbound(ClientboundPackets1_12_1.CONTAINER_SET_CONTENT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.UNSIGNED_BYTE); // 0 - Window ID
-                map(Types.ITEM1_8_SHORT_ARRAY, Types.ITEM1_13_SHORT_ARRAY); // 1 - Window Values
-
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.ITEM1_8_SHORT_ARRAY, Types.ITEM1_13_SHORT_ARRAY); 
                 handler(wrapper -> {
                     Item[] items = wrapper.get(Types.ITEM1_13_SHORT_ARRAY, 0);
                     for (Item item : items) {
@@ -83,38 +77,30 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
         protocol.registerClientbound(ClientboundPackets1_12_1.CONTAINER_SET_DATA, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.UNSIGNED_BYTE); // Window id
-                map(Types.SHORT); // Property
-                map(Types.SHORT); // Value
-
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.SHORT); 
+                map(Types.SHORT); 
                 handler(wrapper -> {
                     short property = wrapper.get(Types.SHORT, 0);
-                    if (property >= 4 && property <= 6) { // Enchantment id
+                    if (property >= 4 && property <= 6) { 
                         wrapper.set(Types.SHORT, 1, (short) protocol.getMappingData().getEnchantmentMappings().getNewId(wrapper.get(Types.SHORT, 1)));
                     }
                 });
             }
         });
-
-        // Plugin message Packet -> Trading
         protocol.registerClientbound(ClientboundPackets1_12_1.CUSTOM_PAYLOAD, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // 0 - Channel
-
+                map(Types.STRING); 
                 handlerSoftFail(wrapper -> {
                     String channel = wrapper.get(Types.STRING, 0);
-                    // Handle stopsound change
                     if (channel.equals("MC|StopSound")) {
                         String originalSource = wrapper.read(Types.STRING);
                         String originalSound = wrapper.read(Types.STRING);
-
-                        // Reset the packet
                         wrapper.clearPacket();
                         wrapper.setPacketType(ClientboundPackets1_13.STOP_SOUND);
-
                         byte flags = 0;
-                        wrapper.write(Types.BYTE, flags); // Placeholder
+                        wrapper.write(Types.BYTE, flags); 
                         if (!originalSource.isEmpty()) {
                             flags |= 1;
                             Optional<SoundSource1_12_2> finalSource = SoundSource1_12_2.findBySource(originalSource);
@@ -124,15 +110,13 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                                 }
                                 finalSource = Optional.of(SoundSource1_12_2.MASTER);
                             }
-
                             wrapper.write(Types.VAR_INT, finalSource.get().getId());
                         }
                         if (!originalSound.isEmpty()) {
                             flags |= 2;
                             wrapper.write(Types.STRING, originalSound);
                         }
-
-                        wrapper.set(Types.BYTE, 0, flags); // Update flags
+                        wrapper.set(Types.BYTE, 0, flags); 
                         return;
                     } else if (channel.equals("MC|TrList")) {
                         channel = "minecraft:trader_list";
@@ -169,37 +153,31 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                 });
             }
         });
-
         protocol.registerClientbound(ClientboundPackets1_12_1.SET_EQUIPPED_ITEM, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.VAR_INT); // 0 - Entity ID
-                map(Types.VAR_INT); // 1 - Slot ID
-                map(Types.ITEM1_8, Types.ITEM1_13); // 2 - Item
-
+                map(Types.VAR_INT); 
+                map(Types.VAR_INT); 
+                map(Types.ITEM1_8, Types.ITEM1_13); 
                 handler(wrapper -> handleItemToClient(wrapper.user(), wrapper.get(Types.ITEM1_13, 0)));
             }
         });
-
-
         protocol.registerServerbound(ServerboundPackets1_13.CONTAINER_CLICK, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.UNSIGNED_BYTE); // 0 - Window ID
-                map(Types.SHORT); // 1 - Slot
-                map(Types.BYTE); // 2 - Button
-                map(Types.SHORT); // 3 - Action number
-                map(Types.VAR_INT); // 4 - Mode
-                map(Types.ITEM1_13, Types.ITEM1_8); // 5 - Clicked Item
-
+                map(Types.UNSIGNED_BYTE); 
+                map(Types.SHORT); 
+                map(Types.BYTE); 
+                map(Types.SHORT); 
+                map(Types.VAR_INT); 
+                map(Types.ITEM1_13, Types.ITEM1_8); 
                 handler(wrapper -> handleItemToServer(wrapper.user(), wrapper.get(Types.ITEM1_8, 0)));
             }
         });
-
         protocol.registerServerbound(ServerboundPackets1_13.CUSTOM_PAYLOAD, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // Channel
+                map(Types.STRING); 
                 handler(wrapper -> {
                     String channel = wrapper.get(Types.STRING, 0);
                     String old = channel;
@@ -227,55 +205,41 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                 });
             }
         });
-
         protocol.registerServerbound(ServerboundPackets1_13.SET_CREATIVE_MODE_SLOT, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.SHORT); // 0 - Slot
-                map(Types.ITEM1_13, Types.ITEM1_8); // 1 - Clicked Item
-
+                map(Types.SHORT); 
+                map(Types.ITEM1_13, Types.ITEM1_8); 
                 handler(wrapper -> handleItemToServer(wrapper.user(), wrapper.get(Types.ITEM1_8, 0)));
             }
         });
     }
-
     @Override
     public Item handleItemToClient(UserConnection connection, Item item) {
         if (item == null) return null;
         CompoundTag tag = item.tag();
-
-        // Save original id
         int originalId = (item.identifier() << 16 | item.data() & 0xFFFF);
-
         int rawId = IdAndData.toRawData(item.identifier(), item.data());
-
-        // NBT Additions
         if (isDamageable(item.identifier())) {
             if (tag == null) item.setTag(tag = new CompoundTag());
             tag.put("Damage", new IntTag(item.data()));
         }
-        if (item.identifier() == 358) { // map
+        if (item.identifier() == 358) { 
             if (tag == null) item.setTag(tag = new CompoundTag());
             tag.put("map", new IntTag(item.data()));
         }
-
-        // NBT Changes
         if (tag != null) {
-            // Invert banner/shield color id
             boolean banner = item.identifier() == 425;
             if (banner || item.identifier() == 442) {
                 CompoundTag blockEntityTag = tag.getCompoundTag("BlockEntityTag");
                 if (blockEntityTag != null) {
                     NumberTag baseTag = blockEntityTag.getNumberTag("Base");
                     if (baseTag != null) {
-                        // Set banner item id according to nbt
                         if (banner) {
                             rawId = 6800 + baseTag.asInt();
                         }
-
                         blockEntityTag.putInt("Base", 15 - baseTag.asInt());
                     }
-
                     ListTag<CompoundTag> patternsTag = blockEntityTag.getListTag("Patterns", CompoundTag.class);
                     if (patternsTag != null) {
                         for (CompoundTag pattern : patternsTag) {
@@ -283,14 +247,11 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                             if (colorTag == null) {
                                 continue;
                             }
-
-                            // Invert color id
                             pattern.putInt("Color", 15 - colorTag.asInt());
                         }
                     }
                 }
             }
-            // Display Name now uses JSON
             CompoundTag display = tag.getCompoundTag("display");
             if (display != null) {
                 StringTag name = display.getStringTag("Name");
@@ -299,7 +260,6 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     name.setValue(ComponentUtil.legacyToJsonString(name.getValue(), true));
                 }
             }
-            // ench is now Enchantments and now uses identifiers
             ListTag<CompoundTag> ench = tag.getListTag("ench", CompoundTag.class);
             if (ench != null) {
                 ListTag<CompoundTag> enchantments = new ListTag<>(CompoundTag.class);
@@ -308,7 +268,6 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     if (idTag == null) {
                         continue;
                     }
-
                     CompoundTag enchantmentEntry = new CompoundTag();
                     short oldId = idTag.asShort();
                     String newId = Protocol1_12_2To1_13.MAPPINGS.getOldEnchantmentsIds().get(oldId);
@@ -316,18 +275,15 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                         newId = "viaversion:legacy/" + oldId;
                     }
                     enchantmentEntry.putString("id", newId);
-
                     NumberTag levelTag = enchEntry.getNumberTag("lvl");
                     if (levelTag != null) {
                         enchantmentEntry.putShort("lvl", levelTag.asShort());
                     }
-
                     enchantments.add(enchantmentEntry);
                 }
                 tag.remove("ench");
                 tag.put("Enchantments", enchantments);
             }
-
             ListTag<CompoundTag> storedEnch = tag.getListTag("StoredEnchantments", CompoundTag.class);
             if (storedEnch != null) {
                 ListTag<CompoundTag> newStoredEnch = new ListTag<>(CompoundTag.class);
@@ -336,7 +292,6 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     if (idTag == null) {
                         continue;
                     }
-
                     CompoundTag enchantmentEntry = new CompoundTag();
                     short oldId = idTag.asShort();
                     String newId = Protocol1_12_2To1_13.MAPPINGS.getOldEnchantmentsIds().get(oldId);
@@ -344,17 +299,14 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                         newId = "viaversion:legacy/" + oldId;
                     }
                     enchantmentEntry.putString("id", newId);
-
                     NumberTag levelTag = enchEntry.getNumberTag("lvl");
                     if (levelTag != null) {
                         enchantmentEntry.putShort("lvl", levelTag.asShort());
                     }
-
                     newStoredEnch.add(enchantmentEntry);
                 }
                 tag.put("StoredEnchantments", newStoredEnch);
             }
-
             ListTag<?> canPlaceOnTag = tag.getListTag("CanPlaceOn");
             if (canPlaceOnTag != null) {
                 ListTag<StringTag> newCanPlaceOn = new ListTag<>(StringTag.class);
@@ -377,7 +329,6 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                 }
                 tag.put("CanPlaceOn", newCanPlaceOn);
             }
-
             ListTag<?> canDestroyTag = tag.getListTag("CanDestroy");
             if (canDestroyTag != null) {
                 ListTag<StringTag> newCanDestroy = new ListTag<>(StringTag.class);
@@ -400,7 +351,6 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                 }
                 tag.put("CanDestroy", newCanDestroy);
             }
-            // Handle SpawnEggs
             if (item.identifier() == 383) {
                 CompoundTag entityTag = tag.getCompoundTag("EntityTag");
                 if (entityTag != null) {
@@ -408,7 +358,7 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     if (idTag != null) {
                         rawId = SpawnEggMappings1_13.getSpawnEggId(idTag.getValue());
                         if (rawId == -1) {
-                            rawId = 25100288; // Bat fallback
+                            rawId = 25100288; 
                         } else {
                             entityTag.remove("id");
                             if (entityTag.isEmpty()) {
@@ -416,11 +366,9 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                             }
                         }
                     } else {
-                        // Fallback to bat
                         rawId = 25100288;
                     }
                 } else {
-                    // Fallback to bat
                     rawId = 25100288;
                 }
             }
@@ -428,31 +376,27 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                 item.setTag(tag = null);
             }
         }
-
         if (Protocol1_12_2To1_13.MAPPINGS.getItemMappings().getNewId(rawId) == -1) {
-            if (!isDamageable(item.identifier()) && item.identifier() != 358) { // Map
+            if (!isDamageable(item.identifier()) && item.identifier() != 358) { 
                 if (tag == null) item.setTag(tag = new CompoundTag());
-                tag.put(nbtTagName(), new IntTag(originalId)); // Data will be lost, saving original id
+                tag.put(nbtTagName(), new IntTag(originalId)); 
             }
-            if (item.identifier() == 31 && item.data() == 0) { // Shrub was removed
-                rawId = IdAndData.toRawData(32); // Dead Bush
+            if (item.identifier() == 31 && item.data() == 0) { 
+                rawId = IdAndData.toRawData(32); 
             } else if (Protocol1_12_2To1_13.MAPPINGS.getItemMappings().getNewId(IdAndData.removeData(rawId)) != -1) {
                 rawId = IdAndData.removeData(rawId);
             } else {
                 if (!Via.getConfig().isSuppressConversionWarnings()) {
                     protocol.getLogger().warning("Failed to get new item for " + item.identifier());
                 }
-                rawId = 16; // Stone
+                rawId = 16; 
             }
         }
-
         item.setIdentifier(Protocol1_12_2To1_13.MAPPINGS.getItemMappings().getNewId(rawId));
         item.setData((short) 0);
         return item;
     }
-
     public static String getNewPluginChannelId(String old) {
-        // Default channels that should not be modifiable
         return switch (old) {
             case "MC|TrList" -> "minecraft:trader_list";
             case "MC|Brand" -> "minecraft:brand";
@@ -470,32 +414,23 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
             }
         };
     }
-
     @Override
     public Item handleItemToServer(UserConnection connection, Item item) {
         if (item == null) return null;
-
         Integer rawId = null;
         boolean gotRawIdFromTag = false;
-
         CompoundTag tag = item.tag();
-
-        // Use tag to get original ID and data
         if (tag != null) {
-            // Check for valid tag
             NumberTag viaTag = tag.getNumberTag(nbtTagName());
             if (viaTag != null) {
                 rawId = viaTag.asInt();
-                // Remove the tag
                 tag.remove(nbtTagName());
                 gotRawIdFromTag = true;
             }
         }
-
         if (rawId == null) {
             int oldId = Protocol1_12_2To1_13.MAPPINGS.getItemMappings().inverse().getNewId(item.identifier());
             if (oldId != -1) {
-                // Handle spawn eggs
                 Optional<String> eggEntityId = SpawnEggMappings1_13.getEntityId(oldId);
                 if (eggEntityId.isPresent()) {
                     rawId = 383 << 16;
@@ -511,18 +446,14 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                 }
             }
         }
-
         if (rawId == null) {
             if (!Via.getConfig().isSuppressConversionWarnings()) {
                 protocol.getLogger().warning("Failed to get old item for " + item.identifier());
             }
-            rawId = 0x10000; // Stone
+            rawId = 0x10000; 
         }
-
         item.setIdentifier((short) (rawId >> 16));
         item.setData((short) (rawId & 0xFFFF));
-
-        // NBT changes
         if (tag != null) {
             if (isDamageable(item.identifier())) {
                 NumberTag damageTag = tag.getNumberTag("Damage");
@@ -533,8 +464,7 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     tag.remove("Damage");
                 }
             }
-
-            if (item.identifier() == 358) { // map
+            if (item.identifier() == 358) { 
                 NumberTag mapTag = tag.getNumberTag("map");
                 if (mapTag != null) {
                     if (!gotRawIdFromTag) {
@@ -543,25 +473,22 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     tag.remove("map");
                 }
             }
-
-            if (item.identifier() == 442 || item.identifier() == 425) { // shield / banner
+            if (item.identifier() == 442 || item.identifier() == 425) { 
                 CompoundTag blockEntityTag = tag.getCompoundTag("BlockEntityTag");
                 if (blockEntityTag != null) {
                     NumberTag baseTag = blockEntityTag.getNumberTag("Base");
                     if (baseTag != null) {
-                        blockEntityTag.putInt("Base", 15 - baseTag.asInt()); // invert color id
+                        blockEntityTag.putInt("Base", 15 - baseTag.asInt()); 
                     }
-
                     ListTag<CompoundTag> patternsTag = blockEntityTag.getListTag("Patterns", CompoundTag.class);
                     if (patternsTag != null) {
                         for (CompoundTag pattern : patternsTag) {
                             NumberTag colorTag = pattern.getNumberTag("Color");
-                            pattern.putInt("Color", 15 - colorTag.asInt()); // Invert color id
+                            pattern.putInt("Color", 15 - colorTag.asInt()); 
                         }
                     }
                 }
             }
-            // Display Name now uses JSON
             CompoundTag display = tag.getCompoundTag("display");
             if (display != null) {
                 StringTag name = display.getStringTag("Name");
@@ -570,8 +497,6 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     name.setValue(via instanceof StringTag ? (String) via.getValue() : ComponentUtil.jsonToLegacy(name.getValue()));
                 }
             }
-
-            // ench is now Enchantments and now uses identifiers
             ListTag<CompoundTag> enchantments = tag.getListTag("Enchantments", CompoundTag.class);
             if (enchantments != null) {
                 ListTag<CompoundTag> ench = new ListTag<>(CompoundTag.class);
@@ -580,7 +505,6 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     if (idTag == null) {
                         continue;
                     }
-
                     CompoundTag enchEntry = new CompoundTag();
                     String newId = idTag.getValue();
                     Short oldId = Protocol1_12_2To1_13.MAPPINGS.getOldEnchantmentsIds().inverse().get(newId);
@@ -599,8 +523,6 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                 tag.remove("Enchantments");
                 tag.put("ench", ench);
             }
-
-
             ListTag<CompoundTag> storedEnch = tag.getListTag("StoredEnchantments", CompoundTag.class);
             if (storedEnch != null) {
                 ListTag<CompoundTag> newStoredEnch = new ListTag<>(CompoundTag.class);
@@ -609,18 +531,15 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
                     if (idTag == null) {
                         continue;
                     }
-
                     CompoundTag enchEntry = new CompoundTag();
                     String newId = idTag.getValue();
                     Short oldId = Protocol1_12_2To1_13.MAPPINGS.getOldEnchantmentsIds().inverse().get(newId);
                     if (oldId == null && newId.startsWith("viaversion:legacy/")) {
                         oldId = Short.valueOf(newId.substring(18));
                     }
-
                     if (oldId == null) {
                         continue;
                     }
-
                     enchEntry.putShort("id", oldId);
                     NumberTag levelTag = enchantmentEntry.getNumberTag("lvl");
                     if (levelTag != null) {
@@ -673,12 +592,9 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
         }
         return item;
     }
-
     public static String getOldPluginChannelId(String newId) {
         newId = MappingData1_13.validateNewChannel(newId);
         if (newId == null) return null;
-
-        // Default channels that should not be modifiable
         return switch (newId) {
             case "minecraft:trader_list" -> "MC|TrList";
             case "minecraft:book_open" -> "MC|BOpen";
@@ -695,18 +611,17 @@ public class ItemPacketRewriter1_13 extends ItemRewriter<ClientboundPackets1_12_
             }
         };
     }
-
     public static boolean isDamageable(int id) {
-        return id >= 256 && id <= 259 // iron shovel, pickaxe, axe, flint and steel
-            || id == 261 // bow
-            || id >= 267 && id <= 279 // iron sword, wooden+stone+diamond swords, shovels, pickaxes, axes
-            || id >= 283 && id <= 286 // gold sword, shovel, pickaxe, axe
-            || id >= 290 && id <= 294 // hoes
-            || id >= 298 && id <= 317 // armors
-            || id == 346 // fishing rod
-            || id == 359 // shears
-            || id == 398 // carrot on a stick
-            || id == 442 // shield
-            || id == 443; // elytra
+        return id >= 256 && id <= 259 
+            || id == 261 
+            || id >= 267 && id <= 279 
+            || id >= 283 && id <= 286 
+            || id >= 290 && id <= 294 
+            || id >= 298 && id <= 317 
+            || id == 346 
+            || id == 359 
+            || id == 398 
+            || id == 442 
+            || id == 443; 
     }
 }

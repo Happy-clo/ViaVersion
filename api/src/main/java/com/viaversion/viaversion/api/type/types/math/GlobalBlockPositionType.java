@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,33 +21,26 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types.math;
-
 import com.viaversion.viaversion.api.minecraft.GlobalBlockPosition;
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class GlobalBlockPositionType extends Type<GlobalBlockPosition> {
-
     public GlobalBlockPositionType() {
         super(GlobalBlockPosition.class);
     }
-
     @Override
     public GlobalBlockPosition read(ByteBuf buffer) {
         final String dimension = Types.STRING.read(buffer);
         return Types.BLOCK_POSITION1_14.read(buffer).withDimension(dimension);
     }
-
     @Override
     public void write(ByteBuf buffer, GlobalBlockPosition object) {
         Types.STRING.write(buffer, object.dimension());
         Types.BLOCK_POSITION1_14.write(buffer, object);
     }
-
     public static final class OptionalGlobalPositionType extends OptionalType<GlobalBlockPosition> {
-
         public OptionalGlobalPositionType() {
             super(Types.GLOBAL_POSITION);
         }

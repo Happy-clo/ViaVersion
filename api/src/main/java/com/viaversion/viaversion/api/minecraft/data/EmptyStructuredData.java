@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,53 +21,41 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.data;
-
 import io.netty.buffer.ByteBuf;
-
 final class EmptyStructuredData<T> implements StructuredData<T> {
-
     private final StructuredDataKey<T> key;
     private int id;
-
     EmptyStructuredData(final StructuredDataKey<T> key, final int id) {
         this.key = key;
         this.id = id;
     }
-
     @Override
     public void setValue(final T value) {
         throw new UnsupportedOperationException();
     }
-
     @Override
     public void write(final ByteBuf buffer) {
     }
-
     @Override
     public void setId(final int id) {
         this.id = id;
     }
-
     @Override
     public StructuredDataKey<T> key() {
         return this.key;
     }
-
     @Override
     public T value() {
         return null;
     }
-
     @Override
     public boolean isEmpty() {
         return true;
     }
-
     @Override
     public int id() {
         return this.id;
     }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -76,14 +64,12 @@ final class EmptyStructuredData<T> implements StructuredData<T> {
         if (id != that.id) return false;
         return key.equals(that.key);
     }
-
     @Override
     public int hashCode() {
         int result = key.hashCode();
         result = 31 * result + id;
         return result;
     }
-
     @Override
     public String toString() {
         return "EmptyStructuredData{" +

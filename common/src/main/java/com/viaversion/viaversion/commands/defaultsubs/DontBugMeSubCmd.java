@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,36 +13,29 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.commands.defaultsubs;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
 import com.viaversion.viaversion.api.configuration.ViaVersionConfig;
-
 public class DontBugMeSubCmd implements ViaSubCommand {
-
     @Override
     public String name() {
         return "dontbugme";
     }
-
     @Override
     public String description() {
         return "Toggle checking for updates.";
     }
-
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
         final ViaVersionConfig config = Via.getConfig();
         boolean newValue = !config.isCheckForUpdates();
-
         config.setCheckForUpdates(newValue);
         config.save();
         sendMessage(sender, "&6We will %snotify you about updates.", (newValue ? "&a" : "&cnot "));
-
         return true;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.listeners;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -33,14 +32,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.Nullable;
-
 public class JoinListener implements Listener {
-
     private static final Method GET_HANDLE;
     private static final Field CONNECTION;
     private static final Field NETWORK_MANAGER;
     private static final Field CHANNEL;
-
     static {
         Method getHandleMethod = null;
         Field gamePacketListenerField = null, connectionField = null, channelField = null;
@@ -60,8 +56,6 @@ public class JoinListener implements Listener {
         NETWORK_MANAGER = connectionField;
         CHANNEL = channelField;
     }
-
-    // Loosely search a field with any name, as long as it matches a type name.
     private static Field findField(boolean checkSuperClass, Class<?> clazz, String... types) throws NoSuchFieldException {
         for (Field field : clazz.getDeclaredFields()) {
             String fieldTypeName = field.getType().getSimpleName();
@@ -69,27 +63,22 @@ public class JoinListener implements Listener {
                 if (!fieldTypeName.equals(type)) {
                     continue;
                 }
-
                 if (!Modifier.isPublic(field.getModifiers())) {
                     field.setAccessible(true);
                 }
                 return field;
             }
         }
-
         if (checkSuperClass && clazz != Object.class && clazz.getSuperclass() != null) {
             return findField(true, clazz.getSuperclass(), types);
         }
-
         throw new NoSuchFieldException(types[0]);
     }
-
     private static Field findField(Class<?> clazz, Class<?> fieldType) throws NoSuchFieldException {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.getType() != fieldType) {
                 continue;
             }
-
             if (!Modifier.isPublic(field.getModifiers())) {
                 field.setAccessible(true);
             }
@@ -97,12 +86,10 @@ public class JoinListener implements Listener {
         }
         throw new NoSuchFieldException(fieldType.getSimpleName());
     }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         if (CHANNEL == null) return;
         Player player = e.getPlayer();
-
         Channel channel;
         try {
             channel = getChannel(player);
@@ -111,9 +98,7 @@ public class JoinListener implements Listener {
                 () -> "Could not find Channel for logging-in player " + player.getUniqueId());
             return;
         }
-        // The connection has already closed, that was a quick leave
         if (!channel.isOpen()) return;
-
         UserConnection user = getUserConnection(channel);
         if (user == null) {
             Via.getPlatform().getLogger().log(Level.WARNING,
@@ -126,17 +111,14 @@ public class JoinListener implements Listener {
         info.setUsername(player.getName());
         Via.getManager().getConnectionManager().onLoginSuccess(user);
     }
-
     private @Nullable UserConnection getUserConnection(Channel channel) {
         BukkitEncodeHandler encoder = channel.pipeline().get(BukkitEncodeHandler.class);
         return encoder != null ? encoder.connection() : null;
     }
-
     private Channel getChannel(Player player) throws Exception {
         Object entityPlayer = GET_HANDLE.invoke(player);
         Object pc = CONNECTION.get(entityPlayer);
         Object nm = NETWORK_MANAGER.get(pc);
         return (Channel) CHANNEL.get(nm);
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,22 +13,18 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_14_3to1_14_4;
-
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPackets1_14;
 import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ServerboundPackets1_14;
 import com.viaversion.viaversion.protocols.v1_14_3to1_14_4.packet.ClientboundPackets1_14_4;
-
 public class Protocol1_14_3To1_14_4 extends AbstractProtocol<ClientboundPackets1_14, ClientboundPackets1_14_4, ServerboundPackets1_14, ServerboundPackets1_14> {
-
     public Protocol1_14_3To1_14_4() {
         super(ClientboundPackets1_14.class, ClientboundPackets1_14_4.class, null, null);
     }
-
     @Override
     protected void registerPackets() {
         registerClientbound(ClientboundPackets1_14.MERCHANT_OFFERS, wrapper -> {
@@ -46,7 +42,7 @@ public class Protocol1_14_3To1_14_4 extends AbstractProtocol<ClientboundPackets1
                 wrapper.passthrough(Types.INT);
                 wrapper.passthrough(Types.INT);
                 wrapper.passthrough(Types.FLOAT);
-                wrapper.write(Types.INT, 0); // demand value added in pre5
+                wrapper.write(Types.INT, 0); 
             }
         });
     }

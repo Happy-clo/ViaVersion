@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.platform;
-
 import com.viaversion.viaversion.api.platform.ProtocolDetectorService;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -24,18 +23,14 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 public abstract class AbstractProtocolDetectorService implements ProtocolDetectorService {
     protected final Object2IntMap<String> detectedProtocolIds = new Object2IntOpenHashMap<>();
     protected final ReadWriteLock lock = new ReentrantReadWriteLock();
-
     protected AbstractProtocolDetectorService() {
         detectedProtocolIds.defaultReturnValue(-1);
     }
-
     @Override
     public ProtocolVersion serverProtocolVersion(final String serverName) {
-        // Step 1. Check detected
         lock.readLock().lock();
         final int detectedProtocol;
         try {
@@ -46,24 +41,17 @@ public abstract class AbstractProtocolDetectorService implements ProtocolDetecto
         if (detectedProtocol != -1) {
             return ProtocolVersion.getProtocol(detectedProtocol);
         }
-
-        // Step 2. Check config (CME moment?)
         final Map<String, Integer> servers = configuredServers();
         final Integer protocol = servers.get(serverName);
         if (protocol != null) {
             return ProtocolVersion.getProtocol(protocol);
         }
-
-        // Step 3. Use Default (CME moment intensifies?)
         final Integer defaultProtocol = servers.get("default");
         if (defaultProtocol != null) {
             return ProtocolVersion.getProtocol(defaultProtocol);
         }
-
-        // Step 4: Use the proxy's lowest supported... *cries*
         return lowestSupportedProtocolVersion();
     }
-
     @Override
     public void setProtocolVersion(final String serverName, final int protocolVersion) {
         lock.writeLock().lock();
@@ -73,7 +61,6 @@ public abstract class AbstractProtocolDetectorService implements ProtocolDetecto
             lock.writeLock().unlock();
         }
     }
-
     @Override
     public int uncacheProtocolVersion(final String serverName) {
         lock.writeLock().lock();
@@ -83,7 +70,6 @@ public abstract class AbstractProtocolDetectorService implements ProtocolDetecto
             lock.writeLock().unlock();
         }
     }
-
     @Override
     public Object2IntMap<String> detectedProtocolVersions() {
         lock.readLock().lock();
@@ -93,8 +79,6 @@ public abstract class AbstractProtocolDetectorService implements ProtocolDetecto
             lock.readLock().unlock();
         }
     }
-
     protected abstract Map<String, Integer> configuredServers();
-
     protected abstract ProtocolVersion lowestSupportedProtocolVersion();
 }

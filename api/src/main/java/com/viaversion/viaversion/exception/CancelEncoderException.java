@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.exception;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.ViaManager;
 import io.netty.handler.codec.EncoderException;
-
 /**
  * Thrown during packet encoding when an outgoing packet should be cancelled.
  * Specifically extends {@link EncoderException} to prevent netty from wrapping the exception.
@@ -37,22 +35,17 @@ public class CancelEncoderException extends EncoderException implements CancelCo
             return this;
         }
     };
-
     public CancelEncoderException() {
     }
-
     public CancelEncoderException(String message, Throwable cause) {
         super(message, cause);
     }
-
     public CancelEncoderException(String message) {
         super(message);
     }
-
     public CancelEncoderException(Throwable cause) {
         super(cause);
     }
-
     /**
      * Returns a cached CancelEncoderException or a new instance when {@link ViaManager#isDebug()} is true.
      *

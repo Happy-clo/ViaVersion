@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.blockentities;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.viaversion.nbt.tag.CompoundTag;
@@ -26,18 +25,14 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.Protocol1_12_2To1_13;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.provider.BlockEntityProvider;
 import com.viaversion.viaversion.util.ComponentUtil;
-
 public class CommandBlockHandler implements BlockEntityProvider.BlockEntityHandler {
-
     private final Protocol1_12_2To1_13 protocol = Via.getManager().getProtocolManager().getProtocol(Protocol1_12_2To1_13.class);
-
     @Override
     public int transform(UserConnection user, CompoundTag tag) {
         StringTag name = tag.getStringTag("CustomName");
         if (name != null) {
             name.setValue(ComponentUtil.legacyToJsonString(name.getValue()));
         }
-
         StringTag out = tag.getStringTag("LastOutput");
         if (out != null) {
             JsonElement value = JsonParser.parseString(out.getValue());

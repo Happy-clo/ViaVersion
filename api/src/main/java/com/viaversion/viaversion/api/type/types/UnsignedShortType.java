@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,26 +21,21 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.TypeConverter;
 import io.netty.buffer.ByteBuf;
-
 public class UnsignedShortType extends Type<Integer> implements TypeConverter<Integer> {
     public UnsignedShortType() {
         super(Integer.class);
     }
-
     @Override
     public Integer read(ByteBuf buffer) {
         return buffer.readUnsignedShort();
     }
-
     @Override
     public void write(ByteBuf buffer, Integer object) {
         buffer.writeShort(object);
     }
-
     @Override
     public Integer from(Object o) {
         if (o instanceof Number number) {

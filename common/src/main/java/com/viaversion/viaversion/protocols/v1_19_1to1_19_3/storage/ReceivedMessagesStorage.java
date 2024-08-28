@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,25 +13,21 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_19_1to1_19_3.storage;
-
 import com.viaversion.viaversion.api.connection.StorableObject;
 import com.viaversion.viaversion.api.minecraft.PlayerMessageSignature;
 import java.util.Arrays;
-
 public final class ReceivedMessagesStorage implements StorableObject {
     private final PlayerMessageSignature[] signatures = new PlayerMessageSignature[5];
     private PlayerMessageSignature lastSignature;
     private int size;
     private int unacknowledged;
-
     public boolean add(final PlayerMessageSignature signature) {
         if (signature.equals(this.lastSignature)) {
             return false;
         }
-
         this.lastSignature = signature;
         PlayerMessageSignature toPush = signature;
         for (int i = 0; i < this.size; ++i) {
@@ -42,25 +38,20 @@ public final class ReceivedMessagesStorage implements StorableObject {
                 return true;
             }
         }
-
         if (this.size < this.signatures.length) {
             this.signatures[this.size++] = toPush;
         }
         return true;
     }
-
     public PlayerMessageSignature[] lastSignatures() {
         return Arrays.copyOf(this.signatures, size);
     }
-
     public int tickUnacknowledged() {
         return unacknowledged++;
     }
-
     public void resetUnacknowledgedCount() {
         unacknowledged = 0;
     }
-
     public void clear() {
         this.size = 0;
         this.unacknowledged = 0;

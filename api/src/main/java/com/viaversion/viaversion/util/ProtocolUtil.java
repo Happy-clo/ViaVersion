@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.util;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.protocol.packet.PacketType;
@@ -32,9 +31,7 @@ import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public final class ProtocolUtil {
-
     /**
      * Returns a map of packet types by state.
      *
@@ -48,10 +45,8 @@ public final class ProtocolUtil {
         if (parent == null) {
             return Collections.emptyMap();
         }
-
         final Map<State, PacketTypeMap<P>> map = new EnumMap<>(State.class);
         for (final Class<? extends P> packetTypeClass : packetTypeClasses) {
-            // Get state from first enum type
             final P[] types = packetTypeClass.getEnumConstants();
             Preconditions.checkArgument(types != null, "%s not an enum", packetTypeClass);
             Preconditions.checkArgument(types.length > 0, "Enum %s has no types", packetTypeClass);
@@ -60,7 +55,6 @@ public final class ProtocolUtil {
         }
         return map;
     }
-
     /**
      * Returns a hex string of a packet id.
      *
@@ -71,7 +65,6 @@ public final class ProtocolUtil {
         final String hex = Integer.toHexString(id).toUpperCase(Locale.ROOT);
         return (hex.length() == 1 ? "0x0" : "0x") + hex;
     }
-
     /**
      * Returns a readable name of a protocol. For example, "Protocol1_12_2To1_13" becomes "1.12.2->1.13".
      *

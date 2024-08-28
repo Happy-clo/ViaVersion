@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,27 +21,21 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.type.types;
-
 import com.google.common.base.Preconditions;
 import com.viaversion.viaversion.api.type.OptionalType;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import io.netty.buffer.ByteBuf;
-
 public class ByteArrayType extends Type<byte[]> {
-
     private final int length;
-
     public ByteArrayType(final int length) {
         super(byte[].class);
         this.length = length;
     }
-
     public ByteArrayType() {
         super(byte[].class);
         this.length = -1;
     }
-
     @Override
     public void write(final ByteBuf buffer, final byte[] object) {
         if (this.length != -1) {
@@ -51,7 +45,6 @@ public class ByteArrayType extends Type<byte[]> {
         }
         buffer.writeBytes(object);
     }
-
     @Override
     public byte[] read(final ByteBuf buffer) {
         final int length = this.length == -1 ? Types.VAR_INT.readPrimitive(buffer) : this.length;
@@ -60,13 +53,10 @@ public class ByteArrayType extends Type<byte[]> {
         buffer.readBytes(array);
         return array;
     }
-
     public static final class OptionalByteArrayType extends OptionalType<byte[]> {
-
         public OptionalByteArrayType() {
             super(Types.BYTE_ARRAY_PRIMITIVE);
         }
-
         public OptionalByteArrayType(final int length) {
             super(new ByteArrayType(length));
         }

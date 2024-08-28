@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.signature.storage;
-
 import com.viaversion.viaversion.api.connection.StorableObject;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.util.DataConsumer;
@@ -31,14 +30,11 @@ import java.security.SignatureException;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
-
 public class ChatSession implements StorableObject {
-
     private final UUID uuid;
     private final PrivateKey privateKey;
     private final ProfileKey profileKey;
     private final Signature signer;
-
     public ChatSession(final UUID uuid, final PrivateKey privateKey, final ProfileKey profileKey) {
         Objects.requireNonNull(uuid, "uuid");
         Objects.requireNonNull(privateKey, "privateKey");
@@ -46,7 +42,6 @@ public class ChatSession implements StorableObject {
         this.uuid = uuid;
         this.privateKey = privateKey;
         this.profileKey = profileKey;
-
         try {
             this.signer = Signature.getInstance("SHA256withRSA");
             this.signer.initSign(this.privateKey);
@@ -54,15 +49,12 @@ public class ChatSession implements StorableObject {
             throw new RuntimeException("Failed to initialize signature", e);
         }
     }
-
     public UUID getUuid() {
         return this.uuid;
     }
-
     public ProfileKey getProfileKey() {
         return this.profileKey;
     }
-
     public byte[] sign(final Consumer<DataConsumer> dataConsumer) throws SignatureException {
         dataConsumer.accept(bytes -> {
             try {
@@ -73,5 +65,4 @@ public class ChatSession implements StorableObject {
         });
         return this.signer.sign();
     }
-
 }

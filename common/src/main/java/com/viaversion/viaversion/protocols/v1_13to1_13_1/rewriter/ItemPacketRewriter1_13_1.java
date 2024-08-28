@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.protocols.v1_13to1_13_1.rewriter;
-
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;
 import com.viaversion.viaversion.api.type.Type;
@@ -27,59 +26,46 @@ import com.viaversion.viaversion.protocols.v1_13to1_13_1.Protocol1_13To1_13_1;
 import com.viaversion.viaversion.rewriter.ItemRewriter;
 import com.viaversion.viaversion.rewriter.RecipeRewriter;
 import com.viaversion.viaversion.util.Key;
-
 public class ItemPacketRewriter1_13_1 extends ItemRewriter<ClientboundPackets1_13, ServerboundPackets1_13, Protocol1_13To1_13_1> {
-
     public ItemPacketRewriter1_13_1(Protocol1_13To1_13_1 protocol) {
         super(protocol, Types.ITEM1_13, Types.ITEM1_13_SHORT_ARRAY);
     }
-
     @Override
     public void registerPackets() {
         registerSetSlot(ClientboundPackets1_13.CONTAINER_SET_SLOT);
         registerSetContent(ClientboundPackets1_13.CONTAINER_SET_CONTENT);
         registerAdvancements(ClientboundPackets1_13.UPDATE_ADVANCEMENTS);
         registerCooldown(ClientboundPackets1_13.COOLDOWN);
-
         protocol.registerClientbound(ClientboundPackets1_13.CUSTOM_PAYLOAD, new PacketHandlers() {
             @Override
             public void register() {
-                map(Types.STRING); // Channel
+                map(Types.STRING); 
                 handlerSoftFail(wrapper -> {
                     String channel = Key.namespaced(wrapper.get(Types.STRING, 0));
                     if (channel.equals("minecraft:trader_list")) {
-                        wrapper.passthrough(Types.INT); // Passthrough Window ID
-
+                        wrapper.passthrough(Types.INT); 
                         int size = wrapper.passthrough(Types.UNSIGNED_BYTE);
                         for (int i = 0; i < size; i++) {
-                            // Input Item
                             handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13));
-                            // Output Item
                             handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13));
-
-                            boolean secondItem = wrapper.passthrough(Types.BOOLEAN); // Has second item
+                            boolean secondItem = wrapper.passthrough(Types.BOOLEAN); 
                             if (secondItem) {
-                                // Second Item
                                 handleItemToClient(wrapper.user(), wrapper.passthrough(Types.ITEM1_13));
                             }
-
-                            wrapper.passthrough(Types.BOOLEAN); // Trade disabled
-                            wrapper.passthrough(Types.INT); // Number of tools uses
-                            wrapper.passthrough(Types.INT); // Maximum number of trade uses
+                            wrapper.passthrough(Types.BOOLEAN); 
+                            wrapper.passthrough(Types.INT); 
+                            wrapper.passthrough(Types.INT); 
                         }
                     }
                 });
             }
         });
-
         registerSetEquippedItem(ClientboundPackets1_13.SET_EQUIPPED_ITEM);
-
         RecipeRewriter<ClientboundPackets1_13> recipeRewriter = new RecipeRewriter<>(protocol) {
             @Override
             protected Type<Item> itemType() {
                 return Types.ITEM1_13;
             }
-
             @Override
             protected Type<Item[]> itemArrayType() {
                 return Types.ITEM1_13_ARRAY;
@@ -88,16 +74,13 @@ public class ItemPacketRewriter1_13_1 extends ItemRewriter<ClientboundPackets1_1
         protocol.registerClientbound(ClientboundPackets1_13.UPDATE_RECIPES, wrapper -> {
             int size = wrapper.passthrough(Types.VAR_INT);
             for (int i = 0; i < size; i++) {
-                // First id, then type
-                wrapper.passthrough(Types.STRING); // Id
+                wrapper.passthrough(Types.STRING); 
                 String type = Key.stripMinecraftNamespace(wrapper.passthrough(Types.STRING));
                 recipeRewriter.handleRecipeType(wrapper, type);
             }
         });
-
         registerContainerClick(ServerboundPackets1_13.CONTAINER_CLICK);
         registerSetCreativeModeSlot(ServerboundPackets1_13.SET_CREATIVE_MODE_SLOT);
-
         registerLevelParticles(ClientboundPackets1_13.LEVEL_PARTICLES, Types.FLOAT);
     }
 }

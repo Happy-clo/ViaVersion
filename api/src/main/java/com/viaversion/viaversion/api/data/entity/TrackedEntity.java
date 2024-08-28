@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,38 +21,31 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.data.entity;
-
 import com.viaversion.viaversion.api.minecraft.entities.EntityType;
-
 public interface TrackedEntity {
-
     /**
      * Returns the type of the stored entity.
      *
      * @return type of the entity
      */
     EntityType entityType();
-
     /**
      * Object to hold arbitrary additional data.
      *
      * @return entity data
      */
     StoredEntityData data();
-
     /**
      * Returns whether the stored entity currently has any additional data.
      *
      * @return whether the stored entity currently has additional data
      */
     boolean hasData();
-
     /**
      * Returns whether entity data has already been sent at least once for this entity.
      *
      * @return whether entity data has already been sent at least once for this entity
      */
     boolean hasSentEntityData();
-
     void sentEntityData(boolean sentEntityData);
 }

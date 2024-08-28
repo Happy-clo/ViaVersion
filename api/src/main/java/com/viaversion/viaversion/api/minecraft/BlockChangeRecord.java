@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,30 +21,25 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft;
-
 public interface BlockChangeRecord {
-
     /**
      * Returns the relative x coordinate within the chunk section.
      *
      * @return relative x coordinate within the chunk section
      */
     byte getSectionX();
-
     /**
      * Returns the relative y coordinate within the chunk section.
      *
      * @return relative y coordinate within the chunk section
      */
     byte getSectionY();
-
     /**
      * Returns the relative z coordinate within the chunk section.
      *
      * @return relative z coordinate within the chunk section
      */
     byte getSectionZ();
-
     /**
      * Returns the absolute y coordinate based on the given chunk section y.
      *
@@ -52,7 +47,6 @@ public interface BlockChangeRecord {
      * @return absolute y coordinate
      */
     short getY(int chunkSectionY);
-
     /**
      * Returns the absolute y coordinate - only works for sub 1.16 protocols.
      *
@@ -61,8 +55,6 @@ public interface BlockChangeRecord {
     default short getY() {
         return getY(-1);
     }
-
     int getBlockId();
-
     void setBlockId(int blockId);
 }

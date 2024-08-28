@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.velocity.platform;
-
 import com.google.gson.JsonObject;
 import com.viaversion.viaversion.VelocityPlugin;
 import com.viaversion.viaversion.api.Via;
@@ -31,10 +30,8 @@ import java.lang.reflect.Method;
 import java.util.SortedSet;
 import java.util.logging.Level;
 import org.jetbrains.annotations.Nullable;
-
 public class VelocityViaInjector implements ViaInjector {
     public static final Method GET_PLAYER_INFO_FORWARDING_MODE = getPlayerInfoForwardingModeMethod();
-
     private static @Nullable Method getPlayerInfoForwardingModeMethod() {
         try {
             return Class.forName("com.velocitypowered.proxy.config.VelocityConfiguration").getMethod("getPlayerInfoForwardingMode");
@@ -43,49 +40,40 @@ public class VelocityViaInjector implements ViaInjector {
             return null;
         }
     }
-
     private ChannelInitializer getInitializer() throws Exception {
         Object connectionManager = ReflectionUtil.get(VelocityPlugin.PROXY, "cm", Object.class);
         Object channelInitializerHolder = ReflectionUtil.invoke(connectionManager, "getServerChannelInitializer");
         return (ChannelInitializer) ReflectionUtil.invoke(channelInitializerHolder, "get");
     }
-
     private ChannelInitializer getBackendInitializer() throws Exception {
         Object connectionManager = ReflectionUtil.get(VelocityPlugin.PROXY, "cm", Object.class);
         Object channelInitializerHolder = ReflectionUtil.invoke(connectionManager, "getBackendChannelInitializer");
         return (ChannelInitializer) ReflectionUtil.invoke(channelInitializerHolder, "get");
     }
-
     @Override
     public void inject() throws Exception {
         Via.getPlatform().getLogger().info("Replacing channel initializers; you can safely ignore the following two warnings.");
-
         Object connectionManager = ReflectionUtil.get(VelocityPlugin.PROXY, "cm", Object.class);
         Object channelInitializerHolder = ReflectionUtil.invoke(connectionManager, "getServerChannelInitializer");
         ChannelInitializer originalInitializer = getInitializer();
         channelInitializerHolder.getClass().getMethod("set", ChannelInitializer.class)
             .invoke(channelInitializerHolder, new VelocityChannelInitializer(originalInitializer, false));
-
         Object backendInitializerHolder = ReflectionUtil.invoke(connectionManager, "getBackendChannelInitializer");
         ChannelInitializer backendInitializer = getBackendInitializer();
         backendInitializerHolder.getClass().getMethod("set", ChannelInitializer.class)
             .invoke(backendInitializerHolder, new VelocityChannelInitializer(backendInitializer, true));
     }
-
     @Override
     public void uninject() {
         Via.getPlatform().getLogger().severe("ViaVersion cannot remove itself from Velocity without a reboot!");
     }
-
     @Override
     public ProtocolVersion getServerProtocolVersion() {
         return ProtocolVersion.getProtocol(getLowestSupportedProtocolVersion());
     }
-
     @Override
     public SortedSet<ProtocolVersion> getServerProtocolVersions() {
         int lowestSupportedProtocolVersion = getLowestSupportedProtocolVersion();
-
         SortedSet<ProtocolVersion> set = new ObjectLinkedOpenHashSet<>();
         for (com.velocitypowered.api.network.ProtocolVersion version : com.velocitypowered.api.network.ProtocolVersion.SUPPORTED_VERSIONS) {
             if (version.getProtocol() >= lowestSupportedProtocolVersion) {
@@ -94,7 +82,6 @@ public class VelocityViaInjector implements ViaInjector {
         }
         return set;
     }
-
     public static int getLowestSupportedProtocolVersion() {
         try {
             if (GET_PLAYER_INFO_FORWARDING_MODE != null
@@ -106,14 +93,12 @@ public class VelocityViaInjector implements ViaInjector {
         }
         return com.velocitypowered.api.network.ProtocolVersion.MINIMUM_VERSION.getProtocol();
     }
-
     @Override
     public JsonObject getDump() {
         JsonObject data = new JsonObject();
         try {
             data.addProperty("currentInitializer", getInitializer().getClass().getName());
         } catch (Exception e) {
-            // Ignored
         }
         return data;
     }

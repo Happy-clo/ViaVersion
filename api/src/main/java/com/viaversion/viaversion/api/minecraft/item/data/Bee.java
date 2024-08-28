@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,12 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.minecraft.item.data;
-
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.ArrayType;
 import io.netty.buffer.ByteBuf;
-
 public record Bee(CompoundTag entityData, int ticksInHive, int minTicksInHive) {
-
     public static final Type<Bee> TYPE = new Type<>(Bee.class) {
         @Override
         public Bee read(final ByteBuf buffer) {
@@ -38,7 +35,6 @@ public record Bee(CompoundTag entityData, int ticksInHive, int minTicksInHive) {
             final int minTicksInHive = Types.VAR_INT.readPrimitive(buffer);
             return new Bee(entityData, ticksInHive, minTicksInHive);
         }
-
         @Override
         public void write(final ByteBuf buffer, final Bee value) {
             Types.COMPOUND_TAG.write(buffer, value.entityData);
@@ -47,5 +43,4 @@ public record Bee(CompoundTag entityData, int ticksInHive, int minTicksInHive) {
         }
     };
     public static final Type<Bee[]> ARRAY_TYPE = new ArrayType<>(TYPE);
-
 }

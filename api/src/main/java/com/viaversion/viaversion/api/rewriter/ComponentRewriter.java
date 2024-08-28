@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,15 +21,11 @@
  * SOFTWARE.
  */
 package com.viaversion.viaversion.api.rewriter;
-
 import com.google.gson.JsonElement;
 import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface ComponentRewriter {
-
     void processTag(UserConnection connection, @Nullable Tag tag);
-
     void processText(UserConnection connection, @Nullable JsonElement element);
 }

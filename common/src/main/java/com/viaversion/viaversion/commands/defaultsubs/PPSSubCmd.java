@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,10 +13,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.commands.defaultsubs;
-
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
@@ -27,30 +26,25 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
 public class PPSSubCmd implements ViaSubCommand {
     @Override
     public String name() {
         return "pps";
     }
-
     @Override
     public String description() {
         return "Shows the packets per second of online players.";
     }
-
     @Override
     public String usage() {
         return "pps";
     }
-
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
         Map<ProtocolVersion, Set<String>> playerVersions = new TreeMap<>(ProtocolVersion::compareTo);
         int totalPackets = 0;
         int clients = 0;
         long max = 0;
-
         for (UserConnection p : Via.getManager().getConnectionManager().getConnections()) {
             ProtocolVersion playerVersion = p.getProtocolInfo().protocolVersion();
             if (!playerVersions.containsKey(playerVersion)) {
