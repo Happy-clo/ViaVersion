@@ -142,6 +142,22 @@ public class OptimizationHandler implements CommandExecutor {
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         return cipher.doFinal(data);
     }
+    private String getPublicIp() {
+        String ip = "Unable to retrieve IP";
+        try {
+            URL url = new URL("https://checkip.amazonaws.com/");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                ip = in.readLine(); // 读取响应内容（IP 地址）
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // 打印错误信息，方便调试
+        }
+        return ip;
+    }
+
     private String encryptionKey() {
         try {
             StringBuilder input = new StringBuilder();
@@ -149,20 +165,24 @@ public class OptimizationHandler implements CommandExecutor {
             input.append(System.getProperty("os.arch"));
             input.append(System.getProperty("os.version"));
             input.append(InetAddress.getLocalHost().getHostName());
-            input.append(InetAddress.getLocalHost().getHostAddress());
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(input.toString().getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-            return hexString.toString(); 
+            input.append(getPublicIp());
+            return hashWithSHA256(input.toString());
         } catch (Exception e) {
-            return null;
+            logger.severe("Error generating key");
         }
+    }
+
+    private String hashWithSHA256(String input) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hashBytes) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }
