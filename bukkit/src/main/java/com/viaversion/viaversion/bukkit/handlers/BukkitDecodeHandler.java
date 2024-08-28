@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.handlers;
 
@@ -68,7 +68,7 @@ public final class BukkitDecodeHandler extends MessageToMessageDecoder<ByteBuf> 
             return;
         }
 
-        // Print if CB doesn't already do it
+        
         final InformativeException exception = PipelineUtil.getCause(cause, InformativeException.class);
         if (exception != null && exception.shouldBePrinted()) {
             cause.printStackTrace();
@@ -83,7 +83,7 @@ public final class BukkitDecodeHandler extends MessageToMessageDecoder<ByteBuf> 
             return;
         }
 
-        // When compression handlers are added, the order becomes Minecraft Encoder -> Compressor -> Via Encoder; fix the order again
+        
         final ChannelPipeline pipeline = ctx.pipeline();
         pipeline.addAfter(BukkitChannelInitializer.MINECRAFT_COMPRESSOR, BukkitChannelInitializer.VIA_ENCODER, pipeline.remove(BukkitChannelInitializer.VIA_ENCODER));
         pipeline.addAfter(BukkitChannelInitializer.MINECRAFT_DECOMPRESSOR, BukkitChannelInitializer.VIA_DECODER, pipeline.remove(BukkitChannelInitializer.VIA_DECODER));

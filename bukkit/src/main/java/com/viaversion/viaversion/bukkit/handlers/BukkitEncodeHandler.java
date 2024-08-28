@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.handlers;
 
@@ -43,7 +43,7 @@ public final class BukkitEncodeHandler extends MessageToMessageEncoder<ByteBuf> 
 
     @Override
     protected void encode(final ChannelHandlerContext ctx, final ByteBuf bytebuf, final List<Object> out) throws Exception {
-        // Check if the channel is open as older servers might start sending packets through the pipeline despite the channel being closed
+        
         if (!connection.checkClientboundPacket() || !ctx.channel().isOpen()) {
             throw CancelEncoderException.generate(null);
         }
@@ -76,7 +76,7 @@ public final class BukkitEncodeHandler extends MessageToMessageEncoder<ByteBuf> 
 
         handledCompression = true;
         if (compressorIndex > names.indexOf(BukkitChannelInitializer.VIA_ENCODER)) {
-            // Need to decompress this packet due to bad order
+            
             final ByteBuf decompressed = (ByteBuf) PipelineUtil.callDecode((ByteToMessageDecoder) pipeline.get(BukkitChannelInitializer.MINECRAFT_DECOMPRESSOR), ctx, buf).get(0);
             try {
                 buf.clear().writeBytes(decompressed);
@@ -112,7 +112,7 @@ public final class BukkitEncodeHandler extends MessageToMessageEncoder<ByteBuf> 
             return;
         }
 
-        // Print if CB doesn't already do it
+        
         final InformativeException exception = PipelineUtil.getCause(cause, InformativeException.class);
         if (exception != null && exception.shouldBePrinted()) {
             cause.printStackTrace();

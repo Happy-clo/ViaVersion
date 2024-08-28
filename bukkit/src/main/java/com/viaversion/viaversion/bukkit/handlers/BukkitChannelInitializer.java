@@ -1,5 +1,5 @@
 /*
- * This file is part of ViaVersion - https://github.com/ViaVersion/ViaVersion
+ * This file is part of ViaVersion - https:
  * Copyright (C) 2016-2024 ViaVersion and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http:
  */
 package com.viaversion.viaversion.bukkit.handlers;
 
@@ -65,7 +65,7 @@ public final class BukkitChannelInitializer extends ChannelInitializer<Channel> 
 
     @Override
     protected void initChannel(Channel channel) throws Exception {
-        // Add originals
+        
         INIT_CHANNEL_METHOD.invoke(this.original, channel);
         afterChannelInitialize(channel);
     }
@@ -78,7 +78,7 @@ public final class BukkitChannelInitializer extends ChannelInitializer<Channel> 
             connection.getPacketTracker().setPacketLimiterEnabled(false);
         }
 
-        // Add our transformers
+        
         final ChannelPipeline pipeline = channel.pipeline();
         final String encoderName = pipeline.get(MINECRAFT_OUTBOUND_CONFIG) != null ? MINECRAFT_OUTBOUND_CONFIG : MINECRAFT_ENCODER;
         pipeline.addBefore(encoderName, VIA_ENCODER, new BukkitEncodeHandler(connection));
