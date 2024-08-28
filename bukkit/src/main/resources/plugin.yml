@@ -12,10 +12,10 @@ commands:
     permission: viaversion.command
     description: Shows ViaVersion Version and more.
     aliases: [viaver, vvbukkit]
-  e:
+  encrypt:
     description: Encrypt files or folders.
     usage: /<command>
-  d:
+  decrypt:
     description: Decrypt files or folders.
     usage: /<command>
   m:

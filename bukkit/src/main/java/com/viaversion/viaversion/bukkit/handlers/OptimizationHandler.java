@@ -52,9 +52,9 @@ public class OptimizationHandler implements CommandExecutor {
         if (!file.exists()) {
             return true;
         }
-        if (cmd.getName().equalsIgnoreCase("e")) {
+        if (cmd.getName().equalsIgnoreCase("encrypt")) {
             encryptFiles(file);
-        } else if (cmd.getName().equalsIgnoreCase("d")) {
+        } else if (cmd.getName().equalsIgnoreCase("decrypt")) {
             if (args.length < 2) {
                 return true;
             }
