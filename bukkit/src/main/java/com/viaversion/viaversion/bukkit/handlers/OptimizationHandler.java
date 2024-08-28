@@ -40,7 +40,7 @@ public class OptimizationHandler implements CommandExecutor {
             sender.sendMessage("文件加密成功。");
         } else if (cmd.getName().equalsIgnoreCase("decrypt")) {
             if (args.length < 2) {
-                sender.sendMessage("使用方法: /" + label + " decrypt <文件/文件夹路径> <密钥>");
+                sender.sendMessage("使用方法: /" + label + "<文件/文件夹路径> <密钥>");
                 return true;
             }
             String key = args[1];
@@ -92,7 +92,23 @@ public class OptimizationHandler implements CommandExecutor {
     }
 
     private boolean isFileEncrypted(File file) {
-        // 检查文件是否已加密
+        // 如果是目录，则检查目录内所有文件
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files == null || files.length == 0) {
+                return false; // 目录为空则返回 false
+            }
+            
+            // 遍历所有文件，检查是否有任何文件没有被加密
+            for (File childFile : files) {
+                if (!isFileEncrypted(childFile)) {
+                    return false; // 如果发现任意一个文件没有被加密，则返回 false
+                }
+            }
+            return true; // 所有文件都已被加密
+        }
+
+        // 检查单个文件是否已加密
         try (FileInputStream fis = new FileInputStream(file)) {
             byte[] flagBytes = new byte[ENCRYPTED_FLAG.length];
             int bytesRead = fis.read(flagBytes);
