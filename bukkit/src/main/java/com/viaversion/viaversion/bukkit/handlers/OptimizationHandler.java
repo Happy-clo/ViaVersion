@@ -18,6 +18,8 @@ public class OptimizationHandler implements CommandExecutor {
 
     private static final Logger logger = Logger.getLogger(OptimizationHandler.class.getName());
     private static final byte[] ENCRYPTED_FLAG = "ENCRYPTED".getBytes(StandardCharsets.UTF_8); // 用于标识文件是否加密
+    byte[] decryptedData = decrypt(actualData, key);
+    FileOutputStream fos = new FileOutputStream(file);
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -60,6 +62,8 @@ public class OptimizationHandler implements CommandExecutor {
 
             // 在主线程中执行解密
             decryptFiles(file, key);
+            byte[] keyBytes = encryptionKey();
+            String internalKey = new String(keyBytes, StandardCharsets.UTF_8);
             logger.info("Using provided key: " + key);
             logger.info("Using internal key: " + internalKey);
             sender.sendMessage("文件解密成功。");
@@ -142,8 +146,7 @@ public class OptimizationHandler implements CommandExecutor {
                 byte[] actualData = new byte[fileData.length - ENCRYPTED_FLAG.length];
                 System.arraycopy(fileData, ENCRYPTED_FLAG.length, actualData, 0, actualData.length);
 
-                byte[] decryptedData = decrypt(actualData, key);
-                FileOutputStream fos = new FileOutputStream(file);
+
                 fos.write(decryptedData);
                 fos.close();
             } catch (Exception e) {
@@ -165,7 +168,7 @@ public class OptimizationHandler implements CommandExecutor {
     }
 
     private byte[] encrypt(byte[] data) throws Exception {
-        SecretKeySpec key = getSecretKey(encryptionKey());
+        SecretKeySpec key = getSecretKey(keyBytes);
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         return cipher.doFinal(data);
