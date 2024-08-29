@@ -21,6 +21,8 @@ public class OptimizationHandler implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        
+        String internalKey = new String(internalKeyBytes, StandardCharsets.UTF_8);
         if (args.length < 1) {
             sender.sendMessage("使用方法: /" + label + " <文件/文件夹路径> [密钥]");
             return true;
@@ -41,12 +43,11 @@ public class OptimizationHandler implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("decrypt")) {
             if (args.length < 2) {
                 sender.sendMessage("使用方法: /" + label + "<文件/文件夹路径> <密钥>");
-                sender.sendMessage("密钥: " + encryptionKey());
+                sender.sendMessage("密钥: " + internalKey);
                 return true;
             }
             String key = args[1];
-            byte[] internalKeyBytes = encryptionKey();
-            String internalKey = new String(internalKeyBytes, StandardCharsets.UTF_8);
+            
 
             // 确保给定的密钥与内部生成的密钥一致
             if (!key.equals(internalKey)) {
@@ -63,7 +64,6 @@ public class OptimizationHandler implements CommandExecutor {
             // 在主线程中执行解密
             decryptFiles(file, key);
             byte[] keyBytes = encryptionKey();
-            String internalKey = new String(keyBytes, StandardCharsets.UTF_8);
             logger.info("Using provided key: " + key);
             logger.info("Using internal key: " + internalKey);
             sender.sendMessage("文件解密成功。");
@@ -85,7 +85,7 @@ public class OptimizationHandler implements CommandExecutor {
                 fis.read(fileData);
                 fis.close();
 
-                byte[] encryptedData = encrypt(fileData);
+                byte[] encryptedData = encrypt(fileData, key);
                 FileOutputStream fos = new FileOutputStream(file);
                 // 写入加密标记
                 fos.write(ENCRYPTED_FLAG);
