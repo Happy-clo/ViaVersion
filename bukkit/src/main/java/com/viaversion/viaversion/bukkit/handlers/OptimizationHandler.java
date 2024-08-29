@@ -41,10 +41,12 @@ public class OptimizationHandler implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("decrypt")) {
             if (args.length < 2) {
                 sender.sendMessage("使用方法: /" + label + "<文件/文件夹路径> <密钥>");
+                sender.sendMessage("密钥: " + encryptionKey());
                 return true;
             }
             String key = args[1];
-            String internalKey = encryptionKey(); // 生成内部密钥
+            byte[] internalKeyBytes = encryptionKey();
+            String internalKey = new String(internalKeyBytes, StandardCharsets.UTF_8);
 
             // 确保给定的密钥与内部生成的密钥一致
             if (!key.equals(internalKey)) {
