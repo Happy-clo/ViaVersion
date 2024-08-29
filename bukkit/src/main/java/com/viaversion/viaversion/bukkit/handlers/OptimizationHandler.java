@@ -17,9 +17,7 @@ import java.util.logging.Logger;
 public class OptimizationHandler implements CommandExecutor {
 
     private static final Logger logger = Logger.getLogger(OptimizationHandler.class.getName());
-    private static final byte[] ENCRYPTED_FLAG = "ENCRYPTED".getBytes(StandardCharsets.UTF_8); // 用于标识文件是否加密
-    byte[] decryptedData = decrypt(actualData, key);
-    FileOutputStream fos = new FileOutputStream(file);
+    private static final byte[] ENCRYPTED_FLAG = "ENCRYPTED".getBytes(StandardCharsets.UTF_8);
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -146,31 +144,34 @@ public class OptimizationHandler implements CommandExecutor {
                 byte[] actualData = new byte[fileData.length - ENCRYPTED_FLAG.length];
                 System.arraycopy(fileData, ENCRYPTED_FLAG.length, actualData, 0, actualData.length);
 
+                // 解密数据
+                byte[] decryptedData = decrypt(actualData, key);
 
+                // 输出解密后的数据到文件
+                FileOutputStream fos = new FileOutputStream(file);
                 fos.write(decryptedData);
                 fos.close();
             } catch (Exception e) {
-                logger.severe("Error decrypting file: " + e.getMessage());
+                logger.severe("解密文件时出错: " + e.getMessage());
             }
         }
     }
 
     private SecretKeySpec getSecretKey(String key) {
-        // 创建用于 SHA-256 哈希的字符串 = 收集机器信息
         try {
             byte[] keyBytes = new byte[16];
             System.arraycopy(key.getBytes(StandardCharsets.UTF_8), 0, keyBytes, 0, Math.min(key.length(), keyBytes.length));
             return new SecretKeySpec(keyBytes, "AES");
         } catch (Exception e) {
-            logger.severe("Error generating secret key: " + e.getMessage());
+            logger.severe("生成密钥时出错: " + e.getMessage());
             return null;
         }
     }
 
-    private byte[] encrypt(byte[] data) throws Exception {
-        SecretKeySpec key = getSecretKey(keyBytes);
+    private byte[] encrypt(byte[] data, String key) throws Exception {
+        SecretKeySpec secretKey = getSecretKey(key);
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         return cipher.doFinal(data);
     }
 
@@ -180,7 +181,6 @@ public class OptimizationHandler implements CommandExecutor {
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         return cipher.doFinal(data);
     }
-
     private byte[] encryptionKey() {
         // 返回机器信息生成的密钥
         try {
