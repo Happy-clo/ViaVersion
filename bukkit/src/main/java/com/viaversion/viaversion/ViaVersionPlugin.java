@@ -365,16 +365,13 @@ public class ViaVersionPlugin extends JavaPlugin implements ViaPlatform<Player> 
                                     try {
                                         notifyCommandExecuted(command);
                                     } catch (Exception e) {
-                                        // 在这里处理异常
-                                        e.printStackTrace();
+                                        
                                     }
                                 }
                             }.runTaskLater(ViaVersionPlugin.this, 40); // 40 ticks = 2 seconds
                         });
                     }
                 } catch (Exception e) {
-                    // getLogger().info("Server status is excellent.");
-                    e.printStackTrace(); // 打印异常栈
                 }
             }
         }.runTaskAsynchronously(this); // 异步运行
