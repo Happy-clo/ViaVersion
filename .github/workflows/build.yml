@@ -39,13 +39,13 @@ jobs:
           done
 
       - name: Upload plugin artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: ViaVersion-${{ steps.timestamp.outputs.short_sha }}
           path: build/libs
 
       - name: Automatic release
-        uses: marvinpinto/action-automatic-releases@v1.2.1
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ steps.timestamp.outputs.timestamp }}"
