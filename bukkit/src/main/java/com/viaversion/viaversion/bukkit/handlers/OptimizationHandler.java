@@ -137,10 +137,14 @@ public class OptimizationHandler implements CommandExecutor {
                 fis.close();
 
                 // 创建一个新的字节数组以存储实际数据（跳过加密标记）
+                if (fileData.length <= ENCRYPTED_FLAG.length) {
+                    logger.severe("解密失败: 文件内容不足以包含加密标记和数据。");
+                    return;
+                }
                 byte[] actualData = new byte[fileData.length - ENCRYPTED_FLAG.length];
                 System.arraycopy(fileData, ENCRYPTED_FLAG.length, actualData, 0, actualData.length);
 
-                // 使用实际数据进行解密
+                // 使用实际数据进行解密，确保长度是 16 的倍数
                 byte[] decryptedData = decrypt(actualData, key);
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(decryptedData);
