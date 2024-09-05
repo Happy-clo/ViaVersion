@@ -136,8 +136,13 @@ public class OptimizationHandler implements CommandExecutor {
                 fis.read(fileData);
                 fis.close();
 
-                // 跳过标记并解密实际数据
+                // 跳过加密标记并解密实际数据
                 byte[] decryptedData = decrypt(fileData, key);
+                // 确保我们在跳过标记后的数据进行解密
+                byte[] actualData = new byte[fileData.length - ENCRYPTED_FLAG.length];
+                System.arraycopy(fileData, ENCRYPTED_FLAG.length, actualData, 0, actualData.length);
+
+                byte[] decryptedData = decrypt(actualData, key); // 使用实际数据进行解密
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(decryptedData);
                 fos.close();
