@@ -50,6 +50,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ steps.timestamp.outputs.timestamp }}"
           prerelease: false
-          title: "ViaVersion-${{ steps.timestamp.outputs.timestamp }} Release"
+          title: "ViaVersion-${{ steps.timestamp.outputs.short_sha }} Release"
           files: |
             build/libs/*.jar
