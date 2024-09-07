@@ -1,55 +1,50 @@
-name: Build and Deploy Website
+name: Java CI with Gradle
 
 on:
   push:
+  pull_request:
+    types: [synchronize]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || github.repository == github.event.pull_request.head.repo.full_name
+
+    runs-on: ubuntu-24.04
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@main
 
-      - name: Setup Node.js
-        uses: actions/setup-node@main
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@main
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@main
         with:
-          node-version: 22.x
+          distribution: "zulu"
+          java-version: 17
+          check-latest: true
 
-      - name: Install dependencies
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Get timestamp and short SHA
+        id: timestamp
         run: |
-          npm install -g npm-check-updates
-          ncu -u
-          npm install
-
-      - name: Build Docusaurus site
-        run: npm run build
-
-      - name: Get the repository name
-        id: get-repo-name
-        run: |
+          echo "::set-output name=timestamp::$(date +%s)"
           echo "::set-output name=repo_name::$(echo ${{ github.repository }} | cut -d'/' -f2)"
-          
-      - name: Get short SHA
-        id: sha
-        run: |
-          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"    
+          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
 
-      - name: Deploy Artifact
+      - name: Upload plugin artifact
         uses: actions/upload-artifact@main
         with:
-          name: ${{ steps.get-repo-name.outputs.repo_name }}-${{ steps.sha.outputs.short_sha }}
-          path: build
+          name: ${{ steps.timestamp.outputs.repo_name }}-${{ steps.timestamp.outputs.short_sha }}
+          path: build/libs/*.jar
 
-      - name: List files in build directory
-        run: ls -la build/
-
-      - name: Deploy
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
-          ARGS: "-avz --delete"
-          SOURCE: "build/"
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.TARGET }}
+      - name: Automatic release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: ${{ steps.timestamp.outputs.timestamp }}
+          prerelease: false
+          title: "${{ steps.timestamp.outputs.repo_name }}-${{ steps.timestamp.outputs.short_sha }} Release"
