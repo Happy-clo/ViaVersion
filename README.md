@@ -1,8 +1,16 @@
 # ViaVersion
 
-> [!WARNING]  
-> This branch is intended solely for personal development builds and support. Please do not use the attached builds directly. The author assumes no responsibility for any issues that may arise.
-> 本分支仅用于个人开发的构建和支持，请勿直接使用构建附件或 Releases 。如果您遇到任何问题，作者不承担任何责任。
+### 中文版本
+
+> [!CAUTION]  
+> 本分支仅用于个人开发提供构建或帮助，请勿直接使用构建附件。如出现版权或开源协议问题，本作者概不负责。
+
+---
+
+### English Version
+
+> [!CAUTION]  
+> This branch is intended solely for personal development purposes and to provide builds or assistance. Please do not use the build attachments directly. The author assumes no responsibility for any copyright or open-source license issues that may arise.
 
 **Allows the connection of higher client versions to lower server versions -
 it works on any platform you can think of.**
