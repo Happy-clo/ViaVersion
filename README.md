@@ -1,8 +1,8 @@
 # ViaVersion
 
-[![Latest Release](https://img.shields.io/github/v/release/ViaVersion/ViaVersion)](https://viaversion.com)
-[![Build Status](https://github.com/ViaVersion/ViaVersion/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/ViaVersion/ViaVersion/actions)
-[![Discord](https://img.shields.io/badge/chat-on%20discord-blue.svg)](https://viaversion.com/discord)
+> [!WARNING]  
+> This branch is intended solely for personal development builds and support. Please do not use the attached builds directly. The author assumes no responsibility for any issues that may arise.
+> 本分支仅用于个人开发的构建和支持，请勿直接使用构建附件或 Releases 。如果您遇到任何问题，作者不承担任何责任。
 
 **Allows the connection of higher client versions to lower server versions -
 it works on any platform you can think of.**
@@ -20,20 +20,19 @@ Supported Versions:
 
 **User Docs:** https://docs.viaversion.com/display/VIAVERSION/
 
-Releases/Dev Builds
---------
+## Releases/Dev Builds
+
 You can find official releases in the following places:
 
-- **Hangar (for our plugins)**: https://hangar.papermc.io/ViaVersion/ViaVersion
-- **Modrinth (for our mods)**: https://modrinth.com/mod/viaversion
-- **GitHub**: https://github.com/ViaVersion/ViaVersion/releases
+-   **Hangar (for our plugins)**: https://hangar.papermc.io/ViaVersion/ViaVersion
+-   **Modrinth (for our mods)**: https://modrinth.com/mod/viaversion
+-   **GitHub**: https://github.com/ViaVersion/ViaVersion/releases
 
 Dev builds for **all** of our projects are on our Jenkins server:
 
-- **Jenkins**: https://ci.viaversion.com
+-   **Jenkins**: https://ci.viaversion.com
 
-ViaVersion as a Dependency
-----------
+## ViaVersion as a Dependency
 
 **JavaDocs:** https://jd.viaversion.com
 
@@ -73,29 +72,26 @@ Please note the [differences in licensing](#license).
 Note: If you want to make your own platform implementation of ViaVersion (and additional addons),
 you can use the [ViaLoader](https://github.com/ViaVersion/ViaLoader) project.
 
-Building
---------
+## Building
+
 After cloning this repository, build the project with Gradle by running `./gradlew build` and take the created jar out
 of the `build/libs` directory.
 
 You need JDK 17 or newer to build ViaVersion.
 
+## Mapping Files
 
-Mapping Files
---------------
 Mapping files are generated and managed in our [Mappings repository](https://github.com/ViaVersion/Mappings). The generated mapping output is stored [here](./common/src/main/resources/assets/viaversion).
 
+## Resources
 
-Resources
---------
+-   **[Via Mappings Generator](https://github.com/ViaVersion/Mappings)**
+-   **[Mojang mappings](https://minecraft.wiki/w/Obfuscation_map)** (Thank you, Mojang, very cool)
+-   **[wiki.vg](https://wiki.vg)** (Used for historic information regarding packet structure, we also contribute back)
+-   **[Burger](https://github.com/Pokechu22/Burger)** (See [PAaaS](https://github.com/Matsv/Paaas))
 
-- **[Via Mappings Generator](https://github.com/ViaVersion/Mappings)**
-- **[Mojang mappings](https://minecraft.wiki/w/Obfuscation_map)** (Thank you, Mojang, very cool)
-- **[wiki.vg](https://wiki.vg)** (Used for historic information regarding packet structure, we also contribute back)
-- **[Burger](https://github.com/Pokechu22/Burger)** (See [PAaaS](https://github.com/Matsv/Paaas))
+## License
 
-License
---------
 The entirety of the [API directory](api) is licensed under the MIT License;
 see [licenses/MIT.md](licenses/MIT.md) for
 details.
