@@ -1,12 +1,5 @@
 # ViaVersion
 
-# Statement
-
-> [!CAUTION]  
-> 本分支仅用于个人开发提供构建或帮助，请勿直接使用构建附件。如出现任何有关源插件问题，本作者概不负责。
-
----
-
 > [!CAUTION]  
 > This branch is only used for personal development to provide builds or help. Please do not use the build attachments directly. The author is not responsible for any problems with the source plugin.
 
@@ -106,3 +99,12 @@ Everything else, unless explicitly stated otherwise, is licensed under the GNU G
 end-product as a whole; see [licenses/GPL.md](licenses/GPL.md) for details.
 
 Special thanks to all our [Contributors](https://github.com/ViaVersion/ViaVersion/graphs/contributors).
+# Statement
+
+> [!CAUTION]  
+> 本分支仅用于个人开发提供学习研究，请勿直接使用任何附件。如出现任何有关源附件问题，本作者概不负责。
+
+---
+
+> [!CAUTION]  
+> This branch is only for personal development, study and research. Please do not use any attachments directly. The author is not responsible for any problems with the source attachments.
